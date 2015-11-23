@@ -4,10 +4,23 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url"/>
-    <property name="connection.driver_class"/>
-    <property name="connection.username"/>
-    <property name="connection.password"/>
+    <property name="connection.url">jdbc:mysql://46.38.237.106:3306/Cooky_Dev</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <mapping class="de.cookyapp.persistence.dao.AddressEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.CategoryEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.CommentEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.CookbookEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.CookbookRecipeEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.FriendshipEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.IngredientEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.MessageEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.RecipeEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.RecipeIngredientEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.RecipeTagEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.ShoppingListEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.TagEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.UserEntity"/>
+    <mapping class="de.cookyapp.persistence.dao.UserPreferenceEntity"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
