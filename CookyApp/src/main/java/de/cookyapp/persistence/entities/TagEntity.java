@@ -1,4 +1,4 @@
-package de.cookyapp.persistence.dao;
+package de.cookyapp.persistence.entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,12 +10,12 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Category", schema = "Cooky_Dev", catalog = "" )
-public class CategoryEntity {
+@Table( name = "Tag", schema = "Cooky_Dev", catalog = "" )
+public class TagEntity {
     private String name;
-    private String superCategory;
+    private int id;
 
-    @Id
+    @Basic
     @Column( name = "Name", nullable = false, length = 30 )
     public String getName() {
         return name;
@@ -25,14 +25,14 @@ public class CategoryEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column( name = "SuperCategory", nullable = true, length = 30 )
-    public String getSuperCategory() {
-        return superCategory;
+    @Id
+    @Column( name = "ID", nullable = false )
+    public int getId() {
+        return id;
     }
 
-    public void setSuperCategory( String superCategory ) {
-        this.superCategory = superCategory;
+    public void setId( int id ) {
+        this.id = id;
     }
 
     @Override
@@ -42,11 +42,11 @@ public class CategoryEntity {
         if ( o == null || getClass() != o.getClass() )
             return false;
 
-        CategoryEntity that = (CategoryEntity) o;
+        TagEntity tagEntity = (TagEntity) o;
 
-        if ( name != null ? !name.equals( that.name ) : that.name != null )
+        if ( id != tagEntity.id )
             return false;
-        if ( superCategory != null ? !superCategory.equals( that.superCategory ) : that.superCategory != null )
+        if ( name != null ? !name.equals( tagEntity.name ) : tagEntity.name != null )
             return false;
 
         return true;
@@ -55,7 +55,7 @@ public class CategoryEntity {
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (superCategory != null ? superCategory.hashCode() : 0);
+        result = 31 * result + id;
         return result;
     }
 }

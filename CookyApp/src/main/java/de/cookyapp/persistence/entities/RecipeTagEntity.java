@@ -1,18 +1,23 @@
-package de.cookyapp.persistence.dao;
+package de.cookyapp.persistence.entities;
 
-import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
-public class RecipeTagEntityPK implements Serializable {
+@Entity
+@Table( name = "RecipeTag", schema = "Cooky_Dev", catalog = "" )
+@IdClass( RecipeTagEntityPK.class )
+public class RecipeTagEntity {
     private int recipeId;
     private int tagId;
 
-    @Column( name = "RecipeID", nullable = false )
     @Id
+    @Column( name = "RecipeID", nullable = false )
     public int getRecipeId() {
         return recipeId;
     }
@@ -21,8 +26,8 @@ public class RecipeTagEntityPK implements Serializable {
         this.recipeId = recipeId;
     }
 
-    @Column( name = "TagID", nullable = false )
     @Id
+    @Column( name = "TagID", nullable = false )
     public int getTagId() {
         return tagId;
     }
@@ -38,7 +43,7 @@ public class RecipeTagEntityPK implements Serializable {
         if ( o == null || getClass() != o.getClass() )
             return false;
 
-        RecipeTagEntityPK that = (RecipeTagEntityPK) o;
+        RecipeTagEntity that = (RecipeTagEntity) o;
 
         if ( recipeId != that.recipeId )
             return false;

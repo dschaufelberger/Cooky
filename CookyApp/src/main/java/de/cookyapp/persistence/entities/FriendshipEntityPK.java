@@ -1,26 +1,18 @@
-package de.cookyapp.persistence.dao;
+package de.cookyapp.persistence.entities;
 
-import java.time.LocalDateTime;
-import javax.persistence.Basic;
+import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
-@Entity
-@Table( name = "Friendship", schema = "Cooky_Dev", catalog = "" )
-@IdClass( FriendshipEntityPK.class )
-public class FriendshipEntity {
+public class FriendshipEntityPK implements Serializable {
     private int userIdOne;
     private int userIdTwo;
-    private LocalDateTime date;
 
-    @Id
     @Column( name = "UserIDOne", nullable = false )
+    @Id
     public int getUserIdOne() {
         return userIdOne;
     }
@@ -29,24 +21,14 @@ public class FriendshipEntity {
         this.userIdOne = userIdOne;
     }
 
-    @Id
     @Column( name = "UserIDTwo", nullable = false )
+    @Id
     public int getUserIdTwo() {
         return userIdTwo;
     }
 
     public void setUserIdTwo( int userIdTwo ) {
         this.userIdTwo = userIdTwo;
-    }
-
-    @Basic
-    @Column( name = "Date", nullable = true )
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate( LocalDateTime date ) {
-        this.date = date;
     }
 
     @Override
@@ -56,13 +38,11 @@ public class FriendshipEntity {
         if ( o == null || getClass() != o.getClass() )
             return false;
 
-        FriendshipEntity that = (FriendshipEntity) o;
+        FriendshipEntityPK that = (FriendshipEntityPK) o;
 
         if ( userIdOne != that.userIdOne )
             return false;
         if ( userIdTwo != that.userIdTwo )
-            return false;
-        if ( date != null ? !date.equals( that.date ) : that.date != null )
             return false;
 
         return true;
@@ -72,7 +52,6 @@ public class FriendshipEntity {
     public int hashCode() {
         int result = userIdOne;
         result = 31 * result + userIdTwo;
-        result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
 }

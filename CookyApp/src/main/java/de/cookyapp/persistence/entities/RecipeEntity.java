@@ -1,4 +1,4 @@
-package de.cookyapp.persistence.dao;
+package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
 import javax.persistence.Basic;

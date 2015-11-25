@@ -1,18 +1,26 @@
-package de.cookyapp.persistence.dao;
+package de.cookyapp.persistence.entities;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
-public class FriendshipEntityPK implements Serializable {
+@Entity
+@Table( name = "Friendship", schema = "Cooky_Dev", catalog = "" )
+@IdClass( FriendshipEntityPK.class )
+public class FriendshipEntity {
     private int userIdOne;
     private int userIdTwo;
+    private LocalDateTime date;
 
-    @Column( name = "UserIDOne", nullable = false )
     @Id
+    @Column( name = "UserIDOne", nullable = false )
     public int getUserIdOne() {
         return userIdOne;
     }
@@ -21,14 +29,24 @@ public class FriendshipEntityPK implements Serializable {
         this.userIdOne = userIdOne;
     }
 
-    @Column( name = "UserIDTwo", nullable = false )
     @Id
+    @Column( name = "UserIDTwo", nullable = false )
     public int getUserIdTwo() {
         return userIdTwo;
     }
 
     public void setUserIdTwo( int userIdTwo ) {
         this.userIdTwo = userIdTwo;
+    }
+
+    @Basic
+    @Column( name = "Date", nullable = true )
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate( LocalDateTime date ) {
+        this.date = date;
     }
 
     @Override
@@ -38,11 +56,13 @@ public class FriendshipEntityPK implements Serializable {
         if ( o == null || getClass() != o.getClass() )
             return false;
 
-        FriendshipEntityPK that = (FriendshipEntityPK) o;
+        FriendshipEntity that = (FriendshipEntity) o;
 
         if ( userIdOne != that.userIdOne )
             return false;
         if ( userIdTwo != that.userIdTwo )
+            return false;
+        if ( date != null ? !date.equals( that.date ) : that.date != null )
             return false;
 
         return true;
@@ -52,6 +72,7 @@ public class FriendshipEntityPK implements Serializable {
     public int hashCode() {
         int result = userIdOne;
         result = 31 * result + userIdTwo;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
 }

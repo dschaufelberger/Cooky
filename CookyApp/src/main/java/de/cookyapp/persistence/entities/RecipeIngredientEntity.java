@@ -1,34 +1,44 @@
-package de.cookyapp.persistence.dao;
+package de.cookyapp.persistence.entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "ShoppingList", schema = "Cooky_Dev", catalog = "" )
-@IdClass( ShoppingListEntityPK.class )
-public class ShoppingListEntity {
-    private int userId;
+@Table( name = "RecipeIngredient", schema = "Cooky_Dev", catalog = "" )
+public class RecipeIngredientEntity {
+    private int id;
+    private int recipeId;
     private int ingredientId;
     private String amount;
+    private String unit;
 
     @Id
-    @Column( name = "UserID", nullable = false )
-    public int getUserId() {
-        return userId;
+    @Column( name = "ID", nullable = false )
+    public int getId() {
+        return id;
     }
 
-    public void setUserId( int userId ) {
-        this.userId = userId;
+    public void setId( int id ) {
+        this.id = id;
     }
 
-    @Id
+    @Basic
+    @Column( name = "RecipeID", nullable = false )
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId( int recipeId ) {
+        this.recipeId = recipeId;
+    }
+
+    @Basic
     @Column( name = "IngredientID", nullable = false )
     public int getIngredientId() {
         return ingredientId;
@@ -48,6 +58,16 @@ public class ShoppingListEntity {
         this.amount = amount;
     }
 
+    @Basic
+    @Column( name = "Unit", nullable = true, length = 20 )
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit( String unit ) {
+        this.unit = unit;
+    }
+
     @Override
     public boolean equals( Object o ) {
         if ( this == o )
@@ -55,13 +75,17 @@ public class ShoppingListEntity {
         if ( o == null || getClass() != o.getClass() )
             return false;
 
-        ShoppingListEntity that = (ShoppingListEntity) o;
+        RecipeIngredientEntity that = (RecipeIngredientEntity) o;
 
-        if ( userId != that.userId )
+        if ( id != that.id )
+            return false;
+        if ( recipeId != that.recipeId )
             return false;
         if ( ingredientId != that.ingredientId )
             return false;
         if ( amount != null ? !amount.equals( that.amount ) : that.amount != null )
+            return false;
+        if ( unit != null ? !unit.equals( that.unit ) : that.unit != null )
             return false;
 
         return true;
@@ -69,9 +93,11 @@ public class ShoppingListEntity {
 
     @Override
     public int hashCode() {
-        int result = userId;
+        int result = id;
+        result = 31 * result + recipeId;
         result = 31 * result + ingredientId;
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (unit != null ? unit.hashCode() : 0);
         return result;
     }
 }
