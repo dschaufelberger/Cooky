@@ -6,21 +6,25 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://46.38.237.106:3306/Cooky_Dev</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-    <mapping class="de.cookyapp.persistence.dao.AddressEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.CategoryEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.CommentEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.CookbookEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.CookbookRecipeEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.FriendshipEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.IngredientEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.MessageEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.RecipeEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.RecipeIngredientEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.RecipeTagEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.ShoppingListEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.TagEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.UserEntity"/>
-    <mapping class="de.cookyapp.persistence.dao.UserPreferenceEntity"/>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+    <property name="connection.username">tomcat7</property>
+    <property name="connection.password">GTURiMRd8owaLw3MO4hv</property>
+
+    <mapping class="de.cookyapp.persistence.entities.AddressEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.CategoryEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.CommentEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.CookbookEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.CookbookRecipeEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.FriendshipEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.IngredientEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.MessageEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.RecipeEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.RecipeIngredientEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.RecipeTagEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.ShoppingListEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.TagEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.UserEntity"/>
+    <mapping class="de.cookyapp.persistence.entities.UserPreferenceEntity"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
