@@ -6,14 +6,27 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+
 /**
  * Created by Dominik on 23.11.2015.
  */
+
+
 @Entity
-@Table( name = "Ingredient", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "Ingredient", schema = "Cooky_Dev")
 public class IngredientEntity {
     private int id;
     private String name;
+
+    public IngredientEntity(){
+
+    }
+
+    public IngredientEntity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     @Id
     @Column( name = "ID", nullable = false )
