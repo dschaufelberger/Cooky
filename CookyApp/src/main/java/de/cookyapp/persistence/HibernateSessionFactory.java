@@ -20,6 +20,7 @@ public enum HibernateSessionFactory {
         this.factory = configuration.buildSessionFactory( registry );
     }
 
+    //some comment
     public Session openSession() {
         return this.factory.openSession();
     }
