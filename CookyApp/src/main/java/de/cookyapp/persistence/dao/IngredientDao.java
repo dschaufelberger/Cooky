@@ -59,5 +59,4 @@ public class IngredientDao {
         session.update(ingredient);
         transaction.commit();
     }
-
 }
