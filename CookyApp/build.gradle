@@ -1,7 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'war'
 
-sourceCompatibility = 1.5
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
 
 repositories {
     mavenCentral()
