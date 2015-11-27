@@ -16,7 +16,7 @@
     <script src="<c:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 
-    <title>Home</title>
+    <title>Cooky</title>
 </head>
 <body>
 <div>
