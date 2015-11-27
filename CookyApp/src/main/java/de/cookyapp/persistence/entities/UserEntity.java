@@ -5,14 +5,19 @@ import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import de.cookyapp.enums.AccountState;
+import de.cookyapp.enums.Gender;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "User", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "User", schema = "Cooky_Dev" )
 public class UserEntity {
     private int id;
     private String username;
@@ -20,11 +25,11 @@ public class UserEntity {
     private String forename;
     private String surname;
     private String email;
-    private String gender;
+    private Gender gender;
     private Date birthdate;
     private LocalDateTime registrationDate;
     private LocalDateTime lastLoginDate;
-    private String accountState;
+    private AccountState accountState;
 
     @Id
     @Column( name = "ID", nullable = false )
@@ -87,12 +92,13 @@ public class UserEntity {
     }
 
     @Basic
+    @Enumerated( EnumType.STRING )
     @Column( name = "Gender", nullable = true, length = 10 )
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender( String gender ) {
+    public void setGender( Gender gender ) {
         this.gender = gender;
     }
 
@@ -127,12 +133,13 @@ public class UserEntity {
     }
 
     @Basic
+    @Enumerated( EnumType.STRING )
     @Column( name = "AccountState", nullable = true, length = 10 )
-    public String getAccountState() {
+    public AccountState getAccountState() {
         return accountState;
     }
 
-    public void setAccountState( String accountState ) {
+    public void setAccountState( AccountState accountState ) {
         this.accountState = accountState;
     }
 

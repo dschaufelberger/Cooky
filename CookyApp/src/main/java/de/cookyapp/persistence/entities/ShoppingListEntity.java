@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "ShoppingList", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "ShoppingList", schema = "Cooky_Dev" )
 @IdClass( ShoppingListEntityPK.class )
 public class ShoppingListEntity {
     private int userId;
