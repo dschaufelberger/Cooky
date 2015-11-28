@@ -1,7 +1,6 @@
 package de.cookyapp.persistence.dao;
 
 import de.cookyapp.persistence.entities.UserEntity;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
  * Created by Dominik Schaufelberger on 28.11.2015.
  */
 @Repository
-@Qualifier( "userDao" )
 public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> {
 
     public UserDao() {
