@@ -4,13 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaQuery;
-
 import de.cookyapp.persistence.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 
 /**
  * Created by Dominik Schaufelberger on 28.11.2015.
@@ -39,7 +36,9 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             transaction.commit();
         } catch ( HibernateException e ) {
             transaction.rollback();
-            //Log and rethrow
+
+            // TODO log the exception
+            throw e;
         } finally {
             session.close();
         }
@@ -61,7 +60,9 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             transaction.commit();
         } catch ( HibernateException e ) {
             transaction.rollback();
-            //Log and rethrow
+
+            // TODO log the exception
+            throw e;
         } finally {
             session.close();
         }
@@ -83,7 +84,9 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             transaction.commit();
         } catch ( HibernateException e ) {
             transaction.rollback();
-            //Log and rethrow
+
+            // TODO log the exception
+            throw e;
         } finally {
             session.close();
         }
@@ -104,7 +107,9 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             transaction.commit();
         } catch ( HibernateException e ) {
             transaction.rollback();
-            //Log and rethrow
+
+            // TODO log the exception
+            throw e;
         } finally {
             session.close();
         }
@@ -112,7 +117,6 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
 
     @Override
     public void remove( T persistentObject ) {
-
         Session session = this.sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -124,7 +128,9 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             transaction.commit();
         } catch ( HibernateException e ) {
             transaction.rollback();
-            //Log and rethrow
+
+            // TODO log the exception
+            throw e;
         } finally {
             session.close();
         }
