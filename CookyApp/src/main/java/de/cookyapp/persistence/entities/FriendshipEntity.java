@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Friendship", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "Friendship", schema = "Cooky_Dev" )
 @IdClass( FriendshipEntityPK.class )
 public class FriendshipEntity {
     private int userIdOne;

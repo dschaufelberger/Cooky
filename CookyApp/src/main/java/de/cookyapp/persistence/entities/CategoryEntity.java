@@ -10,7 +10,7 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Category", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "Category", schema = "Cooky_Dev" )
 public class CategoryEntity {
     private String name;
     private String superCategory;

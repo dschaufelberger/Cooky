@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Comment", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "Comment", schema = "Cooky_Dev" )
 public class CommentEntity {
     private int id;
     private String text;

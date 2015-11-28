@@ -4,19 +4,23 @@ import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import de.cookyapp.enums.CookbookVisibility;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Cookbook", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "Cookbook", schema = "Cooky_Dev" )
 public class CookbookEntity {
     private int id;
     private String name;
     private String shortDescription;
-    private String visibility;
+    private CookbookVisibility visibility;
     private boolean editable;
     private int ownerId;
     private LocalDateTime creationTime;
@@ -52,12 +56,13 @@ public class CookbookEntity {
     }
 
     @Basic
+    @Enumerated( EnumType.STRING )
     @Column( name = "Visibility", nullable = false, length = 10 )
-    public String getVisibility() {
+    public CookbookVisibility getVisibility() {
         return visibility;
     }
 
-    public void setVisibility( String visibility ) {
+    public void setVisibility( CookbookVisibility visibility ) {
         this.visibility = visibility;
     }
 

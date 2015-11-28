@@ -4,18 +4,22 @@ import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import de.cookyapp.enums.MessageStatus;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Message", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "Message", schema = "Cooky_Dev" )
 public class MessageEntity {
     private int id;
     private String content;
-    private String status;
+    private MessageStatus status;
     private int senderId;
     private int receiverId;
     private LocalDateTime sentTime;
@@ -41,12 +45,13 @@ public class MessageEntity {
     }
 
     @Basic
+    @Enumerated( EnumType.STRING )
     @Column( name = "Status", nullable = false, length = 10 )
-    public String getStatus() {
+    public MessageStatus getStatus() {
         return status;
     }
 
-    public void setStatus( String status ) {
+    public void setStatus( MessageStatus status ) {
         this.status = status;
     }
 
