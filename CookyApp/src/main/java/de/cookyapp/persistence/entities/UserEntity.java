@@ -1,6 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -26,10 +26,24 @@ public class UserEntity {
     private String surname;
     private String email;
     private Gender gender;
-    private Date birthdate;
+    private LocalDate birthdate;
     private LocalDateTime registrationDate;
     private LocalDateTime lastLoginDate;
     private AccountState accountState;
+
+    public UserEntity() {
+
+    }
+
+    public UserEntity( de.cookyapp.viewmodel.registration.User user ) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.forename = user.getForename();
+        this.surname = user.getSurname();
+        this.email = user.getEmail();
+        this.gender = user.getGender();
+        this.birthdate = user.getBirthdate();
+    }
 
     @Id
     @Column( name = "ID", nullable = false )
@@ -104,11 +118,11 @@ public class UserEntity {
 
     @Basic
     @Column( name = "Birthdate", nullable = true )
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate( Date birthdate ) {
+    public void setBirthdate( LocalDate birthdate ) {
         this.birthdate = birthdate;
     }
 

@@ -1,6 +1,6 @@
 package de.cookyapp.viewmodel.registration;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -17,23 +17,23 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class User {
     @NotBlank( message = "Der Benutzername muss zwischen 8 und 30 Zeichen lang sein." )
-    @Pattern( regexp = "[a-zA-ZäöüÄÖÜß][a-zA-ZäöüÄÖÜß0-9_-]*", message = "Der Benutzername muss mit einem Buchstaben beginnen und darf neben Buchstaben und Zahlen folgende Sonderzeichen enthalten: \"-_\"." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß][a-zA-ZäöüÄÖÜß0-9_-]*$", message = "Der Benutzername muss mit einem Buchstaben beginnen und darf neben Buchstaben und Zahlen folgende Sonderzeichen enthalten: \"-_\"." )
     @Size( min = 5, max = 30, message = "Der Benutzername muss zwischen 8 und 30 Zeichen lang sein." )
     private String username;
 
     @NotBlank(message = "Das Passwort muss zwischen 8 und 32 Zeichen lang sein.")
     @Size( min = 8, max = 32, message = "Das Passwort muss zwischen 8 und 32 Zeichen lang sein." )
-    @Pattern( regexp = "[^a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*$]", message = "Das Passwort darf nur aus Klein- und Großbuchstaben, Zahlen und folgenden Sonderzeichen bestehen: \"-_!#?()$%&+*\"." )
+    @Pattern( regexp = "^[a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*]*$", message = "Das Passwort darf nur aus Klein- und Großbuchstaben, Zahlen und folgenden Sonderzeichen bestehen: \"-_!#?()$%&+*\"." )
     private String password;
 
     @NotBlank(message = "Bitte geben Sie Ihren Namen an.")
     @Size( max = 30, message = "Der Name darf nur aus 30 Zeichen bestehen." )
-    @Pattern( regexp = "[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*", message = "Der Name darf nur aus Klein- und Großbuchstaben und einem Bindestrich bestehen." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben und einem Bindestrich bestehen." )
     private String forename;
 
     @NotBlank(message = "Bitte geben Sie Ihren Namen an.")
     @Size( max = 30, message = "Der Name darf nur aus maximal 30 Zeichen bestehen." )
-    @Pattern( regexp = "[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*", message = "Der Name darf nur aus Klein- und Großbuchstaben und einem Bindestrich bestehen." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben und einem Bindestrich bestehen." )
     private String surname;
 
     @Email
@@ -44,9 +44,9 @@ public class User {
     private Gender gender;
 
     @NotNull(message = "Bitte geben Sie ein gültiges Datum an.")
-    @Past(message = "Das Geburtstdatum muss in der Vergangeheit liegen.")
+    //@Past(message = "Das Geburtstdatum muss in der Vergangeheit liegen.")
     @DateTimeFormat( iso = DateTimeFormat.ISO.DATE )
-    private Date birthdate;
+    private LocalDate birthdate;
 
     public User() {
     }
@@ -107,11 +107,11 @@ public class User {
     }
 
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate( Date birthdate ) {
+    public void setBirthdate( LocalDate birthdate ) {
         this.birthdate = birthdate;
     }
 

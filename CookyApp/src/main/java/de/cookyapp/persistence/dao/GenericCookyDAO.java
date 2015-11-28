@@ -3,6 +3,8 @@ package de.cookyapp.persistence.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * This is a generic interface for a DAO in Cooky.
  *
