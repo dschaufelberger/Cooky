@@ -1,9 +1,8 @@
 package de.cookyapp.controller;
 
+import de.cookyapp.persistence.dao.IngredientDao;
 import de.cookyapp.persistence.dao.RecipesDao;
-import de.cookyapp.persistence.entities.RecipeEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,19 +32,17 @@ public class RecipesController {
     }
 
     @RequestMapping("/removeRecipe")
-    public ModelAndView handleRemoveRecipe (@RequestParam("id") int id) {
+    public String handleRemoveRecipe (@RequestParam("id") int id) {
         RecipesDao recipesDao = new RecipesDao();
-        ModelAndView model = new ModelAndView("recipes");
         recipesDao.deleteRecipeById(id);
-        return model;
+        return "redirect:/recipes";
     }
 
     @RequestMapping("/editRecipeFinish")
-    public ModelAndView handleEditRecipeFinish(@RequestParam("id") int id) {
+    public String handleEditRecipeFinish(@RequestParam("id") int id, @RequestParam("editName") String name, @RequestParam("editShortDescription") String shortDescription, @RequestParam("editPreparation") String preparation, @RequestParam("editWorkingTime") int workingTime, @RequestParam("editCookingTime") int cookingTime) {
         RecipesDao recipesDao = new RecipesDao();
-        ModelAndView model = new ModelAndView("recipes");
-        recipesDao.editRecipe(id);
-        return model;
+        recipesDao.editRecipe(id, name, shortDescription, preparation, workingTime, cookingTime);
+        return "redirect:/recipes";
     }
 
     @RequestMapping("/editRecipe")
@@ -53,7 +50,6 @@ public class RecipesController {
         RecipesDao recipesDao = new RecipesDao();
         ModelAndView model = new ModelAndView("editRecipe");
         model.addObject("recipe", recipesDao.getRecipeById(id));
-        model.addObject("ingredients", recipesDao.getRecipeIngredients(id));
         return model;
     }
 
@@ -64,10 +60,16 @@ public class RecipesController {
     }
 
     @RequestMapping("/addRecipe")
-    public ModelAndView handleAddRecipe (@RequestParam("recipeName") String recipeName, @RequestParam("shortDescription") String shortDescription, @RequestParam("serving") short serving, @RequestParam("preparation") String preparation, @RequestParam("calories") short calories, @RequestParam("difficulty") String difficulty, @RequestParam("workingTime") int workingTime, @RequestParam("cookingTime") int cookingTime) {
-        ModelAndView model = new ModelAndView("recipes");
+    public String handleAddRecipe (@RequestParam("recipeName") String recipeName, @RequestParam("shortDescription") String shortDescription, @RequestParam("preparation") String preparation, @RequestParam("workingTime") int workingTime, @RequestParam("cookingTime") int cookingTime, @RequestParam("ingredient") String[] ingredients) {
         RecipesDao recipesDao = new RecipesDao();
-        recipesDao.addRecipe(recipeName, shortDescription, serving, preparation, calories, difficulty, workingTime, cookingTime);
-        return model;
+        recipesDao.addRecipe(recipeName, shortDescription, preparation, workingTime, cookingTime);
+        IngredientDao ingredientDao = new IngredientDao();
+        for(String ingredient : ingredients) {
+            System.out.println(ingredient);
+            if (!("").equals(ingredient)) {
+                ingredientDao.addIngredient(ingredient);
+            }
+        }
+        return "redirect:/recipes";
     }
 }

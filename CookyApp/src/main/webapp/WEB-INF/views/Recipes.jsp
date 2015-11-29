@@ -9,6 +9,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
+    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">
+    <script src="<c:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
+    <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
     <title>Recipes</title>
 </head>
 <body>
@@ -22,7 +26,7 @@
         <tbody>
         <c:forEach var="recipes" items="${recipesList}">
             <tr>
-                <td><span id="showRecipe">"${recipes}"</span></td>
+                <td><span id="showRecipe">${recipes.name}</span></td>
                 <form id="removeRecipe" action="removeRecipe" method="post">
                     <td>
                         <button type="submit" name="deleteBtn">Delete</button>
