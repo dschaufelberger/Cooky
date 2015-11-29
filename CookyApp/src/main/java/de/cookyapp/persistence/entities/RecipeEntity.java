@@ -9,7 +9,7 @@ import javax.persistence.Id;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev", catalog = "" )
+@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev")
 public class RecipeEntity {
     private int id;
 
