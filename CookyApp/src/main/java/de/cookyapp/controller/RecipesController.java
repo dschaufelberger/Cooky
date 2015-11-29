@@ -64,10 +64,10 @@ public class RecipesController {
     }
 
     @RequestMapping("/addRecipe")
-    public ModelAndView handleAddRecipe (@RequestParam("recipeName") String recipeName, @RequestParam("shortDescription") String shortDescription, @RequestParam("serving") int serving, @RequestParam("preparation") String preparation, @RequestParam("calories") int calories, @RequestParam("difficulity") String difficulty, @RequestParam("workingTime") int workingTime, @RequestParam("cookingTime") int cookingTime, @RequestParam("ingredientName") String ingredientName) {
+    public ModelAndView handleAddRecipe (@RequestParam("recipeName") String recipeName, @RequestParam("shortDescription") String shortDescription, @RequestParam("serving") short serving, @RequestParam("preparation") String preparation, @RequestParam("calories") short calories, @RequestParam("difficulty") String difficulty, @RequestParam("workingTime") int workingTime, @RequestParam("cookingTime") int cookingTime) {
         ModelAndView model = new ModelAndView("recipes");
         RecipesDao recipesDao = new RecipesDao();
-        recipesDao.addRecipe(recipeName, shortDescription, serving, preparation, calories, difficulty, workingTime, cookingTime, ingredientName);
+        recipesDao.addRecipe(recipeName, shortDescription, serving, preparation, calories, difficulty, workingTime, cookingTime);
         return model;
     }
 }

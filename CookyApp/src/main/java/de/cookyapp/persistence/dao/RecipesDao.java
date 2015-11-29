@@ -26,7 +26,7 @@ public class RecipesDao {
     public List<RecipeEntity> getAllRecipes() {
         Session session = HibernateSessionFactory.INSTANCE.openSession();
         Transaction transaction = session.beginTransaction();
-        List<RecipeEntity> recipeList = (List<RecipeEntity>) session.createQuery("from RecipeEntity").list();
+        List<RecipeEntity> recipeList = session.createQuery("FROM de.cookyapp.persistence.entities.RecipeEntity").list();
         transaction.commit();
         return recipeList;
     }
@@ -58,7 +58,7 @@ public class RecipesDao {
         return recipeIngredients;
     }
 
-    public void addRecipe(String name, String shortDescription, int serving, String preparation, int calories, String difficulty, int workingTime, int cookingTime, String ingredientName) {
+    public void addRecipe(String name, String shortDescription, short serving, String preparation, short calories, String difficulty, int workingTime, int cookingTime) {
         Session session = HibernateSessionFactory.INSTANCE.openSession();
         Transaction transaction = session.beginTransaction();
         RecipeEntity recipe = new RecipeEntity();
@@ -66,7 +66,7 @@ public class RecipesDao {
         recipe.setShortDescription(shortDescription);
         //recipe.setServing(serving);
         recipe.setPreparation(preparation);
-        //recipe.setCalories(calories);
+        recipe.setCalories(calories);
         recipe.setDifficulty(difficulty);
         recipe.setWorkingTime(workingTime);
         recipe.setCookingTime(cookingTime);
