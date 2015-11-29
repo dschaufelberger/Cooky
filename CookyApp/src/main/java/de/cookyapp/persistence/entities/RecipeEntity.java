@@ -3,20 +3,35 @@ package de.cookyapp.persistence.entities;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
+
+import de.cookyapp.enums.RecipeDifficulty;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Recipe", schema = "Cooky_Dev")
+@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev")
 public class RecipeEntity {
+    private String name;
+    private String shortDescription;
+    private String preparation;
+    private RecipeDifficulty difficulty;
+    private String imageFileName;
+    private LocalDateTime creationTime;
+    private Short calories;
+    private Byte serving;
+    private Byte rating;
     private int id;
+    private int workingTime;
+    private int cookingTime;
+    private int restTime;
+    private int authorId;
 
     @Id
-    @Column( name = "ID", nullable = false )
+    @javax.persistence.Column( name = "ID", nullable = false )
     public int getId() {
         return id;
     }
@@ -25,10 +40,9 @@ public class RecipeEntity {
         this.id = id;
     }
 
-    private String name;
 
     @Basic
-    @Column( name = "Name", nullable = false, length = 100 )
+    @javax.persistence.Column( name = "Name", nullable = false, length = 100 )
     public String getName() {
         return name;
     }
@@ -37,10 +51,9 @@ public class RecipeEntity {
         this.name = name;
     }
 
-    private String shortDescription;
 
     @Basic
-    @Column( name = "ShortDescription", nullable = true, length = 500 )
+    @javax.persistence.Column( name = "ShortDescription", nullable = true, length = 500 )
     public String getShortDescription() {
         return shortDescription;
     }
@@ -49,10 +62,9 @@ public class RecipeEntity {
         this.shortDescription = shortDescription;
     }
 
-    private Byte serving;
 
     @Basic
-    @Column( name = "Serving", nullable = true )
+    @javax.persistence.Column( name = "Serving", nullable = true )
     public Byte getServing() {
         return serving;
     }
@@ -61,10 +73,9 @@ public class RecipeEntity {
         this.serving = serving;
     }
 
-    private String preparation;
 
     @Basic
-    @Column( name = "Preparation", nullable = true, length = -1 )
+    @javax.persistence.Column( name = "Preparation", nullable = true, length = -1 )
     public String getPreparation() {
         return preparation;
     }
@@ -73,10 +84,9 @@ public class RecipeEntity {
         this.preparation = preparation;
     }
 
-    private Short calories;
 
     @Basic
-    @Column( name = "Calories", nullable = true )
+    @javax.persistence.Column( name = "Calories", nullable = true )
     public Short getCalories() {
         return calories;
     }
@@ -85,22 +95,21 @@ public class RecipeEntity {
         this.calories = calories;
     }
 
-    private String difficulty;
 
     @Basic
-    @Column( name = "Difficulty", nullable = true, length = 20 )
-    public String getDifficulty() {
+    @Enumerated( EnumType.STRING )
+    @javax.persistence.Column( name = "Difficulty", nullable = true, length = 20 )
+    public RecipeDifficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty( String difficulty ) {
+    public void setDifficulty( RecipeDifficulty difficulty ) {
         this.difficulty = difficulty;
     }
 
-    private Byte rating;
 
     @Basic
-    @Column( name = "Rating", nullable = true )
+    @javax.persistence.Column( name = "Rating", nullable = true )
     public Byte getRating() {
         return rating;
     }
@@ -109,10 +118,9 @@ public class RecipeEntity {
         this.rating = rating;
     }
 
-    private int workingTime;
 
     @Basic
-    @Column( name = "WorkingTime", nullable = true )
+    @javax.persistence.Column( name = "WorkingTime", nullable = true )
     public int getWorkingTime() {
         return workingTime;
     }
@@ -121,10 +129,9 @@ public class RecipeEntity {
         this.workingTime = workingTime;
     }
 
-    private int cookingTime;
 
     @Basic
-    @Column( name = "CookingTime", nullable = true )
+    @javax.persistence.Column( name = "CookingTime", nullable = true )
     public int getCookingTime() {
         return cookingTime;
     }
@@ -133,10 +140,9 @@ public class RecipeEntity {
         this.cookingTime = cookingTime;
     }
 
-    private int restTime;
 
     @Basic
-    @Column( name = "RestTime", nullable = true )
+    @javax.persistence.Column( name = "RestTime", nullable = true )
     public int getRestTime() {
         return restTime;
     }
@@ -145,10 +151,9 @@ public class RecipeEntity {
         this.restTime = restTime;
     }
 
-    private String imageFileName;
 
     @Basic
-    @Column( name = "ImageFileName", nullable = true, length = 255 )
+    @javax.persistence.Column( name = "ImageFileName", nullable = true, length = 255 )
     public String getImageFileName() {
         return imageFileName;
     }
@@ -157,10 +162,9 @@ public class RecipeEntity {
         this.imageFileName = imageFileName;
     }
 
-    private int authorId;
 
     @Basic
-    @Column( name = "AuthorID", nullable = false )
+    @javax.persistence.Column( name = "AuthorID", nullable = false )
     public int getAuthorId() {
         return authorId;
     }
@@ -169,10 +173,9 @@ public class RecipeEntity {
         this.authorId = authorId;
     }
 
-    private LocalDateTime creationTime;
 
     @Basic
-    @Column( name = "CreationTime", nullable = true )
+    @javax.persistence.Column( name = "CreationTime", nullable = true )
     public LocalDateTime getCreationTime() {
         return creationTime;
     }

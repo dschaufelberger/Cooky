@@ -10,7 +10,7 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "RecipeTag", schema = "Cooky_Dev", catalog = "" )
+@Table( name = "RecipeTag", schema = "Cooky_Dev" )
 @IdClass( RecipeTagEntityPK.class )
 public class RecipeTagEntity {
     private int recipeId;
