@@ -1,5 +1,8 @@
 package de.cookyapp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.cookyapp.persistence.dao.UserDao;
 import de.cookyapp.persistence.entities.UserEntity;
 import org.springframework.stereotype.Controller;
@@ -21,7 +24,7 @@ public class UserController {
 
         UserDao userdao = new UserDao();
         ModelAndView model = new ModelAndView( "account" );
-        model.addObject( "user" , userdao.getUserById( id ));
+        model.addObject( "user" , userdao.load( id ));
 
         return model;
 
@@ -32,7 +35,9 @@ public class UserController {
         UserDao userdao = new UserDao();
 
         ModelAndView model = new ModelAndView( "user" );
-        model.addObject( "userList" , userdao.getAllUsers());
+        List userList = new ArrayList<UserEntity>( );
+        userList = userdao.loadAll();
+        model.addObject( "userList" , userList);
         return model;
     }
 
