@@ -16,6 +16,9 @@ dependencies {
     compile 'org.hibernate:hibernate-validator:5.0.2.Final'
     compile 'org.hibernate:hibernate-java8:5.0.2.Final'
     compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
+    compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
+    compile 'org.springframework:spring-jdbc:4.2.3.RELEASE'
     compile 'jstl:jstl:1.2'
     runtime 'mysql:mysql-connector-java:5.1.37'
 
