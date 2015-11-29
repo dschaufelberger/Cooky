@@ -28,8 +28,8 @@
             <tr>
                 <td>${user.username}</td>
                 <form id="edit" action="account" method="post">
-                    <td><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button></td>
-                    <input type="hidden" name="ID" value="${user.id}">
+                    <td><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-user"></span></button></td>
+                    <input type="hidden" name="id" value="${user.id}">
                 </form>
             </tr>
         </c:forEach>
