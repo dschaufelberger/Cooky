@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.AccountState;
@@ -283,5 +284,38 @@ public class UserEntity {
 
     public void setReceivedMessages( Collection<MessageEntity> receivedMessages ) {
         this.receivedMessages = receivedMessages;
+    }
+
+    private Collection<ShoppingListEntity> shoppingListEntries;
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner" )
+    public Collection<ShoppingListEntity> getShoppingListEntries() {
+        return shoppingListEntries;
+    }
+
+    public void setShoppingListEntries( Collection<ShoppingListEntity> shoppingListEntries ) {
+        this.shoppingListEntries = shoppingListEntries;
+    }
+
+    private Collection<FriendshipEntity> outgoingFriendships;
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "askingFriend" )
+    public Collection<FriendshipEntity> getOutgoingFriendships() {
+        return outgoingFriendships;
+    }
+
+    public void setOutgoingFriendships( Collection<FriendshipEntity> outgoingFriendships ) {
+        this.outgoingFriendships = outgoingFriendships;
+    }
+
+    private FriendshipEntity incomingFriendships;
+
+    @OneToOne( optional = false )
+    public FriendshipEntity getIncomingFriendships() {
+        return incomingFriendships;
+    }
+
+    public void setIncomingFriendships( FriendshipEntity incomingFriendships ) {
+        this.incomingFriendships = incomingFriendships;
     }
 }

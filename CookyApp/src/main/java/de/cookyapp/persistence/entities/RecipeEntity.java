@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
 
@@ -280,5 +283,30 @@ public class RecipeEntity {
 
     public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
         this.containingCookbooks = containingCookbooks;
+    }
+
+    private RecipeIngredientEntity ingredient;
+
+    @OneToOne( cascade = CascadeType.ALL, mappedBy = "recipe", optional = false )
+    public RecipeIngredientEntity getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient( RecipeIngredientEntity ingredient ) {
+        this.ingredient = ingredient;
+    }
+
+    private Collection<TagEntity> tags;
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    )
+    public Collection<TagEntity> getTags() {
+        return tags;
+    }
+
+    public void setTags( Collection<TagEntity> tags ) {
+        this.tags = tags;
     }
 }
