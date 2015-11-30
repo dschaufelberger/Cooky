@@ -48,8 +48,6 @@
     </nav>
 </div>
 
-
-
 <div class="col-md-6">
     <table class="table table-hover">
         <thead>

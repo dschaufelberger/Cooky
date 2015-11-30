@@ -18,7 +18,7 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
 
 
     public void editUser( int id, String forename, String surname, String email) {
-        UserEntity user = this.load( id );
+        UserEntity user = this.load(id);
         user.setForename( forename );
         user.setSurname( surname );
         user.setEmail( email );
