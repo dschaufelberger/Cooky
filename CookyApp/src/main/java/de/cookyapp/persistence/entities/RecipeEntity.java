@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -268,5 +269,16 @@ public class RecipeEntity {
 
     public void setComments( Collection<CommentEntity> comments ) {
         this.comments = comments;
+    }
+
+    private Collection<CookbookEntity> containingCookbooks;
+
+    @ManyToMany( mappedBy = "recipes" )
+    public Collection<CookbookEntity> getContainingCookbooks() {
+        return containingCookbooks;
+    }
+
+    public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
+        this.containingCookbooks = containingCookbooks;
     }
 }

@@ -11,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -151,5 +153,19 @@ public class CookbookEntity {
 
     public void setOwner( UserEntity owner ) {
         this.owner = owner;
+    }
+
+    private Collection<RecipeEntity> recipes;
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "CookbookRecipe", joinColumns = @JoinColumn(name = "CookbookID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    )
+    public Collection<RecipeEntity> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes( Collection<RecipeEntity> recipes ) {
+        this.recipes = recipes;
     }
 }
