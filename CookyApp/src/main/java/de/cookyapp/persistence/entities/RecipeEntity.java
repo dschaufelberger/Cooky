@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 import de.cookyapp.enums.RecipeDifficulty;
+import de.cookyapp.viewmodel.Recipe;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -22,13 +23,28 @@ public class RecipeEntity {
     private String imageFileName;
     private LocalDateTime creationTime;
     private Short calories;
-    private Byte serving;
-    private Byte rating;
+    private Short serving;
+    private Short rating;
     private int id;
     private int workingTime;
     private int cookingTime;
     private int restTime;
     private int authorId;
+
+    public RecipeEntity () {
+
+    }
+
+    public RecipeEntity (Recipe recipe) {
+        this.name = recipe.getName();
+        this.shortDescription = recipe.getShortDescription();
+        this.preparation = recipe.getPreparation();
+        this.difficulty = recipe.getDifficulty();
+        this.calories = recipe.getCalories();
+        this.serving = recipe.getServing();
+        this.workingTime = recipe.getWorkingTime();
+        this.cookingTime = recipe.getCookingTime();
+    }
 
     @Id
     @javax.persistence.Column( name = "ID", nullable = false )
@@ -65,11 +81,11 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "Serving", nullable = true )
-    public Byte getServing() {
+    public Short getServing() {
         return serving;
     }
 
-    public void setServing( Byte serving ) {
+    public void setServing( Short serving ) {
         this.serving = serving;
     }
 
@@ -110,11 +126,11 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "Rating", nullable = true )
-    public Byte getRating() {
+    public Short getRating() {
         return rating;
     }
 
-    public void setRating( Byte rating ) {
+    public void setRating( Short rating ) {
         this.rating = rating;
     }
 
@@ -211,7 +227,7 @@ public class RecipeEntity {
             return false;
         if ( preparation != null ? !preparation.equals( that.preparation ) : that.preparation != null )
             return false;
-        if ( calories != null ? !calories.equals( that.calories ) : that.calories != null )
+        if ( calories != that.calories )
             return false;
         if ( difficulty != null ? !difficulty.equals( that.difficulty ) : that.difficulty != null )
             return false;
@@ -232,7 +248,7 @@ public class RecipeEntity {
         result = 31 * result + (shortDescription != null ? shortDescription.hashCode() : 0);
         result = 31 * result + (serving != null ? serving.hashCode() : 0);
         result = 31 * result + (preparation != null ? preparation.hashCode() : 0);
-        result = 31 * result + (calories != null ? calories.hashCode() : 0);
+        result = 31 * result +  calories;
         result = 31 * result + (difficulty != null ? difficulty.hashCode() : 0);
         result = 31 * result + (rating != null ? rating.hashCode() : 0);
         result = 31 * result + workingTime;

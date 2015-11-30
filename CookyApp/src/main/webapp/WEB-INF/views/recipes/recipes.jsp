@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet"/>
@@ -27,13 +28,13 @@
         <c:forEach var="recipes" items="${recipesList}">
             <tr>
                 <td><span id="showRecipe">${recipes.name}</span></td>
-                <form id="removeRecipe" action="removeRecipe" method="post">
+                <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
                     <td>
                         <button type="submit" name="deleteBtn">Delete</button>
                     </td>
                     <input type="hidden" name="id" value="${recipes.id}">
                 </form>
-                <form id="editRecipe" action="editRecipe" method="post">
+                <form id="editRecipe" action="/recipes/goToEditRecipe" method="post">
                     <td>
                         <button type="submit" name="editBtn">Edit</button>
                     </td>
@@ -42,7 +43,7 @@
             </tr>
         </c:forEach>
         <tr>
-            <form id="addRecipe" action="goToAddRecipe" method="post">
+            <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
                 <td>
                     <button type="submit" name="addBtn">New Recipe</button>
                 </td>

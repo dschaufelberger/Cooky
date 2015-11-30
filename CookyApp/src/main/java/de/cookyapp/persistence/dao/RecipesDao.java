@@ -4,12 +4,14 @@ import de.cookyapp.persistence.HibernateSessionFactory;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by Jasper on 27.11.2015.
  */
+@Repository
 public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Integer> {
 
     public RecipesDao() {
@@ -44,6 +46,11 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
         this.update(recipe);
     }
 
+    public void editRecipe(RecipeEntity recipe) {
+        recipe.setAuthorId(3);
+        this.update(recipe);
+    }
+
     public void addRecipe(String name, String shortDescription, String preparation, int workingTime, int cookingTime) {
         RecipeEntity recipe = new RecipeEntity();
         recipe.setName(name);
@@ -60,5 +67,10 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
         //Wie Foreign Key setzen?
         this.save(recipe);
 
+    }
+
+    public void addRecipe(RecipeEntity recipe) {
+        recipe.setAuthorId(3);
+        this.save(recipe);
     }
 }
