@@ -1,9 +1,12 @@
 package de.cookyapp.persistence.entities;
 
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -99,5 +102,16 @@ public class AddressEntity {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (postcode != null ? postcode.hashCode() : 0);
         return result;
+    }
+
+    private Collection<UserEntity> residents;
+
+    @OneToMany( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "address" )
+    public Collection<UserEntity> getResidents() {
+        return residents;
+    }
+
+    public void setResidents( Collection<UserEntity> residents ) {
+        this.residents = residents;
     }
 }
