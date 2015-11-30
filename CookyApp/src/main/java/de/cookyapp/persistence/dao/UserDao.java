@@ -17,12 +17,11 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
     }
 
 
-    public void editUser( int id, String forename, String surname, String email, String password) {
+    public void editUser( int id, String forename, String surname, String email) {
         UserEntity user = this.load( id );
         user.setForename( forename );
         user.setSurname( surname );
         user.setEmail( email );
-        user.setPassword( password );
         this.update( user );
 
     }

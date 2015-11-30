@@ -42,9 +42,9 @@ public class UserController {
         return model;
     }
     @RequestMapping("/editUserData")
-    public String saveData( @RequestParam("id") int id, @RequestParam("forename") String forename, @RequestParam("surname") String surname, @RequestParam("email") String email, @RequestParam("password") String password) {
+    public String saveData( @RequestParam("id") int id, @RequestParam("forename") String forename, @RequestParam("surname") String surname, @RequestParam("email") String email) {
         UserDao userDao = new UserDao();
-        userDao.editUser( id, forename, surname, email, password);
+        userDao.editUser( id, forename, surname, email);
         return "redirect:/user";
     }
 

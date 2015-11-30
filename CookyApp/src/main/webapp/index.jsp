@@ -34,16 +34,16 @@
                 <a class="navbar-brand" href="/">Cooky</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <%--<ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
                   <li>
-                    <a href="/ingredients">Ingredients</a>
+                    <a href="/user">Userlist</a>
                   </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li>
-                    <a class="glyphicon glyphicon-user" href="#"> Jasper</a>
+                    <a class="glyphicon glyphicon-user" href="/user"> Cooky-User</a>
                   </li>
-                </ul>--%>
+                </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
