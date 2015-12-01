@@ -20,6 +20,7 @@ dependencies {
     compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
     compile 'org.springframework:spring-jdbc:4.2.3.RELEASE'
     compile 'jstl:jstl:1.2'
+    compile 'log4j:log4j:1.2.17'
     runtime 'mysql:mysql-connector-java:5.1.37'
 
     providedCompile 'javax.servlet.jsp:jsp-api:2.2'
