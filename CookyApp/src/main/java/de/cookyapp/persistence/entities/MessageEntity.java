@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.MessageStatus;
@@ -119,5 +120,27 @@ public class MessageEntity {
         result = 31 * result + receiverId;
         result = 31 * result + (sentTime != null ? sentTime.hashCode() : 0);
         return result;
+    }
+
+    private UserEntity sender;
+
+    @ManyToOne( optional = false )
+    public UserEntity getSender() {
+        return sender;
+    }
+
+    public void setSender( UserEntity sender ) {
+        this.sender = sender;
+    }
+
+    private UserEntity receiver;
+
+    @ManyToOne( optional = false )
+    public UserEntity getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver( UserEntity receiver ) {
+        this.receiver = receiver;
     }
 }
