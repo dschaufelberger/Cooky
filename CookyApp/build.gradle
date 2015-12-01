@@ -17,6 +17,7 @@ dependencies {
     compile 'org.hibernate:hibernate-java8:5.0.2.Final'
     compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
     compile 'jstl:jstl:1.2'
+    compile 'log4j:log4j:1.2.17'
     runtime 'mysql:mysql-connector-java:5.1.37'
 
     providedCompile 'javax.servlet.jsp:jsp-api:2.2'
