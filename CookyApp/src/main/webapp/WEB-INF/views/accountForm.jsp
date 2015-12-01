@@ -16,18 +16,16 @@
     <script src="<c:url value="/resources/js/jquery/jquery.validate.js" />"></script>
     <title>Account Data</title>
     <script>
-        jQuery('.validatedForm').validate({
-            rules : {
-                password : {
-                    minlength : 5
-                },
-                password_confirm : {
-                    minlength : 5,
-                    equalTo : "#password"
+        $(document).ready(function(){
+            $('#password').focusout(function(){
+                var pass = $('#password').val();
+                var pass2 = $('#password_confirm').val();
+                if(pass != pass2){
+                    alert('the passwords didn\'t match!');
                 }
-            }
-        });
 
+            });
+        });
     </script>
 </head>
 <body>
@@ -111,9 +109,9 @@
                         <label>Enter Old Password</label>
                         <input name="oldpass" type="password" class="form-control">
                         <label>Enter New Password</label>
-                        <input name="password" type="password" class="form-control">
+                        <input id="newpassword" name="newpassword" type="password" class="form-control">
                         <label>Confirm New Password</label>
-                        <input name="password_confirm" type="password" class="form-control" />
+                        <input id="password_confirm" name="password_confirm" type="password" class="form-control" />
                         <br>
                         <input type="hidden" name="id" value="${password.id}">
                         <input type="submit" class="btn btn-warning" value="Change Password">

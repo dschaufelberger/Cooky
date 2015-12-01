@@ -29,7 +29,7 @@ public class UserController {
 
 
         UserDao userdao = new UserDao();
-        ModelAndView model = new ModelAndView( "account" );
+        ModelAndView model = new ModelAndView("accountForm");
         model.addObject( "user" , new User(userdao.load( id )));
         model.addObject( "password", new Password(userdao.load( id )) );
 
@@ -40,7 +40,7 @@ public class UserController {
 
         UserDao userdao = new UserDao();
 
-        ModelAndView model = new ModelAndView( "user" );
+        ModelAndView model = new ModelAndView("userList");
         List userList = new ArrayList<UserEntity>( );
         userList = userdao.loadAll();
         model.addObject( "userList" , userList);
@@ -49,7 +49,7 @@ public class UserController {
     @RequestMapping("/editUserData")
     public String saveData(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "/account";
+            return "accountForm";
             //TODO messages dem User anzeigen
         }else {
             UserDao userDao = new UserDao();
@@ -61,18 +61,24 @@ public class UserController {
     public String changePassword( @ModelAttribute("password") @Valid Password password, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
-            return "redirect:/account";
+            return "accountForm";
             //TODO messages dem User anzeigen
             //TODO bei Falschangabe auf die gleiche Seite verweisen (Problem: keine ID und kein user in Model)
         }else {
             //TODO mit JQuery auf gleiches Passwort prüfen
             UserDao userDao = new UserDao();
-            UserEntity user = userDao.load( password.getId() );
-            if(password.getPassword() == user.getPassword()) {
-                user.setPassword( password.getPassword() );
+            UserEntity user = userDao.load( 6);
+            // Vor allem vergleichst du hier dann auch das neue Passwort mit dem alten Benutzerpasswort.
+            // In deinem Password.java brauchst du ja 3 Felder: oldPassword, newPassword und confirmPassword.
+            if(password.getOldpassword() == user.getPassword()) {
+                user.setPassword( password.getNewpassword() );
                 userDao.update( user );
-                return "redirect:/user";
+                return "/user";
             }else {
+                //Das Problem ist, dass wenn du die Form zurückgibst, erwartet er eben auch das User Objekt, das ist aber nicht mehr vorhanden.
+                //d.h. du müsstest die Detailseite hier komplett neu laden.
+                //ODER: Du machst es dir einfach und packst alles in eine Form vorerst, dann kann man das Passwort halt nicht gertennt ändern auf der Seite
+                //Das wäre für unser Zeitproblem vorerst das Beste! ;-)
                 return "redirect:/account";
                 //TODO: Falsches Passwort eingegeben!
                 //TODO bei Falschangabe auf die gleiche Seite verweisen (Problem: keine ID und kein user in Model)
