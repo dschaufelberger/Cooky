@@ -1,9 +1,12 @@
 package de.cookyapp.persistence.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -71,5 +74,27 @@ public class UserPreferenceEntity {
         result = 31 * result + userId;
         result = 31 * result + (categoryName != null ? categoryName.hashCode() : 0);
         return result;
+    }
+
+    private UserEntity user;
+
+    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser( UserEntity user ) {
+        this.user = user;
+    }
+
+    private CategoryEntity category;
+
+    @OneToOne( optional = false )
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory( CategoryEntity category ) {
+        this.category = category;
     }
 }

@@ -1,11 +1,19 @@
 package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
 
@@ -242,5 +250,63 @@ public class RecipeEntity {
         result = 31 * result + authorId;
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
+    }
+
+    private UserEntity author;
+
+    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor( UserEntity author ) {
+        this.author = author;
+    }
+
+    private Collection<CommentEntity> comments;
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
+    public Collection<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments( Collection<CommentEntity> comments ) {
+        this.comments = comments;
+    }
+
+    private Collection<CookbookEntity> containingCookbooks;
+
+    @ManyToMany( mappedBy = "recipes" )
+    public Collection<CookbookEntity> getContainingCookbooks() {
+        return containingCookbooks;
+    }
+
+    public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
+        this.containingCookbooks = containingCookbooks;
+    }
+
+    private RecipeIngredientEntity ingredient;
+
+    @OneToOne( cascade = CascadeType.ALL, mappedBy = "recipe", optional = false )
+    public RecipeIngredientEntity getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient( RecipeIngredientEntity ingredient ) {
+        this.ingredient = ingredient;
+    }
+
+    private Collection<TagEntity> tags;
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    )
+    public Collection<TagEntity> getTags() {
+        return tags;
+    }
+
+    public void setTags( Collection<TagEntity> tags ) {
+        this.tags = tags;
     }
 }

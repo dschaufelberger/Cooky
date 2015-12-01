@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -74,5 +76,27 @@ public class FriendshipEntity {
         result = 31 * result + userIdTwo;
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
+    }
+
+    private UserEntity askingFriend;
+
+    @ManyToOne( optional = false )
+    public UserEntity getAskingFriend() {
+        return askingFriend;
+    }
+
+    public void setAskingFriend( UserEntity askingFriend ) {
+        this.askingFriend = askingFriend;
+    }
+
+    private UserEntity acceptingFriend;
+
+    @OneToOne( mappedBy = "incomingFriendships", optional = false )
+    public UserEntity getAcceptingFriend() {
+        return acceptingFriend;
+    }
+
+    public void setAcceptingFriend( UserEntity acceptingFriend ) {
+        this.acceptingFriend = acceptingFriend;
     }
 }

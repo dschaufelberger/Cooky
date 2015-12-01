@@ -1,10 +1,13 @@
 package de.cookyapp.persistence.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -73,5 +76,27 @@ public class ShoppingListEntity {
         result = 31 * result + ingredientId;
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         return result;
+    }
+
+    private UserEntity owner;
+
+    @ManyToOne( optional = false )
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner( UserEntity owner ) {
+        this.owner = owner;
+    }
+
+    private IngredientEntity ingredient;
+
+    @OneToOne( cascade = CascadeType.ALL, optional = false )
+    public IngredientEntity getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient( IngredientEntity ingredient ) {
+        this.ingredient = ingredient;
     }
 }

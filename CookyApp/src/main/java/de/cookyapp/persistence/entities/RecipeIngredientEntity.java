@@ -1,9 +1,11 @@
 package de.cookyapp.persistence.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -99,5 +101,27 @@ public class RecipeIngredientEntity {
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (unit != null ? unit.hashCode() : 0);
         return result;
+    }
+
+    private RecipeEntity recipe;
+
+    @OneToOne( optional = false )
+    public RecipeEntity getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe( RecipeEntity recipe ) {
+        this.recipe = recipe;
+    }
+
+    private IngredientEntity ingredient;
+
+    @OneToOne( cascade = CascadeType.ALL, optional = false )
+    public IngredientEntity getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient( IngredientEntity ingredient ) {
+        this.ingredient = ingredient;
     }
 }
