@@ -15,15 +15,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Authentication Configuration
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <form-login-config>
-            <form-login-page>/views/authentication/LoginForm.jsp</form-login-page>
-            <form-error-page>/views/authentication/LoginError.jsp</form-error-page>
-        </form-login-config>
-    </login-config>-->
-
     <!-- Servlet Declarations -->
     <servlet>
         <servlet-name>spring-mvc-context</servlet-name>
@@ -40,4 +31,12 @@
         <servlet-name>spring-mvc-context</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <!-- Tag libs -->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://cookyapp.de/tags</taglib-uri>
+            <taglib-location>/WEB-INF/tags/CookyTagLib.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

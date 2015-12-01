@@ -7,11 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 
 
 <html class="full">
 <head>
-    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet" />
     <link href="<c:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">
     <script src="<c:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
@@ -38,12 +39,21 @@
                   <li>
                     <a href="/ingredients">Ingredients</a>
                   </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                  <li>
-                    <a class="glyphicon glyphicon-user" href="#"> Jasper</a>
-                  </li>
                 </ul>--%>
+                <%--<ul class="nav navbar-nav navbar-right">--%>
+                <%--<li>--%>
+                <%--<a class="glyphicon glyphicon-user" href="#"> Jasper</a>--%>
+                <%--</li>--%>
+                <%--</ul>--%>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">Dodo</a>
+
+                        <div class="dropdown-menu">
+                            <cooky:login />
+                        </div>
+                    </li>
+                </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
