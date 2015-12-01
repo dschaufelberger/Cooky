@@ -16,12 +16,12 @@
     <table>
         <tbody>
         <tr>
-            <td><form:label path="j_username">Benutzername</form:label></td>
-            <td><form:input path="j_username" /></td>
+            <td><form:label path="username">Benutzername</form:label></td>
+            <td><form:input path="username" /></td>
         </tr>
         <tr>
-            <td><form:label path="j_password">Passwort</form:label></td>
-            <td><form:password path="j_password" /></td>
+            <td><form:label path="password">Passwort</form:label></td>
+            <td><form:password path="password" /></td>
         </tr>
         </tbody>
         <tfoot>

@@ -18,28 +18,45 @@
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-    <sec:http auto-config="true">
-        <sec:intercept-url pattern="/secured" access="denyAll"/>
+    <sec:http authentication-manager-ref="in-memory-auth">
+        <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')"/>
         <sec:form-login login-page="/login"
                         default-target-url="/welcome"
                         authentication-failure-url="/loginError"
-                        login-processing-url="/j_spring_security_check"/>
+                        login-processing-url="/j_spring_security_check"
+                        username-parameter="username"
+                        password-parameter="password"
+        />
         <sec:logout logout-success-url="/welcome"/>
     </sec:http>
 
-    <sec:authentication-manager>
+    <sec:authentication-manager id="in-memory-auth">
         <sec:authentication-provider>
+            <sec:user-service>
+                <sec:user name="dominik" authorities="ROLE_ADMIN" password="dodo"/>
+            </sec:user-service>
+        </sec:authentication-provider>
+
+        <!--<sec:authentication-provider>
             <sec:jdbc-user-service data-source-ref="authenticationDataSource"
                                    users-by-username-query="SELECT Username, Password FROM User WHERE Username = ?"
+                                   authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?"/>
+        </sec:authentication-provider>-->
+    </sec:authentication-manager>
+
+    <sec:authentication-manager id="jdbc-auth">
+        <sec:authentication-provider>
+            <sec:jdbc-user-service data-source-ref="authenticationDataSource"
+                                   users-by-username-query="SELECT Username, Password, enabled FROM User WHERE Username = ?"
                                    authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?"/>
         </sec:authentication-provider>
     </sec:authentication-manager>
 
     <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://46.38.237.106:3306/Cooky_Dev_Users"/>
-        <property name="username" value=""/>
-        <property name="password" value=""/>
+        <property name="url" value="jdbc:mysql://46.38.237.106/Cooky_Dev_Users"/>
+        <property name="username" value="tomcat7"/>
+        <property name="password" value="GTURiMRd8owaLw3MO4hv"/>
     </bean>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
