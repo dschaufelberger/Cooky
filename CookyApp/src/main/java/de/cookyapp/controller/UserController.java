@@ -1,5 +1,6 @@
 package de.cookyapp.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,11 @@ public class UserController {
 
 
     @RequestMapping( "/account" )
-    public ModelAndView showAccount( @RequestParam( "id" ) int id ) {
+    public ModelAndView showAccount( @RequestParam( "id" ) int id , Principal principal) {
 
+
+        String username = principal.getName();
+        //TODO: User anhand des Usernames laden
 
         UserDao userdao = new UserDao();
         ModelAndView model = new ModelAndView( "accountForm" );
