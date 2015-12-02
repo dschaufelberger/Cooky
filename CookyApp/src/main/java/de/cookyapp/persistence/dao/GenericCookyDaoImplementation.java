@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.cookyapp.persistence.HibernateSessionFactory;
+import de.cookyapp.persistence.entities.RecipeEntity;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,7 +14,7 @@ import org.hibernate.Transaction;
 /**
  * Created by Dominik Schaufelberger on 28.11.2015.
  */
-public abstract class GenericCookyDaoImplementation <T, PK extends Serializable> implements GenericCookyDAO<T, PK> {
+public abstract class GenericCookyDaoImplementation <T, PK extends Serializable> implements IGenericCookyDAO<T, PK> {
     private Class<T> clazz;
 
     private HibernateSessionFactory sessionFactory;
@@ -71,6 +73,31 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
     }
 
     @Override
+    public T loadWithLazyRelations( PK id ) {
+        Session session = this.sessionFactory.openSession();
+        Transaction transaction = null;
+        T persistentObject = null;
+
+        try {
+            transaction = session.beginTransaction();
+
+            persistentObject = session.get( this.clazz, id );
+            loadLazy(persistentObject);
+
+            transaction.commit();
+        } catch ( HibernateException e ) {
+            transaction.rollback();
+
+            // TODO log the exception
+            throw e;
+        } finally {
+            session.close();
+        }
+
+        return persistentObject;
+    }
+
+    @Override
     public List<T> loadAll() {
         Session session = this.sessionFactory.openSession();
         Transaction transaction = null;
@@ -80,6 +107,33 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             transaction = session.beginTransaction();
 
             persistentObjects = session.createCriteria( this.clazz ).list();
+
+            transaction.commit();
+        } catch ( HibernateException e ) {
+            transaction.rollback();
+
+            // TODO log the exception
+            throw e;
+        } finally {
+            session.close();
+        }
+
+        return persistentObjects;
+    }
+
+    @Override
+    public List<T> loadAllWithLazyRelations() {
+        Session session = this.sessionFactory.openSession();
+        Transaction transaction = null;
+        List<T> persistentObjects = new ArrayList<>();
+
+        try {
+            transaction = session.beginTransaction();
+
+            persistentObjects = session.createCriteria( this.clazz ).list();
+            for ( T persistenObject : persistentObjects ) {
+                loadLazy( persistenObject );
+            }
 
             transaction.commit();
         } catch ( HibernateException e ) {
@@ -135,4 +189,6 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
             session.close();
         }
     }
+
+    protected abstract void loadLazy(T persistentObject);
 }

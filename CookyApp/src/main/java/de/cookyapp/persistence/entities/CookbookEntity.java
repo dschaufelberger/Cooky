@@ -35,6 +35,7 @@ public class CookbookEntity {
     private LocalDateTime creationTime;
 
     private UserEntity owner;
+    private Collection<RecipeEntity> recipes;
 
     @Id
     @Column( name = "ID", nullable = false )
@@ -107,6 +108,28 @@ public class CookbookEntity {
         this.creationTime = creationTime;
     }
 
+    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner( UserEntity owner ) {
+        this.owner = owner;
+    }
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "CookbookRecipe", joinColumns = @JoinColumn(name = "CookbookID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    )
+    public Collection<RecipeEntity> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes( Collection<RecipeEntity> recipes ) {
+        this.recipes = recipes;
+    }
+
+
     @Override
     public boolean equals( Object o ) {
         if ( this == o )
@@ -144,28 +167,5 @@ public class CookbookEntity {
         result = 31 * result + ownerId;
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    public UserEntity getOwner() {
-        return owner;
-    }
-
-    public void setOwner( UserEntity owner ) {
-        this.owner = owner;
-    }
-
-    private Collection<RecipeEntity> recipes;
-
-    @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "CookbookRecipe", joinColumns = @JoinColumn(name = "CookbookID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
-    )
-    public Collection<RecipeEntity> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes( Collection<RecipeEntity> recipes ) {
-        this.recipes = recipes;
     }
 }

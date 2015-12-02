@@ -59,26 +59,4 @@ public class IngredientEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
-
-    private ShoppingListEntity shoppingListEntry;
-
-    @OneToOne( mappedBy = "ingredient", optional = false )
-    public ShoppingListEntity getShoppingListEntry() {
-        return shoppingListEntry;
-    }
-
-    public void setShoppingListEntry( ShoppingListEntity shoppingListEntry ) {
-        this.shoppingListEntry = shoppingListEntry;
-    }
-
-    private RecipeIngredientEntity recipe;
-
-    @OneToOne( mappedBy = "ingredient", optional = false )
-    public RecipeIngredientEntity getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe( RecipeIngredientEntity recipe ) {
-        this.recipe = recipe;
-    }
 }

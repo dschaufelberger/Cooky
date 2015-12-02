@@ -64,7 +64,7 @@ public class TagEntity {
 
     private Collection<RecipeEntity> recipes;
 
-    @ManyToMany( mappedBy = "tags" )
+    @ManyToMany
     public Collection<RecipeEntity> getRecipes() {
         return recipes;
     }
