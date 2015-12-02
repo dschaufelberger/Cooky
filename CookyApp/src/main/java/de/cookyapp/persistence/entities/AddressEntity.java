@@ -103,15 +103,4 @@ public class AddressEntity {
         result = 31 * result + (postcode != null ? postcode.hashCode() : 0);
         return result;
     }
-
-    private Collection<UserEntity> residents;
-
-    @OneToMany( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, mappedBy = "address" )
-    public Collection<UserEntity> getResidents() {
-        return residents;
-    }
-
-    public void setResidents( Collection<UserEntity> residents ) {
-        this.residents = residents;
-    }
 }

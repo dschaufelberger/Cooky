@@ -91,7 +91,7 @@ public class FriendshipEntity {
 
     private UserEntity acceptingFriend;
 
-    @OneToOne( mappedBy = "incomingFriendships", optional = false )
+    @ManyToOne( optional = false )
     public UserEntity getAcceptingFriend() {
         return acceptingFriend;
     }
