@@ -1,6 +1,9 @@
 package de.cookyapp.persistence.dao;
 
+import de.cookyapp.persistence.HibernateSessionFactory;
 import de.cookyapp.persistence.entities.UserEntity;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.validator.constraints.Email;
 
 /**
@@ -23,6 +26,24 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
         user.setSurname( surname );
         user.setEmail( email );
         this.update( user );
+    }
 
+    public UserEntity loadUserByUsername(String userName) {
+        HibernateSessionFactory sessionFactory;
+        sessionFactory = HibernateSessionFactory.INSTANCE;
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        UserEntity user = new UserEntity();
+
+        try {
+            transaction = session.beginTransaction();
+            user = (UserEntity) session.createQuery( "from UserEntity where username =:userNameText" ).setString("userNameText", userName).uniqueResult();
+            transaction.commit();
+
+        }catch (Exception e){
+            //TODO Exception abfangen
+        }
+        return user;
     }
 }
