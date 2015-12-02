@@ -16,16 +16,7 @@
     <script src="<c:url value="/resources/js/jquery/jquery.validate.js" />"></script>
     <title>Account Data</title>
     <script>
-        $(document).ready(function(){
-            $('#password').focusout(function(){
-                var pass = $('#password').val();
-                var pass2 = $('#password_confirm').val();
-                if(pass != pass2){
-                    alert('the passwords didn\'t match!');
-                }
 
-            });
-        });
     </script>
 </head>
 <body>
@@ -102,22 +93,14 @@
                             As a registered Cooky User you are able to edit your profile data and settings on this page.
                         </p>
                     </div>
-                    <form class= "validatedForm" id="validatedForm" method="post" action="/changePassword">
-                    <div class="form-group col-md-8">
-                        <h3>Change Your Password</h3>
-                        <br />
-                        <label>Enter Old Password</label>
-                        <input name="oldpass" type="password" class="form-control">
-                        <label>Enter New Password</label>
-                        <input id="newpassword" name="newpassword" type="password" class="form-control">
-                        <label>Confirm New Password</label>
-                        <input id="password_confirm" name="password_confirm" type="password" class="form-control" />
-                        <br>
-                        <input type="hidden" name="id" value="${password.id}">
-                        <input type="submit" class="btn btn-warning" value="Change Password">
 
-                    </div>
+                    <form method="post" action="/showPasswordForm">
+                        <div class="form-group col-md-8">
+                            <input type="hidden" name="id" value="${password.id}">
+                            <input type="submit" class="btn btn-warning" value="Change Password">
+                        </div>
                     </form>
+
                 </div>
             </div>
             <!-- ROW END -->
