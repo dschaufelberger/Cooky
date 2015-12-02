@@ -47,7 +47,10 @@
         <!-- /.container -->
     </nav>
 </div>
-
+<br>
+<br>
+<br>
+<br>
 <div class="col-md-6">
     <table class="table table-hover">
         <thead>
@@ -60,7 +63,10 @@
             <tr>
                 <td>${user.username}</td>
                 <form id="edit" action="account" method="post">
-                    <td><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-user"></span></button></td>
+                    <td>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-user"></span>
+                        </button>
+                    </td>
                     <input type="hidden" name="id" value="${user.id}">
                 </form>
             </tr>

@@ -12,12 +12,23 @@
 <head>
     <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet">
     <script src="<c:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
-    6
     <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
     <script src="<c:url value="/resources/js/jquery/jquery.validate.js" />"></script>
-    <title>Account Data</title>
-    <script>
-
+    <title>Change Password</title>
+    <script type="text/javascript">
+        window.onload = function () {
+            document.getElementById("newpassword").onchange = validatePassword;
+            document.getElementById("password_confirm").onchange = validatePassword;
+        }
+        function validatePassword() {
+            var pass2 = document.getElementById("password_confirm").value;
+            var pass1 = document.getElementById("newpassword").value;
+            if (pass1 != pass2)
+                document.getElementById("password_confirm").setCustomValidity("Passwords Don't Match");
+            else
+                document.getElementById("password_confirm").setCustomValidity('');
+//empty string means no validation error
+        }
     </script>
 </head>
 <body>
@@ -54,11 +65,15 @@
     </nav>
 </div>
 <!-- end of navbar -->
+<br>
+<br>
+<br>
 
 <div class="col-md-8">
     <div class="alert alert-info">
         <h2>Account settings</h2>
         <%--<h4>${user.username}</h4>--%>
+
         <p>
             As a registered Cooky User you are able to edit your password on this page.
         </p>
@@ -72,11 +87,12 @@
                     <h3>Change Your Password</h3>
                     <br />
                     <label>Enter Old Password</label>
-                    <input id="oldpassword" name="oldpassword" type="password" class="form-control">
+                    <input id="oldpassword" name="oldpassword" type="password" class="form-control" required="required">
                     <label>Enter New Password</label>
-                    <input id="newpassword" name="newpassword" type="password" class="form-control">
+                    <input id="newpassword" name="newpassword" type="password" class="form-control" required="required">
                     <label>Confirm New Password</label>
-                    <input id="password_confirm" name="password_confirm" type="password" class="form-control" />
+                    <input id="password_confirm" name="password_confirm" type="password" class="form-control"
+                           required="required" />
                     <br>
                     <input type="hidden" name="id" value="${password.id}">
                     <input type="submit" class="btn btn-warning" value="Change Password">

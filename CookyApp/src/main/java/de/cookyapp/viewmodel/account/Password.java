@@ -17,7 +17,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Password {
 
 
-
     @NotBlank( message = "Das Passwort muss zwischen 8 und 32 Zeichen lang sein." )
     @Size( min = 8, max = 32, message = "Das Passwort muss zwischen 8 und 32 Zeichen lang sein." )
     @Pattern( regexp = "^[a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*]*$", message = "Das Passwort darf nur aus Klein- und Großbuchstaben, Zahlen und folgenden Sonderzeichen bestehen: \"-_!#?()$%&+*\"." )
@@ -30,10 +29,11 @@ public class Password {
     private int id;
 
 
-    public Password(){
+    public Password() {
 
     }
-    public Password(UserEntity usere) {
+
+    public Password( UserEntity usere ) {
         this.id = usere.getId();
     }
 
@@ -50,7 +50,7 @@ public class Password {
         return newpassword;
     }
 
-    public void setNewpassword(String newpassword) {
+    public void setNewpassword( String newpassword ) {
         this.newpassword = newpassword;
     }
 
@@ -58,7 +58,7 @@ public class Password {
         return password_confirm;
     }
 
-    public void setPassword_confirm(String password_confirm) {
+    public void setPassword_confirm( String password_confirm ) {
         this.password_confirm = password_confirm;
     }
 

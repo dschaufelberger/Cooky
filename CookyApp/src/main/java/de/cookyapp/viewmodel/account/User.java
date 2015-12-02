@@ -1,6 +1,7 @@
 package de.cookyapp.viewmodel.account;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.GeneratedValue;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -34,6 +35,12 @@ public class User {
     private String email;
 
 
+    private String username;
+    private Gender gender;
+    private LocalDate birthdate;
+    private LocalDateTime registrationDate;
+
+
     private int id;
 
     public User() {
@@ -45,6 +52,11 @@ public class User {
         this.surname = usere.getSurname();
         this.email = usere.getEmail();
         this.id = usere.getId();
+        this.gender = usere.getGender();
+        this.birthdate = usere.getBirthdate();
+        this.registrationDate = usere.getRegistrationDate();
+        this.username = usere.getUsername();
+
     }
 
 
@@ -52,7 +64,7 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId( int id ) {
         this.id = id;
     }
 
@@ -79,6 +91,39 @@ public class User {
     public void setEmail( String email ) {
         this.email = email;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername( String username ) {
+        this.username = username;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender( Gender gender ) {
+        this.gender = gender;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate( LocalDate birthdate ) {
+        this.birthdate = birthdate;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate( LocalDateTime registrationDate ) {
+        this.registrationDate = registrationDate;
+    }
+
 
     /**
      * Returns a string representation of the object. In general, the

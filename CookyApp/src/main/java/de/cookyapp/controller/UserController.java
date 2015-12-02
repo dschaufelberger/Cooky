@@ -20,74 +20,73 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by Mario on 27.11.2015.
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping( "/" )
 public class UserController {
 
 
-    @RequestMapping("/account")
-    public ModelAndView showAccount( @RequestParam("id") int id) {
+    @RequestMapping( "/account" )
+    public ModelAndView showAccount( @RequestParam( "id" ) int id ) {
 
 
         UserDao userdao = new UserDao();
-        ModelAndView model = new ModelAndView("accountForm");
-        model.addObject( "user" , new User(userdao.load( id )));
-        model.addObject( "password", new Password(userdao.load( id )) );
+        ModelAndView model = new ModelAndView( "accountForm" );
+        model.addObject( "user", new User( userdao.load( id ) ) );
+        model.addObject( "password", new Password( userdao.load( id ) ) );
         return model;
     }
 
-    @RequestMapping("/showPasswordForm")
-    public ModelAndView showPasswordForm( @RequestParam("id") int id) {
+    @RequestMapping( "/showPasswordForm" )
+    public ModelAndView showPasswordForm( @RequestParam( "id" ) int id ) {
 
 
         UserDao userdao = new UserDao();
-        ModelAndView model = new ModelAndView("passwordForm");
-        model.addObject( "password", new Password(userdao.load( id )) );
+        ModelAndView model = new ModelAndView( "passwordForm" );
+        model.addObject( "password", new Password( userdao.load( id ) ) );
 
         return model;
     }
 
-    @RequestMapping("/user")
-    public ModelAndView showAllUsers(){
+    @RequestMapping( "/user" )
+    public ModelAndView showAllUsers() {
 
         UserDao userdao = new UserDao();
 
-        ModelAndView model = new ModelAndView("userList");
-        List userList = new ArrayList<UserEntity>( );
+        ModelAndView model = new ModelAndView( "userList" );
+        List userList = new ArrayList<UserEntity>();
         userList = userdao.loadAll();
-        model.addObject( "userList" , userList);
+        model.addObject( "userList", userList );
         return model;
     }
-    @RequestMapping("/editUserData")
-    public String saveData(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return "accountForm";
+
+    @RequestMapping( "/editUserData" )
+    public String saveData( @ModelAttribute( "user" ) @Valid User user, BindingResult bindingResult ) {
+        if ( bindingResult.hasErrors() ) {
+            return "/accountForm";
             //TODO messages dem User anzeigen
-        }else {
+        } else {
             UserDao userDao = new UserDao();
             userDao.editUser( user.getId(), user.getForename(), user.getSurname(), user.getEmail() );
             return "redirect:/user";
         }
-}
-    @RequestMapping("/changePassword")
-    public String changePassword( @ModelAttribute("password") @Valid Password password, BindingResult bindingResult) {
+    }
 
-        if(bindingResult.hasErrors()) {
+    @RequestMapping( "/changePassword" )
+    public String changePassword( @ModelAttribute( "password" ) @Valid Password password, BindingResult bindingResult ) {
+
+        if ( bindingResult.hasErrors() ) {
             return "/passwordForm";
             //TODO messages dem User anzeigen
-        }else {
-            //TODO mit JQuery auf gleiches Passwort prüfen
+        } else {
             UserDao userDao = new UserDao();
-            UserEntity user = userDao.load(password.getId() );
-            if(password.getOldpassword().equals(user.getPassword()) ) {
+            UserEntity user = userDao.load( password.getId() );
+            if ( password.getOldpassword().equals( user.getPassword() ) ) {
                 user.setPassword( password.getNewpassword() );
                 userDao.update( user );
                 return "redirect:/user";
-            }else {
+            } else {
                 return "/passwordForm";
                 //TODO: Das eingegebene Passwort ist nicht richtig!
             }
-
         }
     }
-
 }
