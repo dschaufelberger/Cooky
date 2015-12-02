@@ -14,4 +14,9 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
     public UserDao() {
         super(UserEntity.class);
     }
+
+    @Override
+    protected void loadLazy(UserEntity persistentObject) {
+
+    }
 }

@@ -24,6 +24,7 @@ import de.cookyapp.viewmodel.Recipe;
 @Entity
 @javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev")
 public class RecipeEntity {
+    private int id;
     private String name;
     private String shortDescription;
     private String preparation;
@@ -33,11 +34,15 @@ public class RecipeEntity {
     private Short calories;
     private Short serving;
     private Short rating;
-    private int id;
-    private int workingTime;
-    private int cookingTime;
-    private int restTime;
-    private int authorId;
+    private Integer workingTime;
+    private Integer cookingTime;
+    private Integer restTime;
+
+    private UserEntity author;
+    private Collection<CommentEntity> comments;
+    private Collection<CookbookEntity> containingCookbooks;
+    private Collection<TagEntity> tags;
+    private Collection<RecipeIngredientEntity> ingredients;
 
     public RecipeEntity () {
 
@@ -145,33 +150,33 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "WorkingTime", nullable = true )
-    public int getWorkingTime() {
+    public Integer getWorkingTime() {
         return workingTime;
     }
 
-    public void setWorkingTime( int workingTime ) {
+    public void setWorkingTime( Integer workingTime ) {
         this.workingTime = workingTime;
     }
 
 
     @Basic
     @javax.persistence.Column( name = "CookingTime", nullable = true )
-    public int getCookingTime() {
+    public Integer getCookingTime() {
         return cookingTime;
     }
 
-    public void setCookingTime( int cookingTime ) {
+    public void setCookingTime( Integer cookingTime ) {
         this.cookingTime = cookingTime;
     }
 
 
     @Basic
     @javax.persistence.Column( name = "RestTime", nullable = true )
-    public int getRestTime() {
+    public Integer getRestTime() {
         return restTime;
     }
 
-    public void setRestTime( int restTime ) {
+    public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
     }
 
@@ -188,17 +193,6 @@ public class RecipeEntity {
 
 
     @Basic
-    @javax.persistence.Column( name = "AuthorID", nullable = false )
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId( int authorId ) {
-        this.authorId = authorId;
-    }
-
-
-    @Basic
     @javax.persistence.Column( name = "CreationTime", nullable = true )
     public LocalDateTime getCreationTime() {
         return creationTime;
@@ -206,6 +200,60 @@ public class RecipeEntity {
 
     public void setCreationTime( LocalDateTime creationTime ) {
         this.creationTime = creationTime;
+    }
+
+
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "AuthorID")
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor( UserEntity author ) {
+        this.author = author;
+    }
+
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
+    public Collection<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments( Collection<CommentEntity> comments ) {
+        this.comments = comments;
+    }
+
+
+    @ManyToMany( mappedBy = "recipes" )
+    public Collection<CookbookEntity> getContainingCookbooks() {
+        return containingCookbooks;
+    }
+
+    public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
+        this.containingCookbooks = containingCookbooks;
+    }
+
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "recipe" )
+    public Collection<RecipeIngredientEntity> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients( Collection<RecipeIngredientEntity> ingredients ) {
+        this.ingredients = ingredients;
+    }
+
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID")
+    )
+    public Collection<TagEntity> getTags() {
+        return tags;
+    }
+
+    public void setTags( Collection<TagEntity> tags ) {
+        this.tags = tags;
     }
 
     @Override
@@ -225,8 +273,6 @@ public class RecipeEntity {
             return false;
         if ( restTime != that.restTime )
             return false;
-        if ( authorId != that.authorId )
-            return false;
         if ( name != null ? !name.equals( that.name ) : that.name != null )
             return false;
         if ( shortDescription != null ? !shortDescription.equals( that.shortDescription ) : that.shortDescription != null )
@@ -235,7 +281,7 @@ public class RecipeEntity {
             return false;
         if ( preparation != null ? !preparation.equals( that.preparation ) : that.preparation != null )
             return false;
-        if ( calories != that.calories )
+        if ( calories != null ? !calories.equals( that.calories ) : that.calories != null )
             return false;
         if ( difficulty != null ? !difficulty.equals( that.difficulty ) : that.difficulty != null )
             return false;
@@ -256,73 +302,14 @@ public class RecipeEntity {
         result = 31 * result + (shortDescription != null ? shortDescription.hashCode() : 0);
         result = 31 * result + (serving != null ? serving.hashCode() : 0);
         result = 31 * result + (preparation != null ? preparation.hashCode() : 0);
-        result = 31 * result +  calories;
+        result = 31 * result + (calories != null ? calories.hashCode() : 0);
         result = 31 * result + (difficulty != null ? difficulty.hashCode() : 0);
         result = 31 * result + (rating != null ? rating.hashCode() : 0);
         result = 31 * result + workingTime;
         result = 31 * result + cookingTime;
         result = 31 * result + restTime;
         result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
-        result = 31 * result + authorId;
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
-    }
-
-    private UserEntity author;
-
-    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    public UserEntity getAuthor() {
-        return author;
-    }
-
-    public void setAuthor( UserEntity author ) {
-        this.author = author;
-    }
-
-    private Collection<CommentEntity> comments;
-
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
-    public Collection<CommentEntity> getComments() {
-        return comments;
-    }
-
-    public void setComments( Collection<CommentEntity> comments ) {
-        this.comments = comments;
-    }
-
-    private Collection<CookbookEntity> containingCookbooks;
-
-    @ManyToMany( mappedBy = "recipes" )
-    public Collection<CookbookEntity> getContainingCookbooks() {
-        return containingCookbooks;
-    }
-
-    public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
-        this.containingCookbooks = containingCookbooks;
-    }
-
-    private RecipeIngredientEntity ingredient;
-
-    @OneToOne( cascade = CascadeType.ALL, mappedBy = "recipe", optional = false )
-    public RecipeIngredientEntity getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient( RecipeIngredientEntity ingredient ) {
-        this.ingredient = ingredient;
-    }
-
-    private Collection<TagEntity> tags;
-
-    @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID"),
-        inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
-    )
-    public Collection<TagEntity> getTags() {
-        return tags;
-    }
-
-    public void setTags( Collection<TagEntity> tags ) {
-        this.tags = tags;
     }
 }

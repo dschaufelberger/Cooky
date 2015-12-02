@@ -22,7 +22,6 @@
     <mapping class="de.cookyapp.persistence.entities.RecipeIngredientEntity"/>
     <mapping class="de.cookyapp.persistence.entities.RecipeTagEntity"/>
     <mapping class="de.cookyapp.persistence.entities.ShoppingListEntity"/>
-    <mapping class="de.cookyapp.persistence.entities.TagEntity"/>
     <mapping class="de.cookyapp.persistence.entities.UserEntity"/>
     <mapping class="de.cookyapp.persistence.entities.UserPreferenceEntity"/>
     <!-- DB schema will be updated if needed -->

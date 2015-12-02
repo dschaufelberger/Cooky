@@ -30,32 +30,32 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><form:label path="name">Name:</form:label></td>
+                    <td><form:label path="name" class="label label-default">Name:</form:label></td>
                     <td><form:input path="name"/></td>
                     <td><form:errors path="name" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="shortDescription">Short Description:</form:label></td>
+                    <td><form:label path="shortDescription" class="label label-default">Short Description:</form:label></td>
                     <td><form:input path="shortDescription"/></td>
                     <td><form:errors path="shortDescription" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="preparation">Preparation:</form:label></td>
+                    <td><form:label path="preparation" class="label label-default">Preparation:</form:label></td>
                     <td><form:input path="preparation"/></td>
                     <td><form:errors path="preparation" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="workingTime">Working Time (in minutes):</form:label></td>
+                    <td><form:label path="workingTime" class="label label-default">Working Time (in minutes):</form:label></td>
                     <td><form:input path="workingTime"/></td>
                     <td><form:errors path="workingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="cookingTime">Cooking Time (in minutes):</form:label></td>
+                    <td><form:label path="cookingTime" class="label label-default">Cooking Time (in minutes):</form:label></td>
                     <td><form:input path="cookingTime" /></td>
                     <td><form:errors path="cookingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="difficulty">Difficulty:</form:label></td>
+                    <td><form:label path="difficulty" class="label label-default">Difficulty:</form:label></td>
                     <td><form:select path="difficulty">
                         <form:option value="" label="Bitte auswählen..." />
                         <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty" />
@@ -63,17 +63,17 @@
                     <td><form:errors path="difficulty" cssClass="formError" /></td>
                 </tr>
                 <tr>
-                    <td><form:label path="serving">Serving:</form:label></td>
+                    <td><form:label path="serving" class="label label-default">Serving:</form:label></td>
                     <td><form:input path="serving" /></td>
                     <td><form:errors path="serving" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="calories">Calories:</form:label></td>
+                    <td><form:label path="calories" class="label label-default">Calories:</form:label></td>
                     <td><form:input path="calories" /></td>
                     <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" value="Add"></td>
+                    <td><input type="submit" value="Add" class="btn btn-default"></td>
                 </tr>
             </tbody>
         </table>
@@ -81,7 +81,7 @@
 </div>
 <div class="col-md-6">
     <div class="input-group">
-        <table class="table table-hover ingredientTable">
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th>Ingredient</th>
@@ -93,7 +93,7 @@
                 </tr>
             </tbody>
         </table>
-        <button type="button" onclick="addRow()">Add another Ingredient</button>
+        <button class="btn btn-default" type="button" onclick="addRow()">Add another Ingredient</button>
     </div>
 </div>
 </form:form>

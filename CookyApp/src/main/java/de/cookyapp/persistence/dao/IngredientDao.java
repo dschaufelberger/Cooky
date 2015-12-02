@@ -33,4 +33,9 @@ public class IngredientDao extends GenericCookyDaoImplementation<IngredientEntit
         ingredient.setName(name);
         this.update(ingredient);
     }
+
+    @Override
+    protected void loadLazy(IngredientEntity persistentObject) {
+
+    }
 }

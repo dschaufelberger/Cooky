@@ -2,6 +2,7 @@ package de.cookyapp.persistence.dao;
 
 import de.cookyapp.persistence.HibernateSessionFactory;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,6 @@ import java.util.List;
 /**
  * Created by Jasper on 27.11.2015.
  */
-@Repository
 public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Integer> {
 
     public RecipesDao() {
@@ -19,11 +19,7 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
     }
 
     public RecipeEntity getRecipeById(int id) {
-        Session session = HibernateSessionFactory.INSTANCE.openSession();
-        Transaction transaction = session.beginTransaction();
-        RecipeEntity recipe = (RecipeEntity) session.get(RecipeEntity.class, id);
-        transaction.commit();
-        return recipe;
+        return this.load(id);
     }
 
     public List<RecipeEntity> getAllRecipes() {
@@ -47,7 +43,7 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
     }
 
     public void editRecipe(RecipeEntity recipe) {
-        recipe.setAuthorId(3);
+        //recipe.setAuthorId(3);
         this.update(recipe);
     }
 
@@ -61,7 +57,7 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
         //recipe.setDifficulty(difficulty);
         recipe.setWorkingTime(workingTime);
         recipe.setCookingTime(cookingTime);
-        recipe.setAuthorId(3);
+        //recipe.setAuthorId(3);
         //IngredientEntity ingredient = new IngredientEntity();
         //ingredient.setName(ingredientName);
         //Wie Foreign Key setzen?
@@ -70,7 +66,12 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
     }
 
     public void addRecipe(RecipeEntity recipe) {
-        recipe.setAuthorId(3);
+        //recipe.setAuthorId(3);
         this.save(recipe);
+    }
+
+    @Override
+    protected void loadLazy(RecipeEntity persistentObject) {
+        Hibernate.initialize(persistentObject.getIngredients());
     }
 }
