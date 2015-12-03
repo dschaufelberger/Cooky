@@ -2,9 +2,13 @@ package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,7 +24,11 @@ public class CommentEntity {
     private Integer recipeId;
     private LocalDateTime creationTime;
 
+    private UserEntity author;
+    private RecipeEntity commentedRecipe;
+
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -114,5 +122,23 @@ public class CommentEntity {
         result = 31 * result + (recipeId != null ? recipeId.hashCode() : 0);
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor( UserEntity author ) {
+        this.author = author;
+    }
+
+    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    public RecipeEntity getCommentedRecipe() {
+        return commentedRecipe;
+    }
+
+    public void setCommentedRecipe( RecipeEntity commentedRecipe ) {
+        this.commentedRecipe = commentedRecipe;
     }
 }

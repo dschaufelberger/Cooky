@@ -1,9 +1,13 @@
 package de.cookyapp.persistence.entities;
 
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -26,6 +30,7 @@ public class TagEntity {
     }
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -57,5 +62,16 @@ public class TagEntity {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + id;
         return result;
+    }
+
+    private Collection<RecipeEntity> recipes;
+
+    @ManyToMany
+    public Collection<RecipeEntity> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes( Collection<RecipeEntity> recipes ) {
+        this.recipes = recipes;
     }
 }

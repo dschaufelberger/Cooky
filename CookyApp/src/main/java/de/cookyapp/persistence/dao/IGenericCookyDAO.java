@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  *
  * Created by Dominik Schaufelberger on 28.11.2015.
  */
-public interface GenericCookyDAO <T, PK extends Serializable> {
+public interface IGenericCookyDAO <T, PK extends Serializable> {
     /**
      * Saves/Persists an object to the database and returns the generated primary key.
      *
@@ -27,6 +27,8 @@ public interface GenericCookyDAO <T, PK extends Serializable> {
      */
     T load( PK id );
 
+    T loadWithLazyRelations( PK id );
+
     /**
      * Loads all persistent objects from the database.
      *
@@ -36,6 +38,8 @@ public interface GenericCookyDAO <T, PK extends Serializable> {
 
     // TODO this needs to be implemented via the javax.persistence.CriteriaQuery API.
     //List<T> loadByCondition( boolean condition );
+
+    List<T> loadAllWithLazyRelations();
 
     /**
      * Updates the given detached object in the database.

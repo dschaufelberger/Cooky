@@ -1,11 +1,20 @@
 package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
 
@@ -13,8 +22,9 @@ import de.cookyapp.enums.RecipeDifficulty;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev")
+@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev" )
 public class RecipeEntity {
+    private int id;
     private String name;
     private String shortDescription;
     private String preparation;
@@ -24,13 +34,18 @@ public class RecipeEntity {
     private Short calories;
     private Byte serving;
     private Byte rating;
-    private int id;
-    private int workingTime;
-    private int cookingTime;
-    private int restTime;
-    private int authorId;
+    private Integer workingTime;
+    private Integer cookingTime;
+    private Integer restTime;
+
+    private UserEntity author;
+    private Collection<CommentEntity> comments;
+    private Collection<CookbookEntity> containingCookbooks;
+    private Collection<TagEntity> tags;
+    private Collection<RecipeIngredientEntity> ingredients;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @javax.persistence.Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -121,33 +136,33 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "WorkingTime", nullable = true )
-    public int getWorkingTime() {
+    public Integer getWorkingTime() {
         return workingTime;
     }
 
-    public void setWorkingTime( int workingTime ) {
+    public void setWorkingTime( Integer workingTime ) {
         this.workingTime = workingTime;
     }
 
 
     @Basic
     @javax.persistence.Column( name = "CookingTime", nullable = true )
-    public int getCookingTime() {
+    public Integer getCookingTime() {
         return cookingTime;
     }
 
-    public void setCookingTime( int cookingTime ) {
+    public void setCookingTime( Integer cookingTime ) {
         this.cookingTime = cookingTime;
     }
 
 
     @Basic
     @javax.persistence.Column( name = "RestTime", nullable = true )
-    public int getRestTime() {
+    public Integer getRestTime() {
         return restTime;
     }
 
-    public void setRestTime( int restTime ) {
+    public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
     }
 
@@ -164,17 +179,6 @@ public class RecipeEntity {
 
 
     @Basic
-    @javax.persistence.Column( name = "AuthorID", nullable = false )
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId( int authorId ) {
-        this.authorId = authorId;
-    }
-
-
-    @Basic
     @javax.persistence.Column( name = "CreationTime", nullable = true )
     public LocalDateTime getCreationTime() {
         return creationTime;
@@ -182,6 +186,60 @@ public class RecipeEntity {
 
     public void setCreationTime( LocalDateTime creationTime ) {
         this.creationTime = creationTime;
+    }
+
+
+    @OneToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH} )
+    @JoinColumn( name = "AuthorID" )
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor( UserEntity author ) {
+        this.author = author;
+    }
+
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
+    public Collection<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments( Collection<CommentEntity> comments ) {
+        this.comments = comments;
+    }
+
+
+    @ManyToMany( mappedBy = "recipes" )
+    public Collection<CookbookEntity> getContainingCookbooks() {
+        return containingCookbooks;
+    }
+
+    public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
+        this.containingCookbooks = containingCookbooks;
+    }
+
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "recipe" )
+    public Collection<RecipeIngredientEntity> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients( Collection<RecipeIngredientEntity> ingredients ) {
+        this.ingredients = ingredients;
+    }
+
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable( name = "RecipeTag", joinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "TagID", referencedColumnName = "ID" )
+    )
+    public Collection<TagEntity> getTags() {
+        return tags;
+    }
+
+    public void setTags( Collection<TagEntity> tags ) {
+        this.tags = tags;
     }
 
     @Override
@@ -200,8 +258,6 @@ public class RecipeEntity {
         if ( cookingTime != that.cookingTime )
             return false;
         if ( restTime != that.restTime )
-            return false;
-        if ( authorId != that.authorId )
             return false;
         if ( name != null ? !name.equals( that.name ) : that.name != null )
             return false;
@@ -239,7 +295,6 @@ public class RecipeEntity {
         result = 31 * result + cookingTime;
         result = 31 * result + restTime;
         result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
-        result = 31 * result + authorId;
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
     }

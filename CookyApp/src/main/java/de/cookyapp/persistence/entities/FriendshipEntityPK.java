@@ -2,6 +2,8 @@ package de.cookyapp.persistence.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -13,6 +15,7 @@ public class FriendshipEntityPK implements Serializable {
 
     @Column( name = "UserIDOne", nullable = false )
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     public int getUserIdOne() {
         return userIdOne;
     }
@@ -23,6 +26,7 @@ public class FriendshipEntityPK implements Serializable {
 
     @Column( name = "UserIDTwo", nullable = false )
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     public int getUserIdTwo() {
         return userIdTwo;
     }

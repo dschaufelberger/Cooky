@@ -3,7 +3,10 @@ package de.cookyapp.persistence.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -16,6 +19,7 @@ public class CategoryEntity {
     private String superCategory;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "Name", nullable = false, length = 30 )
     public String getName() {
         return name;
@@ -57,5 +61,16 @@ public class CategoryEntity {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (superCategory != null ? superCategory.hashCode() : 0);
         return result;
+    }
+
+    private CategoryEntity parent;
+
+    @ManyToOne
+    public CategoryEntity getParent() {
+        return parent;
+    }
+
+    public void setParent( CategoryEntity parent ) {
+        this.parent = parent;
     }
 }

@@ -2,6 +2,8 @@ package de.cookyapp.persistence.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -13,6 +15,7 @@ public class CookbookRecipeEntityPK implements Serializable {
 
     @Column( name = "CookbookID", nullable = false )
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     public int getCookbookId() {
         return cookbookId;
     }
@@ -23,6 +26,7 @@ public class CookbookRecipeEntityPK implements Serializable {
 
     @Column( name = "RecipeID", nullable = false )
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     public int getRecipeId() {
         return recipeId;
     }

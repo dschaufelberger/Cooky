@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,6 +23,7 @@ public class FriendshipEntity {
     private LocalDateTime date;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "UserIDOne", nullable = false )
     public int getUserIdOne() {
         return userIdOne;
@@ -30,6 +34,7 @@ public class FriendshipEntity {
     }
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "UserIDTwo", nullable = false )
     public int getUserIdTwo() {
         return userIdTwo;
@@ -74,5 +79,27 @@ public class FriendshipEntity {
         result = 31 * result + userIdTwo;
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
+    }
+
+    private UserEntity askingFriend;
+
+    @ManyToOne( optional = false )
+    public UserEntity getAskingFriend() {
+        return askingFriend;
+    }
+
+    public void setAskingFriend( UserEntity askingFriend ) {
+        this.askingFriend = askingFriend;
+    }
+
+    private UserEntity acceptingFriend;
+
+    @ManyToOne( optional = false )
+    public UserEntity getAcceptingFriend() {
+        return acceptingFriend;
+    }
+
+    public void setAcceptingFriend( UserEntity acceptingFriend ) {
+        this.acceptingFriend = acceptingFriend;
     }
 }
