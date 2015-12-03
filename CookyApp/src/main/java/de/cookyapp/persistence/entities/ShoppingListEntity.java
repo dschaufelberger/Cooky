@@ -4,6 +4,9 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
@@ -22,6 +25,7 @@ public class ShoppingListEntity {
     private String amount;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "UserID", nullable = false )
     public int getUserId() {
         return userId;
@@ -32,6 +36,7 @@ public class ShoppingListEntity {
     }
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "IngredientID", nullable = false )
     public int getIngredientId() {
         return ingredientId;
@@ -91,7 +96,7 @@ public class ShoppingListEntity {
 
     private IngredientEntity ingredient;
 
-    @OneToOne( cascade = CascadeType.ALL, optional = false )
+    @OneToOne( fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false )
     public IngredientEntity getIngredient() {
         return ingredient;
     }

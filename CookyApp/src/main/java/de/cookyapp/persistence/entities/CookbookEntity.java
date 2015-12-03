@@ -8,14 +8,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.CookbookVisibility;
@@ -38,6 +37,7 @@ public class CookbookEntity {
     private Collection<RecipeEntity> recipes;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -118,8 +118,8 @@ public class CookbookEntity {
     }
 
     @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "CookbookRecipe", joinColumns = @JoinColumn(name = "CookbookID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    @JoinTable( name = "CookbookRecipe", joinColumns = @JoinColumn( name = "CookbookID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" )
     )
     public Collection<RecipeEntity> getRecipes() {
         return recipes;

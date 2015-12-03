@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -47,6 +49,7 @@ public class UserEntity {
     private Collection<FriendshipEntity> incomingFriendships;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -187,7 +190,7 @@ public class UserEntity {
     }
 
     @OneToOne( cascade = CascadeType.ALL )
-    @JoinColumn(name = "AddressID")
+    @JoinColumn( name = "AddressID" )
     public AddressEntity getAddress() {
         return address;
     }
@@ -214,7 +217,7 @@ public class UserEntity {
         this.receivedMessages = receivedMessages;
     }
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner" )
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner")
     public Collection<ShoppingListEntity> getShoppingListEntries() {
         return shoppingListEntries;
     }
@@ -232,7 +235,7 @@ public class UserEntity {
         this.outgoingFriendships = outgoingFriendships;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acceptingFriend" )
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "acceptingFriend" )
     public Collection<FriendshipEntity> getIncomingFriendships() {
         return incomingFriendships;
     }

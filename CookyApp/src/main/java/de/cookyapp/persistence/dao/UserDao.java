@@ -1,6 +1,7 @@
 package de.cookyapp.persistence.dao;
 
 import de.cookyapp.persistence.entities.UserEntity;
+import org.springframework.stereotype.Repository;
 
 /**
  * This class inherits from the GenericCookyDaoImplementation abstract class.
@@ -9,9 +10,15 @@ import de.cookyapp.persistence.entities.UserEntity;
  *
  * Created by Dominik Schaufelberger on 28.11.2015.
  */
+@Repository
 public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> {
 
     public UserDao() {
         super(UserEntity.class);
+    }
+
+    @Override
+    protected void loadLazy( UserEntity persistentObject ) {
+
     }
 }
