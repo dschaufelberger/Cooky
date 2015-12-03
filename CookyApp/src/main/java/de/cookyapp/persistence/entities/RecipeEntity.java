@@ -7,11 +7,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -21,7 +22,7 @@ import de.cookyapp.enums.RecipeDifficulty;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev")
+@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev" )
 public class RecipeEntity {
     private int id;
     private String name;
@@ -44,6 +45,7 @@ public class RecipeEntity {
     private Collection<RecipeIngredientEntity> ingredients;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @javax.persistence.Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -187,8 +189,8 @@ public class RecipeEntity {
     }
 
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "AuthorID")
+    @OneToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH} )
+    @JoinColumn( name = "AuthorID" )
     public UserEntity getAuthor() {
         return author;
     }
@@ -229,8 +231,8 @@ public class RecipeEntity {
 
 
     @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID")
+    @JoinTable( name = "RecipeTag", joinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "TagID", referencedColumnName = "ID" )
     )
     public Collection<TagEntity> getTags() {
         return tags;

@@ -1,19 +1,18 @@
 package de.cookyapp.persistence.entities;
 
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Address", schema = "Cooky_Dev")
+@Table( name = "Address", schema = "Cooky_Dev" )
 public class AddressEntity {
     private int id;
     private String street;
@@ -22,6 +21,7 @@ public class AddressEntity {
     private String postcode;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
