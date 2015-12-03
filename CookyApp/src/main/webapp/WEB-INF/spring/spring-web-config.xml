@@ -13,29 +13,25 @@
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <context:component-scan base-package="de.cookyapp"/>
+    <context:component-scan base-package="de.cookyapp" />
 
-    <mvc:annotation-driven/>
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:annotation-driven />
+    <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <sec:http authentication-manager-ref="in-memory-auth">
-        <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
 
 
-        <sec:form-login login-page="/login"
+        <sec:form-login login-page="/loginPage"
                         default-target-url="/"
-                        authentication-failure-url="/loginError"
-                        login-processing-url="/j_spring_security_check"
-                        username-parameter="username"
-                        password-parameter="password"
-        />
-        <sec:logout logout-success-url="/welcome"/>
+                        authentication-failure-url="/loginError" />
+        <sec:logout logout-success-url="/" />
     </sec:http>
 
     <sec:authentication-manager id="in-memory-auth">
         <sec:authentication-provider>
             <sec:user-service>
-                <sec:user name="dominik" authorities="ROLE_ADMIN" password="dodo"/>
+                <sec:user name="dominik" authorities="ROLE_ADMIN" password="dodo" />
             </sec:user-service>
         </sec:authentication-provider>
     </sec:authentication-manager>
@@ -44,20 +40,20 @@
         <sec:authentication-provider>
             <sec:jdbc-user-service data-source-ref="authenticationDataSource"
                                    users-by-username-query="SELECT Username, Password, enabled FROM User WHERE Username = ?"
-                                   authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?"/>
+                                   authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?" />
         </sec:authentication-provider>
     </sec:authentication-manager>
 
     <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://46.38.237.106/Cooky_Dev_Users"/>
-        <property name="username" value="tomcat7"/>
-        <property name="password" value="GTURiMRd8owaLw3MO4hv"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://46.38.237.106/Cooky_Dev_Users" />
+        <property name="username" value="tomcat7" />
+        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
     </bean>
 
 </beans>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dominik Schaufelberger
@@ -8,9 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login to Cooky failed!</title>
+    <title>Anmeldung fehlgeschlagen!</title>
 </head>
 <body>
-Failed!
+Es scheint als hätten Sie falsche Anmeldedaten benutzen. Bitte versuchen Sie es erneut mit den korrekten Anmeldedaten.
+<c:set var="loginUrl" value="/loginPage"/>
+
+<a href="${loginUrl}">Zur Anmeldeseite</a>
 </body>
 </html>

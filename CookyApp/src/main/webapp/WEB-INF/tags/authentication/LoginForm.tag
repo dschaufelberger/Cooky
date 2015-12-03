@@ -1,21 +1,18 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<form:form method="post" action="j_spring_security_check" commandName="userCredentials">
-    <table>
-        <tbody>
-        <tr>
-            <td><form:label path="username">Benutzername</form:label></td>
-            <td><form:input path="username" /></td>
-        </tr>
-        <tr>
-            <td><form:label path="password">Passwort</form:label></td>
-            <td><form:password path="password" /></td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-            <td><input type="submit" value="Login"></td>
-        </tr>
-        </tfoot>
-    </table>
-</form:form>
+<form id="loginForm" action="/login" method="post" role="form">
+    <div class="form-group">
+        <label for="username">Benutzername:</label>
+        <input id="username" name="username" type="text" value="">
+    </div>
+    <div class="form-group">
+        <label for="password">Passwort:</label>
+        <input id="password" name="password" type="password" value="">
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Anmelden</button>
+    </div>
+    <div>
+        <sec:csrfInput />
+    </div>
+</form>

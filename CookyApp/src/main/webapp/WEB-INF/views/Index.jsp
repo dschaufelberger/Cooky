@@ -14,8 +14,9 @@
 
 <html class="full">
 <head>
-    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet" />
+    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/cooky/cooky-general.css"/>" rel="stylesheet">
     <script src="<c:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 
@@ -53,10 +54,10 @@
                             </a>
                         </sec:authorize>
 
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu cooky-navigation-dropdown">
                             <sec:authorize access="isAuthenticated()">
                                 <form:form method="post" action="/logout">
-                                    <input type="submit" class="glyphicon glyphicon-log-out" value="Logout"/>
+                                    <input type="submit" class="glyphicon glyphicon-log-out" value="Logout" />
                                 </form:form>
                             </sec:authorize>
 

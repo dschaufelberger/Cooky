@@ -15,10 +15,8 @@ import de.cookyapp.viewmodel.authentication.LoginCredentials;
 public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET )
-    public ModelAndView displayHomePage() {
-        ModelAndView modelAndView = new ModelAndView( "Index" );
-        modelAndView.addObject( "userCredentials", new LoginCredentials() );
+    public String displayHomePage() {
 
-        return modelAndView;
+        return "Index";
     }
 }

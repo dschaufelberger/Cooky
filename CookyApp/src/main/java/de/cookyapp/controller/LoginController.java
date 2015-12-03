@@ -16,39 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class LoginController {
-
-    @RequestMapping( path = "/login", method = RequestMethod.GET )
-    public ModelAndView showLoginForm() {
-        return new ModelAndView( "authentication/LoginForm", "loginForm", new LoginCredentials() );
-    }
-
-    @RequestMapping("/welcome")
-    public @ResponseBody String welcome() {
-        return "Hi Dodo!";
-    }
-
-    @RequestMapping("/secured")
-    public @ResponseBody String secured() {
-        return "Ich bin geschützt! :-)";
+    @RequestMapping("/loginPage")
+    public String loginPage() {
+        return "authentication/LoginPage";
     }
 
     @RequestMapping("/loginError")
-    public @ResponseBody String loginError() {
-        return "You shall not pass!";
+    public String loginError() {
+        return "authentication/LoginError";
     }
-
-    /*@RequestMapping( "submitLogin" )
-    public String performLogin( @ModelAttribute( "loginForm" ) @Valid LoginCredentials loginCredentials, BindingResult bindingResult ) {
-        String view;
-
-        if ( bindingResult.hasErrors() ) {
-            System.out.println("Ich hab Fehler");
-            view = "authentication/LoginForm";
-        } else {
-            System.out.println("Ich hab keine Fehler");
-            view = "forward:/j_security_check";
-        }
-
-        return view;
-    }*/
 }
