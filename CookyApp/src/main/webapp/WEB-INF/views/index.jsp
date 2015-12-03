@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <html class="full">
@@ -35,22 +37,32 @@
                 <a class="navbar-brand" href="/">Cooky</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <%--<ul class="nav navbar-nav">
-                  <li>
-                    <a href="/ingredients">Ingredients</a>
-                  </li>
-                </ul>--%>
-                <%--<ul class="nav navbar-nav navbar-right">--%>
-                <%--<li>--%>
-                <%--<a class="glyphicon glyphicon-user" href="#"> Jasper</a>--%>
-                <%--</li>--%>
-                <%--</ul>--%>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">Dodo</a>
+                        <%-- If the user is authorized render "Hallo 'Username'" and set the icon to a user icon. --%>
+                        <sec:authorize access="isAuthenticated()">
+                            <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">
+                                Hallo <sec:authentication property="principal.username" />
+                            </a>
+                        </sec:authorize>
+
+                        <%-- Else render "Login" and a login icon. --%>
+                        <sec:authorize access="not isAuthenticated()">
+                            <a class="dropdown-toggle glyphicon glyphicon-log-in" data-toggle="dropdown">
+                                Login
+                            </a>
+                        </sec:authorize>
 
                         <div class="dropdown-menu">
-                            <cooky:login />
+                            <sec:authorize access="isAuthenticated()">
+                                <form:form method="post" action="/logout">
+                                    <input type="submit" class="glyphicon glyphicon-log-out" value="Logout"/>
+                                </form:form>
+                            </sec:authorize>
+
+                            <sec:authorize access="not isAuthenticated()">
+                                <cooky:login />
+                            </sec:authorize>
                         </div>
                     </li>
                 </ul>

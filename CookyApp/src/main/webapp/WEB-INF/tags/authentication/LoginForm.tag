@@ -19,25 +19,3 @@
         </tfoot>
     </table>
 </form:form>
-
-<%--
-<form action="/j_spring_security_check" method="post">
-    <table>
-        <tbody>
-        <tr>
-            <td><label for="username">Benutzername:</label> </td>
-            <td><input type="text" name="username" id="username"></td>
-        </tr>
-        <tr>
-            <td><label for="password">Passwort::</label> </td>
-            <td><input type="password" name="password" id="password"></td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-            <td><input type="submit" value="Login"></td>
-        </tr>
-        </tfoot>
-    </table>
-</form>
---%>
