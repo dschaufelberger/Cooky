@@ -31,11 +31,11 @@ public class Recipe {
 
     @NotBlank(message = "Bitte geben Sie die Zubereitungs Hinweise ein")
     @Size( max = 1000, message = "Die Zubereitungs Hinweise dürfen höchstens 1000 Zeichen enthalten")
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9!:()]+(-?[a-zA-ZäöüÄÖÜß0-9!:()]*)*$", message = "Die Zubereitungs Hinweise dürfen nur Klein- und Großbuchstaben, Zahlen, Bindestriche sowie Ausrufezeichen, Fragezeichen, Doppelpunkt und öffnende bzw. schließende Klammern")
+    @Pattern( regexp = "^[\\w\\säöüÄÖÜß!:()]+(-?[\\w\\säöüÄÖÜß:()]*)*$", message = "Die Zubereitungs Hinweise dürfen nur Klein- und Großbuchstaben, Zahlen, Bindestriche sowie Ausrufezeichen, Fragezeichen, Doppelpunkt und öffnende bzw. schließende Klammern")
     private String preparation;
 
-    @Max(255)
-    private Short calories;
+    @Max(value = 65535, message = "Werte nur bis 255")
+    private Integer calories;
 
     @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
     private RecipeDifficulty difficulty;
@@ -82,11 +82,11 @@ public class Recipe {
         this.preparation = preparation;
     }
 
-    public Short getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(Short calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 

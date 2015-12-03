@@ -2,20 +2,10 @@ package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import de.cookyapp.enums.RecipeDifficulty;
+import de.cookyapp.persistence.dao.IngredientDao;
 import de.cookyapp.viewmodel.Recipe;
 
 /**
@@ -31,7 +21,7 @@ public class RecipeEntity {
     private RecipeDifficulty difficulty;
     private String imageFileName;
     private LocalDateTime creationTime;
-    private Short calories;
+    private Integer calories;
     private Short serving;
     private Short rating;
     private Integer workingTime;
@@ -41,7 +31,7 @@ public class RecipeEntity {
     private UserEntity author;
     private Collection<CommentEntity> comments;
     private Collection<CookbookEntity> containingCookbooks;
-    private Collection<TagEntity> tags;
+    //private Collection<TagEntity> tags;
     private Collection<RecipeIngredientEntity> ingredients;
 
     public RecipeEntity () {
@@ -60,6 +50,8 @@ public class RecipeEntity {
     }
 
     @Id
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @javax.persistence.Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -116,11 +108,11 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "Calories", nullable = true )
-    public Short getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories( Short calories ) {
+    public void setCalories( Integer calories ) {
         this.calories = calories;
     }
 
@@ -244,7 +236,7 @@ public class RecipeEntity {
     }
 
 
-    @ManyToMany( cascade = CascadeType.ALL )
+    /*@ManyToMany( cascade = CascadeType.ALL )
     @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID")
     )
@@ -254,7 +246,7 @@ public class RecipeEntity {
 
     public void setTags( Collection<TagEntity> tags ) {
         this.tags = tags;
-    }
+    } */
 
     @Override
     public boolean equals( Object o ) {

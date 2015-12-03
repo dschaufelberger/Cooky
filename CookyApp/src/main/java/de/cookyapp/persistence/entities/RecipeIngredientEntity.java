@@ -1,15 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -22,6 +13,7 @@ public class RecipeIngredientEntity {
     private String unit;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -106,7 +98,7 @@ public class RecipeIngredientEntity {
 
     private IngredientEntity ingredient;
 
-    @OneToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false )
+    @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false )
     @JoinColumn(name = "IngredientID")
     public IngredientEntity getIngredient() {
         return ingredient;

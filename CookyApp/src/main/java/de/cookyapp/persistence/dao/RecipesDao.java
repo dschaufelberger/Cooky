@@ -66,7 +66,6 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
     }
 
     public void addRecipe(RecipeEntity recipe) {
-        //recipe.setAuthorId(3);
         this.save(recipe);
     }
 

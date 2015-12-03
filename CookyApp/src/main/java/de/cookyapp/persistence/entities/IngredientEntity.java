@@ -1,11 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -17,6 +12,7 @@ public class IngredientEntity {
     private String name;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -69,16 +65,5 @@ public class IngredientEntity {
 
     public void setShoppingListEntry( ShoppingListEntity shoppingListEntry ) {
         this.shoppingListEntry = shoppingListEntry;
-    }
-
-    private RecipeIngredientEntity recipe;
-
-    @OneToOne( mappedBy = "ingredient", optional = false )
-    public RecipeIngredientEntity getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe( RecipeIngredientEntity recipe ) {
-        this.recipe = recipe;
     }
 }

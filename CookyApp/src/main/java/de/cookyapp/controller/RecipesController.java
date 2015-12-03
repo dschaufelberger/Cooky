@@ -1,7 +1,11 @@
 package de.cookyapp.controller;
 
 import de.cookyapp.persistence.dao.RecipesDao;
+import de.cookyapp.persistence.dao.UserDao;
+import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.RecipeIngredientEntity;
+import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.viewmodel.Recipe;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Jasper on 27.11.2015.
@@ -88,13 +94,31 @@ public class RecipesController {
     } */
 
     @RequestMapping(value = "/addRecipe")
-    public String handleAddRecipe (@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult bindingResult) {
+    public String handleAddRecipe (@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult bindingResult, @RequestParam("ingredient") String[] ingredients) {
         String view;
         if (bindingResult.hasErrors()) {
-            view = "addRecipe";
+            view = "recipes/editRecipe";
         } else {
             RecipesDao recipesDao = new RecipesDao();
+            UserDao userDao = new UserDao();
             RecipeEntity recipeEntity = new RecipeEntity(recipe);
+            recipeEntity.setAuthor(userDao.loadUserById(7));
+            ArrayList<RecipeIngredientEntity> ingredientList = new ArrayList<RecipeIngredientEntity>();
+            System.out.println("Vor For: " + ingredients.length);
+            for (String ingredient : ingredients) {
+                if (!("").equals(ingredient)) {
+                    RecipeIngredientEntity currentRecipeIngredient = new RecipeIngredientEntity();
+                    IngredientEntity ingredientEntity = new IngredientEntity();
+                    ingredientEntity.setName(ingredient);
+                    currentRecipeIngredient.setRecipe(recipeEntity);
+                    currentRecipeIngredient.setIngredient(ingredientEntity);
+                    currentRecipeIngredient.setAmount("300");
+                    currentRecipeIngredient.setUnit("g");
+                    ingredientList.add(currentRecipeIngredient);
+                    System.out.println(ingredient);
+                }
+            }
+            recipeEntity.setIngredients(ingredientList);
             recipesDao.addRecipe(recipeEntity);
             view = "redirect:/recipes";
         }
