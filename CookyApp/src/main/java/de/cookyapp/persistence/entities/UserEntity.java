@@ -48,6 +48,7 @@ public class UserEntity {
     private Collection<FriendshipEntity> outgoingFriendships;
     private Collection<FriendshipEntity> incomingFriendships;
 
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )

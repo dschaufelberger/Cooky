@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dominik Schaufelberger
@@ -8,9 +9,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Succesfull Registration on Cooky</title>
+    <title>Registrierung erfolgreich!</title>
 </head>
 <body>
-Thank you for your registration!
+<c:set var="loginUrl" value="/loginPage"/>
+
+<p>Willkommen bei Cooky! Ihre Registrierung war erfolgreich. Sie können sich nun anmelden und Cooky in vollem Umfang erkunden!</p>
+<p>Hier geht es zur <a href="${loginUrl}">Anmeldeseite</a>.</p>
+<span></span>
 </body>
 </html>

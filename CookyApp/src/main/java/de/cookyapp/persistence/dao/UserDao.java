@@ -1,6 +1,7 @@
 package de.cookyapp.persistence.dao;
 
 import de.cookyapp.persistence.entities.UserEntity;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 
 /**

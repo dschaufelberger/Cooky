@@ -1,6 +1,7 @@
 package de.cookyapp.viewmodel.registration;
 
 import java.time.LocalDate;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -47,9 +48,24 @@ public class User {
     @DateTimeFormat( iso = DateTimeFormat.ISO.DATE )
     private LocalDate birthdate;
 
+    @Valid
+    private Address address;
+
     public User() {
     }
 
+    public UserEntity createUserEntity() {
+        UserEntity user = new UserEntity();
+        user.setUsername( this.username );
+        user.setPassword( this.password);
+        user.setForename( this.forename );
+        user.setSurname( this.surname );
+        user.setEmail( this.email );
+        user.setGender( this.gender );
+        user.setBirthdate( this.birthdate );
+
+        return user;
+    }
 
     public String getUsername() {
         return username;
@@ -115,36 +131,18 @@ public class User {
     }
 
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress( Address address ) {
+        this.address = address;
+    }
+
+
     public Gender[] getAvailableGenders() {
         return Gender.values();
     }
 
-    /**
-     * Returns a string representation of the object. In general, the
-     * {@code toString} method returns a string that
-     * "textually represents" this object. The result should
-     * be a concise but informative representation that is easy for a
-     * person to read.
-     * It is recommended that all subclasses override this method.
-     * <p>
-     * The {@code toString} method for class {@code Object}
-     * returns a string consisting of the name of the class of which the
-     * object is an instance, the at-sign character `{@code @}', and
-     * the unsigned hexadecimal representation of the hash code of the
-     * object. In other words, this method returns a string equal to the
-     * value of:
-     * <blockquote>
-     * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre></blockquote>
-     *
-     * @return a string representation of the object.
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
 
-
-        return sb.toString();
-    }
 }
