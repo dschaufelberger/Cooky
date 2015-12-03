@@ -16,7 +16,7 @@ public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET )
     public ModelAndView displayHomePage() {
-        ModelAndView modelAndView = new ModelAndView( "ASDF" );
+        ModelAndView modelAndView = new ModelAndView( "Index" );
         modelAndView.addObject( "userCredentials", new LoginCredentials() );
 
         return modelAndView;
