@@ -17,8 +17,9 @@
     <title>Edit Recipe</title>
 </head>
 <body>
-<div class="col-md-6">
-    <form:form action="/recipes/editRecipe" method="post" commandName="recipe">
+<div class="container">
+    <div class="col-md-6">
+        <form:form action="/recipes/editRecipe" method="post" commandName="recipe">
         <div class="input-group">
             <table class="table table-hover">
                 <thead>
@@ -33,58 +34,80 @@
                     <td><form:errors path="name" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="shortDescription" class="label label-default">Short Description:</form:label></td>
+                    <td><form:label path="shortDescription"
+                                    class="label label-default">Short Description:</form:label></td>
                     <td><form:input path="shortDescription" value="${recipeForId.shortDescription}"
-                               name="editShortDescription"/></td>
+                                    name="editShortDescription"/></td>
                     <td><form:errors path="shortDescription" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="preparation" class="label label-default">Preparation:</form:label></td>
-                    <td><form:input path = "preparation" value="${recipeForId.preparation}"
-                               name="editPreparation"/></td>
+                    <td><form:input path="preparation" value="${recipeForId.preparation}"
+                                    name="editPreparation"/></td>
                     <td><form:errors path="preparation" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="workingTime" class="label label-default">Working Time (in minutes):</form:label></td>
+                    <td><form:label path="workingTime"
+                                    class="label label-default">Working Time (in minutes):</form:label></td>
                     <td><form:input path="workingTime" value="${recipeForId.workingTime}"
-                               name="editWorkingTime"/></td>
+                                    name="editWorkingTime"/></td>
                     <td><form:errors path="workingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="cookingTime" class="label label-default">Cooking Time (in minutes):</form:label></td>
+                    <td><form:label path="cookingTime"
+                                    class="label label-default">Cooking Time (in minutes):</form:label></td>
                     <td><form:input path="cookingTime" value="${recipeForId.cookingTime}"
-                               name="editCookingTime"/></td>
+                                    name="editCookingTime"/></td>
                     <td><form:errors path="cookingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="calories" class="label label-default">Calories:</form:label></td>
                     <td><form:input path="calories" value="${recipeForId.calories}"/></td>
-                    <td><form:errors path="calories" cssClass="formError"/> </td>
+                    <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="serving" class="label label-default">Serving:</form:label></td>
-                    <td><form:input path="serving" value="${recipeForId.serving}"/> </td>
-                    <td><form:errors path="calories" cssClass="formError"/> </td>
+                    <td><form:input path="serving" value="${recipeForId.serving}"/></td>
+                    <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="difficulty" class="label label-default">Difficulty:</form:label></td>
                     <td><form:select path="difficulty">
                         <form:option value="" label="${recipeForId.difficulty.name().toLowerCase()}"/>
-                        <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty" />
+                        <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty"/>
                     </form:select></td>
-                    <td><form:errors path="difficulty" cssClass="formError" /></td>
+                    <td><form:errors path="difficulty" cssClass="formError"/></td>
                 </tr>
-                    <span class="input-group-btn">
-                             <tr>
-                                 <td>
-                                     <button class="btn btn-default" type="submit">Finish</button>
-                                 </td>
-                             </tr>
-                        </span>
+             <span class="input-group-btn">
+                 <tr>
+                     <td>
+                         <button class="btn btn-default" type="submit">Finish</button>
+                     </td>
+                 </tr>
+        </span>
                 </tbody>
             </table>
         </div>
-        <input type="hidden" value="${recipeForId.id}" name="id">
+    </div>
+    <div class="col-md-6">
+        <div class="input-group">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Ingredients</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="ingredientForEach" items="${recipeForId.ingredients}">
+                    <tr>
+                        <td><input type="text" value="${ingredientForEach.ingredient.name}"></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <input type="hidden" value="${recipeForId.id}" name="id">
     </form:form>
 </div>
 </body>

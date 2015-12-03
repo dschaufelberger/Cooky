@@ -69,7 +69,9 @@ public class RecipesController {
         //ModelAndView model = new ModelAndView("editRecipe");
         //model.addObject("recipe", recipesDao.getRecipeById(id));
         ModelAndView model = new ModelAndView("recipes/editRecipe", "recipe", new Recipe());
-        model.addObject("recipeForId", recipesDao.getRecipeById(id));
+        if (recipesDao.getRecipeById(id).getIngredients() != null) {
+            model.addObject("recipeForId", recipesDao.loadWithLazyRelations(id));
+        }
         return model;
     }
 
@@ -97,7 +99,7 @@ public class RecipesController {
     public String handleAddRecipe (@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult bindingResult, @RequestParam("ingredient") String[] ingredients) {
         String view;
         if (bindingResult.hasErrors()) {
-            view = "recipes/editRecipe";
+            view = "recipes/addRecipe";
         } else {
             RecipesDao recipesDao = new RecipesDao();
             UserDao userDao = new UserDao();

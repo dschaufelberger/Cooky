@@ -20,15 +20,15 @@
 </head>
 <body>
 <form:form method="POST" action="/recipes/addRecipe" commandName="recipe">
-<div class="col-md-6">
-    <div class="input-group">
-        <table class="table table-hover">
-            <thead>
+    <div class="col-md-6">
+        <div class="input-group">
+            <table class="table table-hover">
+                <thead>
                 <tr>
                     <th>Recipe</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td><form:label path="name" class="label label-default">Name:</form:label></td>
                     <td><form:input path="name"/></td>
@@ -75,27 +75,27 @@
                 <tr>
                     <td><input type="submit" value="Add" class="btn btn-default"></td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<div class="col-md-6">
-    <div class="input-group">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Ingredient</th>
-            </tr>
-            </thead>
-            <tbody id="ingredientsBody">
+    <div class="col-md-6">
+        <div class="input-group">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Ingredient</th>
+                </tr>
+                </thead>
+                <tbody id="ingredientsBody">
                 <tr>
                     <td><input type="text" name="ingredient"></td>
                 </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-default" type="button" onclick="addRow()">Add another Ingredient</button>
+                </tbody>
+            </table>
+            <button class="btn btn-default" type="button" onclick="addRow()">Add another Ingredient</button>
+        </div>
     </div>
-</div>
 </form:form>
 </body>
 </html>

@@ -3,17 +3,7 @@ package de.cookyapp.persistence.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.enums.Gender;
@@ -47,6 +37,7 @@ public class UserEntity {
     private Collection<FriendshipEntity> incomingFriendships;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;

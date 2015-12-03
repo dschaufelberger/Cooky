@@ -17,40 +17,34 @@
     <title>Recipes</title>
 </head>
 <body>
-<div class="col-md-6">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Recipes</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="recipes" items="${recipesList}">
-            <tr>
-                <td><span id="showRecipe">${recipes.name}</span></td>
-                <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
-                    <td>
-                        <button type="submit" name="deleteBtn">Delete</button>
-                    </td>
-                    <input type="hidden" name="id" value="${recipes.id}">
-                </form>
-                <form id="editRecipe" action="/recipes/goToEditRecipe" method="post">
-                    <td>
-                        <button type="submit" name="editBtn">Edit</button>
-                    </td>
-                    <input type="hidden" name="id" value="${recipes.id}">
-                </form>
-            </tr>
-        </c:forEach>
-        <tr>
-            <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
-                <td>
-                    <button type="submit" name="addBtn">New Recipe</button>
-                </td>
-            </form>
-        </tr>
-        </tbody>
-    </table>
+<div class="container">
+    <div class="col-md-12">
+        <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
+            <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
+        </form>
+    </div>
+    <div class ="row">
+        <ul>
+            <c:forEach var="recipes" items="${recipesList}">
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <img src="${recipes.imageFileName}" alt="ALT NAME" class="img-responsive" />
+                    <div class="caption">
+                        <h3>${recipes.name}</h3>
+                        <form id="editRecipe" action="/recipes/goToEditRecipe" method="post">
+                            <p align="center"><button type="submit" class="btn btn-primary btn-block">Open</button></p>
+                            <input type="hidden" name="id" value="${recipes.id}">
+                        </form>
+                        <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
+                            <p align="center"><button type="submit" class="btn btn-primary btn-block">Remove</button></p>
+                            <input type="hidden" name="id" value="${recipes.id}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </c:forEach>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

@@ -50,7 +50,6 @@ public class RecipeEntity {
     }
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @javax.persistence.Column( name = "ID", nullable = false )
     public int getId() {

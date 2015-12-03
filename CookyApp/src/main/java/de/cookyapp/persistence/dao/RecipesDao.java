@@ -1,12 +1,15 @@
 package de.cookyapp.persistence.dao;
 
 import de.cookyapp.persistence.HibernateSessionFactory;
+import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
