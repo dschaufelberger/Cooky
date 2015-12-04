@@ -218,7 +218,7 @@ public class UserEntity {
         this.receivedMessages = receivedMessages;
     }
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner" )
     public Collection<ShoppingListEntity> getShoppingListEntries() {
         return shoppingListEntries;
     }
