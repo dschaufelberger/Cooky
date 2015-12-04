@@ -61,7 +61,7 @@ public class RegistrationController {
                 AddressEntity address = user.getAddress().createAddressEntity();
 
                 for ( AddressEntity addressEntity : addresses ) {
-                    if ( address.equals( address ) ) {
+                    if ( address.equals( addressEntity ) ) {
                         address = addressEntity;
                         break;
                     }
