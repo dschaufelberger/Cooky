@@ -11,15 +11,31 @@ repositories {
 }
 
 dependencies {
+    //Hibernate
     compile 'org.hibernate:hibernate-core:5.0.2.Final'
     compile 'org.hibernate:hibernate-entitymanager:5.0.2.Final'
     compile 'org.hibernate:hibernate-validator:5.0.2.Final'
     compile 'org.hibernate:hibernate-java8:5.0.2.Final'
+
+    //Spring MVC and JDBC
     compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
+    compile 'org.springframework:spring-jdbc:4.2.3.RELEASE'
+
+    //Spring Security
+    compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-taglibs:4.0.3.RELEASE'
+
+    //Java Standard Tag Libray
     compile 'jstl:jstl:1.2'
+
+    //Log4j logging
     compile 'log4j:log4j:1.2.17'
+
+    //MySQL JDBC driver
     runtime 'mysql:mysql-connector-java:5.1.37'
 
+    //JSP and Servlet stuff that's container in Tomcat but needed at compile time.
     providedCompile 'javax.servlet.jsp:jsp-api:2.2'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 }

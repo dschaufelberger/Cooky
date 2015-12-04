@@ -3,21 +3,57 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:sec="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+       http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <context:component-scan base-package="de.cookyapp"/>
-    <context:annotation-config/>
-
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
+    <context:component-scan base-package="de.cookyapp" />
 
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
+
+    <sec:http authentication-manager-ref="in-memory-auth">
+        <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
+
+
+        <sec:form-login login-page="/loginPage"
+                        default-target-url="/"
+                        authentication-failure-url="/loginError" />
+        <sec:logout logout-success-url="/" />
+    </sec:http>
+
+    <sec:authentication-manager id="in-memory-auth">
+        <sec:authentication-provider>
+            <sec:user-service>
+                <sec:user name="dominik" authorities="ROLE_ADMIN" password="dodo" />
+            </sec:user-service>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <sec:authentication-manager id="jdbc-auth">
+        <sec:authentication-provider>
+            <sec:jdbc-user-service data-source-ref="authenticationDataSource"
+                                   users-by-username-query="SELECT Username, Password, enabled FROM User WHERE Username = ?"
+                                   authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?" />
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://46.38.237.106/Cooky_Dev_Users" />
+        <property name="username" value="tomcat7" />
+        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
 </beans>
