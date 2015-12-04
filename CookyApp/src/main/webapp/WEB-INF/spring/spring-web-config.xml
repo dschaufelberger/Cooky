@@ -19,7 +19,7 @@
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
-    <sec:http authentication-manager-ref="in-memory-auth">
+    <sec:http authentication-manager-ref="jdbc-auth">
         <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
 
 
