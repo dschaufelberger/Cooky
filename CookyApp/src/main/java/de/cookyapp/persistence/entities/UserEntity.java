@@ -48,6 +48,7 @@ public class UserEntity {
     private Collection<FriendshipEntity> outgoingFriendships;
     private Collection<FriendshipEntity> incomingFriendships;
 
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
@@ -217,7 +218,7 @@ public class UserEntity {
         this.receivedMessages = receivedMessages;
     }
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner" )
     public Collection<ShoppingListEntity> getShoppingListEntries() {
         return shoppingListEntries;
     }
