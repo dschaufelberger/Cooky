@@ -31,7 +31,7 @@ public class RecipeEntity {
     private RecipeDifficulty difficulty;
     private String imageFileName;
     private LocalDateTime creationTime;
-    private Short calories;
+    private Integer calories;
     private Byte serving;
     private Byte rating;
     private Integer workingTime;
@@ -102,11 +102,11 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "Calories", nullable = true )
-    public Short getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories( Short calories ) {
+    public void setCalories( Integer calories ) {
         this.calories = calories;
     }
 
