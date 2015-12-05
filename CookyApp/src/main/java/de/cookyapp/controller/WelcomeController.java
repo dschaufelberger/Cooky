@@ -13,6 +13,11 @@ public class WelcomeController {
     @RequestMapping(method = RequestMethod.GET)
     public String displayWelcomePage() {
         System.out.println("Danke für den Besuch!");
+        return "Welcome";
+    }
+
+    @RequestMapping("dodo")
+    public String displayIndexPage() {
         return "Index";
     }
 }
