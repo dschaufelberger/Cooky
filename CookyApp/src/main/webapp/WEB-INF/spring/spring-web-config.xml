@@ -22,7 +22,6 @@
     <sec:http authentication-manager-ref="jdbc-auth">
         <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
 
-
         <sec:form-login login-page="/loginPage"
                         default-target-url="/"
                         authentication-failure-url="/loginError" />
@@ -31,14 +30,16 @@
 
     <sec:authentication-manager id="in-memory-auth">
         <sec:authentication-provider>
+            <sec:password-encoder hash="md5"/>
             <sec:user-service>
-                <sec:user name="dominik" authorities="ROLE_ADMIN" password="dodo" />
+                <sec:user name="dominik" authorities="ROLE_ADMIN" password="721c6ff80a6d3e4ad4ffa52a04c60085" />
             </sec:user-service>
         </sec:authentication-provider>
     </sec:authentication-manager>
 
     <sec:authentication-manager id="jdbc-auth">
         <sec:authentication-provider>
+            <sec:password-encoder hash="md5"/>
             <sec:jdbc-user-service data-source-ref="authenticationDataSource"
                                    users-by-username-query="SELECT Username, Password, enabled FROM User WHERE Username = ?"
                                    authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?" />

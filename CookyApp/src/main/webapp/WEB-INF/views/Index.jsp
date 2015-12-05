@@ -54,17 +54,21 @@
                             </a>
                         </sec:authorize>
 
-                        <div class="dropdown-menu cooky-navigation-dropdown">
-                            <sec:authorize access="isAuthenticated()">
-                                <form:form method="post" action="/logout">
-                                    <input type="submit" class="glyphicon glyphicon-log-out" value="Logout" />
-                                </form:form>
-                            </sec:authorize>
+                        <sec:authorize access="isAuthenticated()">
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form:form id="logOutForm" method="post" action="/logout">
+                                        <span class="glyphicon glyphicon-log-out" onclick="$('form#logoutForm').submit();">Logout</span>
+                                    </form:form>
+                                </li>
+                            </ul>
 
-                            <sec:authorize access="not isAuthenticated()">
+                        </sec:authorize>
+                        <sec:authorize access="not isAuthenticated()">
+                            <div class="dropdown-menu cooky-navigation-dropdown">
                                 <cooky:login />
-                            </sec:authorize>
-                        </div>
+                            </div>
+                        </sec:authorize>
                     </li>
                 </ul>
             </div>
