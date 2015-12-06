@@ -80,8 +80,6 @@ public class AddressEntity {
 
         AddressEntity that = (AddressEntity) o;
 
-        if ( id != that.id )
-            return false;
         if ( street != null ? !street.equals( that.street ) : that.street != null )
             return false;
         if ( houseNumber != null ? !houseNumber.equals( that.houseNumber ) : that.houseNumber != null )
@@ -96,7 +94,7 @@ public class AddressEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = 37;
         result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
