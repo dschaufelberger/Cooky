@@ -14,6 +14,6 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.GET )
     public String displayHomePage() {
 
-        return "Index";
+        return "WelcomeTile";
     }
 }
