@@ -10,6 +10,8 @@ import de.cookyapp.persistence.dao.AddressDao;
 import de.cookyapp.persistence.dao.UserDao;
 import de.cookyapp.persistence.entities.AddressEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -27,13 +29,15 @@ import de.cookyapp.viewmodel.registration.User;
 @Controller
 @RequestMapping( "/registration" )
 public class RegistrationController {
-    UserDao userDao;
-    AddressDao addressDao;
+    private UserDao userDao;
+    private AddressDao addressDao;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationController( UserDao userDao, AddressDao addressDao ) {
+    public RegistrationController( UserDao userDao, AddressDao addressDao, PasswordEncoder passwordEncoder ) {
         this.userDao = userDao;
         this.addressDao = addressDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping( method = RequestMethod.GET )
@@ -68,6 +72,7 @@ public class RegistrationController {
                 }
 
                 UserEntity userEntity = user.createUserEntity();
+                userEntity.setPassword( this.passwordEncoder.encode( user.getPassword() ) );
                 userEntity.setAddress( address );
                 userEntity.setAccountState( AccountState.REGISTERED );
                 userEntity.setRegistrationDate( LocalDateTime.now() );
