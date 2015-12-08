@@ -38,12 +38,12 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/user">Userlist</a>
+                        <a href="/account/userlist">Userlist</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="glyphicon glyphicon-user" href="/user"> Cooky-User</a>
+                        <a class="glyphicon glyphicon-user" href="/account/userlist"> Cooky-User</a>
                     </li>
                 </ul>
             </div>
@@ -59,7 +59,7 @@
 <div class="container">
     <section style="padding-bottom: 50px; padding-top: 50px;">
         <div class="row">
-            <form:form method="POST" action="/editUserData" commandName="user">
+            <form:form method="POST" action="/account/edit" commandName="user">
                 <div class="col-md-4">
                     <img src="resources/images/profilepicture.png" class="img-rounded img-responsive" />
                     <br />
@@ -97,7 +97,7 @@
                     </p>
                 </div>
 
-                <form method="post" action="/showPasswordForm">
+                <form method="post" action="changePassword">
                     <div class="form-group col-md-8">
                         <input type="hidden" name="id" value="${password.id}">
                         <input type="submit" class="btn btn-warning" value="Change Password">

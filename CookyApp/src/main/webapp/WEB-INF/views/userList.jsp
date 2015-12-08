@@ -33,12 +33,12 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/user">Userlist</a>
+                        <a href="/account/userlist">Userlist</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="glyphicon glyphicon-user" href="/user"> Cooky-User</a>
+                        <a class="glyphicon glyphicon-user" href="/account/userlist"> Cooky-User</a>
                     </li>
                 </ul>
             </div>
@@ -62,7 +62,7 @@
         <c:forEach var="user" items="${userList}">
             <tr>
                 <td>${user.username}</td>
-                <form id="edit" action="account" method="post">
+                <form id="edit" action="details" method="post">
                     <td>
                         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-user"></span>
                         </button>

@@ -21,11 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by Mario on 27.11.2015.
  */
 @Controller
-@RequestMapping( "/" )
-public class UserController {
+@RequestMapping( "/account" )
+public class UserAccountController {
 
 
-    @RequestMapping( "/account" )
+    @RequestMapping( "/details" )
     public ModelAndView showAccount( @RequestParam( "id" ) int id , Principal principal) {
 
 
@@ -39,10 +39,10 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping( "/showPasswordForm" )
+    @RequestMapping( "/changePassword" )
     public ModelAndView showPasswordForm( @RequestParam( "id" ) int id ) {
 
-
+        //TODO: eingeloggter Nutzer abfragen
         UserDao userdao = new UserDao();
         ModelAndView model = new ModelAndView( "passwordForm" );
         model.addObject( "password", new Password( userdao.load( id ) ) );
@@ -50,7 +50,7 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping( "/user" )
+    @RequestMapping( "/userlist" )
     public ModelAndView showAllUsers() {
 
         UserDao userdao = new UserDao();
@@ -62,19 +62,20 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping( "/editUserData" )
+    @RequestMapping( "/edit" )
     public String saveData( @ModelAttribute( "user" ) @Valid User user, BindingResult bindingResult ) {
         if ( bindingResult.hasErrors() ) {
-            return "/accountForm";
+            return "accountForm";
             //TODO messages dem User anzeigen
         } else {
+            //TODO prüfen ob die Daten dem eingeloggten Nutzer entsprechen
             UserDao userDao = new UserDao();
             userDao.editUser( user.getId(), user.getForename(), user.getSurname(), user.getEmail() );
-            return "redirect:/user";
+            return "redirect:/account/userlist";
         }
     }
 
-    @RequestMapping( "/changePassword" )
+    @RequestMapping( "/validatePassword" )
     public String changePassword( @ModelAttribute( "password" ) @Valid Password password, BindingResult bindingResult ) {
 
         if ( bindingResult.hasErrors() ) {
@@ -86,7 +87,7 @@ public class UserController {
             if ( password.getOldpassword().equals( user.getPassword() ) ) {
                 user.setPassword( password.getNewpassword() );
                 userDao.update( user );
-                return "redirect:/user";
+                return "redirect:/account/userlist";
             } else {
                 return "/passwordForm";
                 //TODO: Das eingegebene Passwort ist nicht richtig!
