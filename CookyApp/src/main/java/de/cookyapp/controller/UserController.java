@@ -29,7 +29,7 @@ public class UserController {
     public ModelAndView showAccount( @RequestParam( "id" ) int id , Principal principal) {
 
 
-        String username = principal.getName();
+        //String username = principal.getName();
         //TODO: User anhand des Usernames laden
 
         UserDao userdao = new UserDao();

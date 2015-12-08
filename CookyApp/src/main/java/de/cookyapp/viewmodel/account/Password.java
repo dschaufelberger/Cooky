@@ -22,6 +22,7 @@ public class Password {
     @Pattern( regexp = "^[a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*]*$", message = "Das Passwort darf nur aus Klein- und Großbuchstaben, Zahlen und folgenden Sonderzeichen bestehen: \"-_!#?()$%&+*\"." )
     private String newpassword;
 
+    @NotBlank( message = "Bitte geben Sie Ihr aktuelles Passwort ein!" )
     private String oldpassword;
 
     private String password_confirm;
