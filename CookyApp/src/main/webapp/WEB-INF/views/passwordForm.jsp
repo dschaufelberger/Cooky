@@ -82,22 +82,25 @@
 <div class="container">
     <section style="padding-bottom: 50px; padding-top: 50px;">
         <div class="row">
-            <form class="validatedForm" id="validatedForm" method="post" action="validatePassword">
+            <form:form class="validatedForm" method="POST" action="validatePassword">
                 <div class="form-group col-md-8">
                     <h3>Change Your Password</h3>
                     <br />
-                    <label>Enter Old Password</label>
-                    <input id="oldpassword" name="oldpassword" type="password" class="form-control" required="required">
-                    <label>Enter New Password</label>
-                    <input id="newpassword" name="newpassword" type="password" class="form-control" required="required">
-                    <label>Confirm New Password</label>
-                    <input id="password_confirm" name="password_confirm" type="password" class="form-control"
-                           required="required" />
+                    <form:label path="oldpassword">Enter Old Password</form:label>
+                    <form:password path="oldpassword" class="form-control" id="oldpassword"/>
+                    <form:errors path="oldpassword" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
+                    <%--<input id="oldpassword" name="oldpassword" type="password" class="form-control" required="required">--%>
+                    <form:label path="newpassword">Enter New Password</form:label>
+                    <form:password path="newpassword" class="form-control" id="newpassword"/>
+                    <form:errors path="newpassword" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
+                    <form:label path="password_confirm">Confirm New Password</form:label>
+                    <form:password path="password_confirm" class="form-control" id="password_confirm"/>
+                    <form:errors path="password_confirm" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
                     <br>
                     <input type="hidden" name="id" value="${password.id}">
                     <input type="submit" class="btn btn-warning" value="Change Password">
                 </div>
-            </form>
+            </form:form>
         </div>
         <!-- ROW END -->
 

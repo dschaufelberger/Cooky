@@ -17,6 +17,12 @@ dependencies {
     compile 'org.hibernate:hibernate-java8:5.0.2.Final'
     compile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
     compile 'jstl:jstl:1.2'
+
+//Spring Security
+    compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-taglibs:4.0.3.RELEASE'
+
     runtime 'mysql:mysql-connector-java:5.1.37'
 
     providedCompile 'javax.servlet.jsp:jsp-api:2.2'

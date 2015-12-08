@@ -34,7 +34,7 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
-        UserEntity user = new UserEntity();
+        UserEntity user = null;
 
         try {
             transaction = session.beginTransaction();
@@ -42,7 +42,11 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
             transaction.commit();
 
         }catch (Exception e){
-            //TODO Exception abfangen
+            transaction.rollback();
+            // TODO log the exception
+            throw e;
+        }finally {
+            session.close();
         }
         return user;
     }

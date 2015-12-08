@@ -68,10 +68,13 @@
                     <input type="text" class="form-control" value="${user.username}" disabled="disabled">
                     <form:label path="forename">Forename</form:label>
                     <form:input path="forename" class="form-control" />
+                    <form:errors path="forename" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
                     <form:label path="surname">Surname</form:label>
                     <form:input path="surname" class="form-control" />
+                    <form:errors path="surname" cssClass="cooky-formError" element="div class=\"col-sm-10\"" />
                     <form:label path="email">Email</form:label>
                     <form:input path="email" type="email" class="form-control" />
+                    <form:errors path="email" cssClass="cooky-formError" element="div class=\"col-sm-10\"" />
                     <label>Gender</label>
                     <input type="text" class="form-control" value="${user.gender}" disabled="disabled">
                     <label>Birthdate</label>

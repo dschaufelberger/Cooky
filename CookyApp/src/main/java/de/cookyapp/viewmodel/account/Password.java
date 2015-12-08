@@ -34,9 +34,6 @@ public class Password {
 
     }
 
-    public Password( UserEntity usere ) {
-        this.id = usere.getId();
-    }
 
     public String getOldpassword() {
         return oldpassword;
