@@ -3,6 +3,8 @@ package de.cookyapp.persistence.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,7 +12,7 @@ import javax.persistence.Table;
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@Table( name = "Address", schema = "Cooky_Dev")
+@Table( name = "Address", schema = "Cooky_Dev" )
 public class AddressEntity {
     private int id;
     private String street;
@@ -19,6 +21,7 @@ public class AddressEntity {
     private String postcode;
 
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -77,8 +80,6 @@ public class AddressEntity {
 
         AddressEntity that = (AddressEntity) o;
 
-        if ( id != that.id )
-            return false;
         if ( street != null ? !street.equals( that.street ) : that.street != null )
             return false;
         if ( houseNumber != null ? !houseNumber.equals( that.houseNumber ) : that.houseNumber != null )
@@ -93,7 +94,7 @@ public class AddressEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = 37;
         result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);

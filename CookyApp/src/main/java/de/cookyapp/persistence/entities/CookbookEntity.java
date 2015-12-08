@@ -1,12 +1,20 @@
 package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.CookbookVisibility;
@@ -25,7 +33,11 @@ public class CookbookEntity {
     private int ownerId;
     private LocalDateTime creationTime;
 
+    private UserEntity owner;
+    private Collection<RecipeEntity> recipes;
+
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -95,6 +107,28 @@ public class CookbookEntity {
     public void setCreationTime( LocalDateTime creationTime ) {
         this.creationTime = creationTime;
     }
+
+    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner( UserEntity owner ) {
+        this.owner = owner;
+    }
+
+    @ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable( name = "CookbookRecipe", joinColumns = @JoinColumn( name = "CookbookID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" )
+    )
+    public Collection<RecipeEntity> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes( Collection<RecipeEntity> recipes ) {
+        this.recipes = recipes;
+    }
+
 
     @Override
     public boolean equals( Object o ) {

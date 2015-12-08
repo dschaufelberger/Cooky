@@ -2,12 +2,19 @@ package de.cookyapp.persistence.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.AccountState;
@@ -31,7 +38,19 @@ public class UserEntity {
     private LocalDateTime lastLoginDate;
     private AccountState accountState;
 
+    private AddressEntity address;
+    private Collection<CookbookEntity> cookbooks;
+    private Collection<CommentEntity> comments;
+    private Collection<UserPreferenceEntity> preferences;
+    private Collection<MessageEntity> sentMessages;
+    private Collection<MessageEntity> receivedMessages;
+    private Collection<ShoppingListEntity> shoppingListEntries;
+    private Collection<FriendshipEntity> outgoingFriendships;
+    private Collection<FriendshipEntity> incomingFriendships;
+
+
     @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -40,6 +59,7 @@ public class UserEntity {
     public void setId( int id ) {
         this.id = id;
     }
+
 
     @Basic
     @Column( name = "Username", nullable = false, length = 30 )
@@ -141,6 +161,88 @@ public class UserEntity {
 
     public void setAccountState( AccountState accountState ) {
         this.accountState = accountState;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner" )
+    public Collection<CookbookEntity> getCookbooks() {
+        return cookbooks;
+    }
+
+    public void setCookbooks( Collection<CookbookEntity> cookbooks ) {
+        this.cookbooks = cookbooks;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "author" )
+    public Collection<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments( Collection<CommentEntity> comments ) {
+        this.comments = comments;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "user" )
+    public Collection<UserPreferenceEntity> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences( Collection<UserPreferenceEntity> preferences ) {
+        this.preferences = preferences;
+    }
+
+    @OneToOne( cascade = CascadeType.ALL )
+    @JoinColumn( name = "AddressID" )
+    public AddressEntity getAddress() {
+        return address;
+    }
+
+    public void setAddress( AddressEntity address ) {
+        this.address = address;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "sender" )
+    public Collection<MessageEntity> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages( Collection<MessageEntity> sentMessages ) {
+        this.sentMessages = sentMessages;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "receiver" )
+    public Collection<MessageEntity> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages( Collection<MessageEntity> receivedMessages ) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "owner" )
+    public Collection<ShoppingListEntity> getShoppingListEntries() {
+        return shoppingListEntries;
+    }
+
+    public void setShoppingListEntries( Collection<ShoppingListEntity> shoppingListEntries ) {
+        this.shoppingListEntries = shoppingListEntries;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "askingFriend" )
+    public Collection<FriendshipEntity> getOutgoingFriendships() {
+        return outgoingFriendships;
+    }
+
+    public void setOutgoingFriendships( Collection<FriendshipEntity> outgoingFriendships ) {
+        this.outgoingFriendships = outgoingFriendships;
+    }
+
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "acceptingFriend" )
+    public Collection<FriendshipEntity> getIncomingFriendships() {
+        return incomingFriendships;
+    }
+
+    public void setIncomingFriendships( Collection<FriendshipEntity> incomingFriendships ) {
+        this.incomingFriendships = incomingFriendships;
     }
 
     @Override
