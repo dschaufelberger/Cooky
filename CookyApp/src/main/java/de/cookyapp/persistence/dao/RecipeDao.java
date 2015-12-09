@@ -16,9 +16,10 @@ import java.util.List;
 /**
  * Created by Jasper on 27.11.2015.
  */
-public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Integer> {
+@Repository
+public class RecipeDao extends GenericCookyDaoImplementation<RecipeEntity, Integer> {
 
-    public RecipesDao() {
+    public RecipeDao() {
         super(RecipeEntity.class);
     }
 

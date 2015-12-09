@@ -37,12 +37,10 @@ public class UserAccountController {
 
 
     @RequestMapping( "/details" )
-    public ModelAndView showAccount(Principal principal ) {
+    public ModelAndView showAccount( Principal principal ) {
 
-
-        //String username = principal.getName();
         UserDao userdao = new UserDao();
-        if ( userdao.loadUserByUsername( principal.getName()) != null ) {
+        if ( userdao.loadUserByUsername( principal.getName() ) != null ) {
             User user = new User( userdao.loadUserByUsername( principal.getName() ) );
             ModelAndView model = new ModelAndView( "accountForm" );
             //model.addObject( "user", new User( userdao.load( id ) ) );
@@ -50,7 +48,7 @@ public class UserAccountController {
             model.addObject( "password", new Password() );
             return model;
 
-        }else {
+        } else {
             ModelAndView model = new ModelAndView( "authentication/LoginPage" );
             return model;
         }
@@ -62,7 +60,7 @@ public class UserAccountController {
 
         UserDao userdao = new UserDao();
         ModelAndView model = new ModelAndView( "passwordForm" );
-        model.addObject( "password", new Password( ));
+        model.addObject( "password", new Password() );
 
         return model;
     }
@@ -81,16 +79,16 @@ public class UserAccountController {
 
     @RequestMapping( "/edit" )
     public String saveData( @ModelAttribute( "user" ) @Valid User user, BindingResult bindingResult, Principal principal ) {
-        System.out.println(principal.getName());
-        System.out.println(user.getUsername());
+        System.out.println( principal.getName() );
+        System.out.println( user.getUsername() );
         if ( bindingResult.hasErrors() ) {
             return "/accountForm";
         } else {
-            if(principal.getName().equals( user.getUsername() )){
+            if ( principal.getName().equals( user.getUsername() ) ) {
                 UserDao userDao = new UserDao();
                 userDao.editUser( user.getId(), user.getForename(), user.getSurname(), user.getEmail() );
                 return "redirect:/account/details";
-            }else {
+            } else {
                 return "/accountForm";
             }
 
@@ -98,7 +96,7 @@ public class UserAccountController {
     }
 
     @RequestMapping( "/validatePassword" )
-    public String changePassword( @ModelAttribute( "password" ) @Valid Password password, BindingResult bindingResult, Principal principal) {
+    public String changePassword( @ModelAttribute( "password" ) @Valid Password password, BindingResult bindingResult, Principal principal ) {
 
 
         if ( bindingResult.hasErrors() ) {
@@ -107,12 +105,18 @@ public class UserAccountController {
             UserDao userDao = new UserDao();
             UserEntity user = userDao.loadUserByUsername( principal.getName() );
             //User user = userDao.load( password.getId() );
-            if ( this.passwordEncoder.matches( password.getOldpassword(),user.getPassword()) && password.getNewpassword() == password.getPassword_confirm()) {
-                user.setPassword( this.passwordEncoder.encode( password.getNewpassword() ) );
-                userDao.update( user );
-                return "redirect:/account/details";
+            if ( this.passwordEncoder.matches( password.getOldpassword(), user.getPassword() ) ) {
+                if ( password.getNewpassword() != null && password.getNewpassword().equals( password.getPassword_confirm()) ) {
+                    user.setPassword( this.passwordEncoder.encode( password.getNewpassword() ) );
+                    userDao.update( user );
+                    return "redirect:/account/details";
+                } else {
+                    bindingResult.addError( new FieldError( "user", "password_confirm", "Das neue Passwort und dessen Bestätigung stimmen nicht überein. Bitte geben Sie beide Passwröter korrekt ein." ) );
+                    return "/passwordForm";
+                }
+
             } else {
-                bindingResult.addError( new FieldError("user", "oldpassword", "Die eingegebenen Passwörter stimmen nicht! Prüfen Sie alle Passwortfelder!"));
+                bindingResult.addError( new FieldError( "user", "oldpassword", "Ihr eingegebenes Passwort stimmt nicht mit dem aktuellen Passwort überein. Bitte geben Sie Ihr aktuelles Passwort ein." ) );
                 return "/passwordForm";
             }
         }

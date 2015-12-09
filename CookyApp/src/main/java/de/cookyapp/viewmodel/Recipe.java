@@ -46,13 +46,13 @@ public class Recipe {
     @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
     private RecipeDifficulty difficulty;
 
-    @Max(500)
+    @Max(16777215)
     private int workingTime;
 
-    @Max(500)
+    @Max(16777215)
     private int cookingTime;
 
-    @Max(1000)
+    @Max(16777215)
     private int restTime;
 
     private Collection<Ingredient> ingredients;
@@ -70,9 +70,9 @@ public class Recipe {
         this.preparation = recipeEntity.getPreparation();
         this.calories = recipeEntity.getCalories();
         this.difficulty = recipeEntity.getDifficulty();
-        this.workingTime = recipeEntity.getWorkingTime();
-        this.cookingTime = recipeEntity.getCookingTime();
-        this.restTime = recipeEntity.getRestTime();
+        this.workingTime = recipeEntity.getWorkingTime() == null ? 0 : recipeEntity.getWorkingTime();
+        this.cookingTime = recipeEntity.getCookingTime() == null ? 0 : recipeEntity.getCookingTime();
+        this.restTime = recipeEntity.getRestTime() == null ? 0 : recipeEntity.getRestTime();
         for (RecipeIngredientEntity entity : recipeEntity.getIngredients()) {
             this.ingredients.add(new Ingredient(entity));
         }

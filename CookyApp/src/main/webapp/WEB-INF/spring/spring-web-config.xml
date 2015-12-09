@@ -40,9 +40,11 @@
     <sec:authentication-manager id="jdbc-auth">
         <sec:authentication-provider>
             <sec:password-encoder hash="bcrypt" />
+            <!-- The authorites query is fake! We have to correct it after the demo -->
+            <!-- SELECT Username, Role FROM UserRole WHERE Username = ? -->
             <sec:jdbc-user-service data-source-ref="authenticationDataSource"
                                    users-by-username-query="SELECT Username, Password, enabled FROM User WHERE Username = ?"
-                                   authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?" />
+                                   authorities-by-username-query="SELECT ? AS Username, 'USER' AS Role FROM UserRole" />
         </sec:authentication-provider>
     </sec:authentication-manager>
 

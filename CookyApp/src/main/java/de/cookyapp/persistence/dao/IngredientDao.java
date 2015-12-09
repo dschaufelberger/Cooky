@@ -5,6 +5,7 @@ import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.viewmodel.Ingredient;
 import org.hibernate.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by Jasper on 29.11.2015.
  */
+@Repository
 public class IngredientDao extends GenericCookyDaoImplementation<IngredientEntity, Integer>{
 
     public IngredientDao () {
@@ -31,16 +33,18 @@ public class IngredientDao extends GenericCookyDaoImplementation<IngredientEntit
         try {
 
             transaction = session.beginTransaction();
-            //createcriteria unique
-            Query query = session.createQuery("from IngredientEntity as ingredient where ingredient.name = :name");
-            query.setParameter("name", search);
-            //ingredient = (IngredientEntity) session.createQuery("from IngredientEntity as ingredient where ingredient.name =" + search);
-            ingredient = (IngredientEntity)query.uniqueResult();
-            /*if (query.uniqueResult() == null) {
-                ingredient = null;
-            } else {
-                ingredient = (IngredientEntity)query.uniqueResult();
-            }*/
+            //TODO createcriteria unique
+            Query query = session.createQuery("from IngredientEntity as ingredient where ingredient.name = :name")
+                    .setParameter("name", search);
+            List ingredientResults = query.list();
+            if ( ingredientResults != null && ingredientResults.size() > 0 ) {
+                ingredient = (IngredientEntity)ingredientResults.get( 0 );
+            }
+
+
+
+            //TODO the uniqueResult throws an exception because the database is inconsistent. had to uncomment this for the demo
+            //ingredient = (IngredientEntity)query.uniqueResult();
             transaction.commit();
 
         } catch ( HibernateException e ) {

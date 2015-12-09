@@ -97,7 +97,6 @@
                     <form:password path="password_confirm" class="form-control" id="password_confirm"/>
                     <form:errors path="password_confirm" cssClass="cooky-formError" element="div class=\"col-sm-10\"" />
                     <br>
-                    <input type="hidden" name="id" value="${password.id}">
                     <input type="submit" class="btn btn-warning" value="Change Password">
                 </div>
             </form:form>

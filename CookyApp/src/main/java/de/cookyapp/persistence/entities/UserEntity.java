@@ -28,7 +28,7 @@ public class UserEntity {
 
     private AddressEntity address;
     private Collection<CookbookEntity> cookbooks;
-    private Collection<CommentEntity> comments;
+    /*private Collection<CommentEntity> comments;*/
     private Collection<UserPreferenceEntity> preferences;
     private Collection<MessageEntity> sentMessages;
     private Collection<MessageEntity> receivedMessages;
@@ -160,6 +160,7 @@ public class UserEntity {
         this.cookbooks = cookbooks;
     }
 
+    /*
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "author" )
     public Collection<CommentEntity> getComments() {
         return comments;
@@ -167,7 +168,7 @@ public class UserEntity {
 
     public void setComments( Collection<CommentEntity> comments ) {
         this.comments = comments;
-    }
+    }*/
 
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "user" )
     public Collection<UserPreferenceEntity> getPreferences() {
