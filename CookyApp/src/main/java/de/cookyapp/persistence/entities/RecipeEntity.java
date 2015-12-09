@@ -205,14 +205,14 @@ public class RecipeEntity {
     }
 
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
+    /*@OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
     public Collection<CommentEntity> getComments() {
         return comments;
     }
 
     public void setComments( Collection<CommentEntity> comments ) {
         this.comments = comments;
-    }
+    }*/
 
 
     @ManyToMany( mappedBy = "recipes" )
@@ -223,7 +223,6 @@ public class RecipeEntity {
     public void setContainingCookbooks( Collection<CookbookEntity> containingCookbooks ) {
         this.containingCookbooks = containingCookbooks;
     }
-
 
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "recipe" )
     public Collection<RecipeIngredientEntity> getIngredients() {

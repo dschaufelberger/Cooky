@@ -4,6 +4,7 @@ import de.cookyapp.persistence.HibernateSessionFactory;
 import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.RecipeIngredientEntity;
+import de.cookyapp.persistence.entities.UserEntity;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -22,7 +23,7 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
     }
 
     public RecipeEntity getRecipeById(int id) {
-        return this.load(id);
+        return this.loadWithLazyRelations(id);
     }
 
     public List<RecipeEntity> getAllRecipes() {
@@ -31,7 +32,7 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
     }
 
     public void deleteRecipeById(int id) {
-        RecipeEntity recipe = this.load(id);
+        RecipeEntity recipe = this.loadWithLazyRelations(id);
         this.remove(recipe);
     }
 
@@ -47,6 +48,8 @@ public class RecipesDao extends GenericCookyDaoImplementation<RecipeEntity, Inte
 
     public void editRecipe(RecipeEntity recipe) {
         //recipe.setAuthorId(3);
+        UserDao userDao = new UserDao();
+        recipe.setAuthor(userDao.load(7));
         this.update(recipe);
     }
 

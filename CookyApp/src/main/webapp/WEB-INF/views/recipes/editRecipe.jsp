@@ -18,8 +18,9 @@
 </head>
 <body>
 <div class="container">
+<form:form action="/recipes/editRecipe" method="post" commandName="recipe">
+    <form:hidden path="id"/>
     <div class="col-md-6">
-        <form:form action="/recipes/editRecipe" method="post" commandName="recipe">
         <div class="input-group">
             <table class="table table-hover">
                 <thead>
@@ -98,16 +99,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="ingredientForEach" items="${recipeForId.ingredients}">
+                <c:forEach varStatus="loop" var="ingredient" items="${recipe.ingredients}">
                     <tr>
-                        <td><input type="text" value="${ingredientForEach.ingredient.name}"></td>
+                        <td><input name="ingredients[${loop.index}].name" value="${ingredient.name}"></td>
+                        <td><input name="ingredients[${loop.index}].amount" value="${ingredient.amount}"></td>
+                        <td><input name="ingredients[${loop.index}].unit" value="${ingredient.unit}"></td>
+                        <td><input name="ingredients[${loop.index}].id" value="${ingredient.id}" type="hidden"></td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
     </div>
-    <input type="hidden" value="${recipeForId.id}" name="id">
     </form:form>
 </div>
 </body>

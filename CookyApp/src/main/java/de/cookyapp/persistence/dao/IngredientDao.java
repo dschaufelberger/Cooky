@@ -1,8 +1,12 @@
 package de.cookyapp.persistence.dao;
 
+import de.cookyapp.persistence.HibernateSessionFactory;
 import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.viewmodel.Ingredient;
+import org.hibernate.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,28 +18,34 @@ public class IngredientDao extends GenericCookyDaoImplementation<IngredientEntit
         super(IngredientEntity.class);
     }
 
-    public IngredientEntity getIngredientById (int id) {
-        return this.load(id);
-    }
-
-    public List<IngredientEntity> getAllIngredients () {
-        return this.loadAll();
-    }
-
-    public void addIngredient (String name) {
-        IngredientEntity ingredient = new IngredientEntity();
-        ingredient.setName(name);
-        this.save(ingredient);
-    }
-
-    public void updateIngredient (int id, String name) {
-        IngredientEntity ingredient = this.getIngredientById(id);
-        ingredient.setName(name);
-        this.update(ingredient);
-    }
-
     @Override
     protected void loadLazy(IngredientEntity persistentObject) {
 
+    }
+
+    public IngredientEntity getIngredientByName (String search) {
+        Session session = HibernateSessionFactory.INSTANCE.openSession();
+        Transaction transaction = null;
+        IngredientEntity ingredient = null;
+
+        try {
+
+            //createcriteria unique
+            Query query = session.createQuery("from IngredientEntity as ingredient where ingredient.name = :name");
+            query.setParameter("name", search);
+            //ingredient = (IngredientEntity) session.createQuery("from IngredientEntity as ingredient where ingredient.name =" + search);
+            if (query.uniqueResult() == null) {
+                ingredient = null;
+            } else {
+                ingredient = (IngredientEntity)query.uniqueResult();
+            }
+            return ingredient;
+
+        } catch ( HibernateException e ) {
+            // TODO log the exception
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 }

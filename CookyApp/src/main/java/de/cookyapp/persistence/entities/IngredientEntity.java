@@ -1,6 +1,14 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
+import javax.persistence.Basic;
+
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -54,16 +62,5 @@ public class IngredientEntity {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    private ShoppingListEntity shoppingListEntry;
-
-    @OneToOne( mappedBy = "ingredient", optional = false )
-    public ShoppingListEntity getShoppingListEntry() {
-        return shoppingListEntry;
-    }
-
-    public void setShoppingListEntry( ShoppingListEntity shoppingListEntry ) {
-        this.shoppingListEntry = shoppingListEntry;
     }
 }
