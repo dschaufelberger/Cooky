@@ -67,9 +67,12 @@ public class RecipesController {
                 RecipeIngredientEntity entity = iterator.next();
                 //if (ingredient.getId() == entity.getId()) {
                     if (ingredientDao.getIngredientByName(ingredient.getName()) == null) {
+                        IngredientEntity ingredientEntity = new IngredientEntity();
+                        ingredientEntity.setName(ingredient.getName());
+                        ingredientDao.save(ingredientEntity);
+                        entity.setIngredient(ingredientDao.getIngredientByName(ingredient.getName()));
                         entity.setUnit(ingredient.getUnit());
                         entity.setAmount(ingredient.getAmount());
-                        entity.getIngredient().setName(ingredient.getName());
                     }
                     else {
                         IngredientEntity ingredientEntity = ingredientDao.getIngredientByName(ingredient.getName());
