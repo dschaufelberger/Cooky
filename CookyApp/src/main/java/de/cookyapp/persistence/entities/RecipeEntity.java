@@ -2,11 +2,14 @@ package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.*;
+import javax.xml.crypto.Data;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.persistence.dao.IngredientDao;
 import de.cookyapp.viewmodel.Recipe;
+import org.springframework.cglib.core.Local;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -47,6 +50,7 @@ public class RecipeEntity {
         this.serving = recipe.getServing();
         this.workingTime = recipe.getWorkingTime();
         this.cookingTime = recipe.getCookingTime();
+        this.restTime = recipe.getRestTime();
     }
 
     @Id

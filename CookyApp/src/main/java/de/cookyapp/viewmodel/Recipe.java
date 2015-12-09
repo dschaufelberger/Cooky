@@ -24,12 +24,12 @@ public class Recipe {
 
     @NotBlank( message = "Bitte geben Sie einen Rezeptnamen an." )
     @Size( max = 100, message = "Der Name darf nur aus maximal 100 Zeichen bestehen." )
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9]+(-?[a-zA-ZäöüÄÖÜß0-9]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben, einem Bindestrich und Zahlen bestehen." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9\\w\\s]+(-?[a-zA-ZäöüÄÖÜß0-9\\w\\s]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben, einem Bindestrich und Zahlen bestehen." )
     private String name;
 
     @NotBlank(message = "Bitte geben Sie eine kurze Beschreibung des Rezpetes an")
     @Size(max = 500, message = "Die Beschreibung darf höchstesn 500 Zeichen enthalten")
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9!?:()]+(-?[a-zA-ZäöüÄÖÜß0-9!?:()]*)*$", message = "Die Beschreibung darf nur aus Klein- und Großbuchstaben, Bindestrichen und Zahlen bestehen.")
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9!?:()\\w\\s]+(-?[a-zA-ZäöüÄÖÜß0-9!?:()\\w\\s]*)*$", message = "Die Beschreibung darf nur aus Klein- und Großbuchstaben, Bindestrichen und Zahlen bestehen.")
     private String shortDescription;
 
     @Max( 255 )
@@ -40,7 +40,7 @@ public class Recipe {
     @Pattern( regexp = "^[\\w\\säöüÄÖÜß!:()]+(-?[\\w\\säöüÄÖÜß:()]*)*$", message = "Die Zubereitungs Hinweise dürfen nur Klein- und Großbuchstaben, Zahlen, Bindestriche sowie Ausrufezeichen, Fragezeichen, Doppelpunkt und öffnende bzw. schließende Klammern")
     private String preparation;
 
-    @Max(value = 65535, message = "Werte nur bis 255")
+    @Max(value = 65535, message = "Werte nur bis 65535")
     private Integer calories;
 
     @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
@@ -51,6 +51,9 @@ public class Recipe {
 
     @Max(500)
     private int cookingTime;
+
+    @Max(1000)
+    private int restTime;
 
     private Collection<Ingredient> ingredients;
 
@@ -67,8 +70,9 @@ public class Recipe {
         this.preparation = recipeEntity.getPreparation();
         this.calories = recipeEntity.getCalories();
         this.difficulty = recipeEntity.getDifficulty();
-        this.workingTime = 12;
-        this.cookingTime =12;
+        this.workingTime = recipeEntity.getWorkingTime();
+        this.cookingTime = recipeEntity.getCookingTime();
+        this.restTime = recipeEntity.getRestTime();
         for (RecipeIngredientEntity entity : recipeEntity.getIngredients()) {
             this.ingredients.add(new Ingredient(entity));
         }
@@ -158,6 +162,13 @@ public class Recipe {
         return ingredients;
     }
 
+    public int getRestTime() {
+        return restTime;
+    }
+
+    public void setRestTime(int restTime) {
+        this.restTime = restTime;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

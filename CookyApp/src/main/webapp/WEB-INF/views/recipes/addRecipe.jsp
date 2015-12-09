@@ -73,6 +73,11 @@
                     <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
+                    <td><form:label path="restTime">Rest Time:</form:label></td>
+                    <td><form:input path="restTime" /></td>
+                    <td><form:errors path="restTime" cssClass="formError"/></td>
+                </tr>
+                <tr>
                     <td><input type="submit" value="Add" class="btn btn-default"></td>
                 </tr>
                 </tbody>

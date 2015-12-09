@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -44,14 +45,6 @@ public class RecipesController {
         recipesDao.deleteRecipeById(id);
         return "redirect:/recipes";
     }
-
-    /*@RequestMapping("/editRecipeFinish")
-    public String handleEditRecipeFinish(@RequestParam("id") int id, @RequestParam("editName") String name, @RequestParam("editShortDescription") String shortDescription, @RequestParam("editPreparation") String preparation, @RequestParam("editWorkingTime") int workingTime, @RequestParam("editCookingTime") int cookingTime) {
-        RecipesDao recipesDao = new RecipesDao();
-        recipesDao.editRecipe(id, name, shortDescription, preparation, workingTime, cookingTime);
-        return "redirect:/recipes";
-    }
-    */
 
     @RequestMapping("/editRecipe")
     public String handleEditRecipeFinish(@ModelAttribute("recipe") @Valid  Recipe recipe, BindingResult bindingResult) {
@@ -93,6 +86,7 @@ public class RecipesController {
             recipeEntity.setDifficulty(recipe.getDifficulty());
             recipeEntity.setServing(recipe.getServing());
             recipeEntity.setPreparation(recipe.getPreparation());
+            recipeEntity.setRestTime(recipe.getRestTime());
             recipeEntity.setImageFileName("http://placehold.it/320x200");
             //TODO andere werte von recipe in recipeEntity ändern!
             recipesDao.editRecipe(recipeEntity);

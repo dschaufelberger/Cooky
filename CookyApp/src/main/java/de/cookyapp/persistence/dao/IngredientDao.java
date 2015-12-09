@@ -30,22 +30,26 @@ public class IngredientDao extends GenericCookyDaoImplementation<IngredientEntit
 
         try {
 
+            transaction = session.beginTransaction();
             //createcriteria unique
             Query query = session.createQuery("from IngredientEntity as ingredient where ingredient.name = :name");
             query.setParameter("name", search);
             //ingredient = (IngredientEntity) session.createQuery("from IngredientEntity as ingredient where ingredient.name =" + search);
-            if (query.uniqueResult() == null) {
+            ingredient = (IngredientEntity)query.uniqueResult();
+            /*if (query.uniqueResult() == null) {
                 ingredient = null;
             } else {
                 ingredient = (IngredientEntity)query.uniqueResult();
-            }
-            return ingredient;
+            }*/
+            transaction.commit();
 
         } catch ( HibernateException e ) {
             // TODO log the exception
+            transaction.rollback();
             throw e;
         } finally {
             session.close();
         }
+        return ingredient;
     }
 }

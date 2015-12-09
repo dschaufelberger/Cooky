@@ -30,49 +30,51 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><form:label path="name" class="label label-default">Name:</form:label></td>
-                    <td><form:input path="name" value="${recipeForId.name}" name="editName"/></td>
+                    <td><form:label path="name">Name:</form:label></td>
+                    <td><form:input path="name" name="editName"/></td>
                     <td><form:errors path="name" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="shortDescription"
-                                    class="label label-default">Short Description:</form:label></td>
+                    <td><form:label path="shortDescription">Short Description:</form:label></td>
                     <td><form:input path="shortDescription" value="${recipeForId.shortDescription}"
                                     name="editShortDescription"/></td>
                     <td><form:errors path="shortDescription" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="preparation" class="label label-default">Preparation:</form:label></td>
+                    <td><form:label path="preparation">Preparation:</form:label></td>
                     <td><form:input path="preparation" value="${recipeForId.preparation}"
                                     name="editPreparation"/></td>
                     <td><form:errors path="preparation" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="workingTime"
-                                    class="label label-default">Working Time (in minutes):</form:label></td>
+                    <td><form:label path="workingTime">Working Time (in minutes):</form:label></td>
                     <td><form:input path="workingTime" value="${recipeForId.workingTime}"
                                     name="editWorkingTime"/></td>
                     <td><form:errors path="workingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="cookingTime"
-                                    class="label label-default">Cooking Time (in minutes):</form:label></td>
+                    <td><form:label path="cookingTime">Cooking Time (in minutes):</form:label></td>
                     <td><form:input path="cookingTime" value="${recipeForId.cookingTime}"
                                     name="editCookingTime"/></td>
                     <td><form:errors path="cookingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="calories" class="label label-default">Calories:</form:label></td>
+                    <td><form:label path="restTime">Rest Time:</form:label></td>
+                    <td><form:input path="restTime" value="${recipeForId.serving}"/></td>
+                    <td><form:errors path="restTime" cssClass="formError"/></td>
+                </tr>
+                <tr>
+                    <td><form:label path="calories">Calories:</form:label></td>
                     <td><form:input path="calories" value="${recipeForId.calories}"/></td>
                     <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="serving" class="label label-default">Serving:</form:label></td>
+                    <td><form:label path="serving">Serving:</form:label></td>
                     <td><form:input path="serving" value="${recipeForId.serving}"/></td>
                     <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="difficulty" class="label label-default">Difficulty:</form:label></td>
+                    <td><form:label path="difficulty">Difficulty:</form:label></td>
                     <td><form:select path="difficulty">
                         <form:option value="" label="${recipeForId.difficulty.name().toLowerCase()}"/>
                         <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty"/>
