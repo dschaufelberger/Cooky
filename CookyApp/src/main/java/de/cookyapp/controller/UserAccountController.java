@@ -51,10 +51,9 @@ public class UserAccountController {
             model.addObject( "password", new Password() );
             return model;
         }catch (Exception e){
-            //TODO Exception: wenn User nicht gefunden wird
-            throw e;
+            ModelAndView model = new ModelAndView( "authentication/LoginPage" );
+            return model;
         }
-
     }
 
     @RequestMapping( "/changePassword" )
@@ -81,35 +80,38 @@ public class UserAccountController {
 
     @RequestMapping( "/edit" )
     public String saveData( @ModelAttribute( "user" ) @Valid User user, BindingResult bindingResult, Principal principal ) {
+        System.out.println(principal.getName());
+        System.out.println(user.getUsername());
         if ( bindingResult.hasErrors() ) {
-            return "accountForm";
+            return "/accountForm";
         } else {
             if(principal.getName().equals( user.getUsername() )){
                 UserDao userDao = new UserDao();
                 userDao.editUser( user.getId(), user.getForename(), user.getSurname(), user.getEmail() );
-                return "redirect:/account/userlist";
+                return "redirect:/account/details";
             }else {
-                return "accountForm";
+                return "/accountForm";
             }
 
         }
     }
 
     @RequestMapping( "/validatePassword" )
-    public String changePassword( @ModelAttribute( "password" ) @Valid Password password, BindingResult bindingResult ) {
+    public String changePassword( @ModelAttribute( "password" ) @Valid Password password, BindingResult bindingResult, Principal principal) {
 
 
         if ( bindingResult.hasErrors() ) {
             return "/passwordForm";
         } else {
             UserDao userDao = new UserDao();
-            UserEntity user = userDao.load( password.getId() );
+            UserEntity user = userDao.loadUserByUsername( principal.getName() );
+            //User user = userDao.load( password.getId() );
             if ( this.passwordEncoder.matches( password.getOldpassword(),user.getPassword() )) {
                 user.setPassword( this.passwordEncoder.encode( password.getNewpassword() ) );
                 userDao.update( user );
-                return "redirect:/account/userlist";
+                return "redirect:/account/details";
             } else {
-                bindingResult.addError( new FieldError("user", "oldpassword", "Blablablablablablablablab"));
+                bindingResult.addError( new FieldError("user", "oldpassword", "Das eingegebene alte Passwort stimmt nicht!!"));
                 return "/passwordForm";
             }
         }

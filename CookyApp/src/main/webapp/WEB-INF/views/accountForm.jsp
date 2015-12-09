@@ -7,6 +7,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -36,16 +37,16 @@
                 <a class="navbar-brand" href="/">Cooky</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/account/userlist">Userlist</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="glyphicon glyphicon-user" href="/account/userlist"> Cooky-User</a>
-                    </li>
-                </ul>
+                <%--<ul class="nav navbar-nav">--%>
+                    <%--<li>--%>
+                        <%--<a href="/account/userlist">Userlist</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+                <%--<ul class="nav navbar-nav navbar-right">--%>
+                    <%--<li>--%>
+                        <%--<a class="glyphicon glyphicon-user" href="/account/userlist"> Cooky-User</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -61,11 +62,12 @@
         <div class="row">
             <form:form method="POST" action="/account/edit" commandName="user">
                 <div class="col-md-4">
-                    <img src="resources/images/profilepicture.png" class="img-rounded img-responsive" />
+                    <img src="/resources/images/profilepicture.png" class="img-rounded img-responsive" />
                     <br />
                     <br />
-                    <label>Username</label>
-                    <input type="text" class="form-control" value="${user.username}" disabled="disabled">
+                    <form:label path="username">Username</form:label>
+                    <form:input path="username" class="form-control" readonly="true"/>
+                    <form:errors path="forename" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
                     <form:label path="forename">Forename</form:label>
                     <form:input path="forename" class="form-control" />
                     <form:errors path="forename" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
@@ -100,9 +102,10 @@
                     </p>
                 </div>
 
+
                 <form method="post" action="changePassword">
+                    <sec:csrfInput/>
                     <div class="form-group col-md-8">
-                        <input type="hidden" name="id" value="${password.id}">
                         <input type="submit" class="btn btn-warning" value="Change Password">
                     </div>
                 </form>

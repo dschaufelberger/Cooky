@@ -48,16 +48,16 @@
                 <a class="navbar-brand" href="/">Cooky</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/account/userlist">Userlist</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="glyphicon glyphicon-user" href="/account/userlist"> Cooky-User</a>
-                    </li>
-                </ul>
+                <%--<ul class="nav navbar-nav">--%>
+                    <%--<li>--%>
+                        <%--<a href="/account/userlist">Userlist</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+                <%--<ul class="nav navbar-nav navbar-right">--%>
+                    <%--<li>--%>
+                        <%--<a class="glyphicon glyphicon-user" href="/account/userlist"> Cooky-User</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -82,7 +82,7 @@
 <div class="container">
     <section style="padding-bottom: 50px; padding-top: 50px;">
         <div class="row">
-            <form:form class="validatedForm" method="POST" action="validatePassword">
+            <form:form class="validatedForm" method="POST" action="validatePassword" commandName="password">
                 <div class="form-group col-md-8">
                     <h3>Change Your Password</h3>
                     <br />
@@ -95,7 +95,7 @@
                     <form:errors path="newpassword" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
                     <form:label path="password_confirm">Confirm New Password</form:label>
                     <form:password path="password_confirm" class="form-control" id="password_confirm"/>
-                    <form:errors path="password_confirm" cssClass="cooky-formError" element="div class=\"col-sm-10\""  />
+                    <form:errors path="password_confirm" cssClass="cooky-formError" element="div class=\"col-sm-10\"" />
                     <br>
                     <input type="hidden" name="id" value="${password.id}">
                     <input type="submit" class="btn btn-warning" value="Change Password">

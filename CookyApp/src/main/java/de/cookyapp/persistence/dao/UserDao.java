@@ -5,6 +5,7 @@ import de.cookyapp.persistence.entities.UserEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.stereotype.Repository;
 
 /**
  * This class inherits from the GenericCookyDaoImplementation abstract class.
@@ -13,6 +14,7 @@ import org.hibernate.validator.constraints.Email;
  * <p>
  * Created by Dominik Schaufelberger on 28.11.2015.
  */
+@Repository
 public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> {
 
     public UserDao() {
@@ -49,5 +51,10 @@ public class UserDao extends GenericCookyDaoImplementation<UserEntity, Integer> 
             session.close();
         }
         return user;
+    }
+
+    @Override
+    protected void loadLazy( UserEntity persistentObject ) {
+
     }
 }
