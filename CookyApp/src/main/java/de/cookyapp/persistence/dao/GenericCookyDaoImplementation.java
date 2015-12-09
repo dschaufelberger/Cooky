@@ -106,7 +106,7 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
         try {
             transaction = session.beginTransaction();
 
-            persistentObjects = (List<T>)session.createCriteria( this.clazz ).list();
+            persistentObjects = session.createCriteria( this.clazz ).list();
 
             transaction.commit();
         } catch ( HibernateException e ) {
@@ -130,7 +130,7 @@ public abstract class GenericCookyDaoImplementation <T, PK extends Serializable>
         try {
             transaction = session.beginTransaction();
 
-            persistentObjects = (List<T>)session.createCriteria( this.clazz ).list();
+            persistentObjects = session.createCriteria( this.clazz ).list();
             for ( T persistenObject : persistentObjects ) {
                 loadLazy( persistenObject );
             }

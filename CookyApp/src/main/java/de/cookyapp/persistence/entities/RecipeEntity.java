@@ -17,6 +17,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
+import de.cookyapp.persistence.dao.IngredientDao;
+import de.cookyapp.viewmodel.Recipe;
+import org.springframework.cglib.core.Local;
+//TODO check imports
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -32,7 +36,7 @@ public class RecipeEntity {
     private String imageFileName;
     private LocalDateTime creationTime;
     private Integer calories;
-    private Byte serving;
+    private Short serving;
     private Byte rating;
     private Integer workingTime;
     private Integer cookingTime;
@@ -41,8 +45,24 @@ public class RecipeEntity {
     private UserEntity author;
     private Collection<CommentEntity> comments;
     private Collection<CookbookEntity> containingCookbooks;
-    private Collection<TagEntity> tags;
+    //private Collection<TagEntity> tags;
     private Collection<RecipeIngredientEntity> ingredients;
+
+    public RecipeEntity () {
+
+    }
+
+    public RecipeEntity (Recipe recipe) {
+        this.name = recipe.getName();
+        this.shortDescription = recipe.getShortDescription();
+        this.preparation = recipe.getPreparation();
+        this.difficulty = recipe.getDifficulty();
+        this.calories = recipe.getCalories();
+        this.serving = recipe.getServing();
+        this.workingTime = recipe.getWorkingTime();
+        this.cookingTime = recipe.getCookingTime();
+        this.restTime = recipe.getRestTime();
+    }
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -80,11 +100,11 @@ public class RecipeEntity {
 
     @Basic
     @javax.persistence.Column( name = "Serving", nullable = true )
-    public Byte getServing() {
+    public Short getServing() {
         return serving;
     }
 
-    public void setServing( Byte serving ) {
+    public void setServing( Short serving ) {
         this.serving = serving;
     }
 
@@ -200,14 +220,14 @@ public class RecipeEntity {
     }
 
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
+    /*@OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
     public Collection<CommentEntity> getComments() {
         return comments;
     }
 
     public void setComments( Collection<CommentEntity> comments ) {
         this.comments = comments;
-    }
+    }*/
 
 
     @ManyToMany( mappedBy = "recipes" )
@@ -219,7 +239,6 @@ public class RecipeEntity {
         this.containingCookbooks = containingCookbooks;
     }
 
-
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "recipe" )
     public Collection<RecipeIngredientEntity> getIngredients() {
         return ingredients;
@@ -230,9 +249,9 @@ public class RecipeEntity {
     }
 
 
-    @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable( name = "RecipeTag", joinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" ),
-            inverseJoinColumns = @JoinColumn( name = "TagID", referencedColumnName = "ID" )
+    /*@ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID")
     )
     public Collection<TagEntity> getTags() {
         return tags;
@@ -240,7 +259,7 @@ public class RecipeEntity {
 
     public void setTags( Collection<TagEntity> tags ) {
         this.tags = tags;
-    }
+    } */
 
     @Override
     public boolean equals( Object o ) {

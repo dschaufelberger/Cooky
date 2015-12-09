@@ -15,7 +15,7 @@ public class CookbookRecipeEntityPK implements Serializable {
 
     @Column( name = "CookbookID", nullable = false )
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getCookbookId() {
         return cookbookId;
     }
@@ -26,7 +26,7 @@ public class CookbookRecipeEntityPK implements Serializable {
 
     @Column( name = "RecipeID", nullable = false )
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getRecipeId() {
         return recipeId;
     }
