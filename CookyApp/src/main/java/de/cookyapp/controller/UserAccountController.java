@@ -41,19 +41,20 @@ public class UserAccountController {
 
 
         //String username = principal.getName();
-
-        try{
-            UserDao userdao = new UserDao();
+        UserDao userdao = new UserDao();
+        if ( userdao.loadUserByUsername( principal.getName()) != null ) {
             User user = new User( userdao.loadUserByUsername( principal.getName() ) );
             ModelAndView model = new ModelAndView( "accountForm" );
             //model.addObject( "user", new User( userdao.load( id ) ) );
             model.addObject( "user", user );
             model.addObject( "password", new Password() );
             return model;
-        }catch (Exception e){
+
+        }else {
             ModelAndView model = new ModelAndView( "authentication/LoginPage" );
             return model;
         }
+
     }
 
     @RequestMapping( "/changePassword" )
@@ -106,12 +107,12 @@ public class UserAccountController {
             UserDao userDao = new UserDao();
             UserEntity user = userDao.loadUserByUsername( principal.getName() );
             //User user = userDao.load( password.getId() );
-            if ( this.passwordEncoder.matches( password.getOldpassword(),user.getPassword() )) {
+            if ( this.passwordEncoder.matches( password.getOldpassword(),user.getPassword()) && password.getNewpassword() == password.getPassword_confirm()) {
                 user.setPassword( this.passwordEncoder.encode( password.getNewpassword() ) );
                 userDao.update( user );
                 return "redirect:/account/details";
             } else {
-                bindingResult.addError( new FieldError("user", "oldpassword", "Das eingegebene alte Passwort stimmt nicht!!"));
+                bindingResult.addError( new FieldError("user", "oldpassword", "Die eingegebenen Passwörter stimmen nicht! Prüfen Sie alle Passwortfelder!"));
                 return "/passwordForm";
             }
         }

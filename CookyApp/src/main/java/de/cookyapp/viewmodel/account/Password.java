@@ -27,9 +27,6 @@ public class Password {
 
     private String password_confirm;
 
-    private int id;
-
-
     public Password() {
 
     }
@@ -58,15 +55,6 @@ public class Password {
 
     public void setPassword_confirm( String password_confirm ) {
         this.password_confirm = password_confirm;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId( int id ) {
-        this.id = id;
     }
 
 

@@ -7,8 +7,8 @@
         <property name="connection.url">jdbc:mysql://localhost:3306/Cooky_Dev</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
-        <property name="connection.username">mario</property>
-        <property name="connection.password">bitteaendern</property>
+        <property name="connection.username">tomcat7</property>
+        <property name="connection.password">GTURiMRd8owaLw3MO4hv</property>
 
         <mapping class="de.cookyapp.persistence.entities.AddressEntity"/>
         <mapping class="de.cookyapp.persistence.entities.CategoryEntity"/>
