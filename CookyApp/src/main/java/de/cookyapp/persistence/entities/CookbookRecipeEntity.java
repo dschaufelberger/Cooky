@@ -1,12 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -19,7 +13,7 @@ public class CookbookRecipeEntity {
     private int recipeId;
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "CookbookID", nullable = false )
     public int getCookbookId() {
         return cookbookId;
@@ -30,7 +24,7 @@ public class CookbookRecipeEntity {
     }
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "RecipeID", nullable = false )
     public int getRecipeId() {
         return recipeId;

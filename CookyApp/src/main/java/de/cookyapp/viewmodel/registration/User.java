@@ -1,5 +1,6 @@
 package de.cookyapp.viewmodel.registration;
 
+import java.security.MessageDigest;
 import java.time.LocalDate;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -57,7 +58,6 @@ public class User {
     public UserEntity createUserEntity() {
         UserEntity user = new UserEntity();
         user.setUsername( this.username );
-        user.setPassword( this.password);
         user.setForename( this.forename );
         user.setSurname( this.surname );
         user.setEmail( this.email );

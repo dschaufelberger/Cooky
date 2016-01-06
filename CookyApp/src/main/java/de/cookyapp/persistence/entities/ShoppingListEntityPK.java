@@ -14,7 +14,8 @@ public class ShoppingListEntityPK implements Serializable {
     private int ingredientId;
 
     @Column( name = "UserID", nullable = false )
-    @Id     @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getUserId() {
         return userId;
     }
@@ -24,7 +25,8 @@ public class ShoppingListEntityPK implements Serializable {
     }
 
     @Column( name = "IngredientID", nullable = false )
-    @Id     @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getIngredientId() {
         return ingredientId;
     }

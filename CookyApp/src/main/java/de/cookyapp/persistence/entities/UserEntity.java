@@ -3,19 +3,7 @@ package de.cookyapp.persistence.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.enums.Gender;
@@ -40,7 +28,7 @@ public class UserEntity {
 
     private AddressEntity address;
     private Collection<CookbookEntity> cookbooks;
-    private Collection<CommentEntity> comments;
+    /*private Collection<CommentEntity> comments;*/
     private Collection<UserPreferenceEntity> preferences;
     private Collection<MessageEntity> sentMessages;
     private Collection<MessageEntity> receivedMessages;
@@ -50,7 +38,7 @@ public class UserEntity {
 
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -172,6 +160,7 @@ public class UserEntity {
         this.cookbooks = cookbooks;
     }
 
+    /*
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "author" )
     public Collection<CommentEntity> getComments() {
         return comments;
@@ -179,7 +168,7 @@ public class UserEntity {
 
     public void setComments( Collection<CommentEntity> comments ) {
         this.comments = comments;
-    }
+    }*/
 
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "user" )
     public Collection<UserPreferenceEntity> getPreferences() {
@@ -191,7 +180,7 @@ public class UserEntity {
     }
 
     @OneToOne( cascade = CascadeType.ALL )
-    @JoinColumn( name = "AddressID" )
+    @JoinColumn(name = "AddressID")
     public AddressEntity getAddress() {
         return address;
     }
@@ -236,7 +225,7 @@ public class UserEntity {
         this.outgoingFriendships = outgoingFriendships;
     }
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "acceptingFriend" )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acceptingFriend" )
     public Collection<FriendshipEntity> getIncomingFriendships() {
         return incomingFriendships;
     }

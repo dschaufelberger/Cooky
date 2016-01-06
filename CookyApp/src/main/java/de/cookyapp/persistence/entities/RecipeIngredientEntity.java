@@ -1,17 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -24,7 +13,7 @@ public class RecipeIngredientEntity {
     private String unit;
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "ID", nullable = false )
     public int getId() {
         return id;
@@ -34,6 +23,25 @@ public class RecipeIngredientEntity {
         this.id = id;
     }
 
+    //@Basic
+    //@Column( name = "RecipeID", nullable = false )
+    //public int getRecipeId() {
+    //    return recipeId;
+    //}
+    //
+    //public void setRecipeId( int recipeId ) {
+    //    this.recipeId = recipeId;
+    //}
+    //
+    //@Basic
+    //@Column( name = "IngredientID", nullable = false )
+    //public int getIngredientId() {
+    //    return ingredientId;
+    //}
+    //
+    //public void setIngredientId( int ingredientId ) {
+    //    this.ingredientId = ingredientId;
+    //}
 
     @Basic
     @Column( name = "Amount", nullable = true, length = 20 )
@@ -45,7 +53,6 @@ public class RecipeIngredientEntity {
         this.amount = amount;
     }
 
-
     @Basic
     @Column( name = "Unit", nullable = true, length = 20 )
     public String getUnit() {
@@ -54,32 +61,6 @@ public class RecipeIngredientEntity {
 
     public void setUnit( String unit ) {
         this.unit = unit;
-    }
-
-
-    private IngredientEntity ingredient;
-
-    @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "IngredientID" )
-    public IngredientEntity getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient( IngredientEntity ingredient ) {
-        this.ingredient = ingredient;
-    }
-
-
-    private RecipeEntity recipe;
-
-    @ManyToOne( optional = false )
-    @JoinColumn( name = "RecipeID" )
-    public RecipeEntity getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe( RecipeEntity recipe ) {
-        this.recipe = recipe;
     }
 
     @Override
@@ -113,5 +94,29 @@ public class RecipeIngredientEntity {
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (unit != null ? unit.hashCode() : 0);
         return result;
+    }
+
+    private IngredientEntity ingredient;
+
+    @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false )
+    @JoinColumn(name = "IngredientID")
+    public IngredientEntity getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient( IngredientEntity ingredient ) {
+        this.ingredient = ingredient;
+    }
+
+    private RecipeEntity recipe;
+
+    @ManyToOne( optional = false )
+    @JoinColumn(name = "RecipeID" )
+    public RecipeEntity getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe( RecipeEntity recipe ) {
+        this.recipe = recipe;
     }
 }

@@ -4,11 +4,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -23,7 +22,6 @@ public class FriendshipEntity {
     private LocalDateTime date;
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "UserIDOne", nullable = false )
     public int getUserIdOne() {
         return userIdOne;
@@ -34,7 +32,6 @@ public class FriendshipEntity {
     }
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "UserIDTwo", nullable = false )
     public int getUserIdTwo() {
         return userIdTwo;
