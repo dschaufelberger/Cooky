@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
     @RequestMapping( "/loginPage" )
     public String loginPage() {
-        return "authentication/LoginPage";
+        return "LoginTile";
     }
 
     @RequestMapping( "/loginError" )
     public String loginError() {
-        return "authentication/LoginError";
+        return "LoginErrorTile";
     }
 }

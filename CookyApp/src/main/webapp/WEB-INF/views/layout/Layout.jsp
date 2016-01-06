@@ -14,22 +14,22 @@
 <%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 
 <!DOCTYPE html>
-<html class="full">
+<html>
 <head>
     <meta charset="UTF-8">
     <link href="<spring:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet">
-    <link href="<spring:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">
+    <%--<link href="<spring:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">--%>
     <link href="<spring:url value="/resources/css/cooky/cooky-general.css"/>" rel="stylesheet">
     <script src="<spring:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<spring:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
-<body>
+<body class="food">
 <div>
     <tiles:insertAttribute name="navigation" />
 </div>
-<div class="container">
+<div class="mainContent">
     <tiles:insertAttribute name="content" />
 </div>
 <%--<div>

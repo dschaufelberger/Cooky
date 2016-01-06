@@ -17,16 +17,16 @@
 
     <sec:authentication-manager id="in-memory-auth">
         <sec:authentication-provider>
-            <sec:password-encoder hash="md5" />
+            <sec:password-encoder hash="bcrypt" />
             <sec:user-service>
-                <sec:user name="dominik" authorities="ROLE_ADMIN" password="721c6ff80a6d3e4ad4ffa52a04c60085" />
+                <sec:user name="dominik" authorities="ROLE_ADMIN" password="$2a$10$5vZMmlDfCwxS.8l4lKswyugjbcgjfz70vKAgPuE7E0qEOX6cLpTzG" />
             </sec:user-service>
         </sec:authentication-provider>
     </sec:authentication-manager>
 
     <sec:authentication-manager id="jdbc-auth">
         <sec:authentication-provider>
-            <sec:password-encoder hash="md5" />
+            <sec:password-encoder hash="bcrypt" />
             <!-- The authenticationDataSource is declared in the spring-web-config.xml -->
             <!-- This is to have a seperation of bean declarations and security stuff only! -->
             <sec:jdbc-user-service data-source-ref="authenticationDataSource"
@@ -34,5 +34,4 @@
                                    authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?" />
         </sec:authentication-provider>
     </sec:authentication-manager>
-
 </beans>
