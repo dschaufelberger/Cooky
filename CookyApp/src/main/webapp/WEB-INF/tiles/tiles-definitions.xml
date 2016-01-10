@@ -54,6 +54,18 @@
         <put-attribute name="content" value="/WEB-INF/views/authentication/LoginError.jsp"/>
     </definition>
 
+    <!-- A users personal account management page, mapped to "/account/details" -->
+    <definition name="UserAccountTile" extends="base.definition">
+        <put-attribute name="title" value="Your Account Information"/>
+        <put-attribute name="content" value="/WEB-INF/views/account/accountForm.jsp"/>
+    </definition>
+
+    <!-- A users personal password management page, mapped to "/account/changePassword" -->
+    <definition name="UserPasswordTile" extends="base.definition">
+        <put-attribute name="title" value="Your Account Information"/>
+        <put-attribute name="content" value="/WEB-INF/views/account/passwordForm.jsp"/>
+    </definition>
+
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
     <definition name="" extends="base.definition">

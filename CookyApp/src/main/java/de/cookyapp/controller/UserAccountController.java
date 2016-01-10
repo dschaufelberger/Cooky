@@ -29,12 +29,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserAccountController {
     private PasswordEncoder passwordEncoder;
 
-
     @Autowired
     public UserAccountController( PasswordEncoder passwordEncoder ) {
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @RequestMapping( "/details" )
     public ModelAndView showAccount( Principal principal ) {
@@ -42,13 +40,14 @@ public class UserAccountController {
         UserDao userdao = new UserDao();
         if ( userdao.loadUserByUsername( principal.getName() ) != null ) {
             User user = new User( userdao.loadUserByUsername( principal.getName() ) );
-            ModelAndView model = new ModelAndView( "accountForm" );
+            ModelAndView model = new ModelAndView( "UserAccountTile" );
             //model.addObject( "user", new User( userdao.load( id ) ) );
             model.addObject( "user", user );
             model.addObject( "password", new Password() );
             return model;
 
         } else {
+            //TODO [Dodo - 10.01.16] das wird später nicht mehr nötig sein, da der bereich generell geschützt wird => nicht eingeloggt -> verweis auf login seite
             ModelAndView model = new ModelAndView( "authentication/LoginPage" );
             return model;
         }
@@ -59,37 +58,25 @@ public class UserAccountController {
     public ModelAndView showPasswordForm() {
 
         UserDao userdao = new UserDao();
-        ModelAndView model = new ModelAndView( "passwordForm" );
+        ModelAndView model = new ModelAndView( "UserPasswordTile" );
         model.addObject( "password", new Password() );
 
         return model;
     }
-
-    /*@RequestMapping( "/userlist" )
-    public ModelAndView showAllUsers() {
-
-        UserDao userdao = new UserDao();
-
-        ModelAndView model = new ModelAndView( "userList" );
-        List userList = new ArrayList<UserEntity>();
-        userList = userdao.loadAll();
-        model.addObject( "userList", userList );
-        return model;
-    }*/
 
     @RequestMapping( "/edit" )
     public String saveData( @ModelAttribute( "user" ) @Valid User user, BindingResult bindingResult, Principal principal ) {
         System.out.println( principal.getName() );
         System.out.println( user.getUsername() );
         if ( bindingResult.hasErrors() ) {
-            return "/accountForm";
+            return "UserAccountTile";
         } else {
             if ( principal.getName().equals( user.getUsername() ) ) {
                 UserDao userDao = new UserDao();
                 userDao.editUser( user.getId(), user.getForename(), user.getSurname(), user.getEmail() );
                 return "redirect:/account/details";
             } else {
-                return "/accountForm";
+                return "UserAccountTile";
             }
 
         }
@@ -100,24 +87,24 @@ public class UserAccountController {
 
 
         if ( bindingResult.hasErrors() ) {
-            return "/passwordForm";
+            return "UserPasswordTile";
         } else {
             UserDao userDao = new UserDao();
             UserEntity user = userDao.loadUserByUsername( principal.getName() );
             //User user = userDao.load( password.getId() );
             if ( this.passwordEncoder.matches( password.getOldpassword(), user.getPassword() ) ) {
-                if ( password.getNewpassword() != null && password.getNewpassword().equals( password.getPassword_confirm()) ) {
+                if ( password.getNewpassword() != null && password.getNewpassword().equals( password.getPassword_confirm() ) ) {
                     user.setPassword( this.passwordEncoder.encode( password.getNewpassword() ) );
                     userDao.update( user );
                     return "redirect:/account/details";
                 } else {
                     bindingResult.addError( new FieldError( "user", "password_confirm", "Das neue Passwort und dessen Bestätigung stimmen nicht überein. Bitte geben Sie beide Passwröter korrekt ein." ) );
-                    return "/passwordForm";
+                    return "UserPasswordTile";
                 }
 
             } else {
                 bindingResult.addError( new FieldError( "user", "oldpassword", "Ihr eingegebenes Passwort stimmt nicht mit dem aktuellen Passwort überein. Bitte geben Sie Ihr aktuelles Passwort ein." ) );
-                return "/passwordForm";
+                return "/UserPasswordTile";
             }
         }
     }
