@@ -41,7 +41,7 @@ public class RecipeController {
 
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView handleRecipes() {
-        ModelAndView model = new ModelAndView( "recipes/recipes" );
+        ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
         model.addObject( "recipesList", this.recipeDao.getAllRecipes() );
         return model;
     }
@@ -57,7 +57,7 @@ public class RecipeController {
     public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult ) {
         String view;
         if ( bindingResult.hasErrors() ) {
-            view = "recipes/editRecipe";
+            view = "RecipeEditTile";
         } else {
             RecipeEntity recipeEntity = this.recipeDao.loadWithLazyRelations( recipe.getId() );
             Iterator<RecipeIngredientEntity> iterator = recipeEntity.getIngredients().iterator();
@@ -104,21 +104,21 @@ public class RecipeController {
     @RequestMapping( "/goToEditRecipe" )
     public ModelAndView handleEditRecipe( @RequestParam( "id" ) int id ) {
         Recipe recipe = new Recipe( this.recipeDao.getRecipeById( id ) );
-        ModelAndView model = new ModelAndView( "recipes/editRecipe", "recipe", recipe );
+        ModelAndView model = new ModelAndView( "RecipeEditTile", "recipe", recipe );
         return model;
     }
 
     @RequestMapping( "/goToAddRecipe" )
     public ModelAndView handleGoToRecipe() {
-        ModelAndView model = new ModelAndView( "recipes/addRecipe", "recipe", new Recipe() );
+        ModelAndView model = new ModelAndView( "RecipeCreationTile", "recipe", new Recipe() );
         return model;
     }
 
-    @RequestMapping( value = "/addRecipe" )
+    @RequestMapping( value = "/create" )
     public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult ) {
         String view;
         if ( bindingResult.hasErrors() ) {
-            view = "recipes/addRecipe";
+            view = "RecipeCreationTile";
         } else {
 
             RecipeEntity recipeEntity = new RecipeEntity( recipe );
