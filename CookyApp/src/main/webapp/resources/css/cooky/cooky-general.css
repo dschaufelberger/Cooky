@@ -6,9 +6,10 @@ html, body {
     height: 100%;
 }
 
-.food {
-    background: url("../../images/food_background.jpg") repeat;
-    background-size: 600px;
+.side-background {
+    /* background: url("../../images/food_background.jpg") repeat;
+    background-size: 600px; */
+    background-color: #00FF99;
 }
 
 .mainContent {

@@ -25,7 +25,7 @@
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
-<body class="food">
+<body class="side-background">
 <div>
     <tiles:insertAttribute name="navigation" />
 </div>
