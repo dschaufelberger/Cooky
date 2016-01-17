@@ -3,15 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:sec="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
-       http://www.springframework.org/schema/security
-       http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+       http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
 
     <context:component-scan base-package="de.cookyapp" />
     <context:annotation-config />
@@ -19,34 +16,11 @@
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
-    <sec:http authentication-manager-ref="jdbc-auth">
-        <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
-
-        <sec:form-login login-page="/loginPage"
-                        default-target-url="/"
-                        authentication-failure-url="/loginError" />
-        <sec:logout logout-success-url="/" />
-    </sec:http>
-
-    <sec:authentication-manager id="in-memory-auth">
-        <sec:authentication-provider>
-            <sec:password-encoder hash="bcrypt" />
-            <sec:user-service>
-                <sec:user name="dominik" authorities="ROLE_ADMIN" password="$2a$10$5vZMmlDfCwxS.8l4lKswyugjbcgjfz70vKAgPuE7E0qEOX6cLpTzG" />
-            </sec:user-service>
-        </sec:authentication-provider>
-    </sec:authentication-manager>
-
-    <sec:authentication-manager id="jdbc-auth">
-        <sec:authentication-provider>
-            <sec:password-encoder hash="bcrypt" />
-            <!-- The authorites query is fake! We have to correct it after the demo -->
-            <!-- SELECT Username, Role FROM UserRole WHERE Username = ? -->
-            <sec:jdbc-user-service data-source-ref="authenticationDataSource"
-                                   users-by-username-query="SELECT Username, Password, enabled FROM User WHERE Username = ?"
-                                   authorities-by-username-query="SELECT ? AS Username, 'USER' AS Role FROM UserRole" />
-        </sec:authentication-provider>
-    </sec:authentication-manager>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2" />
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
 
     <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -55,11 +29,5 @@
         <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
-    </bean>
-
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-
 </beans>

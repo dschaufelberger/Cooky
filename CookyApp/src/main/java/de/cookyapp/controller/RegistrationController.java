@@ -42,14 +42,14 @@ public class RegistrationController {
 
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView registrationForm() {
-        return new ModelAndView( "/registration/RegistrationForm", "user", new User() );
+        return new ModelAndView( "RegistrationTile", "user", new User() );
     }
 
     @RequestMapping( method = RequestMethod.POST )
     public String registrationSubmit( @ModelAttribute( "user" ) @Valid User user, BindingResult bindingResult ) {
         String view;
         if ( bindingResult.hasErrors() ) {
-            view = "/registration/RegistrationForm";
+            view = "RegistrationTile";
         } else {
             boolean isUniqueUser = true;
             List<UserEntity> list = this.userDao.loadAll();
@@ -79,10 +79,10 @@ public class RegistrationController {
 
                 this.userDao.save( userEntity );
 
-                view = "/registration/RegistrationSuccess";
+                view = "RegistrationSuccessTile";
             } else {
                 bindingResult.addError( new FieldError( "user", "username", "Der Benutzername ist bereits vergeben. Bitte wählen Sie einen Neuen." ) );
-                view = "/registration/RegistrationForm";
+                view = "RegistrationTile";
             }
         }
 

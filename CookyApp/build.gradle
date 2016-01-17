@@ -33,6 +33,11 @@ dependencies {
     compile 'log4j:log4j:1.2.17'
 
     //MySQL JDBC driver
+    compile 'org.apache.tiles:tiles-core:3.0.5'
+    compile 'org.apache.tiles:tiles-jsp:3.0.5'
+    compile 'org.apache.tiles:tiles-el:3.0.5'
+
+
     runtime 'mysql:mysql-connector-java:5.1.37'
 
     //JSP and Servlet stuff that's container in Tomcat but needed at compile time.

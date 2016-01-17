@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+
+<!-- Please write a comment for each definition describing in one sentence the web page that's behind the definition -->
+<!-- and also the mapped url part. -->
+<!-- For better visibility in the controller files, please give a name ending with "Tile" -->
+<tiles-definitions>
+
+
+    <!-- This is the base definition for all web pages in the Cooky application -->
+    <!-- Other Tiles definition have to extend this one as it specifies the base layout and contains the navigation -->
+    <!-- and probably soon the upcoming footer-->
+    <definition name="base.definition" template="/WEB-INF/views/layout/Layout.jsp">
+        <put-attribute name="title" value="" />
+        <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
+        <put-attribute name="navigation" value="/WEB-INF/views/layout/Navigation.jsp" />
+        <put-attribute name="content" value="" />
+        <!--<put-attribute name="footer" value="" />-->
+    </definition>
+
+
+    <!-- The Welcome page for all users, mapped to the root "/" -->
+    <definition name="WelcomeTile" extends="base.definition">
+        <put-attribute name="title" value="Cooky" />
+        <put-attribute name="content" value="/WEB-INF/views/Index.jsp" />
+    </definition>
+
+
+    <!-- The Registration page containing the registration form, mapped to "/registration" -->
+    <definition name="RegistrationTile" extends="base.definition">
+        <put-attribute name="title" value="Register on Cooky." />
+        <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationForm.jsp" />
+    </definition>
+
+
+    <!-- The Registration page containing the registration form, mapped to "/registration" -->
+    <definition name="RegistrationSuccessTile" extends="base.definition">
+        <put-attribute name="title" value="Welcome to Cooky!" />
+        <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationSuccess.jsp" />
+    </definition>
+
+    <!-- The Login page containing the login form, mapped to "/loginPage" -->
+    <definition name="LoginTile" extends="base.definition">
+        <put-attribute name="title" value="Cooky Login" />
+        <put-attribute name="content" value="/WEB-INF/views/authentication/LoginPage.jsp" />
+    </definition>
+
+    <!-- The Login error page containing the login form, mapped to "/loginError" -->
+    <definition name="LoginErrorTile" extends="base.definition">
+        <put-attribute name="title" value="Login Error"/>
+        <put-attribute name="content" value="/WEB-INF/views/authentication/LoginError.jsp"/>
+    </definition>
+
+    <!-- A users personal account management page, mapped to "/account/details" -->
+    <definition name="UserAccountTile" extends="base.definition">
+        <put-attribute name="title" value="Your Account Information"/>
+        <put-attribute name="content" value="/WEB-INF/views/account/accountForm.jsp"/>
+    </definition>
+
+    <!-- A users personal password management page, mapped to "/account/changePassword" -->
+    <definition name="UserPasswordTile" extends="base.definition">
+        <put-attribute name="title" value="Your Account Information"/>
+        <put-attribute name="content" value="/WEB-INF/views/account/passwordForm.jsp"/>
+    </definition>
+
+    <!-- The recipe overview page, mapped to "/recipes -->
+    <definition name="RecipeOverviewTile" extends="base.definition">
+        <put-attribute name="title" value="Cooky Recipes" />
+        <put-attribute name="content" value="/WEB-INF/views/recipes/recipes.jsp" />
+    </definition>
+
+    <!-- Page to create a new recipe, mapped to "/recipes/create -->
+    <definition name="RecipeEditTile" extends="base.definition">
+        <put-attribute name="title" value="Cooky Recipe" />
+        <put-attribute name="content" value="/WEB-INF/views/recipes/editRecipe.jsp" />
+    </definition>
+
+    <!-- The recipe overview page, mapped to "/recipes -->
+    <definition name="RecipeCreationTile" extends="base.definition">
+        <put-attribute name="title" value="Cooky Recipe" />
+        <put-attribute name="content" value="/WEB-INF/views/recipes/addRecipe.jsp" />
+    </definition>
+
+    <!-- Empty definition template. You can copy this and set the name and value attributes. -->
+    <!--
+    <definition name="" extends="base.definition">
+        <put-attribute name="title" value="" />
+        <put-attribute name="content" value="" />
+    </definition>
+    -->
+</tiles-definitions>
