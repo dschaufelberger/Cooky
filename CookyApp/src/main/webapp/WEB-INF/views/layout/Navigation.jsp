@@ -18,11 +18,21 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
+
                     <%-- If the user is authorized render "Hallo 'Username'" and set the icon to a user icon. --%>
                     <sec:authorize access="isAuthenticated()">
                         <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">
                             Hallo <sec:authentication property="principal.username" />
                         </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                    <a class="glyphicon glyphicon-log-out" href="#"
+                                       onclick="$('form#logOutForm').submit();">Logout</a>
+                                <form:form id="logOutForm" method="post" action="/logout">
+                                </form:form>
+                            </li>
+                        </ul>
                     </sec:authorize>
 
                     <%-- Else render "Login" and a login icon. --%>
@@ -30,19 +40,7 @@
                         <a class="dropdown-toggle glyphicon glyphicon-log-in" data-toggle="dropdown">
                             Login
                         </a>
-                    </sec:authorize>
 
-                    <sec:authorize access="isAuthenticated()">
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form:form id="logOutForm" method="post" action="/logout">
-                                    <a class="glyphicon glyphicon-log-out" href="#" onclick="$('form#logoutForm').submit();">Logout</a>
-                                </form:form>
-                            </li>
-                        </ul>
-
-                    </sec:authorize>
-                    <sec:authorize access="not isAuthenticated()">
                         <div class="dropdown-menu cooky-navigation-dropdown">
                             <cooky:login />
                         </div>

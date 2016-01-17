@@ -9,9 +9,9 @@
     <sec:http authentication-manager-ref="in-memory-auth">
         <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
 
-        <sec:form-login login-page="/loginPage"
+        <sec:form-login login-page="/signin"
                         default-target-url="/"
-                        authentication-failure-url="/loginError" />
+                        authentication-failure-url="/signinError" />
         <sec:logout logout-success-url="/" />
     </sec:http>
 
