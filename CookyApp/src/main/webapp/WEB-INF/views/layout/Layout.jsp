@@ -6,17 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<spring:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet">
     <%--<link href="<spring:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">--%>
     <link href="<spring:url value="/resources/css/cooky/cooky-general.css"/>" rel="stylesheet">
@@ -25,12 +22,18 @@
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
-<body class="side-background">
-<div>
-    <tiles:insertAttribute name="navigation" />
-</div>
-<div class="mainContent">
-    <tiles:insertAttribute name="content" />
+<body class="cooky-background">
+
+<tiles:insertAttribute name="navigation" />
+
+<div class="container-fluid cooky-fill">
+    <div class="row cooky-fill">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 cooky-mainContent cooky-fill">
+            <tiles:insertAttribute name="content" />
+        </div>
+        <div class="col-md-2"></div>
+    </div>
 </div>
 <%--<div>
     <tiles:insertAttribute name="footer" />
