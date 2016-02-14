@@ -42,13 +42,13 @@
         <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationSuccess.jsp" />
     </definition>
 
-    <!-- The Login page containing the login form, mapped to "/loginPage" -->
+    <!-- The Login page containing the login form, mapped to "/signin" -->
     <definition name="LoginTile" extends="base.definition">
         <put-attribute name="title" value="Cooky Login" />
         <put-attribute name="content" value="/WEB-INF/views/authentication/LoginPage.jsp" />
     </definition>
 
-    <!-- The Login error page containing the login form, mapped to "/loginError" -->
+    <!-- The Login error page containing the login form, mapped to "/signinError" -->
     <definition name="LoginErrorTile" extends="base.definition">
         <put-attribute name="title" value="Login Error"/>
         <put-attribute name="content" value="/WEB-INF/views/authentication/LoginError.jsp"/>

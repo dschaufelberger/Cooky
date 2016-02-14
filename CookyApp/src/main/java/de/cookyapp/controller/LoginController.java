@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class LoginController {
-    @RequestMapping( "/loginPage" )
+    @RequestMapping( "/signin" )
     public String loginPage() {
         return "LoginTile";
     }
 
-    @RequestMapping( "/loginError" )
+    @RequestMapping( "/signinError" )
     public String loginError() {
         return "LoginErrorTile";
     }

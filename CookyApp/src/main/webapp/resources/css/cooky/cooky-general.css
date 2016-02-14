@@ -1,24 +1,25 @@
-.cooky-navigation-dropdown {
-    padding: 10px;
-}
-
 html, body {
     height: 100%;
 }
 
-.side-background {
+.navbar {
+    margin-bottom: 0px;
+}
+
+.cooky-background {
     /* background: url("../../images/food_background.jpg") repeat;
     background-size: 600px; */
     background-color: #00FF99;
 }
 
-.mainContent {
-    width: 65%;
-    margin-left: auto;
-    margin-right: auto;
+.cooky-mainContent {
     background-color: #ffffff;
-    min-height: 100%;
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-top: 60px;
+}
+
+.cooky-navigation-dropdown {
+     padding: 10px;
+ }
+
+.cooky-fill {
+    height: 100%;
 }

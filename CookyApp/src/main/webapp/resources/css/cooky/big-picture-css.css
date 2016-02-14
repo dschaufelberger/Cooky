@@ -3,11 +3,3 @@ body {
     margin-bottom: 50px;
     background: none;
 }
-
-.full {
-    background: url("../../images/home_screen.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
