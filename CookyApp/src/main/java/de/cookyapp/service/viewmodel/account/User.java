@@ -1,10 +1,7 @@
-package de.cookyapp.viewmodel.account;
+package de.cookyapp.service.viewmodel.account;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.persistence.GeneratedValue;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -12,7 +9,6 @@ import de.cookyapp.enums.Gender;
 import de.cookyapp.persistence.entities.UserEntity;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Created by Mario on 30.11.2015.

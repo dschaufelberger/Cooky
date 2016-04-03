@@ -1,4 +1,4 @@
-package de.cookyapp.viewmodel.registration;
+package de.cookyapp.service.viewmodel.registration;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

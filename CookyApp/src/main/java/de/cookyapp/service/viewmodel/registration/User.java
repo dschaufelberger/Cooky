@@ -1,6 +1,5 @@
-package de.cookyapp.viewmodel.registration;
+package de.cookyapp.service.viewmodel.registration;
 
-import java.security.MessageDigest;
 import java.time.LocalDate;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

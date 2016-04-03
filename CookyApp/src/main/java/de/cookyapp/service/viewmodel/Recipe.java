@@ -1,20 +1,17 @@
-package de.cookyapp.viewmodel;
+package de.cookyapp.service.viewmodel;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Jasper on 30.11.2015.

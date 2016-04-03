@@ -1,6 +1,5 @@
-package de.cookyapp.viewmodel;
+package de.cookyapp.service.viewmodel;
 
-import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
