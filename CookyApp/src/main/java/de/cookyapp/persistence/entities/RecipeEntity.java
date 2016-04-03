@@ -17,9 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
-import de.cookyapp.persistence.dao.IngredientDao;
 import de.cookyapp.viewmodel.Recipe;
-import org.springframework.cglib.core.Local;
 //TODO check imports
 
 /**

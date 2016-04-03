@@ -25,7 +25,7 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     <jpa:repositories base-package="de.cookyapp.persistence.repositories"
-                      entity-manager-factory-ref="hibernateSessionFactory"
+                      entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -36,18 +36,34 @@
 
     <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost/Cooky_Dev_Users" />
+        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
+        <property name="username" value="tomcat7" />
+        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
+    </bean>
+
+    <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev" />
         <property name="username" value="tomcat7" />
         <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
 
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-    <bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="configLocation" value="classpath:hibernate.cfg.xml" />
+    <bean id="hibernateVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="applicationDataSource" />
+        <property name="packagesToScan" value="de.cookyapp.persistence.entities" />
+        <property name="jpaVendorAdapter" ref="hibernateVendorAdapter" />
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="hibernateSessionFactory" />
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 </beans>
