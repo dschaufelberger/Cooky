@@ -1,4 +1,4 @@
-package de.cookyapp.service.viewmodel.registration;
+package de.cookyapp.web.viewmodel.registration;
 
 import java.time.LocalDate;
 import javax.validation.Valid;

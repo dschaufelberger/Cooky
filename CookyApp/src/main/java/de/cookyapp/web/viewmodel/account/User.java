@@ -1,4 +1,4 @@
-package de.cookyapp.service.viewmodel.account;
+package de.cookyapp.web.viewmodel.account;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
