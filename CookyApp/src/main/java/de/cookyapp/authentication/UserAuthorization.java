@@ -1,6 +1,7 @@
 package de.cookyapp.authentication;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,10 +20,13 @@ public class UserAuthorization implements IUserAuthorization {
     @Override
     public boolean hasAnyAuthority( Authentication authentication, String[] authorities ) {
         Collection<? extends GrantedAuthority> grantedAuthorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> authoritiesIterator = grantedAuthorities.iterator();
+        GrantedAuthority authority;
         boolean isAuthorized = false;
 
-        for ( int i = 0; i < grantedAuthorities.size() && !isAuthorized; i++ ) {
-            //isAuthorized |= authoritiesContains( authorities, grantedAuthorities..getAuthority() );
+        while(authoritiesIterator.hasNext() && !isAuthorized) {
+            authority = authoritiesIterator.next();
+            isAuthorized |= authoritiesContains( authorities, authority.getAuthority() );
         }
 
         return isAuthorized;
