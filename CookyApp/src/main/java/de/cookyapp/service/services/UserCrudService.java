@@ -1,15 +1,18 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
+import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,38 +55,52 @@ public class UserCrudService implements IUserCrudService {
 
     @Override
     public void deleteUser( int id ) {
-        UserEntity userEntity = this.userCrudRepository.findOne( id );
-
-        if ( userEntity != null ) {
-            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( userEntity.getUsername() );
-
-            //TODO [dodo] define authority roles and check if the current authority is authorized for this action.
-            //if (!isAuthorized) {
-            //    isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" );
-            //}
-
-            if ( isAuthorized ) {
-                this.userCrudRepository.delete( userEntity );
-            }
-        }
+        deleteUserById( id );
     }
 
     @Override
     public void deleteUser( User user ) {
-        //TODO [dodo] add the necessary fields to the User class
-        //deleteUser( user.getId() );
+        deleteUserById( user.getId() );
     }
 
     @Override
     public void createUser( User user ) {
-        //TODO [dodo] add the necessary fields to the User class
-        //TODO [dodo] implement a mapper between User <-> UserEntity
+        UserEntity userEntity = new UserEntity();
+
+        userEntity.setUsername( user.getUsername() );
+        userEntity.setPassword( user.getPassword() );
+        userEntity.setForename( user.getForename() );
+        userEntity.setSurname( user.getSurname() );
+        userEntity.setEmail( user.getEmail() );
+        userEntity.setGender( user.getGender() );
+        userEntity.setBirthdate( user.getBirthdate() );
+        userEntity.setRegistrationDate( user.getRegistrationDate() );
+        userEntity.setLastLoginDate( user.getLastLoginDate() );
+        userEntity.setAccountState( user.getAccountState() );
+        userEntity.setAccountState( AccountState.REGISTERED );
+        userEntity.setRegistrationDate( LocalDateTime.now() );
+
+        this.userCrudRepository.save( userEntity );
     }
 
     @Override
     public void updateUser( User user ) {
-        //TODO [dodo] add the necessary fields to the User class
-        //TODO [dodo] implement a mapper between User <-> UserEntity
+        UserEntity userEntity = this.userCrudRepository.findOne( user.getId() );
+        if ( userEntity != null ) {
+            //TODO [dodo] define authority roles and check if the current authority is authorized for this action
+            Authentication authentication = this.authentication.getAuthentication();
+            boolean isAuthorized = authentication.getName().equals( user.getUsername() );
+
+            if ( !isAuthorized ) {
+                isAuthorized = this.userAuthorization.hasAuthority( authentication, "COOKY_ADMIN" );
+            }
+
+            if ( isAuthorized ) {
+                this.userCrudRepository.save( userEntity );
+            }
+        } else {
+            //TODO [dodo] throw new Exception;
+        }
     }
 
     @Override
@@ -140,6 +157,23 @@ public class UserCrudService implements IUserCrudService {
     @Override
     public boolean userExsists( String username ) {
         return this.userCrudRepository.findByUsername( username ) != null;
+    }
+
+    private void deleteUserById(int id) {
+        UserEntity userEntity = this.userCrudRepository.findOne( id );
+
+        if ( userEntity != null ) {
+            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( userEntity.getUsername() );
+
+            //TODO [dodo] define authority roles and check if the current authority is authorized for this action.
+            //if (!isAuthorized) {
+            //    isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" );
+            //}
+
+            if ( isAuthorized ) {
+                this.userCrudRepository.delete( userEntity );
+            }
+        }
     }
 
     private User getUserIfExistant( UserEntity userEntity ) {
