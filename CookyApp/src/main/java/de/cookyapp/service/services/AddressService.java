@@ -1,7 +1,5 @@
 package de.cookyapp.service.services;
 
-import java.util.List;
-
 import de.cookyapp.service.dto.Address;
 import de.cookyapp.service.services.interfaces.IAddressService;
 import org.springframework.stereotype.Service;

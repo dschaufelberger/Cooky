@@ -3,7 +3,6 @@ package de.cookyapp.web.controller;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.services.UserCrudService;
 import de.cookyapp.web.viewmodel.account.Password;
 import de.cookyapp.web.viewmodel.account.User;

@@ -159,7 +159,7 @@ public class UserCrudService implements IUserCrudService {
         return this.userCrudRepository.findByUsername( username ) != null;
     }
 
-    private void deleteUserById(int id) {
+    private void deleteUserById( int id ) {
         UserEntity userEntity = this.userCrudRepository.findOne( id );
 
         if ( userEntity != null ) {

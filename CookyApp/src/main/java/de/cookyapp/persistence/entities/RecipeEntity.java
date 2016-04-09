@@ -16,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
-//import de.cookyapp.service.viewmodel.Recipe;
-//TODO check imports
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -46,20 +44,7 @@ public class RecipeEntity {
     private Collection<RecipeIngredientEntity> ingredients;
 
     public RecipeEntity () {
-
     }
-
-    //public RecipeEntity (Recipe recipe) {
-    //    this.name = recipe.getName();
-    //    this.shortDescription = recipe.getShortDescription();
-    //    this.preparation = recipe.getPreparation();
-    //    this.difficulty = recipe.getDifficulty();
-    //    this.calories = recipe.getCalories();
-    //    this.serving = recipe.getServing();
-    //    this.workingTime = recipe.getWorkingTime();
-    //    this.cookingTime = recipe.getCookingTime();
-    //    this.restTime = recipe.getRestTime();
-    //}
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

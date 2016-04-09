@@ -8,8 +8,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
-import de.cookyapp.persistence.entities.RecipeEntity;
-import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -57,21 +55,25 @@ public class Recipe {
         ingredients = new ArrayList<>();
     }
 
-    public Recipe( RecipeEntity recipeEntity ) {
-        this.id = recipeEntity.getId();
-        this.ingredients = new ArrayList<>();
-        this.name = recipeEntity.getName();
-        this.shortDescription = recipeEntity.getShortDescription();
-        this.serving = recipeEntity.getServing();
-        this.preparation = recipeEntity.getPreparation();
-        this.calories = recipeEntity.getCalories();
-        this.difficulty = recipeEntity.getDifficulty();
-        this.workingTime = recipeEntity.getWorkingTime() == null ? 0 : recipeEntity.getWorkingTime();
-        this.cookingTime = recipeEntity.getCookingTime() == null ? 0 : recipeEntity.getCookingTime();
-        this.restTime = recipeEntity.getRestTime() == null ? 0 : recipeEntity.getRestTime();
-        for ( RecipeIngredientEntity entity : recipeEntity.getIngredients() ) {
-            this.ingredients.add( new Ingredient( entity ) );
-        }
+    public Recipe( de.cookyapp.service.dto.Recipe recipe ) {
+        //  TODO [dodo] hinzufügen der entsprechenden Fehler zu de.cookyapp.service.dto.Recipe
+        //  Und auch Methoden zum hinzufügen von Ingredients bzw einer Liste von Ingredients
+        //  (Die Ingredient Klasse unter dem dto-package muss dazu noch angelegt werden!)
+
+        //this.id = recipe.getId();
+        //this.ingredients = new ArrayList<>();
+        //this.name = recipe.getName();
+        //this.shortDescription = recipe.getShortDescription();
+        //this.serving = recipe.getServing();
+        //this.preparation = recipe.getPreparation();
+        //this.calories = recipe.getCalories();
+        //this.difficulty = recipe.getDifficulty();
+        //this.workingTime = recipe.getWorkingTime() == null ? 0 : recipe.getWorkingTime();
+        //this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
+        //this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
+        //for ( RecipeIngredientEntity entity : recipe.getIngredients() ) {
+        //    this.ingredients.add( new Ingredient( entity ) );
+        //}
     }
 
     public int getId() {

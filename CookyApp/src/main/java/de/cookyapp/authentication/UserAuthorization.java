@@ -24,7 +24,7 @@ public class UserAuthorization implements IUserAuthorization {
         GrantedAuthority authority;
         boolean isAuthorized = false;
 
-        while(authoritiesIterator.hasNext() && !isAuthorized) {
+        while ( authoritiesIterator.hasNext() && !isAuthorized ) {
             authority = authoritiesIterator.next();
             isAuthorized |= authoritiesContains( authorities, authority.getAuthority() );
         }
