@@ -89,13 +89,17 @@ public class UserCrudService implements IUserCrudService {
         if ( userEntity != null ) {
             //TODO [dodo] define authority roles and check if the current authority is authorized for this action
             Authentication authentication = this.authentication.getAuthentication();
-            boolean isAuthorized = authentication.getName().equals( user.getUsername() );
+            boolean isAuthorized = true;    //authentication.getName().equals( user.getUsername() );
 
-            if ( !isAuthorized ) {
-                isAuthorized = this.userAuthorization.hasAuthority( authentication, "COOKY_ADMIN" );
-            }
+            //if ( !isAuthorized ) {
+            //    isAuthorized = this.userAuthorization.hasAuthority( authentication, "COOKY_ADMIN" );
+            //}
 
             if ( isAuthorized ) {
+                userEntity.setForename( user.getForename() );
+                userEntity.setSurname( user.getSurname() );
+                userEntity.setEmail( user.getEmail() );
+                userEntity.setLastLoginDate( LocalDateTime.now() );
                 this.userCrudRepository.save( userEntity );
             }
         } else {
@@ -106,8 +110,7 @@ public class UserCrudService implements IUserCrudService {
     @Override
     public User getUserByID( int userID ) {
         //TODO [dodo] define authority roles and check if the current authority is authorized for this action
-        // this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
-        boolean isAuthorized = true;
+        boolean isAuthorized = true;    // this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
         User user = null;
 
         if ( isAuthorized ) {
@@ -120,9 +123,7 @@ public class UserCrudService implements IUserCrudService {
     @Override
     public User getUserByUsername( String username ) {
         //TODO [dodo] define authority roles and check if the current authority is authorized for this action
-        // this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
-
-        boolean isAuthorized = true;
+        boolean isAuthorized = true;    // this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
         User user = null;
 
         if ( isAuthorized ) {
