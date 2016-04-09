@@ -40,24 +40,6 @@ public class User {
         setAccountState( userEntity.getAccountState() );
     }
 
-    public UserEntity createUserEntity() {
-        UserEntity userEntity = new UserEntity();
-
-        userEntity.setId( getId() );
-        userEntity.setUsername( getUsername() );
-        userEntity.setPassword( getPassword() );
-        userEntity.setForename( getForename() );
-        userEntity.setSurname( getSurname() );
-        userEntity.setEmail( getEmail() );
-        userEntity.setGender( getGender() );
-        userEntity.setBirthdate( getBirthdate() );
-        userEntity.setRegistrationDate( getRegistrationDate() );
-        userEntity.setLastLoginDate( getLastLoginDate() );
-        userEntity.setAccountState( getAccountState() );
-
-        return userEntity;
-    }
-
     public int getId() {
         return id;
     }
