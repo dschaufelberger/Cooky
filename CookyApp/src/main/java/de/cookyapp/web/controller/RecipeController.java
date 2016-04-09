@@ -1,4 +1,4 @@
-package de.cookyapp.controller;
+package de.cookyapp.web.controller;
 
 import de.cookyapp.persistence.dao.IngredientDao;
 import de.cookyapp.persistence.dao.RecipeDao;

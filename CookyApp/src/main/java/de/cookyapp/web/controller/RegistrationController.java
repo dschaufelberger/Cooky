@@ -1,4 +1,4 @@
-package de.cookyapp.controller;
+package de.cookyapp.web.controller;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
