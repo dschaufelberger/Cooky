@@ -1,16 +1,13 @@
 package de.cookyapp.web.controller;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import javax.validation.Valid;
 
 import de.cookyapp.enums.AccountState;
-import de.cookyapp.persistence.dao.AddressDao;
-import de.cookyapp.persistence.dao.UserDao;
-import de.cookyapp.persistence.entities.AddressEntity;
+import de.cookyapp.service.services.interfaces.IAddressService;
+import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.registration.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,23 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.cookyapp.persistence.entities.UserEntity;
-import de.cookyapp.viewmodel.registration.User;
-
 /**
  * Created by Dominik Schaufelberger on 27.11.2015.
  */
 @Controller
 @RequestMapping( "/registration" )
 public class RegistrationController {
-    private UserDao userDao;
-    private AddressDao addressDao;
+    private IUserCrudService userCrudService;
+    private IAddressService addressService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationController( UserDao userDao, AddressDao addressDao, PasswordEncoder passwordEncoder ) {
-        this.userDao = userDao;
-        this.addressDao = addressDao;
+    public RegistrationController( IUserCrudService userCrudService, IAddressService addressService, PasswordEncoder passwordEncoder ) {
+        this.userCrudService = userCrudService;
+        this.addressService = addressService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -51,33 +45,30 @@ public class RegistrationController {
         if ( bindingResult.hasErrors() ) {
             view = "RegistrationTile";
         } else {
-            boolean isUniqueUser = true;
-            List<UserEntity> list = this.userDao.loadAll();
-
-            for ( UserEntity ue : list ) {
-                if ( user.getUsername().equals( ue.getUsername() ) ) {
-                    isUniqueUser = false;
-                }
-            }
+            boolean isUniqueUser = !this.userCrudService.userExsists( user.getUsername() );
 
             if ( isUniqueUser ) {
-                Collection<AddressEntity> addresses = this.addressDao.loadAll();
-                AddressEntity address = user.getAddress().createAddressEntity();
+                de.cookyapp.service.dto.User userDTO = new de.cookyapp.service.dto.User();
+                de.cookyapp.service.dto.Address address = new de.cookyapp.service.dto.Address();
 
-                for ( AddressEntity addressEntity : addresses ) {
-                    if ( address.equals( addressEntity ) ) {
-                        address = addressEntity;
-                        break;
-                    }
-                }
+                userDTO.setForename( user.getForename() );
+                userDTO.setSurname( user.getSurname() );
+                userDTO.setUsername( user.getUsername() );
+                userDTO.setPassword( this.passwordEncoder.encode( user.getPassword() ) );
+                userDTO.setGender( user.getGender() );
+                userDTO.setBirthdate( user.getBirthdate() );
+                userDTO.setEmail( user.getEmail() );
+                userDTO.setAccountState( AccountState.REGISTERED );
+                userDTO.setRegistrationDate( LocalDateTime.now() );
 
-                UserEntity userEntity = user.createUserEntity();
-                userEntity.setPassword( this.passwordEncoder.encode( user.getPassword() ) );
-                userEntity.setAddress( address );
-                userEntity.setAccountState( AccountState.REGISTERED );
-                userEntity.setRegistrationDate( LocalDateTime.now() );
+                address.setStreet( user.getAddress().getStreet() );
+                address.setHouseNumber( user.getAddress().getHouseNumber() );
+                address.setCity( user.getAddress().getCity() );
+                address.setPostcode( user.getAddress().getPostcode() );
 
-                this.userDao.save( userEntity );
+                this.userCrudService.createUser( userDTO );
+                userDTO = this.userCrudService.getUserByUsername( user.getUsername() );
+                this.addressService.createAddressForUser( userDTO.getId(), address );
 
                 view = "RegistrationSuccessTile";
             } else {
