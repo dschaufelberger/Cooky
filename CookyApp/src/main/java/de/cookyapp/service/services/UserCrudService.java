@@ -99,7 +99,6 @@ public class UserCrudService implements IUserCrudService {
                 userEntity.setForename( user.getForename() );
                 userEntity.setSurname( user.getSurname() );
                 userEntity.setEmail( user.getEmail() );
-                userEntity.setLastLoginDate( LocalDateTime.now() );
                 this.userCrudRepository.save( userEntity );
             }
         } else {

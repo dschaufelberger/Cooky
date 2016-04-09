@@ -6,7 +6,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.Gender;
-import de.cookyapp.persistence.entities.UserEntity;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -43,16 +42,15 @@ public class User {
 
     }
 
-    public User( UserEntity usere ) {
-        this.forename = usere.getForename();
-        this.surname = usere.getSurname();
-        this.email = usere.getEmail();
-        this.id = usere.getId();
-        this.gender = usere.getGender();
-        this.birthdate = usere.getBirthdate();
-        this.registrationDate = usere.getRegistrationDate();
-        this.username = usere.getUsername();
-
+    public User( de.cookyapp.service.dto.User user ) {
+        this.forename = user.getForename();
+        this.surname = user.getSurname();
+        this.email = user.getEmail();
+        this.id = user.getId();
+        this.gender = user.getGender();
+        this.birthdate = user.getBirthdate();
+        this.registrationDate = user.getRegistrationDate();
+        this.username = user.getUsername();
     }
 
 
