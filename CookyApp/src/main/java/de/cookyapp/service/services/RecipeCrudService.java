@@ -1,12 +1,18 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.authentication.IUserAuthorization;
+import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -14,38 +20,105 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 @Transactional
 @Service
 public class RecipeCrudService implements IRecipeCrudService {
+    private IRecipeCrudRepository recipeCrudRepository;
+    private IAuthenticationFacade authentication;
+    private IUserAuthorization userAuthorization;
+
+    @Autowired
+    public RecipeCrudService (IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserAuthorization userAuthorization) {
+        this.recipeCrudRepository = recipeCrudRepository;
+        this.authentication = authentication;
+        this.userAuthorization = userAuthorization;
+    }
+
     @Override
     public void deleteRecipe( int recipeID ) {
-        throw new NotImplementedException();
+        RecipeEntity deleteRecipe = recipeCrudRepository.findOne(recipeID);
+        if (deleteRecipe != null) {
+            boolean isAuthorized = this.authentication.getAuthentication().getName().equals(deleteRecipe.getAuthor().getUsername()); //Check current User Authentication
+            //if (!isAuthorized) --> Check if Admin delete Recipe
+            if (isAuthorized) {
+                recipeCrudRepository.delete(deleteRecipe);
+            }
+        }
     }
 
     @Override
     public void createRecipe( Recipe recipe ) {
-        throw new NotImplementedException();
+        RecipeEntity recipeEntity = new RecipeEntity();
+        recipeEntity.setName(recipe.getName());
+        recipeEntity.setRating(recipe.getRating());
+        recipeEntity.setServing(recipe.getServing());
+        recipeEntity.setCalories(recipe.getCalories());
+        recipeEntity.setAuthor(recipe.getAuthor());
+        recipeEntity.setDifficulty(recipe.getDifficulty());
+        recipeEntity.setImageFileName(recipe.getImageFileName());
+        recipeEntity.setShortDescription(recipe.getShortDescription());
+        recipeEntity.setCreationTime(LocalDateTime.now());
+
+        recipeCrudRepository.save(recipeEntity);
     }
 
     @Override
     public void updateRecipe( Recipe recipe ) {
-        throw new NotImplementedException();
+        RecipeEntity recipeEntity = new RecipeEntity();
+        boolean isAuthenticated = authentication.getAuthentication().getName().equals(recipe.getAuthor().getUsername());
+        //if (!isAuthenticated) //Admin überprüfen
+        if (isAuthenticated) {
+            recipeEntity.setName(recipe.getName());
+            recipeEntity.setWorkingTime(recipe.getWorkingTime());
+            recipeEntity.setRestTime(recipe.getRestTime());
+            recipeEntity.setShortDescription(recipe.getShortDescription());
+            recipeEntity.setCalories(recipe.getCalories());
+            recipeEntity.setDifficulty(recipe.getDifficulty());
+            recipeEntity.setCookingTime(recipe.getCookingTime());
+            recipeEntity.setImageFileName(recipe.getImageFileName());
+            recipeEntity.setPreparation(recipe.getPreparation());
+            recipeEntity.setServing(recipe.getServing());
+
+            recipeCrudRepository.save(recipeEntity); //Kann Save auch update?
+        }
     }
 
     @Override
     public Recipe getRecipe( int recipeID ) {
-        throw new NotImplementedException();
+        RecipeEntity recipeEntity = recipeCrudRepository.findOne(recipeID);
+        Recipe recipe = null;
+        if (recipeEntity != null) {
+            recipe = new Recipe(recipeEntity);
+        }
+        return recipe;
     }
 
     @Override
     public List<Recipe> getAllRecipes() {
-        throw new NotImplementedException();
-    }
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
+        List<Recipe> recipes = recipeEntityListToRecipeList(recipeEntities);
+        return recipes;
+    } //Abfrage auf Null
 
     @Override
     public List<Recipe> getAllRecipesByName( String recipeName ) {
-        throw new NotImplementedException();
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByName(recipeName);
+        List<Recipe> recipes = recipeEntityListToRecipeList(recipeEntities);
+        return recipes;
     }
 
     @Override
     public List<Recipe> searchRecipesContaining( String searchTerm ) {
-        throw new NotImplementedException();
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByNameLike(searchTerm);
+        List<Recipe> recipes = recipeEntityListToRecipeList(recipeEntities);
+        return recipes;
+    }
+
+    private List<Recipe> recipeEntityListToRecipeList (List<RecipeEntity> entities) {
+        List<Recipe> recipes = new ArrayList<>();
+        if (entities != null) {
+            for (RecipeEntity entity : entities) {
+                Recipe current = new Recipe(entity);
+                recipes.add(current);
+            }
+        }
+        return recipes;
     }
 }

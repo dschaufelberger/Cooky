@@ -2,7 +2,11 @@ package de.cookyapp.web.controller;
 
 import javax.validation.Valid;
 
+import de.cookyapp.persistence.entities.IngredientEntity;
+import de.cookyapp.service.dto.Ingredient;
+import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
+import de.cookyapp.service.services.interfaces.IRecipeIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Created by Jasper on 27.11.2015.
  */
@@ -23,11 +31,15 @@ import org.springframework.web.servlet.ModelAndView;
 public class RecipeController {
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
+    private IIngredientCrudService ingredientCrudService;
+    private IRecipeIngredientCrudService recipeIngredientCrudService;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService ) {
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IRecipeIngredientCrudService recipeIngredientCrudService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
+        this.ingredientCrudService = ingredientCrudService;
+        this.recipeIngredientCrudService = recipeIngredientCrudService;
     }
 
     @RequestMapping( method = RequestMethod.GET )
@@ -51,6 +63,48 @@ public class RecipeController {
             view = "RecipeEditTile";
         } else {
             de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipe.getId() );
+            ArrayList<de.cookyapp.web.viewmodel.Ingredient> newIngredients = new ArrayList<>(recipe.getIngredients());
+
+            for (de.cookyapp.web.viewmodel.Ingredient current : newIngredients) {
+                if (current != null) {
+                    Ingredient ingredient = new Ingredient();
+                    ingredient.setAmount(current.getAmount());
+                    ingredient.setName(current.getName());
+                    ingredient.setUnit(current.getUnit());
+                    ingredient.setId(current.getId());
+                    recipeIngredientCrudService.saveRecipeIngredient(recipeDTO.getId(), ingredient); //Macht save auch ein update?
+                    ingredientCrudService.save(ingredient);
+                }
+
+            }
+
+            recipeDTO.setName( recipe.getName() );
+            recipeDTO.setShortDescription( recipe.getShortDescription() );
+            recipeDTO.setCalories( recipe.getCalories() );
+            recipeDTO.setCookingTime( recipe.getCookingTime() );
+            recipeDTO.setWorkingTime( recipe.getWorkingTime() );
+            recipeDTO.setDifficulty( recipe.getDifficulty() );
+            recipeDTO.setServing( recipe.getServing() );
+            recipeDTO.setPreparation( recipe.getPreparation() );
+            recipeDTO.setRestTime( recipe.getRestTime() );
+            recipeDTO.setImageFileName( "http://placehold.it/320x200" );
+            this.recipeCrudService.updateRecipe( recipeDTO);
+
+            /*List<Ingredient> ingredientList = recipeIngredientCrudService.getRecipeIngredients(recipeDTO.getId());
+            List<Ingredient> complete = new ArrayList<>();
+
+            for (Ingredient current : ingredientList) {
+                Ingredient ingredient = new Ingredient();
+                ingredient.setAmount(current.getAmount());
+                ingredient.setUnit(current.getUnit());
+                ingredient.setName(ingredientCrudService.getIngredientName(current.getId()));
+
+                System.out.println(ingredient.getName() + " " + ingredient.getAmount() + " " + ingredient.getUnit() );
+
+                complete.add(ingredient);
+            } */
+
+
             /* TODO [dodo] der de.cookyapp.service.dto.Recipe Klasse müssen die Bestandteile eines Rezeptes (Ingredients & Co.) hinzugefügt werden.
              * Von dieser Klasse wird dann ein Objekt erzeugt, dort die Ingredients hinzugefügt und das Rezept dann über
              * this.recipeCrudService.updateRecipe(recipeDTO); abgespeichert.

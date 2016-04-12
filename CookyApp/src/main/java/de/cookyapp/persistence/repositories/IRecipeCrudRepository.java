@@ -11,4 +11,5 @@ public interface IRecipeCrudRepository extends IBaseCrudRepository<RecipeEntity,
     List<RecipeEntity> findByName( String name );
 
     List<RecipeEntity> findByNameLike( String name );
+
 }
