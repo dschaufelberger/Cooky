@@ -2,7 +2,6 @@ package de.cookyapp.web.controller;
 
 import javax.validation.Valid;
 
-import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Jasper on 27.11.2015.
