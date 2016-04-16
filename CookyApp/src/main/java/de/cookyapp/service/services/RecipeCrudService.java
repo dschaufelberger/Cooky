@@ -45,38 +45,42 @@ public class RecipeCrudService implements IRecipeCrudService {
 
     @Override
     public void createRecipe( Recipe recipe ) {
-        RecipeEntity recipeEntity = new RecipeEntity();
-        recipeEntity.setName(recipe.getName());
-        recipeEntity.setRating(recipe.getRating());
-        recipeEntity.setServing(recipe.getServing());
-        recipeEntity.setCalories(recipe.getCalories());
-        recipeEntity.setAuthor(recipe.getAuthor());
-        recipeEntity.setDifficulty(recipe.getDifficulty());
-        recipeEntity.setImageFileName(recipe.getImageFileName());
-        recipeEntity.setShortDescription(recipe.getShortDescription());
-        recipeEntity.setCreationTime(LocalDateTime.now());
+        if (recipe != null) {
+            RecipeEntity recipeEntity = new RecipeEntity();
+            recipeEntity.setAuthor(recipe.getAuthor());
+            recipeEntity.setName(recipe.getName());
+            recipeEntity.setRating(recipe.getRating());
+            recipeEntity.setServing(recipe.getServing());
+            recipeEntity.setCalories(recipe.getCalories());
+            recipeEntity.setAuthor(recipe.getAuthor());
+            recipeEntity.setDifficulty(recipe.getDifficulty());
+            recipeEntity.setImageFileName(recipe.getImageFileName());
+            recipeEntity.setShortDescription(recipe.getShortDescription());
+            recipeEntity.setCreationTime(LocalDateTime.now());
 
-        recipeCrudRepository.save(recipeEntity);
+            recipeCrudRepository.save(recipeEntity);
+        }
     }
 
     @Override
     public void updateRecipe( Recipe recipe ) {
-        RecipeEntity recipeEntity = new RecipeEntity();
-        boolean isAuthenticated = authentication.getAuthentication().getName().equals(recipe.getAuthor().getUsername());
-        //if (!isAuthenticated) //Admin überprüfen
-        if (isAuthenticated) {
-            recipeEntity.setName(recipe.getName());
-            recipeEntity.setWorkingTime(recipe.getWorkingTime());
-            recipeEntity.setRestTime(recipe.getRestTime());
-            recipeEntity.setShortDescription(recipe.getShortDescription());
-            recipeEntity.setCalories(recipe.getCalories());
-            recipeEntity.setDifficulty(recipe.getDifficulty());
-            recipeEntity.setCookingTime(recipe.getCookingTime());
-            recipeEntity.setImageFileName(recipe.getImageFileName());
-            recipeEntity.setPreparation(recipe.getPreparation());
-            recipeEntity.setServing(recipe.getServing());
-
-            recipeCrudRepository.save(recipeEntity); //Kann Save auch update?
+        if (recipe != null) {
+            RecipeEntity recipeEntity = recipeCrudRepository.findOne(recipe.getId()); //aktuelles laden
+            boolean isAuthenticated = authentication.getAuthentication().getName().equals(recipe.getAuthor().getUsername());
+            if (isAuthenticated) {
+                recipeEntity.setName(recipe.getName());
+                recipeEntity.setWorkingTime(recipe.getWorkingTime());
+                recipeEntity.setRestTime(recipe.getRestTime());
+                recipeEntity.setShortDescription(recipe.getShortDescription());
+                recipeEntity.setCalories(recipe.getCalories());
+                recipeEntity.setDifficulty(recipe.getDifficulty());
+                recipeEntity.setCookingTime(recipe.getCookingTime());
+                recipeEntity.setImageFileName(recipe.getImageFileName());
+                recipeEntity.setPreparation(recipe.getPreparation());
+                recipeEntity.setServing(recipe.getServing());
+                recipeEntity.setAuthor(recipe.getAuthor());
+                recipeCrudRepository.save(recipeEntity);
+            }
         }
     }
 

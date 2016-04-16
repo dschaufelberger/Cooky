@@ -16,5 +16,17 @@ public interface IIngredientCrudService {
 
     String getIngredientName (int ingredientId);
 
-    void save (Ingredient ingredient);
+    String getIngredientAmount (int ingredientId);
+
+    String getIngredientUnit (int ingredientId);
+
+    Ingredient getIngredient (int ingredientId);
+
+    void save (List<Ingredient> ingredients);
+
+    void saveRecipeIngredient (String recipeName, List<Ingredient> ingredients);
+
+    void saveRecipeIngredient (int recipeId, List<Ingredient> ingredients);
+
+    List<Ingredient> loadRecipeIngredients(int recipeId);
 }

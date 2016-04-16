@@ -27,47 +27,47 @@
                 </tr>
                 <tr>
                     <td><form:label path="shortDescription">Short Description:</form:label></td>
-                    <td><form:input path="shortDescription" value="${recipeForId.shortDescription}"
+                    <td><form:textarea path="shortDescription" value="${recipe.shortDescription}"
                                     name="editShortDescription"/></td>
                     <td><form:errors path="shortDescription" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="preparation">Preparation:</form:label></td>
-                    <td><form:input path="preparation" value="${recipeForId.preparation}"
+                    <td><form:textarea path="preparation" value="${recipe.preparation}"
                                     name="editPreparation"/></td>
                     <td><form:errors path="preparation" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="workingTime">Working Time (in minutes):</form:label></td>
-                    <td><form:input path="workingTime" value="${recipeForId.workingTime}"
+                    <td><form:input path="workingTime" value="${recipe.workingTime}"
                                     name="editWorkingTime"/></td>
                     <td><form:errors path="workingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="cookingTime">Cooking Time (in minutes):</form:label></td>
-                    <td><form:input path="cookingTime" value="${recipeForId.cookingTime}"
+                    <td><form:input path="cookingTime" value="${recipe.cookingTime}"
                                     name="editCookingTime"/></td>
                     <td><form:errors path="cookingTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="restTime">Rest Time:</form:label></td>
-                    <td><form:input path="restTime" value="${recipeForId.serving}"/></td>
+                    <td><form:input path="restTime" value="${recipe.serving}"/></td>
                     <td><form:errors path="restTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="calories">Calories:</form:label></td>
-                    <td><form:input path="calories" value="${recipeForId.calories}"/></td>
+                    <td><form:input path="calories" value="${recipe.calories}"/></td>
                     <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="serving">Serving:</form:label></td>
-                    <td><form:input path="serving" value="${recipeForId.serving}"/></td>
+                    <td><form:input path="serving" value="${recipe.serving}"/></td>
                     <td><form:errors path="calories" cssClass="formError"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="difficulty">Difficulty:</form:label></td>
                     <td><form:select path="difficulty">
-                        <form:option value="" label="${recipeForId.difficulty.name().toLowerCase()}"/>
+                        <form:option value="" label="${recipe.difficulty.name().toLowerCase()}"/>
                         <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty"/>
                     </form:select></td>
                     <td><form:errors path="difficulty" cssClass="formError"/></td>

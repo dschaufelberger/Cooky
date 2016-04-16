@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface IRecipeIngredientCrudRepository extends IBaseCrudRepository<RecipeIngredientEntity, Integer> {
     List<RecipeIngredientEntity> findByRecipeId (int recipeId);
+
+    List<RecipeIngredientEntity> findByIngredientId (int ingredientId);
 }

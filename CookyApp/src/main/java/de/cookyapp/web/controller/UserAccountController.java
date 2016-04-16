@@ -3,7 +3,7 @@ package de.cookyapp.web.controller;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.service.services.UserCrudService;
+import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.account.Password;
 import de.cookyapp.web.viewmodel.account.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping( "/account" )
 public class UserAccountController {
     private PasswordEncoder passwordEncoder;
-    private UserCrudService userCrudService;
+    private IUserCrudService userCrudService;
     private IAuthenticationFacade authentication;
 
     @Autowired
-    public UserAccountController( PasswordEncoder passwordEncoder, UserCrudService userCrudService, IAuthenticationFacade authentication ) {
+    public UserAccountController( PasswordEncoder passwordEncoder, IUserCrudService userCrudService, IAuthenticationFacade authentication ) {
         this.passwordEncoder = passwordEncoder;
         this.userCrudService = userCrudService;
         this.authentication = authentication;
