@@ -65,7 +65,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Override
     public void updateRecipe( Recipe recipe ) {
         if (recipe != null) {
-            RecipeEntity recipeEntity = recipeCrudRepository.findOne(recipe.getId()); //aktuelles laden
+            RecipeEntity recipeEntity = recipeCrudRepository.findOne(recipe.getId());
             boolean isAuthenticated = authentication.getAuthentication().getName().equals(recipe.getAuthor().getUsername());
             if (isAuthenticated) {
                 recipeEntity.setName(recipe.getName());

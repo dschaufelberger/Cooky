@@ -9,5 +9,5 @@ import java.util.List;
  * Created by Dominik Schaufelberger on 09.04.2016.
  */
 public interface IIngredientCrudRepository extends IBaseCrudRepository<IngredientEntity, Integer> {
-    List<IngredientEntity> findByName(String ingredient);
+    IngredientEntity findFirstByName(String ingredient);
 }

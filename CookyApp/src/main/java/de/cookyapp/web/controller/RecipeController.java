@@ -31,7 +31,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping( "/recipes" )
+@RequestMapping("/recipes")
 public class RecipeController {
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
@@ -40,7 +40,7 @@ public class RecipeController {
     private IUserAuthorization userAuthorization;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,  IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization ) {
+    public RecipeController(IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
@@ -48,30 +48,29 @@ public class RecipeController {
         this.userAuthorization = userAuthorization;
     }
 
-    @RequestMapping( method = RequestMethod.GET )
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView handleRecipes() {
-        ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes() );
+        ModelAndView model = new ModelAndView("RecipeOverviewTile");
+        model.addObject("recipesList", this.recipeCrudService.getAllRecipes());
         return model;
     }
 
-    @RequestMapping( "/removeRecipe" )
-    public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
+    @RequestMapping("/removeRecipe")
+    public String handleRemoveRecipe(@RequestParam("id") int id) {
         //TODO Prüfen ob der eingeloggte Benutzer auch der ist, dem das gehört!!
-        this.recipeCrudService.deleteRecipe( id );
+        this.recipeCrudService.deleteRecipe(id);
         return "redirect:/recipes";
     }
 
-    @RequestMapping( "/editRecipe" )
-    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult ) {
+    @RequestMapping("/editRecipe")
+    public String handleEditRecipeFinish(@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult bindingResult) {
         String view;
-        //boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe(recipe.getId()).getAuthor().getUsername());
-        //Wie den User bekommen?
-        if ( bindingResult.hasErrors() ) {
+        boolean isAuthorized = this.authentication.getAuthentication().getName().equals(recipeCrudService.getRecipe(recipe.getId()).getAuthor().getUsername());
+        if (bindingResult.hasErrors()) {
             view = "RecipeEditTile";
         } else {
-            if (true) {
-                de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipe.getId() );
+            if (isAuthorized) {
+                de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe(recipe.getId());
                 ArrayList<de.cookyapp.web.viewmodel.Ingredient> newIngredients = new ArrayList<>(recipe.getIngredients());
                 List<Ingredient> ingredients = new ArrayList<>();
                 for (de.cookyapp.web.viewmodel.Ingredient current : newIngredients) {
@@ -86,19 +85,19 @@ public class RecipeController {
                     }
                 }
 
-                recipeDTO.setName( recipe.getName() );
-                recipeDTO.setShortDescription( recipe.getShortDescription() );
-                recipeDTO.setCalories( recipe.getCalories() );
-                recipeDTO.setCookingTime( recipe.getCookingTime() );
-                recipeDTO.setWorkingTime( recipe.getWorkingTime() );
-                recipeDTO.setDifficulty( recipe.getDifficulty() );
-                recipeDTO.setServing( recipe.getServing() );
-                recipeDTO.setPreparation( recipe.getPreparation() );
-                recipeDTO.setRestTime( recipe.getRestTime() );
-                recipeDTO.setImageFileName( "http://placehold.it/320x200" );
+                recipeDTO.setName(recipe.getName());
+                recipeDTO.setShortDescription(recipe.getShortDescription());
+                recipeDTO.setCalories(recipe.getCalories());
+                recipeDTO.setCookingTime(recipe.getCookingTime());
+                recipeDTO.setWorkingTime(recipe.getWorkingTime());
+                recipeDTO.setDifficulty(recipe.getDifficulty());
+                recipeDTO.setServing(recipe.getServing());
+                recipeDTO.setPreparation(recipe.getPreparation());
+                recipeDTO.setRestTime(recipe.getRestTime());
+                recipeDTO.setImageFileName("http://placehold.it/320x200");
                 recipeDTO.setAuthor(userToUserEntity(userCrudService.getCurrentUser()));
-                recipeCrudService.updateRecipe( recipeDTO);
-                ingredientCrudService.saveRecipeIngredient(recipeDTO.getId() ,ingredients);
+                recipeCrudService.updateRecipe(recipeDTO);
+                ingredientCrudService.saveRecipeIngredient(recipeDTO.getId(), ingredients);
             }
 
 
@@ -163,43 +162,34 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/goToEditRecipe" )
-    public ModelAndView handleEditRecipe( @RequestParam( "id" ) int id ) {
-        Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id), ingredientCrudService.loadRecipeIngredients(id) );
-        //boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe(id).getAuthor().getUsername() );
-        //Wie Besitzer bekommen?
-        if (true) {
-            Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
-            List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients(id);
-            for (Ingredient current : ingredients) {
-                de.cookyapp.web.viewmodel.Ingredient ingredientViewmodel =  new de.cookyapp.web.viewmodel.Ingredient();
-                ingredientViewmodel.setAmount(current.getAmount());
-                ingredientViewmodel.setName(current.getName());
-                ingredientViewmodel.setUnit(current.getUnit());
-                ingredientViewmodel.setId(current.getId());
-                ingredientCollection.add(ingredientViewmodel);
-            }
-            recipe.setIngredients(ingredientCollection);
-            ModelAndView model = new ModelAndView( "RecipeEditTile", "recipe", recipe );
-            return model;
-        } else {
-            ModelAndView model = new ModelAndView("RecipeOverviewTile");
-            return model;
+    @RequestMapping("/goToEditRecipe")
+    public ModelAndView handleEditRecipe(@RequestParam("id") int id) {
+        Recipe recipe = new Recipe(this.recipeCrudService.getRecipe(id), ingredientCrudService.loadRecipeIngredients(id));
+        Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
+        List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients(id);
+        for (Ingredient current : ingredients) {
+            de.cookyapp.web.viewmodel.Ingredient ingredientViewmodel = new de.cookyapp.web.viewmodel.Ingredient();
+            ingredientViewmodel.setAmount(current.getAmount());
+            ingredientViewmodel.setName(current.getName());
+            ingredientViewmodel.setUnit(current.getUnit());
+            ingredientViewmodel.setId(current.getId());
+            ingredientCollection.add(ingredientViewmodel);
         }
-
-
-    }
-
-    @RequestMapping( "/goToAddRecipe" )
-    public ModelAndView handleGoToRecipe() {
-        ModelAndView model = new ModelAndView( "RecipeCreationTile", "recipe", new Recipe() );
+        recipe.setIngredients(ingredientCollection);
+        ModelAndView model = new ModelAndView("RecipeEditTile", "recipe", recipe);
         return model;
     }
 
-    @RequestMapping( value = "/addRecipe" )
-    public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult ) {
+    @RequestMapping("/goToAddRecipe")
+    public ModelAndView handleGoToRecipe() {
+        ModelAndView model = new ModelAndView("RecipeCreationTile", "recipe", new Recipe());
+        return model;
+    }
+
+    @RequestMapping(value = "/addRecipe")
+    public String handleAddRecipe(@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult bindingResult) {
         String view;
-        if ( bindingResult.hasErrors() ) {
+        if (bindingResult.hasErrors()) {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
@@ -214,7 +204,7 @@ public class RecipeController {
             newRecipe.setServing(recipe.getServing());
             newRecipe.setShortDescription(recipe.getShortDescription());
             newRecipe.setCreationDate(LocalDateTime.now());
-            newRecipe.setImageFileName("http://placehold.it/320x200" );
+            newRecipe.setImageFileName("http://placehold.it/320x200");
 
             List<de.cookyapp.web.viewmodel.Ingredient> ingredientList = new ArrayList<>(recipe.getIngredients());
             List<Ingredient> ingredients = new ArrayList<>();
@@ -261,21 +251,21 @@ public class RecipeController {
         return view;
     }
 
-    private UserEntity userToUserEntity (User user) {
+    private UserEntity userToUserEntity(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
-        userEntity.setUsername( user.getUsername() );
-        userEntity.setPassword( user.getPassword() );
-        userEntity.setForename( user.getForename() );
-        userEntity.setSurname( user.getSurname() );
-        userEntity.setEmail( user.getEmail() );
-        userEntity.setGender( user.getGender() );
-        userEntity.setBirthdate( user.getBirthdate() );
-        userEntity.setRegistrationDate( user.getRegistrationDate() );
-        userEntity.setLastLoginDate( user.getLastLoginDate() );
-        userEntity.setAccountState( user.getAccountState() );
-        userEntity.setAccountState( AccountState.REGISTERED );
-        userEntity.setRegistrationDate( LocalDateTime.now() );
+        userEntity.setUsername(user.getUsername());
+        userEntity.setPassword(user.getPassword());
+        userEntity.setForename(user.getForename());
+        userEntity.setSurname(user.getSurname());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setGender(user.getGender());
+        userEntity.setBirthdate(user.getBirthdate());
+        userEntity.setRegistrationDate(user.getRegistrationDate());
+        userEntity.setLastLoginDate(user.getLastLoginDate());
+        userEntity.setAccountState(user.getAccountState());
+        userEntity.setAccountState(AccountState.REGISTERED);
+        userEntity.setRegistrationDate(LocalDateTime.now());
 
         return userEntity;
     }

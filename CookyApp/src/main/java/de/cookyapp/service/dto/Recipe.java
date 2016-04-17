@@ -48,6 +48,7 @@ public class Recipe {
         setCookingTime(recipeEntity.getCookingTime());
         setRestTime(recipeEntity.getRestTime());
         setWorkingTime(recipeEntity.getWorkingTime());
+        setAuthor(recipeEntity.getAuthor());
     }
 
     public int getId() {
