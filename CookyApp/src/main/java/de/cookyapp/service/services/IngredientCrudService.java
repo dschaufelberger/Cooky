@@ -56,6 +56,10 @@ public class IngredientCrudService implements IIngredientCrudService {
                 IngredientEntity ingredientEntity = ingredientCrudRepository.findOne(ingredient.getId()); //Laden
                 ingredientEntity.setName(ingredient.getName());
                 ingredientCrudRepository.save(ingredientEntity);
+            } else {
+                IngredientEntity ingredientEntity = new IngredientEntity();
+                ingredientEntity.setName(ingredient.getName());
+                ingredientCrudRepository.save(ingredientEntity);
             }
         }
     }
