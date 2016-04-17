@@ -51,10 +51,12 @@ public class IngredientCrudService implements IIngredientCrudService {
 
     @Override
     public void updateIngredient(Ingredient ingredient) {
-        IngredientEntity ingredientEntity = ingredientCrudRepository.findOne(ingredient.getId()); //Laden
         if (ingredient != null) {
-            ingredientEntity.setName(ingredient.getName());
-            ingredientCrudRepository.save(ingredientEntity);
+            if (ingredientCrudRepository.findOne(ingredient.getId()) != null) {
+                IngredientEntity ingredientEntity = ingredientCrudRepository.findOne(ingredient.getId()); //Laden
+                ingredientEntity.setName(ingredient.getName());
+                ingredientCrudRepository.save(ingredientEntity);
+            }
         }
     }
 

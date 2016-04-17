@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td><form:label path="restTime">Rest Time:</form:label></td>
-                    <td><form:input path="restTime" value="${recipe.serving}"/></td>
+                    <td><form:input path="restTime" value="${recipe.restTime}"/></td>
                     <td><form:errors path="restTime" cssClass="formError"/></td>
                 </tr>
                 <tr>
