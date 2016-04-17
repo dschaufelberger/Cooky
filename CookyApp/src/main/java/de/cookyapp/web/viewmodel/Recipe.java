@@ -58,10 +58,6 @@ public class Recipe {
     }
 
     public Recipe(de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredientList) {
-        //  TODO [dodo] hinzufügen der entsprechenden Fehler zu de.cookyapp.service.dto.Recipe
-        //  Und auch Methoden zum hinzufügen von Ingredients bzw einer Liste von Ingredients
-        //  (Die Ingredient Klasse unter dem dto-package muss dazu noch angelegt werden!)
-
         this.id = recipe.getId();
         this.ingredients = new ArrayList<>();
         this.name = recipe.getName();

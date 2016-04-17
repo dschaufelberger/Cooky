@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.enums.AccountState;
+import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
@@ -57,7 +58,6 @@ public class RecipeController {
 
     @RequestMapping("/removeRecipe")
     public String handleRemoveRecipe(@RequestParam("id") int id) {
-        //TODO Prüfen ob der eingeloggte Benutzer auch der ist, dem das gehört!!
         this.recipeCrudService.deleteRecipe(id);
         return "redirect:/recipes";
     }
@@ -99,63 +99,6 @@ public class RecipeController {
                 recipeCrudService.updateRecipe(recipeDTO);
                 ingredientCrudService.saveRecipeIngredient(recipeDTO.getId(), ingredients);
             }
-
-
-            /*List<Ingredient> ingredientList = recipeIngredientCrudService.getRecipeIngredients(recipeDTO.getId());
-            List<Ingredient> complete = new ArrayList<>();
-
-            for (Ingredient current : ingredientList) {
-                Ingredient ingredient = new Ingredient();
-                ingredient.setAmount(current.getAmount());
-                ingredient.setUnit(current.getUnit());
-                ingredient.setName(ingredientCrudService.getIngredientName(current.getId()));
-
-                System.out.println(ingredient.getName() + " " + ingredient.getAmount() + " " + ingredient.getUnit() );
-
-                complete.add(ingredient);
-            } */
-
-
-            /* TODO [dodo] der de.cookyapp.service.dto.Recipe Klasse müssen die Bestandteile eines Rezeptes (Ingredients & Co.) hinzugefügt werden.
-             * Von dieser Klasse wird dann ein Objekt erzeugt, dort die Ingredients hinzugefügt und das Rezept dann über
-             * this.recipeCrudService.updateRecipe(recipeDTO); abgespeichert.
-             * Die Logik des Abspeicherns der einzelnen Ingredients findet dann in dieser Service-Method statt! Dazu erhält
-             * der RecipeCrudService noch ein IIngredientService oder IIngredientCrudRepository Objekt injiziert (was da im Endeffekt mehr Sinn macht).
-             */
-
-            //Iterator<RecipeIngredientEntity> iterator = recipeEntity.getIngredients().iterator();
-            //IngredientEntity ingredientEntity;
-            //RecipeIngredientEntity entity;
-            //for ( Ingredient ingredient : recipe.getIngredients() ) {
-            //    entity = iterator.next();
-            //    ingredientEntity = this.ingredientDao.getIngredientByName( ingredient.getName() );
-            //
-            //    if ( ingredientEntity == null ) {
-            //        ingredientEntity = new IngredientEntity();
-            //        ingredientEntity.setName( ingredient.getName() );
-            //
-            //        this.ingredientDao.save( ingredientEntity );
-            //
-            //        entity.setIngredient( this.ingredientDao.getIngredientByName( ingredient.getName() ) );
-            //    } else {
-            //        entity.setIngredient( ingredientEntity );
-            //    }
-            //
-            //    entity.setUnit( ingredient.getUnit() );
-            //    entity.setAmount( ingredient.getAmount() );
-            //}
-            //
-            //recipeEntity.setName( recipe.getName() );
-            //recipeEntity.setShortDescription( recipe.getShortDescription() );
-            //recipeEntity.setCalories( recipe.getCalories() );
-            //recipeEntity.setCookingTime( recipe.getCookingTime() );
-            //recipeEntity.setWorkingTime( recipe.getWorkingTime() );
-            //recipeEntity.setDifficulty( recipe.getDifficulty() );
-            //recipeEntity.setServing( recipe.getServing() );
-            //recipeEntity.setPreparation( recipe.getPreparation() );
-            //recipeEntity.setRestTime( recipe.getRestTime() );
-            //recipeEntity.setImageFileName( "http://placehold.it/320x200" );
-            //this.recipeCrudService.editRecipe( recipeEntity );
             view = "redirect:/recipes";
         }
 
@@ -217,35 +160,8 @@ public class RecipeController {
             }
 
             ingredientCrudService.save(ingredients);
-            recipeCrudService.createRecipe(newRecipe);
-            ingredientCrudService.saveRecipeIngredient(newRecipe.getName(), ingredients);
-            //  TODO [dodo] Hier bitte die entsprechende Implementierung korrigieren.
-            //  Hier kann ja testweise erstmal von dem Branch mit den Änderungen gemerged werden.
-
-            //RecipeEntity recipeEntity = new RecipeEntity( recipe );
-            //
-            //recipeEntity.setAuthor( this.userCrudService.load( 7 ) );
-            //
-            //ArrayList<RecipeIngredientEntity> ingredientList = new ArrayList<RecipeIngredientEntity>();
-            //for ( Ingredient ingredient : recipe.getIngredients() ) {
-            //    IngredientEntity current = new IngredientEntity();
-            //    if ( this.ingredientDao.getIngredientByName( ingredient.getName() ) == null ) {
-            //        current.setName( ingredient.getName() );
-            //    } else {
-            //        current = this.ingredientDao.getIngredientByName( ingredient.getName() );
-            //    }
-            //
-            //    RecipeIngredientEntity recipeIngredientEntity = new RecipeIngredientEntity();
-            //    recipeIngredientEntity.setIngredient( current );
-            //    recipeIngredientEntity.setAmount( ingredient.getAmount() );
-            //    recipeIngredientEntity.setUnit( ingredient.getUnit() );
-            //    recipeIngredientEntity.setRecipe( recipeEntity );
-            //
-            //    ingredientList.add( recipeIngredientEntity );
-            //}
-            //recipeEntity.setIngredients( ingredientList );
-            //recipeEntity.setImageFileName( "http://placehold.it/320x200" );
-            //this.recipeCrudService.addRecipe( recipeEntity );
+            RecipeEntity current = recipeCrudService.createRecipe(newRecipe);
+            ingredientCrudService.saveRecipeIngredient(current.getId(), ingredients);
             view = "redirect:/recipes";
         }
         return view;

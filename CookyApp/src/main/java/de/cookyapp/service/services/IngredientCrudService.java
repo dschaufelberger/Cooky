@@ -3,11 +3,13 @@ package de.cookyapp.service.services;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.persistence.entities.IngredientEntity;
+import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import de.cookyapp.persistence.repositories.IIngredientCrudRepository;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.persistence.repositories.IRecipeIngredientCrudRepository;
 import de.cookyapp.service.dto.Ingredient;
+import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,36 +59,6 @@ public class IngredientCrudService implements IIngredientCrudService {
     }
 
     @Override
-    public String getIngredientName(int ingredientId) {
-        String ingredientName = "";
-        IngredientEntity ingredientEntity = ingredientCrudRepository.findOne(ingredientId);
-        if (ingredientEntity != null) {
-            ingredientName = ingredientEntity.getName();
-        }
-        return ingredientName;
-    }
-
-    @Override
-    public String getIngredientAmount(int ingredientId) {
-        RecipeIngredientEntity recipeIngredientEntity = recipeIngredientCrudRepository.findOne(ingredientId);
-        String amount = "";
-        if (recipeIngredientEntity != null) {
-            amount = recipeIngredientEntity.getAmount();
-        }
-        return amount;
-    }
-
-    @Override
-    public String getIngredientUnit(int ingredientId) {
-        RecipeIngredientEntity recipeIngredientEntity = recipeIngredientCrudRepository.findOne(ingredientId);
-        String unit = "";
-        if (recipeIngredientEntity != null) {
-            unit = recipeIngredientEntity.getUnit();
-        }
-        return unit;
-    }
-
-    @Override
     public Ingredient getIngredient(int ingredientId) {
         Ingredient ingredient = new Ingredient();
         ingredient.setName(ingredientCrudRepository.findOne(ingredientId).getName());
@@ -110,37 +82,26 @@ public class IngredientCrudService implements IIngredientCrudService {
     }
 
     @Override
-    public void saveRecipeIngredient(String recipeName, List<Ingredient> ingredients) {
-        for (Ingredient ingredient : ingredients) {
-            RecipeIngredientEntity recipeIngredientEntity = new RecipeIngredientEntity();
-            IngredientEntity ingredientEntity = ingredientCrudRepository.findFirstByName(ingredient.getName());
-
-            recipeIngredientEntity.setAmount(ingredient.getAmount());
-            recipeIngredientEntity.setUnit(ingredient.getUnit());
-            recipeIngredientEntity.setRecipe(recipeCrudRepository.findByName(recipeName).get(0));
-            recipeIngredientEntity.setIngredient(ingredientEntity);
-            recipeIngredientCrudRepository.save(recipeIngredientEntity);
-        }
-    }
-
-    @Override
     public void saveRecipeIngredient(int recipeId, List<Ingredient> ingredients) {
         List<RecipeIngredientEntity> recipeIngredientEntities = recipeIngredientCrudRepository.findByRecipeId(recipeId);
+        RecipeEntity recipe = recipeCrudRepository.findOne(recipeId);
         int counter = 0;
         for (Ingredient ingredient : ingredients) {
             RecipeIngredientEntity recipeIngredientEntity = null;
             IngredientEntity ingredientEntity = ingredientCrudRepository.findFirstByName(ingredient.getName());
 
-            if (recipeIngredientEntities.get(counter) != null && recipeIngredientEntities.get(counter).getIngredient().getId() == ingredientEntity.getId()) {
-                recipeIngredientEntity = recipeIngredientEntities.get(counter);
-                recipeIngredientEntity.getIngredient().setName(ingredientEntity.getName());
+            if (recipeIngredientEntities.size() > 0) {
+                if (recipeIngredientEntities.get(counter) != null && recipeIngredientEntities.get(counter).getIngredient().getId() == ingredientEntity.getId()) {
+                    recipeIngredientEntity = recipeIngredientEntities.get(counter);
+                    recipeIngredientEntity.getIngredient().setName(ingredientEntity.getName());
+                }
             }
 
             if (recipeIngredientEntity == null) {
                 recipeIngredientEntity = new RecipeIngredientEntity();
                 recipeIngredientEntity.setAmount(ingredient.getAmount());
                 recipeIngredientEntity.setUnit(ingredient.getUnit());
-                recipeIngredientEntity.setRecipe(recipeCrudRepository.findOne(recipeId));
+                recipeIngredientEntity.setRecipe(recipe);
                 recipeIngredientEntity.setIngredient(ingredientEntity);
             }
 
@@ -166,8 +127,11 @@ public class IngredientCrudService implements IIngredientCrudService {
     }
 
     private void deleteIngredientById(int id) {
-        IngredientEntity ingredientEntity = this.ingredientCrudRepository.findOne(id);
-        this.ingredientCrudRepository.delete(ingredientEntity);
+        List<RecipeIngredientEntity> recipeIngredientEntities = recipeIngredientCrudRepository.findByIngredientId(id);
+        if (recipeIngredientEntities.size() == 0) {
+            IngredientEntity ingredientEntity = this.ingredientCrudRepository.findOne(id);
+            this.ingredientCrudRepository.delete(ingredientEntity);
+        }
     }
 
     private void add(Ingredient ingredient) {
