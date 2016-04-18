@@ -1,6 +1,7 @@
 package de.cookyapp.persistence.repositories;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.data.repository.NoRepositoryBean;
@@ -18,4 +19,6 @@ public interface IBaseCrudRepository <T, ID extends Serializable> extends Reposi
     T findOne( ID id );
 
     T save( T persisted );
+
+    <S extends T> Iterable<S> save(Iterable<S> entities);
 }
