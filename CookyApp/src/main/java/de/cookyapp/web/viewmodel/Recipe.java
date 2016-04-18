@@ -2,12 +2,14 @@ package de.cookyapp.web.viewmodel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
+import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -55,25 +57,22 @@ public class Recipe {
         ingredients = new ArrayList<>();
     }
 
-    public Recipe( de.cookyapp.service.dto.Recipe recipe ) {
-        //  TODO [dodo] hinzufügen der entsprechenden Fehler zu de.cookyapp.service.dto.Recipe
-        //  Und auch Methoden zum hinzufügen von Ingredients bzw einer Liste von Ingredients
-        //  (Die Ingredient Klasse unter dem dto-package muss dazu noch angelegt werden!)
-
-        //this.id = recipe.getId();
-        //this.ingredients = new ArrayList<>();
-        //this.name = recipe.getName();
-        //this.shortDescription = recipe.getShortDescription();
-        //this.serving = recipe.getServing();
-        //this.preparation = recipe.getPreparation();
-        //this.calories = recipe.getCalories();
-        //this.difficulty = recipe.getDifficulty();
-        //this.workingTime = recipe.getWorkingTime() == null ? 0 : recipe.getWorkingTime();
-        //this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
-        //this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
-        //for ( RecipeIngredientEntity entity : recipe.getIngredients() ) {
-        //    this.ingredients.add( new Ingredient( entity ) );
-        //}
+    public Recipe(de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredientList) {
+        this.id = recipe.getId();
+        this.ingredients = new ArrayList<>();
+        this.name = recipe.getName();
+        this.shortDescription = recipe.getShortDescription();
+        this.serving = recipe.getServing();
+        this.preparation = recipe.getPreparation();
+        this.calories = recipe.getCalories();
+        this.difficulty = recipe.getDifficulty();
+        this.workingTime = recipe.getWorkingTime() == null ? 0 : recipe.getWorkingTime();
+        this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
+        this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
+        for ( de.cookyapp.service.dto.Ingredient entity : ingredientList ) {
+            Ingredient current = ingredientToViewmodelIngredient(entity);
+            this.ingredients.add( current);
+        }
     }
 
     public int getId() {
@@ -172,5 +171,14 @@ public class Recipe {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         return sb.toString();
+    }
+
+    private Ingredient ingredientToViewmodelIngredient(de.cookyapp.service.dto.Ingredient ingredient) {
+        Ingredient ingredientViewmodel = new Ingredient();
+        ingredientViewmodel.setAmount(ingredient.getAmount());
+        ingredientViewmodel.setUnit(ingredient.getUnit());
+        ingredientViewmodel.setId(ingredient.getId());
+        ingredientViewmodel.setName(ingredient.getName());
+        return ingredientViewmodel;
     }
 }
