@@ -11,7 +11,7 @@ import de.cookyapp.service.dto.Recipe;
 public interface IRecipeCrudService {
     void deleteRecipe( int recipeID );
 
-    RecipeEntity createRecipe( Recipe recipe );
+    Recipe createRecipe( Recipe recipe );
 
     void updateRecipe(Recipe recipe );
 

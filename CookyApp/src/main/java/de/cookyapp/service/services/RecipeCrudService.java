@@ -44,7 +44,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public RecipeEntity createRecipe(Recipe recipe) {
+    public Recipe createRecipe(Recipe recipe) {
         RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setAuthor(recipe.getAuthor());
         recipeEntity.setName(recipe.getName());
@@ -55,13 +55,17 @@ public class RecipeCrudService implements IRecipeCrudService {
         recipeEntity.setDifficulty(recipe.getDifficulty());
         recipeEntity.setImageFileName(recipe.getImageFileName());
         recipeEntity.setShortDescription(recipe.getShortDescription());
-        recipeEntity.setCreationTime(LocalDateTime.now());
+        //recipeEntity.setCreationTime(LocalDateTime.now());
         recipeEntity.setWorkingTime(recipe.getWorkingTime());
         recipeEntity.setPreparation(recipe.getPreparation());
         recipeEntity.setCookingTime(recipe.getCookingTime());
         recipeEntity.setRestTime(recipe.getRestTime());
 
-        return recipeCrudRepository.save(recipeEntity);
+        RecipeEntity newEntity = new RecipeEntity();
+        newEntity = recipeCrudRepository.save(recipeEntity);
+
+        Recipe recipeReturn = new Recipe(newEntity);
+        return recipeReturn;
     }
 
     @Override

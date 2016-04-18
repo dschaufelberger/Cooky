@@ -160,7 +160,7 @@ public class RecipeController {
             }
 
             ingredientCrudService.save(ingredients);
-            RecipeEntity current = recipeCrudService.createRecipe(newRecipe);
+            de.cookyapp.service.dto.Recipe current = recipeCrudService.createRecipe(newRecipe);
             ingredientCrudService.saveRecipeIngredient(current.getId(), ingredients);
             view = "redirect:/recipes";
         }
