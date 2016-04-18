@@ -14,6 +14,10 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/">Cooky</a>
+            <sec:authorize access="isAuthenticated()">
+                <a class="navbar-brand" href="/account/details">My Account</a>
+                <a class="navbar-brand" href="/recipes">My Recipes</a>
+            </sec:authorize>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -24,11 +28,10 @@
                         <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">
                             Hallo <sec:authentication property="principal.username" />
                         </a>
-
                         <ul class="dropdown-menu">
                             <li>
-                                    <a class="glyphicon glyphicon-log-out" href="#"
-                                       onclick="$('form#logOutForm').submit();">Logout</a>
+                                <a class="glyphicon glyphicon-log-out" href="#"
+                                   onclick="$('form#logOutForm').submit();">Logout</a>
                                 <form:form id="logOutForm" method="post" action="/logout">
                                 </form:form>
                             </li>

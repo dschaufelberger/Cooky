@@ -21,9 +21,17 @@
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
+    <definition name="startpage.definition" template="/WEB-INF/views/layout/Layout_landingpage.jsp">
+        <put-attribute name="title" value="" />
+        <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
+        <put-attribute name="navigation" value="/WEB-INF/views/layout/Navigation.jsp" />
+        <put-attribute name="content" value="" />
+        <!--<put-attribute name="footer" value="" />-->
+    </definition>
+
 
     <!-- The Welcome page for all users, mapped to the root "/" -->
-    <definition name="WelcomeTile" extends="base.definition">
+    <definition name="WelcomeTile" extends="startpage.definition">
         <put-attribute name="title" value="Cooky" />
         <put-attribute name="content" value="/WEB-INF/views/Index.jsp" />
     </definition>

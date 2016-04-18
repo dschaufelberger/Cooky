@@ -19,7 +19,6 @@
     <link href="<spring:url value="/resources/css/cooky/cooky-general.css"/>" rel="stylesheet">
     <script src="<spring:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<spring:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
-
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
 <body class="cooky-background">
