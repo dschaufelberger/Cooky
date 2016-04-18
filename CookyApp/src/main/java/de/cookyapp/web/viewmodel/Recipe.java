@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
-import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -57,7 +56,7 @@ public class Recipe {
         ingredients = new ArrayList<>();
     }
 
-    public Recipe(de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredientList) {
+    public Recipe( de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredientList ) {
         this.id = recipe.getId();
         this.ingredients = new ArrayList<>();
         this.name = recipe.getName();
@@ -70,8 +69,8 @@ public class Recipe {
         this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
         this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
         for ( de.cookyapp.service.dto.Ingredient entity : ingredientList ) {
-            Ingredient current = ingredientToViewmodelIngredient(entity);
-            this.ingredients.add( current);
+            Ingredient current = ingredientToViewmodelIngredient( entity );
+            this.ingredients.add( current );
         }
     }
 
@@ -173,12 +172,12 @@ public class Recipe {
         return sb.toString();
     }
 
-    private Ingredient ingredientToViewmodelIngredient(de.cookyapp.service.dto.Ingredient ingredient) {
+    private Ingredient ingredientToViewmodelIngredient( de.cookyapp.service.dto.Ingredient ingredient ) {
         Ingredient ingredientViewmodel = new Ingredient();
-        ingredientViewmodel.setAmount(ingredient.getAmount());
-        ingredientViewmodel.setUnit(ingredient.getUnit());
-        ingredientViewmodel.setId(ingredient.getId());
-        ingredientViewmodel.setName(ingredient.getName());
+        ingredientViewmodel.setAmount( ingredient.getAmount() );
+        ingredientViewmodel.setUnit( ingredient.getUnit() );
+        ingredientViewmodel.setId( ingredient.getId() );
+        ingredientViewmodel.setName( ingredient.getName() );
         return ingredientViewmodel;
     }
 }

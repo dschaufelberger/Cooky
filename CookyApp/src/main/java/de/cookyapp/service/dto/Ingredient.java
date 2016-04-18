@@ -11,19 +11,19 @@ public class Ingredient {
     private String unit;
     private String amount;
 
-    public Ingredient () {
+    public Ingredient() {
     }
 
-    public Ingredient(IngredientEntity ingredientEntity) {
-        setId(ingredientEntity.getId());
-        setName(ingredientEntity.getName());
+    public Ingredient( IngredientEntity ingredientEntity ) {
+        setId( ingredientEntity.getId() );
+        setName( ingredientEntity.getName() );
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId( int id ) {
         this.id = id;
     }
 
@@ -31,7 +31,7 @@ public class Ingredient {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName( String name ) {
         this.name = name;
     }
 
@@ -39,7 +39,7 @@ public class Ingredient {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit( String unit ) {
         this.unit = unit;
     }
 
@@ -47,7 +47,7 @@ public class Ingredient {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount( String amount ) {
         this.amount = amount;
     }
 }

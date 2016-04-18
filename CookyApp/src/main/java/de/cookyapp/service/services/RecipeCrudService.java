@@ -1,6 +1,5 @@
 package de.cookyapp.service.services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,77 +24,77 @@ public class RecipeCrudService implements IRecipeCrudService {
     private IUserAuthorization userAuthorization;
 
     @Autowired
-    public RecipeCrudService(IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserAuthorization userAuthorization) {
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserAuthorization userAuthorization ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userAuthorization = userAuthorization;
     }
 
     @Override
-    public void deleteRecipe(int recipeID) {
-        RecipeEntity deleteRecipe = recipeCrudRepository.findOne(recipeID);
-        if (deleteRecipe != null) {
-            boolean isAuthorized = this.authentication.getAuthentication().getName().equals(deleteRecipe.getAuthor().getUsername()); //Check current User Authentication
+    public void deleteRecipe( int recipeID ) {
+        RecipeEntity deleteRecipe = recipeCrudRepository.findOne( recipeID );
+        if ( deleteRecipe != null ) {
+            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() ); //Check current User Authentication
             //TODO if (!isAuthorized) --> Check if Admin delete Recipe
-            if (isAuthorized) {
-                recipeCrudRepository.delete(deleteRecipe);
+            if ( isAuthorized ) {
+                recipeCrudRepository.delete( deleteRecipe );
             }
         }
     }
 
     @Override
-    public Recipe createRecipe(Recipe recipe) {
+    public Recipe createRecipe( Recipe recipe ) {
         RecipeEntity recipeEntity = new RecipeEntity();
-        recipeEntity.setAuthor(recipe.getAuthor());
-        recipeEntity.setName(recipe.getName());
-        recipeEntity.setRating(recipe.getRating());
-        recipeEntity.setServing(recipe.getServing());
-        recipeEntity.setCalories(recipe.getCalories());
-        recipeEntity.setAuthor(recipe.getAuthor());
-        recipeEntity.setDifficulty(recipe.getDifficulty());
-        recipeEntity.setImageFileName(recipe.getImageFileName());
-        recipeEntity.setShortDescription(recipe.getShortDescription());
+        recipeEntity.setAuthor( recipe.getAuthor() );
+        recipeEntity.setName( recipe.getName() );
+        recipeEntity.setRating( recipe.getRating() );
+        recipeEntity.setServing( recipe.getServing() );
+        recipeEntity.setCalories( recipe.getCalories() );
+        recipeEntity.setAuthor( recipe.getAuthor() );
+        recipeEntity.setDifficulty( recipe.getDifficulty() );
+        recipeEntity.setImageFileName( recipe.getImageFileName() );
+        recipeEntity.setShortDescription( recipe.getShortDescription() );
         //recipeEntity.setCreationTime(LocalDateTime.now());
-        recipeEntity.setWorkingTime(recipe.getWorkingTime());
-        recipeEntity.setPreparation(recipe.getPreparation());
-        recipeEntity.setCookingTime(recipe.getCookingTime());
-        recipeEntity.setRestTime(recipe.getRestTime());
+        recipeEntity.setWorkingTime( recipe.getWorkingTime() );
+        recipeEntity.setPreparation( recipe.getPreparation() );
+        recipeEntity.setCookingTime( recipe.getCookingTime() );
+        recipeEntity.setRestTime( recipe.getRestTime() );
 
         RecipeEntity newEntity = new RecipeEntity();
-        newEntity = recipeCrudRepository.save(recipeEntity);
+        newEntity = recipeCrudRepository.save( recipeEntity );
 
-        Recipe recipeReturn = new Recipe(newEntity);
+        Recipe recipeReturn = new Recipe( newEntity );
         return recipeReturn;
     }
 
     @Override
-    public void updateRecipe(Recipe recipe) {
-        if (recipe != null) {
-            RecipeEntity recipeEntity = recipeCrudRepository.findOne(recipe.getId());
-            boolean isAuthenticated = authentication.getAuthentication().getName().equals(recipe.getAuthor().getUsername());
-            if (isAuthenticated) {
-                recipeEntity.setName(recipe.getName());
-                recipeEntity.setWorkingTime(recipe.getWorkingTime());
-                recipeEntity.setRestTime(recipe.getRestTime());
-                recipeEntity.setShortDescription(recipe.getShortDescription());
-                recipeEntity.setCalories(recipe.getCalories());
-                recipeEntity.setDifficulty(recipe.getDifficulty());
-                recipeEntity.setCookingTime(recipe.getCookingTime());
-                recipeEntity.setImageFileName(recipe.getImageFileName());
-                recipeEntity.setPreparation(recipe.getPreparation());
-                recipeEntity.setServing(recipe.getServing());
-                recipeEntity.setAuthor(recipe.getAuthor());
-                recipeCrudRepository.save(recipeEntity);
+    public void updateRecipe( Recipe recipe ) {
+        if ( recipe != null ) {
+            RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipe.getId() );
+            boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipe.getAuthor().getUsername() );
+            if ( isAuthenticated ) {
+                recipeEntity.setName( recipe.getName() );
+                recipeEntity.setWorkingTime( recipe.getWorkingTime() );
+                recipeEntity.setRestTime( recipe.getRestTime() );
+                recipeEntity.setShortDescription( recipe.getShortDescription() );
+                recipeEntity.setCalories( recipe.getCalories() );
+                recipeEntity.setDifficulty( recipe.getDifficulty() );
+                recipeEntity.setCookingTime( recipe.getCookingTime() );
+                recipeEntity.setImageFileName( recipe.getImageFileName() );
+                recipeEntity.setPreparation( recipe.getPreparation() );
+                recipeEntity.setServing( recipe.getServing() );
+                recipeEntity.setAuthor( recipe.getAuthor() );
+                recipeCrudRepository.save( recipeEntity );
             }
         }
     }
 
     @Override
-    public Recipe getRecipe(int recipeID) {
-        RecipeEntity recipeEntity = recipeCrudRepository.findOne(recipeID);
+    public Recipe getRecipe( int recipeID ) {
+        RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipeID );
         Recipe recipe = null;
-        if (recipeEntity != null) {
-            recipe = new Recipe(recipeEntity);
+        if ( recipeEntity != null ) {
+            recipe = new Recipe( recipeEntity );
         }
         return recipe;
     }
@@ -103,30 +102,30 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Override
     public List<Recipe> getAllRecipes() {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
-        List<Recipe> recipes = recipeEntityListToRecipeList(recipeEntities);
+        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
         return recipes;
     }
 
     @Override
-    public List<Recipe> getAllRecipesByName(String recipeName) {
-        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByName(recipeName);
-        List<Recipe> recipes = recipeEntityListToRecipeList(recipeEntities);
+    public List<Recipe> getAllRecipesByName( String recipeName ) {
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByName( recipeName );
+        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
         return recipes;
     }
 
     @Override
-    public List<Recipe> searchRecipesContaining(String searchTerm) {
-        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByNameLike(searchTerm);
-        List<Recipe> recipes = recipeEntityListToRecipeList(recipeEntities);
+    public List<Recipe> searchRecipesContaining( String searchTerm ) {
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByNameLike( searchTerm );
+        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
         return recipes;
     }
 
-    private List<Recipe> recipeEntityListToRecipeList(List<RecipeEntity> entities) {
+    private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
-        if (entities != null) {
-            for (RecipeEntity entity : entities) {
-                Recipe current = new Recipe(entity);
-                recipes.add(current);
+        if ( entities != null ) {
+            for ( RecipeEntity entity : entities ) {
+                Recipe current = new Recipe( entity );
+                recipes.add( current );
             }
         }
         return recipes;

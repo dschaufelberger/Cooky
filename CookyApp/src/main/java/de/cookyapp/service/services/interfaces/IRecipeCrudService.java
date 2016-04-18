@@ -2,7 +2,6 @@ package de.cookyapp.service.services.interfaces;
 
 import java.util.List;
 
-import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.service.dto.Recipe;
 
 /**
@@ -13,7 +12,7 @@ public interface IRecipeCrudService {
 
     Recipe createRecipe( Recipe recipe );
 
-    void updateRecipe(Recipe recipe );
+    void updateRecipe( Recipe recipe );
 
     Recipe getRecipe( int recipeID );
 

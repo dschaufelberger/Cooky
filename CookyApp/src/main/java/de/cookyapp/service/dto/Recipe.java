@@ -1,14 +1,10 @@
 package de.cookyapp.service.dto;
 
+import java.time.LocalDateTime;
+
 import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.persistence.entities.RecipeEntity;
-import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import de.cookyapp.persistence.entities.UserEntity;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 /**
@@ -34,28 +30,28 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(RecipeEntity recipeEntity) {
-        setId(recipeEntity.getId());
-        setName(recipeEntity.getName());
-        setShortDescription(recipeEntity.getShortDescription());
-        setImageFileName(recipeEntity.getImageFileName());
-        setDifficulty(recipeEntity.getDifficulty());
-        setCalories(recipeEntity.getCalories());
-        setServing(recipeEntity.getServing());
-        setRating(recipeEntity.getRating());
-        setCreationDate(recipeEntity.getCreationTime());
-        setPreparation(recipeEntity.getPreparation());
-        setCookingTime(recipeEntity.getCookingTime());
-        setRestTime(recipeEntity.getRestTime());
-        setWorkingTime(recipeEntity.getWorkingTime());
-        setAuthor(recipeEntity.getAuthor());
+    public Recipe( RecipeEntity recipeEntity ) {
+        setId( recipeEntity.getId() );
+        setName( recipeEntity.getName() );
+        setShortDescription( recipeEntity.getShortDescription() );
+        setImageFileName( recipeEntity.getImageFileName() );
+        setDifficulty( recipeEntity.getDifficulty() );
+        setCalories( recipeEntity.getCalories() );
+        setServing( recipeEntity.getServing() );
+        setRating( recipeEntity.getRating() );
+        setCreationDate( recipeEntity.getCreationTime() );
+        setPreparation( recipeEntity.getPreparation() );
+        setCookingTime( recipeEntity.getCookingTime() );
+        setRestTime( recipeEntity.getRestTime() );
+        setWorkingTime( recipeEntity.getWorkingTime() );
+        setAuthor( recipeEntity.getAuthor() );
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId( int id ) {
         this.id = id;
     }
 
@@ -63,7 +59,7 @@ public class Recipe {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName( String name ) {
         this.name = name;
     }
 
@@ -71,7 +67,7 @@ public class Recipe {
         return shortDescription;
     }
 
-    public void setShortDescription(String shortDescription) {
+    public void setShortDescription( String shortDescription ) {
         this.shortDescription = shortDescription;
     }
 
@@ -79,7 +75,7 @@ public class Recipe {
         return imageFileName;
     }
 
-    public void setImageFileName(String imageFileName) {
+    public void setImageFileName( String imageFileName ) {
         this.imageFileName = imageFileName;
     }
 
@@ -87,7 +83,7 @@ public class Recipe {
         return difficulty;
     }
 
-    public void setDifficulty(RecipeDifficulty difficulty) {
+    public void setDifficulty( RecipeDifficulty difficulty ) {
         this.difficulty = difficulty;
     }
 
@@ -95,7 +91,7 @@ public class Recipe {
         return calories;
     }
 
-    public void setCalories(Integer calories) {
+    public void setCalories( Integer calories ) {
         this.calories = calories;
     }
 
@@ -103,7 +99,7 @@ public class Recipe {
         return serving;
     }
 
-    public void setServing(Short serving) {
+    public void setServing( Short serving ) {
         this.serving = serving;
     }
 
@@ -111,7 +107,7 @@ public class Recipe {
         return rating;
     }
 
-    public void setRating(Byte rating) {
+    public void setRating( Byte rating ) {
         this.rating = rating;
     }
 
@@ -119,7 +115,7 @@ public class Recipe {
         return author;
     }
 
-    public void setAuthor(UserEntity author) {
+    public void setAuthor( UserEntity author ) {
         this.author = author;
     }
 
@@ -127,7 +123,7 @@ public class Recipe {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate( LocalDateTime creationDate ) {
         this.creationDate = creationDate;
     }
 
@@ -135,7 +131,7 @@ public class Recipe {
         return preparation;
     }
 
-    public void setPreparation(String preparation) {
+    public void setPreparation( String preparation ) {
         this.preparation = preparation;
     }
 
@@ -143,7 +139,7 @@ public class Recipe {
         return workingTime;
     }
 
-    public void setWorkingTime(Integer workingTime) {
+    public void setWorkingTime( Integer workingTime ) {
         this.workingTime = workingTime;
     }
 
@@ -151,7 +147,7 @@ public class Recipe {
         return cookingTime;
     }
 
-    public void setCookingTime(Integer cookingTime) {
+    public void setCookingTime( Integer cookingTime ) {
         this.cookingTime = cookingTime;
     }
 
@@ -159,7 +155,7 @@ public class Recipe {
         return restTime;
     }
 
-    public void setRestTime(Integer restTime) {
+    public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
     }
 }
