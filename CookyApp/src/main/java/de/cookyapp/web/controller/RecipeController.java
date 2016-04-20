@@ -79,7 +79,6 @@ public class RecipeController {
                         ingredient.setUnit( current.getUnit() );
                         ingredient.setId( current.getId() );
                         ingredients.add( ingredient );
-                        ingredientCrudService.updateIngredient( ingredient );
                     }
                 }
 

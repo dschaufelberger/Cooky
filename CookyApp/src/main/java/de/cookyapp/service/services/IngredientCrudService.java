@@ -39,15 +39,6 @@ public class IngredientCrudService implements IIngredientCrudService {
     }
 
     @Override
-    public void updateIngredient( Ingredient ingredient ) {
-        if ( ingredient != null ) {
-            if ( ingredientCrudRepository.findFirstByName( ingredient.getName() ) == null ) {
-                add( ingredient );
-            }
-        }
-    }
-
-    @Override
     public void save( List<Ingredient> ingredients ) {
         for ( Ingredient ingredient : ingredients ) {
             if ( ingredientCrudRepository.findFirstByName( ingredient.getName() ) != null ) {
@@ -80,20 +71,22 @@ public class IngredientCrudService implements IIngredientCrudService {
                     }
 
                     entity = new RecipeIngredientEntity();
-                    entity.setIngredient( ingredientEntity );
                     entity.setRecipe( recipe );
                 } else {
                     if ( ingredient != null && !ingredientEntity.getName().equals( ingredient.getName() ) ) {
-                        IngredientEntity newIngredient = new IngredientEntity();
-                        newIngredient.setName( ingredient.getName() );
-                        newIngredient = this.ingredientCrudRepository.save( newIngredient );
-                        entity.setIngredient( newIngredient );
+                        ingredientEntity = this.ingredientCrudRepository.findFirstByName( ingredient.getName() );
+
+                        if ( ingredientEntity == null ) {
+                            ingredientEntity = new IngredientEntity();
+                            ingredientEntity.setName( ingredient.getName() );
+                            ingredientEntity = this.ingredientCrudRepository.save( ingredientEntity );
+                        }
                     }
                 }
 
-                //TODO [dodo] check if the RecipeIngredient is updated and not created new
                 entity.setAmount( ingredient.getAmount() );
                 entity.setUnit( ingredient.getUnit() );
+                entity.setIngredient( ingredientEntity );
                 updatedEntities.add( entity );
             }
         }
@@ -125,11 +118,5 @@ public class IngredientCrudService implements IIngredientCrudService {
         }
 
         return ingredientList;
-    }
-
-    private void add( Ingredient ingredient ) {
-        IngredientEntity ingredientEntity = new IngredientEntity();
-        ingredientEntity.setName( ingredient.getName() );
-        ingredientCrudRepository.save( ingredientEntity );
     }
 }

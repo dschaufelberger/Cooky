@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface IIngredientCrudService {
 
-    void updateIngredient (Ingredient ingredient);
-
     void save (List<Ingredient> ingredients);
 
     void saveRecipeIngredient (int recipeId, List<Ingredient> ingredients);
