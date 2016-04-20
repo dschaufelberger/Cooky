@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
@@ -22,13 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
-    private IUserAuthorization userAuthorization;
 
     @Autowired
-    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserAuthorization userAuthorization ) {
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
-        this.userAuthorization = userAuthorization;
     }
 
     @Override
@@ -55,7 +52,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         recipeEntity.setDifficulty( recipe.getDifficulty() );
         recipeEntity.setImageFileName( recipe.getImageFileName() );
         recipeEntity.setShortDescription( recipe.getShortDescription() );
-        recipeEntity.setCreationTime( LocalDateTime.now());
+        recipeEntity.setCreationTime( LocalDateTime.now() );
         recipeEntity.setWorkingTime( recipe.getWorkingTime() );
         recipeEntity.setPreparation( recipe.getPreparation() );
         recipeEntity.setCookingTime( recipe.getCookingTime() );

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
@@ -25,13 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserCrudService implements IUserCrudService {
     private IUserCrudRepository userCrudRepository;
     private IAuthenticationFacade authentication;
-    private IUserAuthorization userAuthorization;
 
     @Autowired
-    public UserCrudService( IUserCrudRepository userCrudRepository, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization ) {
+    public UserCrudService( IUserCrudRepository userCrudRepository, IAuthenticationFacade authenticationFacade ) {
         this.userCrudRepository = userCrudRepository;
         this.authentication = authenticationFacade;
-        this.userAuthorization = userAuthorization;
     }
 
     @Override

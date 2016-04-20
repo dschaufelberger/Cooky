@@ -3,8 +3,6 @@ package de.cookyapp.service.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.RecipeIngredientEntity;
@@ -27,16 +25,12 @@ public class IngredientCrudService implements IIngredientCrudService {
     private IIngredientCrudRepository ingredientCrudRepository;
     private IRecipeIngredientCrudRepository recipeIngredientCrudRepository;
     private IRecipeCrudRepository recipeCrudRepository;
-    private IAuthenticationFacade authentication;
-    private IUserAuthorization userAuthorization;
 
     @Autowired
-    public IngredientCrudService( IIngredientCrudRepository ingredientCrudRepository, IAuthenticationFacade authentication, IUserAuthorization authorization, IRecipeIngredientCrudRepository recipeIngredientCrudRepository, IRecipeCrudRepository recipeCrudRepository ) {
+    public IngredientCrudService( IIngredientCrudRepository ingredientCrudRepository, IRecipeIngredientCrudRepository recipeIngredientCrudRepository, IRecipeCrudRepository recipeCrudRepository ) {
         this.ingredientCrudRepository = ingredientCrudRepository;
         this.recipeIngredientCrudRepository = recipeIngredientCrudRepository;
         this.recipeCrudRepository = recipeCrudRepository;
-        this.authentication = authentication;
-        this.userAuthorization = authorization;
     }
 
     @Override
