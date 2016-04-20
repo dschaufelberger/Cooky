@@ -1,5 +1,6 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,17 +55,15 @@ public class RecipeCrudService implements IRecipeCrudService {
         recipeEntity.setDifficulty( recipe.getDifficulty() );
         recipeEntity.setImageFileName( recipe.getImageFileName() );
         recipeEntity.setShortDescription( recipe.getShortDescription() );
-        //recipeEntity.setCreationTime(LocalDateTime.now());
+        recipeEntity.setCreationTime( LocalDateTime.now());
         recipeEntity.setWorkingTime( recipe.getWorkingTime() );
         recipeEntity.setPreparation( recipe.getPreparation() );
         recipeEntity.setCookingTime( recipe.getCookingTime() );
         recipeEntity.setRestTime( recipe.getRestTime() );
 
-        RecipeEntity newEntity = new RecipeEntity();
-        newEntity = recipeCrudRepository.save( recipeEntity );
+        recipeEntity = recipeCrudRepository.save( recipeEntity );
 
-        Recipe recipeReturn = new Recipe( newEntity );
-        return recipeReturn;
+        return new Recipe( recipeEntity );
     }
 
     @Override

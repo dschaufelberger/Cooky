@@ -10,6 +10,7 @@ import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.InvalidUserID;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -102,7 +103,7 @@ public class UserCrudService implements IUserCrudService {
                 this.userCrudRepository.save( userEntity );
             }
         } else {
-            //TODO [dodo] throw new Exception;
+            throw new InvalidUserID( user.getId() );
         }
     }
 
