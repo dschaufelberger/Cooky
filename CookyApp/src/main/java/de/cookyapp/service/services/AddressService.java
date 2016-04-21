@@ -17,11 +17,6 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public void removeAddressFromUser( int userID, int addressID ) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void updateAddress( Address address ) {
         throw new UnsupportedOperationException();
     }
