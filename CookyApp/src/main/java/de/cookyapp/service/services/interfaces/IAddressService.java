@@ -8,8 +8,6 @@ import de.cookyapp.service.dto.Address;
 public interface IAddressService {
     void createAddressForUser( int userID, Address address );
 
-    void removeAddressFromUser( int userID, int addressID );
-
     void updateAddress( Address address );
 
     Address getAddress( int addressID );
