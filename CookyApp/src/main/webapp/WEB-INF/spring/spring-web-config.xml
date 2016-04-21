@@ -3,18 +3,30 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+       http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <context:component-scan base-package="de.cookyapp" />
     <context:annotation-config />
 
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <jpa:repositories base-package="de.cookyapp.persistence.repositories"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="order" value="2" />
@@ -24,10 +36,38 @@
 
     <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost/Cooky_Dev_Users" />
-        <property name="username" value="tomcat7" />
-        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
+        <property name="url" value="jdbc:mysql://46.38.237.106:3306/Cooky_Dev_Users" />
+        <!--<property name="username" value="tomcat7" />-->
+        <!--<property name="password" value="GTURiMRd8owaLw3MO4hv" />-->
+        <property name="username" value="dominik" />
+        <property name="password" value="g3R4lt0fR1v14" />
+    </bean>
+
+    <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://46.38.237.106:3306/Cooky_Dev" />
+        <!--<property name="username" value="tomcat7" />-->
+        <!--<property name="password" value="GTURiMRd8owaLw3MO4hv" />-->
+        <property name="username" value="dominik" />
+        <property name="password" value="g3R4lt0fR1v14" />
     </bean>
 
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+    <bean id="hibernateVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="applicationDataSource" />
+        <property name="packagesToScan" value="de.cookyapp.persistence.entities" />
+        <property name="jpaVendorAdapter" ref="hibernateVendorAdapter" />
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
 </beans>

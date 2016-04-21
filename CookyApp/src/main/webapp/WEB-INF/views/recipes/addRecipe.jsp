@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<link type="text/javascript" href="<c:url value='/resources/js/recipeJS/recipes.js'/>" />
 <div class="container">
     <form:form method="POST" action="/recipes/addRecipe" commandName="recipe">
         <div class="col-md-6">
@@ -27,12 +27,12 @@
                     </tr>
                     <tr>
                         <td><form:label path="shortDescription">Short Description:</form:label></td>
-                        <td><form:input path="shortDescription" /></td>
+                        <td><form:textarea path="shortDescription" /></td>
                         <td><form:errors path="shortDescription" cssClass="formError" /></td>
                     </tr>
                     <tr>
                         <td><form:label path="preparation">Preparation:</form:label></td>
-                        <td><form:input path="preparation" /></td>
+                        <td><form:textarea path="preparation" /></td>
                         <td><form:errors path="preparation" cssClass="formError" /></td>
                     </tr>
                     <tr>

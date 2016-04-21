@@ -11,16 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
-import de.cookyapp.persistence.dao.IngredientDao;
-import de.cookyapp.viewmodel.Recipe;
-import org.springframework.cglib.core.Local;
-//TODO check imports
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -49,19 +44,6 @@ public class RecipeEntity {
     private Collection<RecipeIngredientEntity> ingredients;
 
     public RecipeEntity () {
-
-    }
-
-    public RecipeEntity (Recipe recipe) {
-        this.name = recipe.getName();
-        this.shortDescription = recipe.getShortDescription();
-        this.preparation = recipe.getPreparation();
-        this.difficulty = recipe.getDifficulty();
-        this.calories = recipe.getCalories();
-        this.serving = recipe.getServing();
-        this.workingTime = recipe.getWorkingTime();
-        this.cookingTime = recipe.getCookingTime();
-        this.restTime = recipe.getRestTime();
     }
 
     @Id

@@ -74,26 +74,13 @@ public class RecipeIngredientEntity {
 
         if ( id != that.id )
             return false;
-        //if ( recipeId != that.recipeId )
-        //    return false;
-        //if ( ingredientId != that.ingredientId )
-        //    return false;
-        if ( amount != null ? !amount.equals( that.amount ) : that.amount != null )
-            return false;
-        if ( unit != null ? !unit.equals( that.unit ) : that.unit != null )
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        //result = 31 * result + recipeId;
-        //result = 31 * result + ingredientId;
-        result = 31 * result + (amount != null ? amount.hashCode() : 0);
-        result = 31 * result + (unit != null ? unit.hashCode() : 0);
-        return result;
+        return 31 * this.id;
     }
 
     private IngredientEntity ingredient;
