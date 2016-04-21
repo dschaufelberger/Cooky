@@ -31,7 +31,7 @@ public class CookbookEntity {
     private String shortDescription;
     private CookbookVisibility visibility;
     private boolean editable;
-    private int ownerId;
+    int ownerId;
     private LocalDateTime creationTime;
 
     private UserEntity owner;
@@ -109,6 +109,7 @@ public class CookbookEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    @JoinColumn( name = "OwnerID" )
     public UserEntity getOwner() {
         return owner;
     }
@@ -141,31 +142,12 @@ public class CookbookEntity {
 
         if ( id != that.id )
             return false;
-        if ( editable != that.editable )
-            return false;
-        if ( ownerId != that.ownerId )
-            return false;
-        if ( name != null ? !name.equals( that.name ) : that.name != null )
-            return false;
-        if ( shortDescription != null ? !shortDescription.equals( that.shortDescription ) : that.shortDescription != null )
-            return false;
-        if ( visibility != null ? !visibility.equals( that.visibility ) : that.visibility != null )
-            return false;
-        if ( creationTime != null ? !creationTime.equals( that.creationTime ) : that.creationTime != null )
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (shortDescription != null ? shortDescription.hashCode() : 0);
-        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
-        result = 31 * result + (editable ? 1 : 0);
-        result = 31 * result + ownerId;
-        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
-        return result;
+        return 31 * id;
     }
 }
