@@ -8,14 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.CookbookVisibility;
@@ -30,7 +27,7 @@ public class CookbookEntity {
     private String name;
     private String shortDescription;
     private CookbookVisibility visibility;
-    private boolean editable;
+    private boolean isDefault;
     int ownerId;
     private LocalDateTime creationTime;
 
@@ -79,13 +76,13 @@ public class CookbookEntity {
     }
 
     @Basic
-    @Column( name = "Editable", nullable = false )
-    public boolean isEditable() {
-        return editable;
+    @Column( name = "IsDefault", nullable = false )
+    public boolean isDefault() {
+        return isDefault;
     }
 
-    public void setEditable( boolean editable ) {
-        this.editable = editable;
+    public void setDefault( boolean aDefault ) {
+        this.isDefault = aDefault;
     }
 
     @Basic

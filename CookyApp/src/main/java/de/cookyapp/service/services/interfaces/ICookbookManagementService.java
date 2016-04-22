@@ -16,13 +16,11 @@ public interface ICookbookManagementService {
 
     Cookbook getCookbook( int cookbookId );
 
-    void createCookbookForUser( int userId, Cookbook cookbook );
+    Cookbook createCookbookForUser( int userId, Cookbook cookbook );
 
     void saveCookbook( Cookbook cookbook );
 
     void removeCookbook( int cookbookId );
-
-    void removeCookbook( Cookbook cookbook );
 
     void makeCookbookPublic( int cookbookId );
 

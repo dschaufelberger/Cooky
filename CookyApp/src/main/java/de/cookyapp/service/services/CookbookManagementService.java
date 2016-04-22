@@ -1,5 +1,7 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,10 +17,15 @@ import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Dominik Schaufelberger on 21.04.2016.
  */
+@Transactional
+@Service
 public class CookbookManagementService implements ICookbookManagementService {
     private ICookbookRepository cookbookRepository;
     private IUserCrudService userCrudService;
@@ -51,17 +58,20 @@ public class CookbookManagementService implements ICookbookManagementService {
 
     @Override
     public List<Cookbook> getCookbooksForUser( int userId ) {
-        User user = this.userCrudService.getCurrentUser();
+        User user = this.userCrudService.getUserByID( userId );
+        Authentication currentUserAuthentication = this.authentication.getAuthentication();
+        List<Cookbook> cookbooks = null;
 
         if ( user == null ) {
             throw new NotAuthenticated();
+        } else if ( !user.getUsername().equals( currentUserAuthentication.getName() )
+                && !this.userAuthorization.hasAuthority( currentUserAuthentication, "COOKY_ADMIN" ) ) {
+            throw new UserNotAuthorized();
         } else {
-            if ( user.getId() != userId && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
-                throw new UserNotAuthorized();
-            } else {
-                return this.cookbookRepository.findByOwnerId( userId ).stream().map( cookbookEntity -> new Cookbook( cookbookEntity ) ).collect( Collectors.toList() );
-            }
+            cookbooks = this.cookbookRepository.findByOwnerId( userId ).stream().map( cookbookEntity -> new Cookbook( cookbookEntity ) ).collect( Collectors.toList() );
         }
+
+        return cookbooks != null ? cookbooks : new ArrayList<>();
     }
 
     @Override
@@ -69,54 +79,111 @@ public class CookbookManagementService implements ICookbookManagementService {
         CookbookEntity entitiy = this.cookbookRepository.findOne( cookbookId );
         Cookbook cookbook = null;
 
-        if ( entitiy != null
-                && (this.userCrudService.getCurrentUser().getId() == entitiy.getOwnerId()
-                || !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" )) ) {
-            cookbook = new Cookbook( entitiy );
+        if ( entitiy != null ) {
+            if ( this.userCrudService.getCurrentUser().getId() != entitiy.getOwnerId()
+                    && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
+                throw new UserNotAuthorized();
+            } else {
+                cookbook = new Cookbook( entitiy );
+            }
         }
 
         return cookbook;
     }
 
     @Override
-    public void createCookbookForUser( int userId, Cookbook cookbook ) {
+    public Cookbook createCookbookForUser( int userId, Cookbook cookbook ) {
+        User currentUser = this.userCrudService.getCurrentUser();
 
-        throw new UnsupportedOperationException();
+        if ( currentUser == null ) {
+            throw new NotAuthenticated();
+        } else if ( currentUser.getId() != userId || !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
+            throw new UserNotAuthorized();
+        } else {
+            CookbookEntity cookbookEntity = new CookbookEntity();
+            cookbookEntity.setName( cookbook.getName() );
+            cookbookEntity.setShortDescription( cookbook.getShortDescription() );
+            cookbookEntity.setVisibility( cookbook.getVisibility() );
+            cookbookEntity.setCreationTime( LocalDateTime.now() );
+            cookbookEntity.setDefault( true );
+            cookbookEntity.setOwnerId( currentUser.getId() );
+
+            return new Cookbook( this.cookbookRepository.save( cookbookEntity ) );
+        }
     }
 
     @Override
     public void saveCookbook( Cookbook cookbook ) {
+        User currentUser = this.userCrudService.getCurrentUser();
 
-        throw new UnsupportedOperationException();
+        if ( currentUser == null ) {
+            throw new NotAuthenticated();
+        } else {
+            CookbookEntity cookbookEntitiy = this.cookbookRepository.findOne( cookbook.getId() );
+
+            if ( cookbookEntitiy != null ) {
+                if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
+                    throw new UserNotAuthorized();
+                } else if ( !cookbookEntitiy.isDefault() ) {
+                    cookbookEntitiy.setName( cookbook.getName() );
+                    cookbookEntitiy.setShortDescription( cookbook.getShortDescription() );
+
+                    this.cookbookRepository.save( cookbookEntitiy );
+                }
+            }
+        }
     }
 
     @Override
     public void removeCookbook( int cookbookId ) {
+        User currentUser = this.userCrudService.getCurrentUser();
 
-        throw new UnsupportedOperationException();
-    }
+        if ( currentUser == null ) {
+            throw new NotAuthenticated();
+        } else {
+            CookbookEntity cookbookEntitiy = this.cookbookRepository.findOne( cookbookId );
 
-    @Override
-    public void removeCookbook( Cookbook cookbook ) {
-        throw new UnsupportedOperationException();
-
+            if ( cookbookEntitiy != null ) {
+                if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
+                    throw new UserNotAuthorized();
+                } else if ( !cookbookEntitiy.isDefault() ) {
+                    this.cookbookRepository.delete( cookbookEntitiy );
+                }
+            }
+        }
     }
 
     @Override
     public void makeCookbookPublic( int cookbookId ) {
-
-        throw new UnsupportedOperationException();
+        setCookbookVisibility( cookbookId, CookbookVisibility.PUBLIC );
     }
 
     @Override
     public void makeCookbookPrivate( int cookbookId ) {
-
-        throw new UnsupportedOperationException();
+        setCookbookVisibility( cookbookId, CookbookVisibility.PRIVATE );
     }
 
     @Override
     public void shareCookbookWithFriends( int cookbookId ) {
+        setCookbookVisibility( cookbookId, CookbookVisibility.FRIENDS );
+    }
 
-        throw new UnsupportedOperationException();
+    private void setCookbookVisibility(int cookbookId, CookbookVisibility visibility) {
+        User currentUser = this.userCrudService.getCurrentUser();
+
+        if ( currentUser == null ) {
+            throw new NotAuthenticated();
+        } else {
+            CookbookEntity cookbookEntitiy = this.cookbookRepository.findOne( cookbookId );
+
+            if ( cookbookEntitiy != null ) {
+                if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
+                    throw new UserNotAuthorized();
+                } else if ( !cookbookEntitiy.isDefault() && cookbookEntitiy.getVisibility() != visibility ) {
+                    cookbookEntitiy.setVisibility( visibility );
+                    this.cookbookRepository.save( cookbookEntitiy );
+                }
+            }
+        }
     }
 }
