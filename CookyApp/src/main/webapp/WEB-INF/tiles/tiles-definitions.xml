@@ -72,22 +72,30 @@
         <put-attribute name="content" value="/WEB-INF/views/recipes/recipes.jsp" />
     </definition>
 
-    <!-- Page to create a new recipe, mapped to "/recipes/create -->
+    <!-- Page to create a new recipe, mapped to "/recipes/create" -->
     <definition name="RecipeEditTile" extends="base.definition">
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="content" value="/WEB-INF/views/recipes/editRecipe.jsp" />
     </definition>
 
-    <!-- The recipe overview page, mapped to "/recipes -->
+    <!-- The recipe overview page, mapped to "/recipes" -->
     <definition name="RecipeCreationTile" extends="base.definition">
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="content" value="/WEB-INF/views/recipes/addRecipe.jsp" />
     </definition>
 
-    <definition name="TestTile" extends="base.definition">
-        <put-attribute name="title" value="Test" />
-        <put-attribute name="content" value="/WEB-INF/views/Test.jsp" />
+    <!-- The overview page for all public cookbooks, mapped to "/cookbooks" -->
+    <definition name="PublicCookbooksTile" extends="base.definition">
+        <put-attribute name="title" value="Public cookbooks" />
+        <put-attribute name="content" value="/WEB-INF/views/cookbooks/public/Overview.jsp" />
     </definition>
+
+    <!-- The management page for a user's personal cookbooks, mapped to "/cookbooks/manage" -->
+    <definition name="ManageCookbooksTile" extends="base.definition">
+        <put-attribute name="title" value="Manage your personal cookbooks" />
+        <put-attribute name="content" value="/WEB-INF/views/cookbooks/Manage.jsp" />
+    </definition>
+
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
     <definition name="" extends="base.definition">
