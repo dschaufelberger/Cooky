@@ -86,7 +86,7 @@ public class CookbookEntity {
     }
 
     @Basic
-    @Column( name = "OwnerID", nullable = false )
+    @Column( name = "OwnerID", nullable = false, insertable = false, updatable = false)
     public int getOwnerId() {
         return ownerId;
     }
