@@ -1,6 +1,5 @@
 package de.cookyapp.web.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +10,7 @@ import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.cookbook.Cookbook;
 import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
-import de.cookyapp.web.viewmodel.cookbook.Recipe;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CookbookController {
     private ICookbookManagementService cookbookManagementService;
     private IUserCrudService userService;
+    private Logger logger = Logger.getLogger( CookbookController.class );
 
     @Autowired
     public CookbookController( ICookbookManagementService cookbookManagementService, IUserCrudService userService ) {
@@ -67,7 +67,7 @@ public class CookbookController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/manage", method = RequestMethod.GET)
+    @RequestMapping( value = "/manage", method = RequestMethod.GET )
     public ModelAndView managePersonalCookbooks() {
         ModelAndView modelAndView = new ModelAndView( "ManageCookbooksTile" );
         //int userId = this.userService.getCurrentUser().getId();
@@ -79,42 +79,52 @@ public class CookbookController {
 
         int k = new Random( 7897542 ).nextInt( 5 ) + 1;
         for ( int i = 1; i <= k; i++ ) {
-            Cookbook cookbook = new Cookbook(  );
+            Cookbook cookbook = new Cookbook();
             cookbook.setId( i );
-            cookbook.setName( "cookbook #" + i);
+            cookbook.setName( "public cookbook #" + i );
             cookbook.setVisibility( CookbookVisibility.PUBLIC );
             cookbook.setOwnerUsername( "dodo" );
-            cookbook.setShortDescription( "A cool cookbook #" + i );
+            cookbook.setShortDescription( "A cool public cookbook #" + i );
             cookbooks.add( cookbook );
         }
 
-         k = new Random( 13134646 ).nextInt( 5 ) + 1;
+        k = new Random( 13134646 ).nextInt( 5 ) + 1;
         for ( int i = 1; i <= k; i++ ) {
-            Cookbook cookbook = new Cookbook(  );
+            Cookbook cookbook = new Cookbook();
             cookbook.setId( i );
-            cookbook.setName( "cookbook #" + i);
+            cookbook.setName( "shared cookbook #" + i );
             cookbook.setVisibility( CookbookVisibility.FRIENDS );
             cookbook.setOwnerUsername( "dodo" );
-            cookbook.setShortDescription( "A cool cookbook #" + i );
+            cookbook.setShortDescription( "A cool shared cookbook #" + i );
             cookbooks.add( cookbook );
         }
 
-         k = new Random( 6487913 ).nextInt( 5 ) + 1;
+        k = new Random( 6487913 ).nextInt( 5 ) + 1;
         for ( int i = 1; i <= k; i++ ) {
-            Cookbook cookbook = new Cookbook(  );
+            Cookbook cookbook = new Cookbook();
             cookbook.setId( i );
-            cookbook.setName( "cookbook #" + i);
+            cookbook.setName( "private cookbook #" + i );
             cookbook.setVisibility( CookbookVisibility.PRIVATE );
             cookbook.setOwnerUsername( "dodo" );
-            cookbook.setShortDescription( "A cool cookbook #" + i );
+            cookbook.setShortDescription( "A cool private cookbook #" + i );
             cookbooks.add( cookbook );
         }
-
 
 
         CookbookOverview overview = new CookbookOverview( cookbooks );
         modelAndView.addObject( "overview", overview );
+        modelAndView.addObject( "cookbook", new Cookbook() );
 
         return modelAndView;
+    }
+
+    @RequestMapping( value = "/manage/save", method = RequestMethod.POST )
+    public String saveCookbook( Cookbook cookbook ) {
+        String view = "redirect:/cookbooks/manage";
+
+        this.logger.debug( "New name is: " + cookbook.getName() );
+        this.logger.debug( "New description is: " + cookbook.getShortDescription() );
+
+        return view;
     }
 }
