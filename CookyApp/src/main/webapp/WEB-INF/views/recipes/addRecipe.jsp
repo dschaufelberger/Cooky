@@ -10,7 +10,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link type="text/javascript" href="<c:url value='/resources/js/recipeJS/recipes.js'/>" />
 <div class="container">
-    <form:form method="POST" action="/recipes/addRecipe" commandName="recipe">
+    <form:form method="POST" action="/recipes/addRecipe" commandName="recipe" enctype="multipart/form-data">>
         <div class="col-md-6">
             <div class="input-group">
                 <table class="table table-hover">
@@ -67,6 +67,10 @@
                         <td><form:label path="restTime">Rest Time:</form:label></td>
                         <td><form:input path="restTime" /></td>
                         <td><form:errors path="restTime" cssClass="formError" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Recipe Image</label></td>
+                        <td><input type="file" name="recipeImage"/></td>
                     </tr>
                     <tr>
                         <td><input type="submit" value="Add" class="btn btn-default"></td>

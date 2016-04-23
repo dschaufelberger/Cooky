@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jasper on 30.11.2015.

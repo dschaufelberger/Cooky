@@ -13,6 +13,8 @@
                         default-target-url="/"
                         authentication-failure-url="/signinError" />
         <sec:logout logout-success-url="/" />
+
+        <sec:csrf disabled="true"></sec:csrf>
     </sec:http>
 
     <sec:authentication-manager id="in-memory-auth">
