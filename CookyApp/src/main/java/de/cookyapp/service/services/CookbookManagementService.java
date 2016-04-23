@@ -168,7 +168,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         setCookbookVisibility( cookbookId, CookbookVisibility.FRIENDS );
     }
 
-    private void setCookbookVisibility(int cookbookId, CookbookVisibility visibility) {
+    private void setCookbookVisibility( int cookbookId, CookbookVisibility visibility ) {
         User currentUser = this.userCrudService.getCurrentUser();
 
         if ( currentUser == null ) {
