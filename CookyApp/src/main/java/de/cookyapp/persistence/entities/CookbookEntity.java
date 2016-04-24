@@ -1,6 +1,7 @@
 package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -8,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -23,7 +26,7 @@ import de.cookyapp.enums.CookbookVisibility;
 @Entity
 @Table( name = "Cookbook", schema = "Cooky_Dev" )
 public class CookbookEntity {
-    private int id;
+    private Integer id;
     private String name;
     private String shortDescription;
     private CookbookVisibility visibility;
@@ -34,13 +37,18 @@ public class CookbookEntity {
     private UserEntity owner;
     private Collection<RecipeEntity> recipes;
 
+    public CookbookEntity() {
+        this.recipes = new ArrayList<>();
+    }
+
     @Id
     @Column( name = "ID", nullable = false )
-    public int getId() {
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    public Integer getId() {
         return id;
     }
 
-    public void setId( int id ) {
+    public void setId( Integer id ) {
         this.id = id;
     }
 
@@ -86,7 +94,7 @@ public class CookbookEntity {
     }
 
     @Basic
-    @Column( name = "OwnerID", nullable = false, insertable = false, updatable = false)
+    @Column( name = "OwnerID", nullable = false, insertable = false, updatable = false )
     public int getOwnerId() {
         return ownerId;
     }
@@ -116,8 +124,8 @@ public class CookbookEntity {
     }
 
     @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "CookbookRecipe", joinColumns = @JoinColumn(name = "CookbookID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    @JoinTable( name = "CookbookRecipe", joinColumns = @JoinColumn( name = "CookbookID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" )
     )
     public Collection<RecipeEntity> getRecipes() {
         return recipes;

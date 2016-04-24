@@ -9,9 +9,12 @@ import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.enums.CookbookVisibility;
 import de.cookyapp.persistence.entities.CookbookEntity;
+import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.ICookbookRepository;
+import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.InvalidUserID;
 import de.cookyapp.service.exceptions.NotAuthenticated;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -28,13 +31,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CookbookManagementService implements ICookbookManagementService {
     private ICookbookRepository cookbookRepository;
+    private IUserCrudRepository userCrudRepository;
     private IUserCrudService userCrudService;
     private IUserAuthorization userAuthorization;
     private IAuthenticationFacade authentication;
 
     @Autowired
-    public CookbookManagementService( ICookbookRepository cookbookRepository, IUserCrudService userCrudService, IUserAuthorization userAuthorization, IAuthenticationFacade authentication ) {
+    public CookbookManagementService( ICookbookRepository cookbookRepository, IUserCrudRepository userCrudRepository, IUserCrudService userCrudService, IUserAuthorization userAuthorization, IAuthenticationFacade authentication ) {
         this.cookbookRepository = cookbookRepository;
+        this.userCrudRepository = userCrudRepository;
         this.userCrudService = userCrudService;
         this.userAuthorization = userAuthorization;
         this.authentication = authentication;
@@ -93,22 +98,31 @@ public class CookbookManagementService implements ICookbookManagementService {
 
     @Override
     public Cookbook createCookbookForUser( int userId, Cookbook cookbook ) {
-        User currentUser = this.userCrudService.getCurrentUser();
+        UserEntity user = this.userCrudRepository.findOne( userId );
 
-        if ( currentUser == null ) {
-            throw new NotAuthenticated();
-        } else if ( currentUser.getId() != userId || !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
+        if ( user == null ) {
+            throw new InvalidUserID( userId );
+        } else if ( !this.authentication.getAuthentication().getName().equals( user.getUsername() )
+                && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
             throw new UserNotAuthorized();
         } else {
-            CookbookEntity cookbookEntity = new CookbookEntity();
-            cookbookEntity.setName( cookbook.getName() );
-            cookbookEntity.setShortDescription( cookbook.getShortDescription() );
-            cookbookEntity.setVisibility( cookbook.getVisibility() );
-            cookbookEntity.setCreationTime( LocalDateTime.now() );
-            cookbookEntity.setDefault( true );
-            cookbookEntity.setOwnerId( currentUser.getId() );
+            return createCookbook( user, cookbook, false );
+        }
+    }
 
-            return new Cookbook( this.cookbookRepository.save( cookbookEntity ) );
+    @Override
+    public Cookbook createDefaultCookbookForUser( int userId, Cookbook cookbook ) {
+        UserEntity user = this.userCrudRepository.findOne( userId );
+
+        //TODO [dodo] how can we restrict this to be only called by the system?
+        //if ( !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
+        //    throw new UserNotAuthorized();
+        //}
+
+        if ( user == null ) {
+            throw new InvalidUserID( userId );
+        } else {
+            return createCookbook( user, cookbook, true );
         }
     }
 
@@ -127,6 +141,7 @@ public class CookbookManagementService implements ICookbookManagementService {
                 } else if ( !cookbookEntitiy.isDefault() ) {
                     cookbookEntitiy.setName( cookbook.getName() );
                     cookbookEntitiy.setShortDescription( cookbook.getShortDescription() );
+                    cookbookEntitiy.setVisibility( cookbook.getVisibility() );
 
                     this.cookbookRepository.save( cookbookEntitiy );
                 }
@@ -153,37 +168,17 @@ public class CookbookManagementService implements ICookbookManagementService {
         }
     }
 
-    @Override
-    public void makeCookbookPublic( int cookbookId ) {
-        setCookbookVisibility( cookbookId, CookbookVisibility.PUBLIC );
-    }
+    private Cookbook createCookbook( UserEntity user, Cookbook cookbook, boolean isDefault ) {
+        CookbookEntity cookbookEntity = new CookbookEntity();
+        cookbookEntity.setName( cookbook.getName() );
+        cookbookEntity.setShortDescription( cookbook.getShortDescription() );
+        cookbookEntity.setVisibility( cookbook.getVisibility() );
+        cookbookEntity.setCreationTime( LocalDateTime.now() );
+        cookbookEntity.setDefault( isDefault );
+        cookbookEntity.setOwner( user );
 
-    @Override
-    public void makeCookbookPrivate( int cookbookId ) {
-        setCookbookVisibility( cookbookId, CookbookVisibility.PRIVATE );
-    }
+        CookbookEntity entity = this.cookbookRepository.save( cookbookEntity );
 
-    @Override
-    public void shareCookbookWithFriends( int cookbookId ) {
-        setCookbookVisibility( cookbookId, CookbookVisibility.FRIENDS );
-    }
-
-    private void setCookbookVisibility( int cookbookId, CookbookVisibility visibility ) {
-        User currentUser = this.userCrudService.getCurrentUser();
-
-        if ( currentUser == null ) {
-            throw new NotAuthenticated();
-        } else {
-            CookbookEntity cookbookEntitiy = this.cookbookRepository.findOne( cookbookId );
-
-            if ( cookbookEntitiy != null ) {
-                if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
-                    throw new UserNotAuthorized();
-                } else if ( !cookbookEntitiy.isDefault() && cookbookEntitiy.getVisibility() != visibility ) {
-                    cookbookEntitiy.setVisibility( visibility );
-                    this.cookbookRepository.save( cookbookEntitiy );
-                }
-            }
-        }
+        return new Cookbook( entity );
     }
 }

@@ -19,6 +19,9 @@ public class Cookbook {
     private User owner;
     private List<Recipe> recipes;
 
+    public Cookbook() {
+    }
+
     public Cookbook( CookbookEntity cookbookEntity ) {
         setId( cookbookEntity.getId() );
         setName( cookbookEntity.getName() );
