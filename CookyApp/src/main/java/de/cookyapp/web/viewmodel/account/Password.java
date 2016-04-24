@@ -50,15 +50,6 @@ public class Password {
     public void setPassword_confirm( String password_confirm ) {
         this.password_confirm = password_confirm;
     }
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-
-        return sb.toString();
-    }
 }
 
 
