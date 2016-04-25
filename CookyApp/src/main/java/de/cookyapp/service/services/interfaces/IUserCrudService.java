@@ -14,7 +14,7 @@ public interface IUserCrudService {
 
     void deleteUser( User user );
 
-    void createUser( User user );
+    User createUser( User user );
 
     void updateUser( User user );
 

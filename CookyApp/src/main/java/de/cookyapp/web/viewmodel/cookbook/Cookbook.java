@@ -2,7 +2,6 @@ package de.cookyapp.web.viewmodel.cookbook;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.validation.constraints.NotNull;
 
 import de.cookyapp.enums.CookbookVisibility;
@@ -15,14 +14,14 @@ public class Cookbook {
     private int id;
     private int ownerId;
 
-    @NotBlank( message = "Bitte geben Sie einen Namen für das Kochbuch an." )
+    @NotBlank( message = "Please enter a name for the cookbook." )
     private String name;
 
-    @NotBlank( message = "Bitte geben Sie eine Beschreibung für das Kochbuch an." )
+    @NotBlank( message = "Please enter a short description text for the cookbook." )
     private String shortDescription;
     private String ownerUsername;
 
-    @NotNull
+    @NotNull( message = "Please select a visibility for the recipe." )
     private CookbookVisibility visibility;
     private List<Recipe> recipes;
 
@@ -41,6 +40,10 @@ public class Cookbook {
 
     public int getId() {
         return id;
+    }
+
+    public void setId( int id ) {
+        this.id = id;
     }
 
     public String getName() {
@@ -85,23 +88,5 @@ public class Cookbook {
 
     public CookbookVisibility[] getVisibilities() {
         return CookbookVisibility.values();
-    }
-
-    /* TEST PURPOSE ONLY */
-
-    public void setId( int id ) {
-        this.id = id;
-    }
-
-    public void setOwnerId( int ownerId ) {
-        this.ownerId = ownerId;
-    }
-
-    public void setOwnerUsername( String ownerUsername ) {
-        this.ownerUsername = ownerUsername;
-    }
-
-    public void setRecipes( List<Recipe> recipes ) {
-        this.recipes = recipes;
     }
 }
