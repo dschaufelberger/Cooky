@@ -22,7 +22,8 @@
             <c:forEach var="recipes" items="${recipesList}">
                 <div class="col-md-4">
                     <div class="thumbnail size">
-                        <img class="imageSize" src="/recipes/loadImage?id=${recipes.id}" alt="image">
+                        <img class="imageSize" src="${recipes.imageLink}" alt="image">
+                        <%--<c:url value='${recipes.imageLink}'></c:url> --%>
                         <div class="caption">
                             <h3>${recipes.name}</h3>
 

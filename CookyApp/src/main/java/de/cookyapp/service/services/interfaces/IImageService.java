@@ -2,6 +2,7 @@ package de.cookyapp.service.services.interfaces;
 
 import de.cookyapp.service.dto.Recipe;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,6 +11,6 @@ import java.io.IOException;
  */
 public interface IImageService {
 
-    Recipe saveImage (Recipe recipe, File image) throws IOException;
+    Recipe saveImage (Recipe recipe, BufferedImage image) throws IOException;
 
 }

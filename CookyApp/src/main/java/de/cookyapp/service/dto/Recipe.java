@@ -25,6 +25,7 @@ public class Recipe {
     private Integer restTime;
     private Short serving;
     private Byte rating;
+    private String imageLink;
 
     private UserEntity author;
 
@@ -77,6 +78,10 @@ public class Recipe {
     }
 
     public void setImageFile( byte[] imageFileName ) { this.imageFile = imageFileName; }
+
+    public String getImageLink () { return imageLink; }
+
+    public void setImageLink (String imageLink) { this.imageLink = imageLink; }
 
     public RecipeDifficulty getDifficulty() {
         return difficulty;

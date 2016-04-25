@@ -1,5 +1,7 @@
 package de.cookyapp.service.services;
 
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,9 @@ import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -97,9 +102,15 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public List<Recipe> getAllRecipes() {
+    public List<Recipe> getAllRecipes(String imagePath) throws IOException {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
         List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
+        for (Recipe current : recipes) {
+            if (current.getImageFile() != null) {
+                String pathToImage = byteArrayToFileLink(current.getImageFile(), imagePath);
+                current.setImageLink(pathToImage);
+            }
+        }
         return recipes;
     }
 
@@ -126,5 +137,19 @@ public class RecipeCrudService implements IRecipeCrudService {
             }
         }
         return recipes;
+    }
+
+    private String byteArrayToFileLink (byte[] bytes, String path) throws IOException {
+        String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
+        String completePath = path + imageGUID;
+        String imagePath = "resources/images/recipes/" + imageGUID;
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        BufferedImage bufferedImage = ImageIO.read(inputStream);
+        ImageIO.write(bufferedImage, "jpg", new File(completePath));
+        //temporäre Dateien erstellen in spring?
+        //Convert bytes to file and generate temp link;
+        //File file = new File();
+        //FileOutputStream outputStream = new FileOutputStream(file).write(bytes);
+        return imagePath;
     }
 }

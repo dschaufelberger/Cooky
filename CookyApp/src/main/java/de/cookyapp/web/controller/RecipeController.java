@@ -1,15 +1,15 @@
 package de.cookyapp.web.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
@@ -61,19 +61,11 @@ public class RecipeController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView handleRecipes() {
+    public ModelAndView handleRecipes() throws IOException {
         ModelAndView model = new ModelAndView("RecipeOverviewTile");
-        model.addObject("recipesList", this.recipeCrudService.getAllRecipes());
+        String path = generatePath();
+        model.addObject("recipesList", this.recipeCrudService.getAllRecipes(path));
         return model;
-    }
-
-    @RequestMapping("/loadImage")
-    public void handleImage (HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        byte[] image = recipeCrudService.getRecipe(id).getImageFile();
-        ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(image);
-        outputStream.close();
     }
 
     @RequestMapping("/removeRecipe")
@@ -183,7 +175,9 @@ public class RecipeController {
             ingredientCrudService.save(ingredients);
             de.cookyapp.service.dto.Recipe current = recipeCrudService.createRecipe(newRecipe);
 
-            String fileName = image.getOriginalFilename();
+
+
+            /*String fileName = image.getOriginalFilename();
             String path = "C:/Users/Jasper/Pictures/";
             String completePath = path + fileName;
             File imageFile = new File(completePath);
@@ -191,8 +185,10 @@ public class RecipeController {
                 current = imageService.saveImage(current, imageFile);
             } catch (Exception ex) {
                 ex.toString();
-            }
-            recipeCrudService.updateRecipe(current);
+            }*/
+            de.cookyapp.service.dto.Recipe recipeWithImage = uploadImage(image, current);
+
+            recipeCrudService.updateRecipe(recipeWithImage);
             ingredientCrudService.saveRecipeIngredient(current.getId(), ingredients);
             view = "redirect:/recipes";
         }
@@ -222,5 +218,41 @@ public class RecipeController {
         if (!image.getContentType().equals("image/jpeg") && !image.getContentType().equals("image/jpg")) {
             throw new RuntimeException("Only JPG images are accepted");
         }
+    }
+
+    private de.cookyapp.service.dto.Recipe uploadImage (MultipartFile image, de.cookyapp.service.dto.Recipe current) {
+        de.cookyapp.service.dto.Recipe recipe = current;
+        InputStream inputStream = null;
+        BufferedImage bufferedImage = null;
+        String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
+        String completePath = generatePath() + imageGUID;
+        try {
+            try {
+                inputStream = image.getInputStream();
+                bufferedImage = ImageIO.read(inputStream);
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
+            ImageIO.write(bufferedImage, "jpg", new File(completePath));
+            recipe = imageService.saveImage(current, bufferedImage);
+        } catch (Exception ex) {
+            ex.toString();
+        }
+
+        return recipe;
+    }
+
+    private String generatePath () {
+        String path;
+        String imagePath = "resources/images/recipes/";
+        String realPath = context.getRealPath("/");
+        if (! new File(imagePath).exists()) {
+            File file = new File(imagePath);
+            file.mkdirs();
+        }
+        path = realPath + imagePath;
+        return path;
     }
 }
