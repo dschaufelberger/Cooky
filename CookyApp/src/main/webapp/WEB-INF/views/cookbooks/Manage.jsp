@@ -10,9 +10,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="container">
     <div class="panel-group">
@@ -26,18 +23,8 @@
             <div id="collapsePrivate" class="panel-collapse collapse">
                 <ul class="list-group cooky-cookbooks">
                     <c:forEach var="currentCookbook" items="${overview.privateCookbooks}">
-                        <jsp:setProperty name="cookbook" property="id" value="${currentCookbook.id}"/>
-                        <jsp:setProperty name="cookbook" property="name" value="${currentCookbook.name}" />
-                        <jsp:setProperty name="cookbook" property="shortDescription"
-                                         value="${currentCookbook.shortDescription}" />
-                        <jsp:setProperty name="cookbook" property="visibility" value="${currentCookbook.visibility}"/>
                         <li class="list-group-item">
-                            <form:form action="/cookbooks/manage/save" method="post" commandName="cookbook">
                                 <cooky:cookbookItem item="${currentCookbook}" />
-                            </form:form>
-                            <form id="deleteForm${currentCookbook.id}" method="post" action="/cookbooks/manage/delete/${currentCookbook.id}">
-                                <sec:csrfInput/>
-                            </form>
                         </li>
                     </c:forEach>
                 </ul>
@@ -58,18 +45,8 @@
             <div id="collapseShared" class="panel-collapse collapse">
                 <ul class="list-group cooky-cookbooks">
                     <c:forEach var="currentCookbook" items="${overview.sharedCookbooks}">
-                        <jsp:setProperty name="cookbook" property="id" value="${currentCookbook.id}"/>
-                        <jsp:setProperty name="cookbook" property="name" value="${currentCookbook.name}" />
-                        <jsp:setProperty name="cookbook" property="shortDescription"
-                                         value="${currentCookbook.shortDescription}" />
-                        <jsp:setProperty name="cookbook" property="visibility" value="${currentCookbook.visibility}"/>
                         <li class="list-group-item">
-                            <form:form action="/cookbooks/manage/save" method="post" commandName="cookbook">
                                 <cooky:cookbookItem item="${currentCookbook}" />
-                            </form:form>
-                            <form id="deleteForm${currentCookbook.id}" method="post" action="/cookbooks/manage/delete/${currentCookbook.id}">
-                                <sec:csrfInput/>
-                            </form>
                         </li>
                     </c:forEach>
                 </ul>
@@ -90,18 +67,8 @@
             <div id="collapsePublic" class="panel-collapse collapse">
                 <ul class="list-group cooky-cookbooks">
                     <c:forEach var="currentCookbook" items="${overview.publicCookbooks}">
-                        <jsp:setProperty name="cookbook" property="id" value="${currentCookbook.id}"/>
-                        <jsp:setProperty name="cookbook" property="name" value="${currentCookbook.name}" />
-                        <jsp:setProperty name="cookbook" property="shortDescription"
-                                         value="${currentCookbook.shortDescription}" />
-                        <jsp:setProperty name="cookbook" property="visibility" value="${currentCookbook.visibility}"/>
                         <li class="list-group-item">
-                            <form:form action="/cookbooks/manage/save" method="post" commandName="cookbook">
-                                <cooky:cookbookItem item="${currentCookbook}" />
-                            </form:form>
-                            <form id="deleteForm${currentCookbook.id}" method="post" action="/cookbooks/manage/delete/${currentCookbook.id}">
-                                <sec:csrfInput/>
-                            </form>
+                            <cooky:cookbookItem item="${currentCookbook}" />
                         </li>
                     </c:forEach>
                 </ul>
