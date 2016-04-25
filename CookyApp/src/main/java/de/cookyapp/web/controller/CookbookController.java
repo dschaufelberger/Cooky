@@ -43,26 +43,6 @@ public class CookbookController {
                 .stream()
                 .map( cookbook -> new Cookbook( cookbook ) )
                 .collect( Collectors.toList() );
-        //List<Cookbook> cookbooks = new ArrayList<>();
-        //
-        //for ( int i = 1; i < 7; i++ ) {
-        //    Cookbook cookbook = new Cookbook(  );
-        //    cookbook.setId( i );
-        //    cookbook.setName( "cookbook #" + i);
-        //    cookbook.setVisibility( CookbookVisibility.PUBLIC );
-        //    cookbook.setOwnerUsername( "dodo" );
-        //    cookbook.setShortDescription( "A cool cookbook #" + i );
-        //
-        //    int k = new Random( System.currentTimeMillis() / i).nextInt( 13 ) + 1;
-        //    List<Recipe> recipes = new ArrayList<>(  );
-        //    for ( int j = 1; j < k; j++ ) {
-        //        Recipe recipe = new Recipe(  );
-        //        recipe.setName( "recipe #"+i+"."+j );
-        //        recipes.add( recipe );
-        //    }
-        //    cookbook.setRecipes( recipes );
-        //    cookbooks.add( cookbook );
-        //}
 
         modelAndView.addObject( "cookbooks", cookbooks );
 
@@ -77,41 +57,6 @@ public class CookbookController {
                 .stream()
                 .map( cookbook -> new Cookbook( cookbook ) )
                 .collect( Collectors.toList() );
-        //List<Cookbook> cookbooks = new ArrayList<>();
-        //
-        //int k = new Random( 7897542 ).nextInt( 5 ) + 1;
-        //for ( int i = 1; i <= k; i++ ) {
-        //    Cookbook cookbook = new Cookbook();
-        //    cookbook.setId( i );
-        //    cookbook.setName( "public cookbook #" + i );
-        //    cookbook.setVisibility( CookbookVisibility.PUBLIC );
-        //    cookbook.setOwnerUsername( "dodo" );
-        //    cookbook.setShortDescription( "A cool public cookbook #" + i );
-        //    cookbooks.add( cookbook );
-        //}
-        //
-        //k = new Random( 13134646 ).nextInt( 5 ) + 1;
-        //for ( int i = 1; i <= k; i++ ) {
-        //    Cookbook cookbook = new Cookbook();
-        //    cookbook.setId( i );
-        //    cookbook.setName( "shared cookbook #" + i );
-        //    cookbook.setVisibility( CookbookVisibility.FRIENDS );
-        //    cookbook.setOwnerUsername( "dodo" );
-        //    cookbook.setShortDescription( "A cool shared cookbook #" + i );
-        //    cookbooks.add( cookbook );
-        //}
-        //
-        //k = new Random( 6487913 ).nextInt( 5 ) + 1;
-        //for ( int i = 1; i <= k; i++ ) {
-        //    Cookbook cookbook = new Cookbook();
-        //    cookbook.setId( i );
-        //    cookbook.setName( "private cookbook #" + i );
-        //    cookbook.setVisibility( CookbookVisibility.PRIVATE );
-        //    cookbook.setOwnerUsername( "dodo" );
-        //    cookbook.setShortDescription( "A cool private cookbook #" + i );
-        //    cookbooks.add( cookbook );
-        //}
-
 
         CookbookOverview overview = new CookbookOverview( cookbooks );
         modelAndView.addObject( "overview", overview );
@@ -137,10 +82,6 @@ public class CookbookController {
             view = "redirect:/cookbooks/manage";
         }
 
-        this.logger.debug( "New name is: " + cookbook.getName() );
-        this.logger.debug( "New description is: " + cookbook.getShortDescription() );
-        this.logger.debug( "New visibility is: " + cookbook.getVisibility().toString() );
-
         return view;
     }
 
@@ -161,14 +102,9 @@ public class CookbookController {
                 cookbookDTO.setShortDescription( cookbook.getShortDescription() );
                 cookbookDTO.setVisibility( cookbook.getVisibility() );
                 this.cookbookManagementService.createCookbookForUser( user.getId(), cookbookDTO );
+                view = "redirect:/cookbooks/manage";
             }
-
-            view = "redirect:/cookbooks/manage";
         }
-
-        this.logger.debug( "New name is: " + cookbook.getName() );
-        this.logger.debug( "New description is: " + cookbook.getShortDescription() );
-        this.logger.debug( "New visibility is: " + cookbook.getVisibility() );
 
         return view;
     }
