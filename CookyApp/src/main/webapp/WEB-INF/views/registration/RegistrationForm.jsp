@@ -109,6 +109,12 @@
 
 <script>
     $(function () {
-        $('#birthdate').datepicker({maxDate: '-12Y'});
+        $('#birthdate').datepicker({
+            maxDate: '-12Y',
+            changeMonth: true,
+            changeYear: true,
+            dateForm: 'yy-mm-dd'
+        });
+        $('#birthdate').datepicker('option', 'dateFormat', 'dd-mm-yy');
     });
 </script>
