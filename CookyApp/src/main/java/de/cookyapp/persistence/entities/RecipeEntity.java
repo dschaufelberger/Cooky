@@ -1,34 +1,25 @@
 package de.cookyapp.persistence.entities;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import de.cookyapp.enums.RecipeDifficulty;
+import org.hibernate.annotations.Type;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev" )
+@javax.persistence.Table( name = "Recipe", schema = "cooky_test" )
 public class RecipeEntity {
     private int id;
     private String name;
     private String shortDescription;
     private String preparation;
     private RecipeDifficulty difficulty;
-    private String imageFileName;
+    private byte[] imageFile;
     private LocalDateTime creationTime;
     private Integer calories;
     private Short serving;
@@ -170,13 +161,13 @@ public class RecipeEntity {
 
 
     @Basic
-    @javax.persistence.Column( name = "ImageFileName", nullable = true, length = 255 )
-    public String getImageFileName() {
-        return imageFileName;
+    @javax.persistence.Column( name = "ImageFile", nullable = true)
+    public byte[] getImageFile() {
+        return imageFile;
     }
 
-    public void setImageFileName( String imageFileName ) {
-        this.imageFileName = imageFileName;
+    public void setImageFile( byte[] imageFile ) {
+        this.imageFile = imageFile;
     }
 
 
@@ -274,7 +265,7 @@ public class RecipeEntity {
             return false;
         if ( rating != null ? !rating.equals( that.rating ) : that.rating != null )
             return false;
-        if ( imageFileName != null ? !imageFileName.equals( that.imageFileName ) : that.imageFileName != null )
+        if ( imageFile != null ? !imageFile.equals( that.imageFile ) : that.imageFile != null )
             return false;
         if ( creationTime != null ? !creationTime.equals( that.creationTime ) : that.creationTime != null )
             return false;
@@ -295,7 +286,7 @@ public class RecipeEntity {
         result = 31 * result + workingTime;
         result = 31 * result + cookingTime;
         result = 31 * result + restTime;
-        result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
+        result = 31 * result + (imageFile != null ? imageFile.hashCode() : 0);
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
     }

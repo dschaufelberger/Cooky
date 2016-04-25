@@ -1,5 +1,6 @@
 package de.cookyapp.service.dto;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 import de.cookyapp.enums.RecipeDifficulty;
@@ -14,7 +15,7 @@ public class Recipe {
     private int id;
     private String name;
     private String shortDescription;
-    private String imageFileName;
+    private byte[] imageFile;
     private String preparation;
     private RecipeDifficulty difficulty;
     private LocalDateTime creationDate;
@@ -34,7 +35,7 @@ public class Recipe {
         setId( recipeEntity.getId() );
         setName( recipeEntity.getName() );
         setShortDescription( recipeEntity.getShortDescription() );
-        setImageFileName( recipeEntity.getImageFileName() );
+        setImageFile( recipeEntity.getImageFile() );
         setDifficulty( recipeEntity.getDifficulty() );
         setCalories( recipeEntity.getCalories() );
         setServing( recipeEntity.getServing() );
@@ -71,13 +72,11 @@ public class Recipe {
         this.shortDescription = shortDescription;
     }
 
-    public String getImageFileName() {
-        return imageFileName;
+    public byte[] getImageFile() {
+        return imageFile;
     }
 
-    public void setImageFileName( String imageFileName ) {
-        this.imageFileName = imageFileName;
-    }
+    public void setImageFile( byte[] imageFileName ) { this.imageFile = imageFileName; }
 
     public RecipeDifficulty getDifficulty() {
         return difficulty;

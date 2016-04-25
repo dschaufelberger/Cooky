@@ -1,11 +1,15 @@
 package de.cookyapp.web.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
@@ -14,6 +18,7 @@ import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.services.interfaces.IImageService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
@@ -38,6 +43,7 @@ public class RecipeController {
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
     private IIngredientCrudService ingredientCrudService;
+    private IImageService imageService;
     private IAuthenticationFacade authentication;
     private IUserAuthorization userAuthorization;
 
@@ -45,10 +51,11 @@ public class RecipeController {
     ServletContext context;
 
     @Autowired
-    public RecipeController(IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization) {
+    public RecipeController(IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageService imageService) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
+        this.imageService = imageService;
         this.authentication = authenticationFacade;
         this.userAuthorization = userAuthorization;
     }
@@ -58,6 +65,15 @@ public class RecipeController {
         ModelAndView model = new ModelAndView("RecipeOverviewTile");
         model.addObject("recipesList", this.recipeCrudService.getAllRecipes());
         return model;
+    }
+
+    @RequestMapping("/loadImage")
+    public void handleImage (HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        byte[] image = recipeCrudService.getRecipe(id).getImageFile();
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(image);
+        outputStream.close();
     }
 
     @RequestMapping("/removeRecipe")
@@ -97,7 +113,7 @@ public class RecipeController {
                 recipeDTO.setServing(recipe.getServing());
                 recipeDTO.setPreparation(recipe.getPreparation());
                 recipeDTO.setRestTime(recipe.getRestTime());
-                recipeDTO.setImageFileName("http://placehold.it/320x200");
+                //recipeDTO.setImageFile("http://placehold.it/320x200");
                 recipeDTO.setAuthor(userToUserEntity(userCrudService.getCurrentUser()));
                 recipeCrudService.updateRecipe(recipeDTO);
                 ingredientCrudService.saveRecipeIngredient(recipeDTO.getId(), ingredients);
@@ -139,7 +155,7 @@ public class RecipeController {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
-            newRecipe.setAuthor(userToUserEntity(userCrudService.getCurrentUser()));
+            newRecipe.setAuthor(userToUserEntity(userCrudService.getUserByID(16)));
             newRecipe.setName(recipe.getName());
             newRecipe.setWorkingTime(recipe.getWorkingTime());
             newRecipe.setRestTime(recipe.getRestTime());
@@ -151,23 +167,6 @@ public class RecipeController {
             newRecipe.setShortDescription(recipe.getShortDescription());
             newRecipe.setCreationDate(LocalDateTime.now());
 
-            String path = "/images/recipes/";
-            String realPath = context.getRealPath(path);
-
-            if (! new File(realPath).exists()) {
-                new File(realPath).mkdirs();
-            }
-            String fileName = java.util.UUID.randomUUID().toString() + ".jpeg";
-            String uploadPath = realPath + fileName;
-            File upload = new File(uploadPath);
-
-           try {
-               validateImage(image);
-               image.transferTo(upload);
-               newRecipe.setImageFileName(upload.getPath());
-            } catch (Exception ex) {
-                ex.toString();
-            }
             //newRecipe.setImageFileName("http://placehold.it/320x200");
 
 
@@ -183,6 +182,17 @@ public class RecipeController {
 
             ingredientCrudService.save(ingredients);
             de.cookyapp.service.dto.Recipe current = recipeCrudService.createRecipe(newRecipe);
+
+            String fileName = image.getOriginalFilename();
+            String path = "C:/Users/Jasper/Pictures/";
+            String completePath = path + fileName;
+            File imageFile = new File(completePath);
+            try {
+                current = imageService.saveImage(current, imageFile);
+            } catch (Exception ex) {
+                ex.toString();
+            }
+            recipeCrudService.updateRecipe(current);
             ingredientCrudService.saveRecipeIngredient(current.getId(), ingredients);
             view = "redirect:/recipes";
         }
@@ -209,7 +219,7 @@ public class RecipeController {
     }
 
     private void validateImage(MultipartFile image) {
-        if (!image.getContentType().equals("image/jpeg") || !image.getContentType().equals("image/jpg")) {
+        if (!image.getContentType().equals("image/jpeg") && !image.getContentType().equals("image/jpg")) {
             throw new RuntimeException("Only JPG images are accepted");
         }
     }

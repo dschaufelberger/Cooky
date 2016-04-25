@@ -45,11 +45,11 @@
 
     <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://46.38.237.106:3306/Cooky_Dev" />
+        <property name="url" value="jdbc:mysql://localhost:3306/cooky_test" />
         <!--<property name="username" value="tomcat7" />-->
         <!--<property name="password" value="GTURiMRd8owaLw3MO4hv" />-->
-        <property name="username" value="dominik" />
-        <property name="password" value="g3R4lt0fR1v14" />
+        <property name="username" value="root" />
+        <property name="password" value="jasper1993!" />
     </bean>
 
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
@@ -72,6 +72,5 @@
     </bean>
 
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-        <property name="maxUploadSize" value="500000" />
     </bean>
 </beans>

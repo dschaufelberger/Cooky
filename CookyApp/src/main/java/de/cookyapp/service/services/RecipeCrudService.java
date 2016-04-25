@@ -50,7 +50,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         recipeEntity.setCalories( recipe.getCalories() );
         recipeEntity.setAuthor( recipe.getAuthor() );
         recipeEntity.setDifficulty( recipe.getDifficulty() );
-        recipeEntity.setImageFileName( recipe.getImageFileName() );
+        recipeEntity.setImageFile( recipe.getImageFile() );
         recipeEntity.setShortDescription( recipe.getShortDescription() );
         recipeEntity.setCreationTime( LocalDateTime.now() );
         recipeEntity.setWorkingTime( recipe.getWorkingTime() );
@@ -68,7 +68,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( recipe != null ) {
             RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipe.getId() );
             boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipe.getAuthor().getUsername() );
-            if ( isAuthenticated ) {
+            //if ( isAuthenticated ) {
                 recipeEntity.setName( recipe.getName() );
                 recipeEntity.setWorkingTime( recipe.getWorkingTime() );
                 recipeEntity.setRestTime( recipe.getRestTime() );
@@ -76,12 +76,13 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCalories( recipe.getCalories() );
                 recipeEntity.setDifficulty( recipe.getDifficulty() );
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
-                recipeEntity.setImageFileName( recipe.getImageFileName() );
+                recipeEntity.setImageFile( recipe.getImageFile() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
                 recipeEntity.setAuthor( recipe.getAuthor() );
+                recipeEntity.setImageFile(recipe.getImageFile());
                 recipeCrudRepository.save( recipeEntity );
-            }
+            //}
         }
     }
 
