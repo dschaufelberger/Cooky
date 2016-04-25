@@ -73,7 +73,15 @@ public class CookbookManagementService implements ICookbookManagementService {
                 && !this.userAuthorization.hasAuthority( currentUserAuthentication, "COOKY_ADMIN" ) ) {
             throw new UserNotAuthorized();
         } else {
-            cookbooks = this.cookbookRepository.findByOwnerId( userId ).stream().map( cookbookEntity -> new Cookbook( cookbookEntity ) ).collect( Collectors.toList() );
+            /*
+             *  TODO [dodo] in addition to the owners cookbooks, we need to load the shared cookbooks of friends aswell.
+             *  this needs to be implemented when the friend management is done.
+             */
+            cookbooks = this.cookbookRepository.findByOwnerId( userId )
+                    .stream()
+                    .filter( cookbookEntity -> !cookbookEntity.isDefault() )
+                    .map( cookbookEntity -> new Cookbook( cookbookEntity ) )
+                    .collect( Collectors.toList() );
         }
 
         return cookbooks != null ? cookbooks : new ArrayList<>();
@@ -88,7 +96,7 @@ public class CookbookManagementService implements ICookbookManagementService {
             if ( this.userCrudService.getCurrentUser().getId() != entitiy.getOwnerId()
                     && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
                 throw new UserNotAuthorized();
-            } else {
+            } else if ( !entitiy.isDefault() ) {
                 cookbook = new Cookbook( entitiy );
             }
         }
@@ -113,11 +121,6 @@ public class CookbookManagementService implements ICookbookManagementService {
     @Override
     public Cookbook createDefaultCookbookForUser( int userId, Cookbook cookbook ) {
         UserEntity user = this.userCrudRepository.findOne( userId );
-
-        //TODO [dodo] how can we restrict this to be only called by the system?
-        //if ( !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
-        //    throw new UserNotAuthorized();
-        //}
 
         if ( user == null ) {
             throw new InvalidUserID( userId );
