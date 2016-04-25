@@ -12,7 +12,7 @@
     <title>Registrierung erfolgreich!</title>
 </head>
 <body>
-<c:set var="loginUrl" value="/loginPage"/>
+<c:set var="loginUrl" value="/signin"/>
 
 <p>Willkommen bei Cooky! Ihre Registrierung war erfolgreich. Sie können sich nun anmelden und Cooky in vollem Umfang erkunden!</p>
 <p>Hier geht es zur <a href="${loginUrl}">Anmeldeseite</a>.</p>
