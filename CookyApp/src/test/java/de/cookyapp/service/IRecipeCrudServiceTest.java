@@ -118,6 +118,7 @@ public class IRecipeCrudServiceTest {
         userDummy.setUsername( "CookyTester" );
         entityUnderTest.setAuthor( userDummy );
 
+        //create Dummy Recipe List
         List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
 
         this.repositoryMock.setEntities( dummyList );
@@ -153,12 +154,11 @@ public class IRecipeCrudServiceTest {
 
         //act
         this.repositoryMock.save( newRecipeEntity );
-        UserEntity userUpdate = new UserEntity();
-        userUpdate.setUsername( "CookyUpdate" );
-        newRecipe.setAuthor( userUpdate );
+        newRecipe.setShortDescription( "UpdateTest" );
         this.service.updateRecipe( newRecipe );
 
-        Assert.assertEquals( newRecipe.getAuthor(), this.service.getRecipe( 10 ) );
+        Assert.assertEquals( newRecipe.getShortDescription(), this.repositoryMock.findOne( 10 ).getShortDescription() );
+
     }
 
     @Test
@@ -172,32 +172,52 @@ public class IRecipeCrudServiceTest {
         userDummy.setUsername( "CookyTester" );
         newRecipeEntity.setAuthor( userDummy );
 
-        //initalize Recipe
-        Recipe newRecipe = new Recipe();
-        newRecipe.setId( newRecipeEntity.getId() );
-        newRecipe.setAuthor( newRecipeEntity.getAuthor() );
-
         //act
         this.repositoryMock.save( newRecipeEntity );
-        this.service.createRecipe( newRecipe );
+        Recipe recipe = this.service.getRecipe( 5 );
 
-        Assert.assertEquals( newRecipeEntity, this.repositoryMock.findOne( 5 ) );
-        Assert.assertEquals( newRecipe, this.service.getRecipe( 5 ) );
+        //TODO: implement another comparison
+        // NOT Recipe, RecipeEntity
+        Assert.assertEquals( recipe, this.repositoryMock.findOne( 5 ) );
     }
 
     @Test
     public void testGetAllRecipes() throws Exception {
+        // create a dummy user since the service tests the authorization of the user against the authors username
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername( "CookyTester" );
 
+        //create Dummy Recipe List
+        List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
+
+        this.repositoryMock.setEntities( dummyList );
+
+        Assert.assertEquals( this.service.getAllRecipes().size(), dummyList.size() );
     }
 
     @Test
     public void testGetAllRecipesByName() throws Exception {
+        // create a dummy user since the service tests the authorization of the user against the authors username
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername( "CookyTester" );
 
+        //create Dummy Recipe List
+        List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
+
+        Assert.assertEquals( this.service.getAllRecipesByName( "CookyTest" ).size(), this.repositoryMock.findByName( "CookyTest" ).size() );
     }
 
     @Test
     public void testSearchRecipesContaining() throws Exception {
+        // create a dummy user since the service tests the authorization of the user against the authors username
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername( "CookyTester" );
 
+        //create Dummy Recipe List
+        List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
+
+        Assert.assertEquals( this.service.searchRecipesContaining( userDummy.getUsername() ).size(), this.repositoryMock.findByNameLike( userDummy.getUsername() ).size() );
+        //TODO Which fields is findByNameLike searching for? All Fields?
     }
 
     private List<RecipeEntity> createDummyList( int numberOfRecipes, UserEntity dummyAuthor ) {
@@ -206,6 +226,7 @@ public class IRecipeCrudServiceTest {
             RecipeEntity dummy = new RecipeEntity();
             dummy.setId( i );
             dummy.setAuthor( dummyAuthor );
+            dummy.setName( "CookyTest" );
             dummyList.add( dummy );
         }
         return dummyList;
