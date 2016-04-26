@@ -77,11 +77,17 @@ public class Recipe {
         return imageFile;
     }
 
-    public void setImageFile( byte[] imageFileName ) { this.imageFile = imageFileName; }
+    public void setImageFile( byte[] imageFileName ) {
+        this.imageFile = imageFileName;
+    }
 
-    public String getImageLink () { return imageLink; }
+    public String getImageLink() {
+        return imageLink;
+    }
 
-    public void setImageLink (String imageLink) { this.imageLink = imageLink; }
+    public void setImageLink( String imageLink ) {
+        this.imageLink = imageLink;
+    }
 
     public RecipeDifficulty getDifficulty() {
         return difficulty;

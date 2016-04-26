@@ -73,7 +73,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( recipe != null ) {
             RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipe.getId() );
             boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipe.getAuthor().getUsername() );
-            //if ( isAuthenticated ) {
+            if ( isAuthenticated ) {
                 recipeEntity.setName( recipe.getName() );
                 recipeEntity.setWorkingTime( recipe.getWorkingTime() );
                 recipeEntity.setRestTime( recipe.getRestTime() );
@@ -85,9 +85,9 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
                 recipeEntity.setAuthor( recipe.getAuthor() );
-                recipeEntity.setImageFile(recipe.getImageFile());
+                recipeEntity.setImageFile( recipe.getImageFile() );
                 recipeCrudRepository.save( recipeEntity );
-            //}
+            }
         }
     }
 
@@ -102,13 +102,13 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public List<Recipe> getAllRecipes(String imagePath) throws IOException {
+    public List<Recipe> getAllRecipes( String imagePath ) throws IOException {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
         List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
-        for (Recipe current : recipes) {
-            if (current.getImageFile() != null) {
-                String pathToImage = byteArrayToFileLink(current.getImageFile(), imagePath);
-                current.setImageLink(pathToImage);
+        for ( Recipe current : recipes ) {
+            if ( current.getImageFile() != null ) {
+                String pathToImage = byteArrayToFileLink( current.getImageFile(), imagePath );
+                current.setImageLink( pathToImage );
             }
         }
         return recipes;
@@ -139,17 +139,13 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    private String byteArrayToFileLink (byte[] bytes, String path) throws IOException {
+    private String byteArrayToFileLink( byte[] bytes, String path ) throws IOException {
         String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
         String completePath = path + imageGUID;
         String imagePath = "resources/images/recipes/" + imageGUID;
-        InputStream inputStream = new ByteArrayInputStream(bytes);
-        BufferedImage bufferedImage = ImageIO.read(inputStream);
-        ImageIO.write(bufferedImage, "jpg", new File(completePath));
-        //temporäre Dateien erstellen in spring?
-        //Convert bytes to file and generate temp link;
-        //File file = new File();
-        //FileOutputStream outputStream = new FileOutputStream(file).write(bytes);
+        InputStream inputStream = new ByteArrayInputStream( bytes );
+        BufferedImage bufferedImage = ImageIO.read( inputStream );
+        ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
         return imagePath;
     }
 }

@@ -9,8 +9,8 @@ import java.io.IOException;
 /**
  * Created by Jasper on 24.04.2016.
  */
-public interface IImageService {
+public interface IImageUploadService {
 
-    Recipe saveImage (Recipe recipe, BufferedImage image) throws IOException;
+    Recipe saveImage( Recipe recipe, BufferedImage image ) throws IOException;
 
 }
