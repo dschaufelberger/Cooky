@@ -39,7 +39,7 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeCrudRepository.delete( deleteRecipe );
             }
         }
-        throw new InvalidRecipeID("Recipe does not exist", recipeID);
+
     }
 
     @Override
