@@ -1,17 +1,18 @@
 package de.cookyapp.service.services;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
+import de.cookyapp.service.exceptions.InvalidRecipeID;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -29,7 +30,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public void deleteRecipe( int recipeID ) {
+    public void deleteRecipe(int recipeID) throws InvalidRecipeID {
         RecipeEntity deleteRecipe = recipeCrudRepository.findOne( recipeID );
         if ( deleteRecipe != null ) {
             boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() ); //Check current User Authentication
@@ -38,6 +39,7 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeCrudRepository.delete( deleteRecipe );
             }
         }
+        throw new InvalidRecipeID("Recipe does not exist", recipeID);
     }
 
     @Override
