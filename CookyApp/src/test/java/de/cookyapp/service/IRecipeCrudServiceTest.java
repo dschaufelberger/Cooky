@@ -159,7 +159,6 @@ public class IRecipeCrudServiceTest {
         this.service.updateRecipe( newRecipe );
 
         Assert.assertEquals( newRecipe.getAuthor(), this.service.getRecipe( 10 ) );
-
     }
 
     @Test
@@ -209,7 +208,6 @@ public class IRecipeCrudServiceTest {
             dummy.setAuthor( dummyAuthor );
             dummyList.add( dummy );
         }
-
         return dummyList;
     }
 }
