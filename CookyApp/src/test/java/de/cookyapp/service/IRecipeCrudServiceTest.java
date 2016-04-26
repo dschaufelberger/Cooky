@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
+import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.exceptions.InvalidRecipeID;
 import de.cookyapp.service.mocks.AuthenticationMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
@@ -45,18 +46,13 @@ public class IRecipeCrudServiceTest {
         userDummy.setUsername( "CookyTester" );
         entityUnderTest.setAuthor( userDummy );
 
-        List<RecipeEntity> dummyList = new ArrayList<>();
-        for ( int i = 1; i < 10; i++ ) {
-            RecipeEntity dummy = new RecipeEntity();
-            dummy.setId( i );
-            dummy.setAuthor( userDummy );
-            dummyList.add( dummy );
-        }
+        List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
 
         this.repositoryMock.setEntities( dummyList );
 
         // act
         this.service.deleteRecipe( entityUnderTest.getId() );
+
 
         // assert
         RecipeEntity dummy = this.repositoryMock.findOne( entityUnderTest.getId() );
@@ -93,13 +89,12 @@ public class IRecipeCrudServiceTest {
         UserEntity userDummy = new UserEntity();
         userDummy.setUsername("CookyTester");
 
+        //expected
+        thrown.expect( InvalidRecipeID.class );
+        thrown.expectMessage( "Recipe does not exist" );
+
         //act
         this.service.deleteRecipe(3);
-
-        //assert
-        //TODO: [GER]@dodo wirft mir die IBaseCrudRepository etwas? Evtl. neue Exceptionklasse
-        thrown.expect(InvalidRecipeID.class);
-        thrown.expectMessage("Recipe does not exist");
     }
 
     @Test
@@ -114,17 +109,81 @@ public class IRecipeCrudServiceTest {
 
     @Test
     public void testCreateRecipe() throws Exception {
+        // arrange
+        RecipeEntity entityUnderTest = new RecipeEntity();
+        entityUnderTest.setId( 5 );
 
+        // create a dummy user since the service tests the authorization of the user against the authors username
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername( "CookyTester" );
+        entityUnderTest.setAuthor( userDummy );
+
+        List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
+
+        this.repositoryMock.setEntities( dummyList );
+
+        //initialize Recipe
+        Recipe newRecipe = new Recipe();
+        newRecipe.setId( entityUnderTest.getId() );
+        newRecipe.setAuthor( entityUnderTest.getAuthor() );
+        // act
+        this.service.createRecipe( newRecipe );
+
+        // assert
+        RecipeEntity dummy = this.repositoryMock.findOne( entityUnderTest.getId() );
+        Assert.assertNotNull( dummy );
+        Assert.assertEquals( dummyList.size() + 1, this.repositoryMock.getEntities().size() );
     }
 
     @Test
     public void testUpdateRecipe() throws Exception {
+        // arrange
+        RecipeEntity newRecipeEntity = new RecipeEntity();
+        newRecipeEntity.setId( 10 );
+
+        // create a dummy user since the service tests the authorization of the user against the authors username
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername( "CookyTester" );
+        newRecipeEntity.setAuthor( userDummy );
+
+        //initalize Recipe
+        Recipe newRecipe = new Recipe();
+        newRecipe.setId( newRecipeEntity.getId() );
+        newRecipe.setAuthor( newRecipeEntity.getAuthor() );
+
+        //act
+        this.repositoryMock.save( newRecipeEntity );
+        UserEntity userUpdate = new UserEntity();
+        userUpdate.setUsername( "CookyUpdate" );
+        newRecipe.setAuthor( userUpdate );
+        this.service.updateRecipe( newRecipe );
+
+        Assert.assertEquals( newRecipe.getAuthor(), this.service.getRecipe( 10 ) );
 
     }
 
     @Test
     public void testGetRecipe() throws Exception {
+        // arrange
+        RecipeEntity newRecipeEntity = new RecipeEntity();
+        newRecipeEntity.setId( 5 );
 
+        // create a dummy user since the service tests the authorization of the user against the authors username
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername( "CookyTester" );
+        newRecipeEntity.setAuthor( userDummy );
+
+        //initalize Recipe
+        Recipe newRecipe = new Recipe();
+        newRecipe.setId( newRecipeEntity.getId() );
+        newRecipe.setAuthor( newRecipeEntity.getAuthor() );
+
+        //act
+        this.repositoryMock.save( newRecipeEntity );
+        this.service.createRecipe( newRecipe );
+
+        Assert.assertEquals( newRecipeEntity, this.repositoryMock.findOne( 5 ) );
+        Assert.assertEquals( newRecipe, this.service.getRecipe( 5 ) );
     }
 
     @Test
