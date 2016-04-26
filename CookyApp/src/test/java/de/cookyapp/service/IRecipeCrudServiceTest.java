@@ -11,12 +11,17 @@ import de.cookyapp.service.services.RecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * Created by Dominik Schaufelberger on 25.04.2016.
  */
 public class IRecipeCrudServiceTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     private RecipeRepositoryMock repositoryMock;
     private AuthenticationMock authenticationMock;
     private IRecipeCrudService service;
@@ -83,7 +88,17 @@ public class IRecipeCrudServiceTest {
 
     @Test
     public void testDeleteNonexistingRecipe() throws Exception {
+        //arrange
+        UserEntity userDummy = new UserEntity();
+        userDummy.setUsername("CookyTester");
 
+        //act
+        this.service.deleteRecipe(3);
+
+        //assert
+        //TODO: [GER]@dodo wirft mir die IBaseCrudRepository etwas? Evtl. neue Exceptionklasse
+        thrown.expect(RecipeDoesNotExist().class);
+        thrown.expectMessage("Recipe does not exist");
     }
 
     @Test
