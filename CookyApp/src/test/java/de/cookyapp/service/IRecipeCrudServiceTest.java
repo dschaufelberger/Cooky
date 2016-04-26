@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
+import de.cookyapp.service.exceptions.InvalidRecipeID;
 import de.cookyapp.service.mocks.AuthenticationMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
 import de.cookyapp.service.services.RecipeCrudService;
@@ -97,7 +98,7 @@ public class IRecipeCrudServiceTest {
 
         //assert
         //TODO: [GER]@dodo wirft mir die IBaseCrudRepository etwas? Evtl. neue Exceptionklasse
-        thrown.expect(RecipeDoesNotExist().class);
+        thrown.expect(InvalidRecipeID.class);
         thrown.expectMessage("Recipe does not exist");
     }
 
