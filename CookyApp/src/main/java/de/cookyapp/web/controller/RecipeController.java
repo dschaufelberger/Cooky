@@ -164,6 +164,12 @@ public class RecipeController {
         return view;
     }
 
+    @RequestMapping("/rateRecipe")
+    public ModelAndView rateRecipe(@RequestParam ("id") int id, @RequestParam ("rating") int rating) {
+        ModelAndView model = new ModelAndView( "RecipeEditTile", "recipe", new Recipe() );
+        return model;
+    }
+
     private UserEntity userToUserEntity( User user ) {
         UserEntity userEntity = new UserEntity();
         userEntity.setId( user.getId() );
