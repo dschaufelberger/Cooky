@@ -57,7 +57,7 @@ sonarRunner {
     sonarProperties {
         property 'sonar.host.url', 'http://193.196.7.25'
         property 'sonar.projectName', 'CookyAppSonar'
-        property 'sonar.projectVersion', '1.0.0'
+        property 'sonar.projectVersion', '1.0.1'
         property 'sonar.sources', './src/main'
         property 'sourceEncoding', 'UTF-8'
     }
