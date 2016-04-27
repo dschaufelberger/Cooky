@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'sonar-runner'
+
 
 compileJava {
     sourceCompatibility = 1.8
@@ -49,4 +51,14 @@ dependencies {
     //JSP and Servlet stuff that's contained in Tomcat but needed at compile time.
     providedCompile 'javax.servlet.jsp:jsp-api:2.2'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+}
+
+sonarRunner {
+    sonarProperties {
+        property 'sonar.host.url', 'http://193.196.7.25'
+        property 'sonar.projectName', 'CookyAppSonar'
+        property 'sonar.projectVersion', '1.0.0'
+        property 'sonar.sources', './src/main'
+        property 'sourceEncoding', 'UTF-8'
+    }
 }
