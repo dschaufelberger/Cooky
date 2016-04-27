@@ -24,6 +24,7 @@ public class Recipe {
     private Integer restTime;
     private Short serving;
     private Byte rating;
+    private Integer voteCount;
 
     private UserEntity author;
 
@@ -34,7 +35,7 @@ public class Recipe {
         setId( recipeEntity.getId() );
         setName( recipeEntity.getName() );
         setShortDescription( recipeEntity.getShortDescription() );
-        setImageFileName( recipeEntity.getImageFileName() );
+        //setImageFileName( recipeEntity.getImageFileName() );
         setDifficulty( recipeEntity.getDifficulty() );
         setCalories( recipeEntity.getCalories() );
         setServing( recipeEntity.getServing() );
@@ -45,6 +46,7 @@ public class Recipe {
         setRestTime( recipeEntity.getRestTime() );
         setWorkingTime( recipeEntity.getWorkingTime() );
         setAuthor( recipeEntity.getAuthor() );
+        setVoteCount( recipeEntity.getVoteCount() );
     }
 
     public int getId() {
@@ -110,6 +112,10 @@ public class Recipe {
     public void setRating( Byte rating ) {
         this.rating = rating;
     }
+
+    public Integer getVoteCount () { return voteCount; }
+
+    public void setVoteCount (Integer voteCount) { this.voteCount = voteCount; }
 
     public UserEntity getAuthor() {
         return author;

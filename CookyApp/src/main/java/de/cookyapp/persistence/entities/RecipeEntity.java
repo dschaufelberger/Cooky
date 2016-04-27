@@ -28,11 +28,12 @@ public class RecipeEntity {
     private String shortDescription;
     private String preparation;
     private RecipeDifficulty difficulty;
-    private String imageFileName;
+    //private String imageFileName;
     private LocalDateTime creationTime;
     private Integer calories;
     private Short serving;
     private Byte rating;
+    private Integer voteCount;
     private Integer workingTime;
     private Integer cookingTime;
     private Integer restTime;
@@ -135,6 +136,12 @@ public class RecipeEntity {
         this.rating = rating;
     }
 
+    @Basic
+    @javax.persistence.Column( name="VoteCount", nullable = true)
+    public Integer getVoteCount () { return voteCount; }
+
+    public void setVoteCount (Integer voteCount) { this.voteCount = voteCount; }
+
 
     @Basic
     @javax.persistence.Column( name = "WorkingTime", nullable = true )
@@ -169,7 +176,7 @@ public class RecipeEntity {
     }
 
 
-    @Basic
+   /* @Basic
     @javax.persistence.Column( name = "ImageFileName", nullable = true, length = 255 )
     public String getImageFileName() {
         return imageFileName;
@@ -177,7 +184,7 @@ public class RecipeEntity {
 
     public void setImageFileName( String imageFileName ) {
         this.imageFileName = imageFileName;
-    }
+    }*/
 
 
     @Basic
@@ -274,8 +281,8 @@ public class RecipeEntity {
             return false;
         if ( rating != null ? !rating.equals( that.rating ) : that.rating != null )
             return false;
-        if ( imageFileName != null ? !imageFileName.equals( that.imageFileName ) : that.imageFileName != null )
-            return false;
+        //if ( imageFileName != null ? !imageFileName.equals( that.imageFileName ) : that.imageFileName != null )
+        //    return false;
         if ( creationTime != null ? !creationTime.equals( that.creationTime ) : that.creationTime != null )
             return false;
 
@@ -295,7 +302,7 @@ public class RecipeEntity {
         result = 31 * result + workingTime;
         result = 31 * result + cookingTime;
         result = 31 * result + restTime;
-        result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
+        //result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         return result;
     }

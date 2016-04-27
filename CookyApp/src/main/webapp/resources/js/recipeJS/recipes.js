@@ -11,18 +11,27 @@ function addRow (){
     count++;
 };
 
-$('.ratings_stars').hover(
-    // Handles the mouseover
-    function() {
-        $(this).prevAll().andSelf().addClass('ratings_over');
-        $(this).nextAll().removeClass('ratings_vote');
-    },
-    // Handles the mouseout
-    function() {
-        $(this).prevAll().andSelf().removeClass('ratings_over');
-        set_votes($(this).parent());
+$(document).ready (function () {
+    var rating = $(".currentRating").val();
+    window.alert(rating);
+    for (var i = 1; i <= rating; i++) {
+        $(".star"+i).addClass("starImage");
     }
-);
+
+    $('.ratings_stars').hover(
+        // Handles the mouseover
+        //var modulo 2 == 0
+        function() {
+            /*$(this).prevAll().andSelf().addClass("starHighlighted");*/
+            $(this).prevAll().andSelf().addClass("starImage");
+        },
+        // Handles the mouseout
+        function() {
+            $(this).nextAll().andSelf().removeClass("starImage");
+        }
+    );
+});
+
 
 
 

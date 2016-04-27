@@ -110,9 +110,14 @@
     </form:form>
    <form:form action="/recipes/rateRecipe">
        <input type="hidden" name="id" value="${recipe.id}">
+       <input type="hidden" class="currentRating" name="currentRating" value="${recipe.rating}">
         <table>
             <tr>
-                <td><input value="1" name="rating" type="submit" class="glyphicon glyphicon-star"></td>
+                <td><button type="submit" class="buttonTransparent" value="1" name="rating"><img class="ratings_stars star1"></button></td>
+                <td><button type="submit" class="buttonTransparent" value="2" name="rating"><img class="ratings_stars star2"></button></td>
+                <td><button type="submit" class="buttonTransparent" value="3" name="rating"><img class="ratings_stars star3"></button></td>
+                <td><button type="submit" class="buttonTransparent" value="4" name="rating"><img class="ratings_stars star4"></button></td>
+                <td><button type="submit" class="buttonTransparent" value="5" name="rating"><img class="ratings_stars star5"></button></td>
             </tr>
         </table>
    </form:form>
