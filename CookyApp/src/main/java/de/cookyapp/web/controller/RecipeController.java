@@ -133,6 +133,7 @@ public class RecipeController {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
+            //TODO [dodo] Wir hatten doch gesagt, der Controller behandelt keine Entities...
             newRecipe.setAuthor( userToUserEntity( userCrudService.getCurrentUser() ) );
             newRecipe.setName( recipe.getName() );
             newRecipe.setWorkingTime( recipe.getWorkingTime() );

@@ -62,7 +62,7 @@ public class UserCrudService implements IUserCrudService {
     }
 
     @Override
-    public void createUser( User user ) {
+    public User createUser( User user ) {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setUsername( user.getUsername() );
@@ -78,7 +78,7 @@ public class UserCrudService implements IUserCrudService {
         userEntity.setAccountState( AccountState.REGISTERED );
         userEntity.setRegistrationDate( LocalDateTime.now() );
 
-        this.userCrudRepository.save( userEntity );
+        return new User( this.userCrudRepository.save( userEntity ) );
     }
 
     @Override

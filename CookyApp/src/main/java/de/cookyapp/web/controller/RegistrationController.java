@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import javax.validation.Valid;
 
 import de.cookyapp.enums.AccountState;
+import de.cookyapp.enums.CookbookVisibility;
 import de.cookyapp.service.services.interfaces.IAddressService;
+import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.registration.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,15 @@ import org.springframework.web.servlet.ModelAndView;
 public class RegistrationController {
     private IUserCrudService userCrudService;
     private IAddressService addressService;
+    private ICookbookManagementService cookbookManagementService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationController( IUserCrudService userCrudService, IAddressService addressService, PasswordEncoder passwordEncoder ) {
+    public RegistrationController( IUserCrudService userCrudService, IAddressService addressService,
+                                   ICookbookManagementService cookbookManagementService, PasswordEncoder passwordEncoder ) {
         this.userCrudService = userCrudService;
         this.addressService = addressService;
+        this.cookbookManagementService = cookbookManagementService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -50,6 +55,7 @@ public class RegistrationController {
             if ( isUniqueUser ) {
                 de.cookyapp.service.dto.User userDTO = new de.cookyapp.service.dto.User();
                 de.cookyapp.service.dto.Address address = new de.cookyapp.service.dto.Address();
+                de.cookyapp.service.dto.Cookbook cookbookDTO = new de.cookyapp.service.dto.Cookbook();
 
                 userDTO.setForename( user.getForename() );
                 userDTO.setSurname( user.getSurname() );
@@ -60,15 +66,19 @@ public class RegistrationController {
                 userDTO.setEmail( user.getEmail() );
                 userDTO.setAccountState( AccountState.REGISTERED );
                 userDTO.setRegistrationDate( LocalDateTime.now() );
+                userDTO = this.userCrudService.createUser( userDTO );
 
                 address.setStreet( user.getAddress().getStreet() );
                 address.setHouseNumber( user.getAddress().getHouseNumber() );
                 address.setCity( user.getAddress().getCity() );
                 address.setPostcode( user.getAddress().getPostcode() );
-
-                this.userCrudService.createUser( userDTO );
-                userDTO = this.userCrudService.getUserByUsername( user.getUsername() );
                 this.addressService.createAddressForUser( userDTO.getId(), address );
+
+                cookbookDTO.setName( "personalCookbook-" + userDTO.getUsername() );
+                cookbookDTO.setVisibility( CookbookVisibility.PRIVATE );
+                cookbookDTO.setCreationTime( LocalDateTime.now() );
+                cookbookDTO.setOwner( userDTO );
+                this.cookbookManagementService.createDefaultCookbookForUser( userDTO.getId(), cookbookDTO );
 
                 view = "RegistrationSuccessTile";
             } else {

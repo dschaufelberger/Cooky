@@ -15,4 +15,8 @@
         <name>login</name>
         <path>/WEB-INF/tags/authentication/LoginForm.tag</path>
     </tag-file>
+    <tag-file>
+        <name>cookbookItem</name>
+        <path>/WEB-INF/tags/cookbooks/CookbookItem.tag</path>
+    </tag-file>
 </taglib>

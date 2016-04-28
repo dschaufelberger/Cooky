@@ -1,6 +1,7 @@
 package de.cookyapp.persistence.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -8,14 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.cookyapp.enums.CookbookVisibility;
@@ -26,24 +26,29 @@ import de.cookyapp.enums.CookbookVisibility;
 @Entity
 @Table( name = "Cookbook", schema = "Cooky_Dev" )
 public class CookbookEntity {
-    private int id;
+    private Integer id;
     private String name;
     private String shortDescription;
     private CookbookVisibility visibility;
-    private boolean editable;
-    private int ownerId;
+    private boolean isDefault;
+    int ownerId;
     private LocalDateTime creationTime;
 
     private UserEntity owner;
     private Collection<RecipeEntity> recipes;
 
+    public CookbookEntity() {
+        this.recipes = new ArrayList<>();
+    }
+
     @Id
     @Column( name = "ID", nullable = false )
-    public int getId() {
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    public Integer getId() {
         return id;
     }
 
-    public void setId( int id ) {
+    public void setId( Integer id ) {
         this.id = id;
     }
 
@@ -79,17 +84,17 @@ public class CookbookEntity {
     }
 
     @Basic
-    @Column( name = "Editable", nullable = false )
-    public boolean isEditable() {
-        return editable;
+    @Column( name = "IsDefault", nullable = false )
+    public boolean isDefault() {
+        return isDefault;
     }
 
-    public void setEditable( boolean editable ) {
-        this.editable = editable;
+    public void setDefault( boolean aDefault ) {
+        this.isDefault = aDefault;
     }
 
     @Basic
-    @Column( name = "OwnerID", nullable = false )
+    @Column( name = "OwnerID", nullable = false, insertable = false, updatable = false )
     public int getOwnerId() {
         return ownerId;
     }
@@ -109,6 +114,7 @@ public class CookbookEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    @JoinColumn( name = "OwnerID" )
     public UserEntity getOwner() {
         return owner;
     }
@@ -118,8 +124,8 @@ public class CookbookEntity {
     }
 
     @ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "CookbookRecipe", joinColumns = @JoinColumn(name = "CookbookID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID")
+    @JoinTable( name = "CookbookRecipe", joinColumns = @JoinColumn( name = "CookbookID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "RecipeID", referencedColumnName = "ID" )
     )
     public Collection<RecipeEntity> getRecipes() {
         return recipes;
@@ -141,31 +147,12 @@ public class CookbookEntity {
 
         if ( id != that.id )
             return false;
-        if ( editable != that.editable )
-            return false;
-        if ( ownerId != that.ownerId )
-            return false;
-        if ( name != null ? !name.equals( that.name ) : that.name != null )
-            return false;
-        if ( shortDescription != null ? !shortDescription.equals( that.shortDescription ) : that.shortDescription != null )
-            return false;
-        if ( visibility != null ? !visibility.equals( that.visibility ) : that.visibility != null )
-            return false;
-        if ( creationTime != null ? !creationTime.equals( that.creationTime ) : that.creationTime != null )
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (shortDescription != null ? shortDescription.hashCode() : 0);
-        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
-        result = 31 * result + (editable ? 1 : 0);
-        result = 31 * result + ownerId;
-        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
-        return result;
+        return 31 * id;
     }
 }
