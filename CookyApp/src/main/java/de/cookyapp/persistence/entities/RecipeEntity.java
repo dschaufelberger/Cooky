@@ -254,49 +254,12 @@ public class RecipeEntity {
 
         if ( id != that.id )
             return false;
-        if ( workingTime != that.workingTime )
-            return false;
-        if ( cookingTime != that.cookingTime )
-            return false;
-        if ( restTime != that.restTime )
-            return false;
-        if ( name != null ? !name.equals( that.name ) : that.name != null )
-            return false;
-        if ( shortDescription != null ? !shortDescription.equals( that.shortDescription ) : that.shortDescription != null )
-            return false;
-        if ( serving != null ? !serving.equals( that.serving ) : that.serving != null )
-            return false;
-        if ( preparation != null ? !preparation.equals( that.preparation ) : that.preparation != null )
-            return false;
-        if ( calories != null ? !calories.equals( that.calories ) : that.calories != null )
-            return false;
-        if ( difficulty != null ? !difficulty.equals( that.difficulty ) : that.difficulty != null )
-            return false;
-        if ( rating != null ? !rating.equals( that.rating ) : that.rating != null )
-            return false;
-        if ( imageFileName != null ? !imageFileName.equals( that.imageFileName ) : that.imageFileName != null )
-            return false;
-        if ( creationTime != null ? !creationTime.equals( that.creationTime ) : that.creationTime != null )
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (shortDescription != null ? shortDescription.hashCode() : 0);
-        result = 31 * result + (serving != null ? serving.hashCode() : 0);
-        result = 31 * result + (preparation != null ? preparation.hashCode() : 0);
-        result = 31 * result + (calories != null ? calories.hashCode() : 0);
-        result = 31 * result + (difficulty != null ? difficulty.hashCode() : 0);
-        result = 31 * result + (rating != null ? rating.hashCode() : 0);
-        result = 31 * result + workingTime;
-        result = 31 * result + cookingTime;
-        result = 31 * result + restTime;
-        result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
-        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
-        return result;
+        return 31 * id;
     }
 }
