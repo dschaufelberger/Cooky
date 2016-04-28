@@ -4,7 +4,6 @@ import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
-import de.cookyapp.service.exceptions.InvalidRecipeID;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public void deleteRecipe(int recipeID) throws InvalidRecipeID {
+    public void deleteRecipe(int recipeID) {
         RecipeEntity deleteRecipe = recipeCrudRepository.findOne( recipeID );
         if ( deleteRecipe != null ) {
             boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() ); //Check current User Authentication
