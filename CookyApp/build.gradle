@@ -56,6 +56,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+test {
+    ignoreFailures true
+}
+
 sonarRunner {
     sonarProperties {
         property 'sonar.host.url', 'http://193.196.7.25'
