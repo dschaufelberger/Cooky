@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'sonar-runner'
+apply plugin: 'jacoco'
 
 
 compileJava {
@@ -60,12 +61,28 @@ test {
     ignoreFailures true
 }
 
+// jacoco code coverage
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/jacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/jacocoReportHtml"
+    }
+}
+
+// sonarqube config
 sonarRunner {
     sonarProperties {
         property 'sonar.host.url', 'http://193.196.7.25'
         property 'sonar.projectName', 'CookyAppSonar'
-        property 'sonar.projectVersion', '1.0.1'
+        property 'sonar.projectVersion', '1.0.0'
         property 'sonar.sources', './src/main'
+        property 'sonar.exclusions', '**/bootstrap/**, **/jquery/**, **/jQueryUI/**'
         property 'sourceEncoding', 'UTF-8'
     }
 }
