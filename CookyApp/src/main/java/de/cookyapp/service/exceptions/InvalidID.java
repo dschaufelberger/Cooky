@@ -5,14 +5,14 @@ import java.security.PrivilegedActionException;
 /**
  * Created by Dominik Schaufelberger on 20.04.2016.
  */
-public class InvalidID extends IllegalArgumentException {
+public class InvalidId extends IllegalArgumentException {
     private int id;
 
     /**
      * Constructs an <code>IllegalArgumentException</code> with no
      * detail message.
      */
-    public InvalidID( int id ) {
+    public InvalidId( int id ) {
         this.id = id;
     }
 
@@ -22,7 +22,7 @@ public class InvalidID extends IllegalArgumentException {
      *
      * @param s the detail message.
      */
-    public InvalidID( String s, int id ) {
+    public InvalidId( String s, int id ) {
         super( s );
         this.id = id;
     }
@@ -43,7 +43,7 @@ public class InvalidID extends IllegalArgumentException {
      *                unknown.)
      * @since 1.5
      */
-    public InvalidID( String message, Throwable cause, int id ) {
+    public InvalidId( String message, Throwable cause, int id ) {
         super( message, cause );
         this.id = id;
     }
@@ -62,7 +62,7 @@ public class InvalidID extends IllegalArgumentException {
      *              unknown.)
      * @since 1.5
      */
-    public InvalidID( Throwable cause, int id ) {
+    public InvalidId( Throwable cause, int id ) {
         super( cause );
         this.id = id;
     }
