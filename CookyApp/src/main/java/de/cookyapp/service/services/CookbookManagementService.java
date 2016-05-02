@@ -14,7 +14,8 @@ import de.cookyapp.persistence.repositories.ICookbookRepository;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.User;
-import de.cookyapp.service.exceptions.InvalidUserID;
+import de.cookyapp.service.exceptions.InvalidCookbookId;
+import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.exceptions.NotAuthenticated;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -93,12 +94,14 @@ public class CookbookManagementService implements ICookbookManagementService {
         Cookbook cookbook = null;
 
         if ( entitiy != null ) {
-            if ( this.userCrudService.getCurrentUser().getId() != entitiy.getOwnerId()
+            if ( !this.authentication.getAuthentication().getName().equals( entitiy.getOwner().getUsername() )
                     && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
-                throw new UserNotAuthorized();
+                throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
             } else if ( !entitiy.isDefault() ) {
                 cookbook = new Cookbook( entitiy );
             }
+        } else {
+            throw new InvalidCookbookId( cookbookId );
         }
 
         return cookbook;
@@ -109,7 +112,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         UserEntity user = this.userCrudRepository.findOne( userId );
 
         if ( user == null ) {
-            throw new InvalidUserID( userId );
+            throw new InvalidUserId( userId );
         } else if ( !this.authentication.getAuthentication().getName().equals( user.getUsername() )
                 && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
             throw new UserNotAuthorized();
@@ -123,7 +126,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         UserEntity user = this.userCrudRepository.findOne( userId );
 
         if ( user == null ) {
-            throw new InvalidUserID( userId );
+            throw new InvalidUserId( userId );
         } else {
             return createCookbook( user, cookbook, true );
         }
