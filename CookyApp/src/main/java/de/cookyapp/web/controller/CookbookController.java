@@ -109,12 +109,23 @@ public class CookbookController {
         return view;
     }
 
-    @RequestMapping( value = "/manage/delete/{cookbookID}", method = RequestMethod.POST )
-    public String deleteCookbook( @PathVariable int cookbookID ) {
+    @RequestMapping( value = "/manage/delete/{cookbookId}", method = RequestMethod.POST )
+    public String deleteCookbook( @PathVariable int cookbookId ) {
         String view = "redirect:/cookbooks/manage";
 
-        this.cookbookManagementService.removeCookbook( cookbookID );
+        this.cookbookManagementService.removeCookbook( cookbookId );
 
         return view;
+    }
+
+    @RequestMapping( value = "/view/{cookbookId}" )
+    public ModelAndView viewCookbookDetails( @PathVariable int cookbookId ) {
+        ModelAndView modelAndView = new ModelAndView( "CookbookDetailTile" );
+
+        de.cookyapp.service.dto.Cookbook cookbookDTO = this.cookbookManagementService.getCookbook( cookbookId );
+        Cookbook cookbook = new Cookbook( cookbookDTO );
+        modelAndView.addObject( "cookbook", cookbook );
+
+        return modelAndView;
     }
 }

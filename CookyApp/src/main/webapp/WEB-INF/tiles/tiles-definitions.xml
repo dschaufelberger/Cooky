@@ -96,6 +96,12 @@
         <put-attribute name="content" value="/WEB-INF/views/cookbooks/Manage.jsp" />
     </definition>
 
+    <!-- The detail page for a specific cookbook, mapped to "/cookbooks/manage/view/{id}"-->
+    <definition name="CookbookDetailTile" extends="base.definition">
+        <put-attribute name="title" value="Cookbook details" />
+        <put-attribute name="content" value="/WEB-INF/views/cookbooks/Detail.jsp" />
+    </definition>
+
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
     <definition name="" extends="base.definition">
