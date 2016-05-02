@@ -1,11 +1,17 @@
 package de.cookyapp.service.services;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.persistence.entities.CookbookEntity;
+import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.ICookbookRepository;
+import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
+import de.cookyapp.service.exceptions.InvalidCookbookId;
+import de.cookyapp.service.exceptions.InvalidRecipeId;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
-import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,34 +22,106 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 public class CookbookContentService implements ICookbookContentService {
-    private IRecipeCrudService recipeCrudService;
+    private IRecipeCrudRepository recipeRepository;
     private ICookbookRepository cookbookRepository;
-    private IAuthenticationFacade authenticationFacade;
+    private IAuthenticationFacade authentication;
 
     @Autowired
-    public CookbookContentService( IRecipeCrudService recipeCrudService, ICookbookRepository cookbookRepository, IAuthenticationFacade authenticationFacade ) {
-        this.recipeCrudService = recipeCrudService;
+    public CookbookContentService(
+            IRecipeCrudRepository recipeRepository,
+            ICookbookRepository cookbookRepository,
+            IAuthenticationFacade authentication ) {
+        this.recipeRepository = recipeRepository;
         this.cookbookRepository = cookbookRepository;
-        this.authenticationFacade = authenticationFacade;
+        this.authentication = authentication;
     }
 
     @Override
-    public void addRecipeToCookbook( int cookbookID, int recipeID ) {
+    public void addRecipeToCookbook( int cookbookId, int recipeId ) {
+        String currentUsername = this.authentication.getAuthentication().getName();
+        CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
+        if ( cookbook == null ) {
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
+        }
+        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
+            throw new UserNotAuthorized();
+        }
+
+        RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
+        if ( recipe == null ) {
+            throw new InvalidRecipeId( "Recipe with the given id does not exist.", recipeId );
+        }
+        if ( !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
+            throw new UserNotAuthorized();
+        }
+
+        cookbook.getRecipes().add( recipe );
+        this.cookbookRepository.save( cookbook );
     }
 
     @Override
-    public void addRecipesToCookbook( int cookbookID, List<Integer> recipesIDs ) {
+    public void addRecipesToCookbook( int cookbookId, List<Integer> recipesIds ) {
+        String currentUsername = this.authentication.getAuthentication().getName();
+        CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
+        if ( cookbook == null ) {
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
+        }
+        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
+            throw new UserNotAuthorized();
+        }
+
+        LinkedList<RecipeEntity> recipes = new LinkedList<>();
+        for ( Integer id : recipesIds ) {
+            RecipeEntity recipe = this.recipeRepository.findOne( id );
+            if ( recipe == null ) {
+                throw new InvalidRecipeId( "Recipe with the given id does not exist.", id );
+            }
+            if ( !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
+                throw new UserNotAuthorized();
+            }
+
+            recipes.add( recipe );
+        }
+
+        cookbook.getRecipes().addAll( recipes );
+        this.cookbookRepository.save( cookbook );
     }
 
     @Override
-    public void removeRecipeFromCookbook( int cookbookID, int recipeID ) {
+    public void removeRecipeFromCookbook( int cookbookId, int recipeId ) {
+        String currentUsername = this.authentication.getAuthentication().getName();
+        CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
+        if ( cookbook == null ) {
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
+        }
+        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
+            throw new UserNotAuthorized();
+        }
+
+        RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
+        if ( recipe != null ) {
+            if ( cookbook.getRecipes().remove( recipe ) ) {
+                this.cookbookRepository.save( cookbook );
+            }
+        }
     }
 
     @Override
-    public void removeAllRecipesFromCookbook( int cookbookID ) {
+    public void removeAllRecipesFromCookbook( int cookbookId ) {
+        String currentUsername = this.authentication.getAuthentication().getName();
+        CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
+        if ( cookbook == null ) {
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
+        }
+        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
+            throw new UserNotAuthorized();
+        }
+
+        cookbook.setRecipes( new LinkedList<>() );
+        this.cookbookRepository.save( cookbook );
     }
 }
