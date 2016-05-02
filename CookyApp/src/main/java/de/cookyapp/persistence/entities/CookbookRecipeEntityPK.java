@@ -10,8 +10,8 @@ import javax.persistence.Id;
  * Created by Dominik on 23.11.2015.
  */
 public class CookbookRecipeEntityPK implements Serializable {
-    private int cookbookId;
-    private int recipeId;
+    private Integer cookbookId;
+    private Integer recipeId;
 
     @Column( name = "CookbookID", nullable = false )
     @Id
