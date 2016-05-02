@@ -47,8 +47,8 @@ public class AddressService implements IAddressService {
         this.addressCrudRepository.delete(addressEntity);
         UserEntity userEntity = this.userCrudRepository.findOne(userID);
         userEntity.setAddress(null);
+        this.addressCrudRepository.delete( addressEntity );
         this.userCrudRepository.save(userEntity);
-        //TODO: remove address only from User or delete Address?!
     }
 
     @Override
@@ -61,7 +61,6 @@ public class AddressService implements IAddressService {
             addressEntity.setCity(address.getCity());
             this.addressCrudRepository.save(addressEntity);
         }
-        //TODO: [1developer1]  implement Exception Handling --> InvalidAddressID ?!
     }
 
     @Override
@@ -75,7 +74,7 @@ public class AddressService implements IAddressService {
     public Address getAddressForUser(int userID) {
         UserEntity userEntity = this.userCrudRepository.findOne(userID);
         AddressEntity addressEntity = userEntity.getAddress();
-        Address address = this.getAddressIfExistant(addressEntity)
+        Address address = this.getAddressIfExistant(addressEntity);
         return address;
     }
 
