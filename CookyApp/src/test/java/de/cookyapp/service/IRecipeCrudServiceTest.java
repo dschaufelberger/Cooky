@@ -6,7 +6,6 @@ import java.util.List;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Recipe;
-import de.cookyapp.service.exceptions.InvalidRecipeID;
 import de.cookyapp.service.mocks.AuthenticationMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
 import de.cookyapp.service.services.RecipeCrudService;

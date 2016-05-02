@@ -6,46 +6,46 @@ package de.cookyapp.web.viewmodel.cookbook;
 public class Recipe {
     private int id;
     private String name;
-    private String descrption;
+    private String description;
     private byte rating;
 
     public Recipe( de.cookyapp.service.dto.Recipe recipe) {
         this.id = recipe.getId();
         this.name = recipe.getName();
-        this.descrption = recipe.getShortDescription();
+        this.description = recipe.getShortDescription();
         this.rating = recipe.getRating();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescrption() {
-        return descrption;
-    }
-
-    public byte getRating() {
-        return rating;
     }
 
     //TEST
     public Recipe() {
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setId( int id ) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName( String name ) {
         this.name = name;
     }
 
-    public void setDescrption( String descrption ) {
-        this.descrption = descrption;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
+    }
+
+    public byte getRating() {
+        return rating;
     }
 
     public void setRating( byte rating ) {

@@ -1,17 +1,18 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
+import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -92,6 +93,8 @@ public class RecipeCrudService implements IRecipeCrudService {
         Recipe recipe = null;
         if ( recipeEntity != null ) {
             recipe = new Recipe( recipeEntity );
+        } else {
+            throw new InvalidRecipeId( recipeID );
         }
         return recipe;
     }

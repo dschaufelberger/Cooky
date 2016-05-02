@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,8 +103,8 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/goToEditRecipe" )
-    public ModelAndView handleEditRecipe( @RequestParam( "id" ) int id ) {
+    @RequestMapping( "/goToEditRecipe/{id}" )
+    public ModelAndView handleEditRecipe( @PathVariable int id ) {
         Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
         Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
         List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients( id );
