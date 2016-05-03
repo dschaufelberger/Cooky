@@ -13,7 +13,6 @@ function addRow (){
 
 $(document).ready (function () {
     var rating = $(".currentRating").val();
-    window.alert(rating);
     for (var i = 1; i <= rating; i++) {
         $(".star"+i).addClass("starImage");
     }
