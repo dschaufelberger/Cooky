@@ -13,7 +13,7 @@
     <div class="col-md-12">
         <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
             <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
-            <sec:csrfInput/>
+            <sec:csrfInput />
         </form>
     </div>
     <div class="row">
@@ -26,19 +26,16 @@
                         <div class="caption">
                             <h3>${recipes.name}</h3>
 
-                            <form id="editRecipe" action="/recipes/goToEditRecipe" method="post">
-                                <p align="center">
-                                    <button type="submit" class="btn btn-primary btn-block">Open</button>
-                                </p>
-                                <input type="hidden" name="id" value="${recipes.id}">
-                                <sec:csrfInput/>
-                            </form>
+                            <p align="center">
+                                <a href="/recipes/view/${recipes.id}" class="btn btn-primary btn-block">Open</a>
+                            </p>
+
                             <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
                                 <p align="center">
                                     <button type="submit" class="btn btn-primary btn-block">Remove</button>
                                 </p>
                                 <input type="hidden" name="id" value="${recipes.id}">
-                                <sec:csrfInput/>
+                                <sec:csrfInput />
                             </form>
                         </div>
                     </div>

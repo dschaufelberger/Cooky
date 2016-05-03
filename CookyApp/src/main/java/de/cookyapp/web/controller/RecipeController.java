@@ -93,7 +93,6 @@ public class RecipeController {
                 recipeDTO.setPreparation( recipe.getPreparation() );
                 recipeDTO.setRestTime( recipe.getRestTime() );
                 recipeDTO.setImageFileName( "http://placehold.it/320x200" );
-                recipeDTO.setAuthor( userCrudService.getCurrentUser() );
                 recipeCrudService.updateRecipe( recipeDTO );
                 ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
             }
