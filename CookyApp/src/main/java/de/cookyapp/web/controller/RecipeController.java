@@ -18,11 +18,13 @@ import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.InvalidImage;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -40,31 +42,32 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping( "/recipes" )
 public class RecipeController {
+    private Logger logger = Logger.getLogger( RecipeController.class );
+
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
     private IIngredientCrudService ingredientCrudService;
     private IImageUploadService imageService;
     private IAuthenticationFacade authentication;
     private IUserAuthorization userAuthorization;
+    ServletContext servletContext;
 
     @Autowired
-    ServletContext context;
-
-    @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService ) {
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService, ServletContext servletContext ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
         this.userAuthorization = userAuthorization;
+        this.servletContext = servletContext;
     }
 
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView handleRecipes() throws IOException {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        String path = generatePath();
-        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes( path ) );
+        this.recipeCrudService.realPath( servletContext.getRealPath( "/" ) );
+        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes( ) );
         return model;
     }
 
@@ -109,6 +112,7 @@ public class RecipeController {
                 recipeCrudService.updateRecipe( recipeDTO );
                 ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
             }
+            //Wie in Add recipe wenn bild geändert wird
             view = "redirect:/recipes";
         }
 
@@ -146,7 +150,7 @@ public class RecipeController {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
-            newRecipe.setAuthor( userToUserEntity( userCrudService.getUserByID( 16 ) ) );
+            newRecipe.setAuthor( userToUserEntity( userCrudService.getCurrentUser()  ) );
             newRecipe.setName( recipe.getName() );
             newRecipe.setWorkingTime( recipe.getWorkingTime() );
             newRecipe.setRestTime( recipe.getRestTime() );
@@ -171,9 +175,8 @@ public class RecipeController {
             ingredientCrudService.save( ingredients );
             de.cookyapp.service.dto.Recipe current = recipeCrudService.createRecipe( newRecipe );
 
-            de.cookyapp.service.dto.Recipe recipeWithImage = uploadImage( image, current );
+            uploadImage( image, current.getId() );
 
-            recipeCrudService.updateRecipe( recipeWithImage );
             ingredientCrudService.saveRecipeIngredient( current.getId(), ingredients );
             view = "redirect:/recipes";
         }
@@ -201,43 +204,29 @@ public class RecipeController {
 
     private void validateImage( MultipartFile image ) {
         if ( !image.getContentType().equals( "image/jpeg" ) && !image.getContentType().equals( "image/jpg" ) ) {
-            throw new RuntimeException( "Only JPG images are accepted" );
+            throw new InvalidImage( image ,"Only JPG images are accepted" );
         }
     }
 
-    private de.cookyapp.service.dto.Recipe uploadImage( MultipartFile image, de.cookyapp.service.dto.Recipe current ) {
-        de.cookyapp.service.dto.Recipe recipe = current;
+    private void uploadImage( MultipartFile image, int recipeId ) {
+        validateImage( image );
         InputStream inputStream = null;
         BufferedImage bufferedImage = null;
-        String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
-        String completePath = generatePath() + imageGUID;
         try {
             try {
                 inputStream = image.getInputStream();
                 bufferedImage = ImageIO.read( inputStream );
+            } catch (Exception i) {
+                logger.error( "Upload Image ist fehlgeschlagen" );
+                throw i;
             } finally {
                 if ( inputStream != null ) {
                     inputStream.close();
                 }
             }
-            ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
-            recipe = imageService.saveImage( current, bufferedImage );
+            imageService.saveImage( recipeId, bufferedImage );
         } catch ( Exception ex ) {
             ex.toString();
         }
-
-        return recipe;
-    }
-
-    private String generatePath() {
-        String path;
-        String imagePath = "resources/images/recipes/";
-        String realPath = context.getRealPath( "/" );
-        if ( !new File( imagePath ).exists() ) {
-            File file = new File( imagePath );
-            file.mkdirs();
-        }
-        path = realPath + imagePath;
-        return path;
     }
 }

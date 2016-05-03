@@ -51,6 +51,9 @@ public class Recipe {
     @Max( 16777215 )
     private int restTime;
 
+    @Pattern( regexp = "([^\\\\s]+(\\\\.(?i)(jpg|jpeg))$)", message = "Es dürfen nur " )
+    private String imageLink;
+
     private Collection<Ingredient> ingredients;
 
     public Recipe() {
@@ -166,6 +169,10 @@ public class Recipe {
     public void setRestTime( int restTime ) {
         this.restTime = restTime;
     }
+
+    public String getImageLink ()  { return imageLink; }
+
+    public void setImageLink ( String imageLink ) { this.imageLink = imageLink; }
 
     @Override
     public String toString() {

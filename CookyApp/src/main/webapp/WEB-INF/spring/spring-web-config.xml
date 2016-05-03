@@ -45,11 +45,9 @@
 
     <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/cooky_test" />
-        <!--<property name="username" value="tomcat7" />-->
-        <!--<property name="password" value="GTURiMRd8owaLw3MO4hv" />-->
-        <property name="username" value="root" />
-        <property name="password" value="jasper1993!" />
+        <property name="url" value="jdbc:mysql://46.38.237.106:3306/Cooky_Dev" />
+        <property name="username" value="tomcat7" />
+        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
 
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />

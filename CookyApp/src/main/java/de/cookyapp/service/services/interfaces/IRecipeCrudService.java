@@ -17,7 +17,9 @@ public interface IRecipeCrudService {
 
     Recipe getRecipe( int recipeID );
 
-    List<Recipe> getAllRecipes( String imagePath ) throws IOException;
+    void realPath (String realPath);
+
+    List<Recipe> getAllRecipes( );
 
     List<Recipe> getAllRecipesByName( String recipeName );
 

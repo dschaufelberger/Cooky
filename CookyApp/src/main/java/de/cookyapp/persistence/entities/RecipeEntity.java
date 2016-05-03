@@ -1,18 +1,28 @@
 package de.cookyapp.persistence.entities;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.*;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import de.cookyapp.enums.RecipeDifficulty;
-import org.hibernate.annotations.Type;
 
 /**
  * Created by Dominik on 23.11.2015.
  */
 @Entity
-@javax.persistence.Table( name = "Recipe", schema = "cooky_test" )
+@javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev" )
 public class RecipeEntity {
     private int id;
     private String name;

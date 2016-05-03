@@ -15,7 +15,6 @@ public class Recipe {
     private int id;
     private String name;
     private String shortDescription;
-    private byte[] imageFile;
     private String preparation;
     private RecipeDifficulty difficulty;
     private LocalDateTime creationDate;
@@ -36,7 +35,6 @@ public class Recipe {
         setId( recipeEntity.getId() );
         setName( recipeEntity.getName() );
         setShortDescription( recipeEntity.getShortDescription() );
-        setImageFile( recipeEntity.getImageFile() );
         setDifficulty( recipeEntity.getDifficulty() );
         setCalories( recipeEntity.getCalories() );
         setServing( recipeEntity.getServing() );
@@ -71,14 +69,6 @@ public class Recipe {
 
     public void setShortDescription( String shortDescription ) {
         this.shortDescription = shortDescription;
-    }
-
-    public byte[] getImageFile() {
-        return imageFile;
-    }
-
-    public void setImageFile( byte[] imageFileName ) {
-        this.imageFile = imageFileName;
     }
 
     public String getImageLink() {

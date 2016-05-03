@@ -15,6 +15,7 @@
     <div class="col-md-12">
         <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
             <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
+            <sec:csrfInput/>
         </form>
     </div>
     <div class="row">
@@ -31,12 +32,14 @@
                                     <button type="submit" class="btn btn-primary btn-block">Open</button>
                                 </p>
                                 <input type="hidden" name="id" value="${recipes.id}">
+                                <sec:csrfInput/>
                             </form>
                             <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
                                 <p align="center">
                                     <button type="submit" class="btn btn-primary btn-block">Remove</button>
                                 </p>
                                 <input type="hidden" name="id" value="${recipes.id}">
+                                <sec:csrfInput/>
                             </form>
                         </div>
                     </div>

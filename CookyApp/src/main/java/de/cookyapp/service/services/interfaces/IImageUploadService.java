@@ -11,6 +11,6 @@ import java.io.IOException;
  */
 public interface IImageUploadService {
 
-    Recipe saveImage( Recipe recipe, BufferedImage image ) throws IOException;
+    void saveImage( int recipeId, BufferedImage image ) throws IOException;
 
 }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -26,6 +27,7 @@ import javax.imageio.ImageIO;
 public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
+    private String realPath;
 
     @Autowired
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication ) {
@@ -55,7 +57,6 @@ public class RecipeCrudService implements IRecipeCrudService {
         recipeEntity.setCalories( recipe.getCalories() );
         recipeEntity.setAuthor( recipe.getAuthor() );
         recipeEntity.setDifficulty( recipe.getDifficulty() );
-        recipeEntity.setImageFile( recipe.getImageFile() );
         recipeEntity.setShortDescription( recipe.getShortDescription() );
         recipeEntity.setCreationTime( LocalDateTime.now() );
         recipeEntity.setWorkingTime( recipe.getWorkingTime() );
@@ -81,11 +82,9 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCalories( recipe.getCalories() );
                 recipeEntity.setDifficulty( recipe.getDifficulty() );
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
-                recipeEntity.setImageFile( recipe.getImageFile() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
                 recipeEntity.setAuthor( recipe.getAuthor() );
-                recipeEntity.setImageFile( recipe.getImageFile() );
                 recipeCrudRepository.save( recipeEntity );
             }
         }
@@ -102,15 +101,9 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public List<Recipe> getAllRecipes( String imagePath ) throws IOException {
+    public List<Recipe> getAllRecipes( ) {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
         List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
-        for ( Recipe current : recipes ) {
-            if ( current.getImageFile() != null ) {
-                String pathToImage = byteArrayToFileLink( current.getImageFile(), imagePath );
-                current.setImageLink( pathToImage );
-            }
-        }
         return recipes;
     }
 
@@ -128,24 +121,51 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
+    @Override
+    public void realPath (String realPath) {
+        this.realPath = realPath;
+    }
+
     private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
+                if (entity.getImageFile() == null) {
+                    current.setImageLink("http://placehold.it/320x200");
+                } else {
+                    current.setImageLink( byteArrayToFileLink( entity.getImageFile() ) );
+                }
                 recipes.add( current );
             }
         }
         return recipes;
     }
 
-    private String byteArrayToFileLink( byte[] bytes, String path ) throws IOException {
+    private String byteArrayToFileLink( byte[] bytes){
         String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
+        String path = generatePath();
         String completePath = path + imageGUID;
         String imagePath = "resources/images/recipes/" + imageGUID;
         InputStream inputStream = new ByteArrayInputStream( bytes );
-        BufferedImage bufferedImage = ImageIO.read( inputStream );
-        ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
+        try {
+            BufferedImage bufferedImage = ImageIO.read( inputStream );
+            ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
+        } catch (IOException ex) {
+            ex.toString();
+        }
+
         return imagePath;
+    }
+
+    private String generatePath() {
+        String path;
+        String imagePath = "resources/images/recipes/";
+        path = this.realPath + imagePath;
+        if ( !new File( path ).exists() ) {
+            File file = new File( path );
+            file.mkdirs();
+        }
+        return path;
     }
 }
