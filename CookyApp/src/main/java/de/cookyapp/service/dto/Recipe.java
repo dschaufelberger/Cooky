@@ -2,6 +2,7 @@ package de.cookyapp.service.dto;
 
 import java.time.LocalDateTime;
 
+import de.cookyapp.enums.AccountState;
 import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
@@ -26,7 +27,7 @@ public class Recipe {
     private Byte rating;
     private Integer voteCount;
 
-    private UserEntity author;
+    private User author;
 
     public Recipe() {
     }
@@ -35,7 +36,7 @@ public class Recipe {
         setId( recipeEntity.getId() );
         setName( recipeEntity.getName() );
         setShortDescription( recipeEntity.getShortDescription() );
-        //setImageFileName( recipeEntity.getImageFileName() );
+        setImageFileName( recipeEntity.getImageFileName() );
         setDifficulty( recipeEntity.getDifficulty() );
         setCalories( recipeEntity.getCalories() );
         setServing( recipeEntity.getServing() );
@@ -45,7 +46,7 @@ public class Recipe {
         setCookingTime( recipeEntity.getCookingTime() );
         setRestTime( recipeEntity.getRestTime() );
         setWorkingTime( recipeEntity.getWorkingTime() );
-        setAuthor( recipeEntity.getAuthor() );
+        setAuthor( userEntityToUser( recipeEntity.getAuthor() ) );
         setVoteCount( recipeEntity.getVoteCount() );
     }
 
@@ -117,11 +118,11 @@ public class Recipe {
 
     public void setVoteCount (Integer voteCount) { this.voteCount = voteCount; }
 
-    public UserEntity getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor( UserEntity author ) {
+    public void setAuthor( User author ) {
         this.author = author;
     }
 
@@ -163,5 +164,10 @@ public class Recipe {
 
     public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
+    }
+
+    private User userEntityToUser (UserEntity userEntity) {
+        User user = new User( userEntity );
+        return user;
     }
 }

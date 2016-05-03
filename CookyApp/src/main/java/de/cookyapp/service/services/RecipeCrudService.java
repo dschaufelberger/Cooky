@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
+import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,22 +46,21 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Override
     public Recipe createRecipe( Recipe recipe ) {
         RecipeEntity recipeEntity = new RecipeEntity();
-        recipeEntity.setAuthor( recipe.getAuthor() );
+        recipeEntity.setAuthor(userToUserEntity( recipe.getAuthor()  ) );
         recipeEntity.setName( recipe.getName() );
         recipeEntity.setRating( recipe.getRating() );
         recipeEntity.setServing( recipe.getServing() );
         recipeEntity.setCalories( recipe.getCalories() );
-        recipeEntity.setAuthor( recipe.getAuthor() );
         recipeEntity.setDifficulty( recipe.getDifficulty() );
-        //recipeEntity.setImageFileName( recipe.getImageFileName() );
+        recipeEntity.setImageFileName( recipe.getImageFileName() );
         recipeEntity.setShortDescription( recipe.getShortDescription() );
         recipeEntity.setCreationTime( LocalDateTime.now() );
         recipeEntity.setWorkingTime( recipe.getWorkingTime() );
         recipeEntity.setPreparation( recipe.getPreparation() );
         recipeEntity.setCookingTime( recipe.getCookingTime() );
         recipeEntity.setRestTime( recipe.getRestTime() );
-        recipeEntity.setRating( recipe.getRating() );
-        recipeEntity.setVoteCount( recipe.getVoteCount() );
+        recipeEntity.setRating( (byte) 0 );
+        recipeEntity.setVoteCount( 0 );
 
         recipeEntity = recipeCrudRepository.save( recipeEntity );
 
@@ -69,8 +71,8 @@ public class RecipeCrudService implements IRecipeCrudService {
     public void updateRecipe( Recipe recipe ) {
         if ( recipe != null ) {
             RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipe.getId() );
-            //boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipe.getAuthor().getUsername() );
-            //if ( isAuthenticated ) {
+            boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipe.getAuthor().getUsername() );
+            if ( isAuthenticated ) {
                 recipeEntity.setName( recipe.getName() );
                 recipeEntity.setWorkingTime( recipe.getWorkingTime() );
                 recipeEntity.setRestTime( recipe.getRestTime() );
@@ -78,14 +80,12 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCalories( recipe.getCalories() );
                 recipeEntity.setDifficulty( recipe.getDifficulty() );
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
-                //recipeEntity.setImageFileName( recipe.getImageFileName() );
+                recipeEntity.setImageFileName( recipe.getImageFileName() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
-                recipeEntity.setAuthor( recipe.getAuthor() );
-                recipeEntity.setRating( recipe.getRating() );
-                recipeEntity.setVoteCount( recipe.getVoteCount() );
+                recipeEntity.setAuthor( userToUserEntity( recipe.getAuthor()  ) );
                 recipeCrudRepository.save( recipeEntity );
-            //}
+            }
         }
     }
 
@@ -129,5 +129,24 @@ public class RecipeCrudService implements IRecipeCrudService {
             }
         }
         return recipes;
+    }
+
+    private UserEntity userToUserEntity( User user ) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId( user.getId() );
+        userEntity.setUsername( user.getUsername() );
+        userEntity.setPassword( user.getPassword() );
+        userEntity.setForename( user.getForename() );
+        userEntity.setSurname( user.getSurname() );
+        userEntity.setEmail( user.getEmail() );
+        userEntity.setGender( user.getGender() );
+        userEntity.setBirthdate( user.getBirthdate() );
+        userEntity.setRegistrationDate( user.getRegistrationDate() );
+        userEntity.setLastLoginDate( user.getLastLoginDate() );
+        userEntity.setAccountState( user.getAccountState() );
+        userEntity.setAccountState( AccountState.REGISTERED );
+        userEntity.setRegistrationDate( LocalDateTime.now() );
+
+        return userEntity;
     }
 }

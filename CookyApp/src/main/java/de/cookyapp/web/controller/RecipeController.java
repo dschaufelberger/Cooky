@@ -8,10 +8,7 @@ import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
-import de.cookyapp.enums.AccountState;
-import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Ingredient;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
@@ -21,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -95,7 +93,7 @@ public class RecipeController {
                 recipeDTO.setPreparation( recipe.getPreparation() );
                 recipeDTO.setRestTime( recipe.getRestTime() );
                 recipeDTO.setImageFileName( "http://placehold.it/320x200" );
-                recipeDTO.setAuthor( userToUserEntity( userCrudService.getCurrentUser() ) );
+                recipeDTO.setAuthor( userCrudService.getCurrentUser() );
                 recipeCrudService.updateRecipe( recipeDTO );
                 ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
             }
@@ -105,8 +103,8 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/goToEditRecipe" )
-    public ModelAndView handleEditRecipe( @RequestParam( "id" ) int id ) {
+    @RequestMapping( "/view/{id}" )
+    public ModelAndView showDetail ( @PathVariable int id ) {
         Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
         Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
         List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients( id );
@@ -136,7 +134,7 @@ public class RecipeController {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
-            newRecipe.setAuthor( userToUserEntity( userCrudService.getUserByID( 16 ) ) );
+            newRecipe.setAuthor( userCrudService.getCurrentUser() );
             newRecipe.setName( recipe.getName() );
             newRecipe.setWorkingTime( recipe.getWorkingTime() );
             newRecipe.setRestTime( recipe.getRestTime() );
@@ -148,8 +146,6 @@ public class RecipeController {
             newRecipe.setShortDescription( recipe.getShortDescription() );
             newRecipe.setCreationDate( LocalDateTime.now() );
             newRecipe.setImageFileName( "http://placehold.it/320x200" );
-            newRecipe.setRating( (byte) 0 );
-            newRecipe.setVoteCount( 0 );
 
             List<de.cookyapp.web.viewmodel.Ingredient> ingredientList = new ArrayList<>( recipe.getIngredients() );
             List<Ingredient> ingredients = new ArrayList<>();
@@ -171,28 +167,7 @@ public class RecipeController {
 
     @RequestMapping("/rateRecipe")
     public ModelAndView rateRecipe(@RequestParam ("id") int id, @RequestParam ("rating") byte rating) {
-        de.cookyapp.service.dto.Recipe recipe = recipeCrudService.getRecipe( id );
-        de.cookyapp.service.dto.Recipe votedRecipe = recipeRatingService.rateRecipe( recipe, rating );
-        recipeCrudService.updateRecipe( votedRecipe );
-        return handleEditRecipe(id);
-    }
-
-    private UserEntity userToUserEntity( User user ) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId( user.getId() );
-        userEntity.setUsername( user.getUsername() );
-        userEntity.setPassword( user.getPassword() );
-        userEntity.setForename( user.getForename() );
-        userEntity.setSurname( user.getSurname() );
-        userEntity.setEmail( user.getEmail() );
-        userEntity.setGender( user.getGender() );
-        userEntity.setBirthdate( user.getBirthdate() );
-        userEntity.setRegistrationDate( user.getRegistrationDate() );
-        userEntity.setLastLoginDate( user.getLastLoginDate() );
-        userEntity.setAccountState( user.getAccountState() );
-        userEntity.setAccountState( AccountState.REGISTERED );
-        userEntity.setRegistrationDate( LocalDateTime.now() );
-
-        return userEntity;
+        recipeRatingService.rateRecipe( id, rating );
+        return showDetail(id);
     }
 }

@@ -19,13 +19,9 @@ $(document).ready (function () {
     }
 
     $('.ratings_stars').hover(
-        // Handles the mouseover
-        //var modulo 2 == 0
         function() {
-            /*$(this).prevAll().andSelf().addClass("starHighlighted");*/
             $(this).prevAll().andSelf().addClass("starImage");
         },
-        // Handles the mouseout
         function() {
             $(this).nextAll().andSelf().removeClass("starImage");
         }

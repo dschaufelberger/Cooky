@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -50,11 +51,9 @@ public class Recipe {
     @Max( 16777215 )
     private int restTime;
 
+    @Min(0)
     @Max(5)
     private byte rating;
-
-    @Max(16777215)
-    private int voteCount;
 
     private Collection<Ingredient> ingredients;
 
@@ -75,7 +74,6 @@ public class Recipe {
         this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
         this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
         this.rating = recipe.getRating();
-        this.voteCount = recipe.getVoteCount();
         for ( de.cookyapp.service.dto.Ingredient entity : ingredientList ) {
             Ingredient current = ingredientToViewmodelIngredient( entity );
             this.ingredients.add( current );
@@ -177,10 +175,6 @@ public class Recipe {
     public byte getRating () { return rating; }
 
     public void setRating ( byte rating ) { this.rating = rating; }
-
-    public int getVoteCount () { return voteCount; }
-
-    public void setVoteCount ( int voteCount ) { this.voteCount = voteCount; }
 
     @Override
     public String toString() {

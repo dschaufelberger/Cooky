@@ -7,5 +7,5 @@ import de.cookyapp.service.dto.Recipe;
  */
 public interface IRecipeRatingService {
 
-    public Recipe rateRecipe ( Recipe recipe, byte rating );
+    public void rateRecipe ( int recipeId, byte rating );
 }
