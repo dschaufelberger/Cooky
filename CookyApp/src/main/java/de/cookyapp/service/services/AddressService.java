@@ -5,9 +5,7 @@ import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IAddressCrudRepository;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.Address;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IAddressService;
-import de.cookyapp.service.services.interfaces.IUserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,12 +27,12 @@ public class AddressService implements IAddressService {
 
     @Override
     public void createAddressForUser(int userID, Address address) {
-        AddressEntity addressEntity = this.addressCrudRepository.findOne(address.getId());
+        AddressEntity addressEntity = new AddressEntity();
         addressEntity.setCity(address.getCity());
         addressEntity.setStreet(address.getStreet());
         addressEntity.setPostcode(address.getPostcode());
         addressEntity.setHouseNumber(address.getHouseNumber());
-        this.addressCrudRepository.save(addressEntity);
+        addressEntity = this.addressCrudRepository.save( addressEntity );
 
         UserEntity userEntity = this.userCrudRepository.findOne(userID);
         userEntity.setAddress(addressEntity);
