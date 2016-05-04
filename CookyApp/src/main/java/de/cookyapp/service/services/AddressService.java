@@ -55,16 +55,19 @@ public class AddressService implements IAddressService {
     @Override
     public void updateAddress( Address address ) {
         AddressEntity addressEntity = this.addressCrudRepository.findOne( address.getId() );
-        UserEntity userEntity = this.userCrudRepository.findByUsername( this.authentication.getAuthentication().getName() );
-        boolean isAuthenticated = addressEntity.equals( userEntity.getAddress() );
-
-        if ( isAuthenticated ) {
-            if ( addressEntity != null ) {
-                addressEntity.setStreet( address.getStreet() );
-                addressEntity.setPostcode( address.getPostcode() );
-                addressEntity.setHouseNumber( address.getHouseNumber() );
-                addressEntity.setCity( address.getCity() );
-                this.addressCrudRepository.save( addressEntity );
+        
+        if ( addressEntity != null ) {
+            UserEntity userEntity = this.userCrudRepository.findByUsername( this.authentication.getAuthentication().getName() );
+            boolean isAuthenticated = addressEntity.equals( userEntity.getAddress() );
+    
+            if ( isAuthenticated ) {
+                if ( addressEntity != null ) {
+                    addressEntity.setStreet( address.getStreet() );
+                    addressEntity.setPostcode( address.getPostcode() );
+                    addressEntity.setHouseNumber( address.getHouseNumber() );
+                    addressEntity.setCity( address.getCity() );
+                    this.addressCrudRepository.save( addressEntity );
+                }
             }
         }
     }
