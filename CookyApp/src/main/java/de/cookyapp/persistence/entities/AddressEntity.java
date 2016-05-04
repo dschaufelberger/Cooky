@@ -86,10 +86,6 @@ public class AddressEntity {
     @Override
     public int hashCode() {
         int result = 37;
-        /*result = 31 * result + (street != null ? street.hashCode() : 0);
-        result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (postcode != null ? postcode.hashCode() : 0);*/
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
