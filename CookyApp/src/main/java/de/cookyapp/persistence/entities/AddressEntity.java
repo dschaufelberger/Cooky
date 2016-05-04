@@ -1,12 +1,9 @@
 package de.cookyapp.persistence.entities;
 
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -15,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "Address", schema = "Cooky_Dev")
 public class AddressEntity {
-    private int id;
+    private Integer id;
     private String street;
     private String houseNumber;
     private String city;
@@ -23,11 +20,11 @@ public class AddressEntity {
 
     @Id
     @Column( name = "ID", nullable = false )
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId( int id ) {
+    public void setId( Integer id ) {
         this.id = id;
     }
 
@@ -80,13 +77,7 @@ public class AddressEntity {
 
         AddressEntity that = (AddressEntity) o;
 
-        if ( street != null ? !street.equals( that.street ) : that.street != null )
-            return false;
-        if ( houseNumber != null ? !houseNumber.equals( that.houseNumber ) : that.houseNumber != null )
-            return false;
-        if ( city != null ? !city.equals( that.city ) : that.city != null )
-            return false;
-        if ( postcode != null ? !postcode.equals( that.postcode ) : that.postcode != null )
+        if ( id != null ? !id.equals( that.id ) : that.id != null )
             return false;
 
         return true;
@@ -95,10 +86,11 @@ public class AddressEntity {
     @Override
     public int hashCode() {
         int result = 37;
-        result = 31 * result + (street != null ? street.hashCode() : 0);
+        /*result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (postcode != null ? postcode.hashCode() : 0);
+        result = 31 * result + (postcode != null ? postcode.hashCode() : 0);*/
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
 }
