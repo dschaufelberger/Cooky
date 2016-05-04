@@ -13,4 +13,6 @@ public interface IAddressService {
     Address getAddress( int addressID );
 
     Address getAddressForUser( int userID );
+
+    void removeAddressFromUser(int userID, int addressID);
 }
