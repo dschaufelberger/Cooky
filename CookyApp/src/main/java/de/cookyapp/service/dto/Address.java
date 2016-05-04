@@ -1,5 +1,7 @@
 package de.cookyapp.service.dto;
 
+import de.cookyapp.persistence.entities.AddressEntity;
+
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
  */
@@ -10,6 +12,17 @@ public class Address {
     private String city;
     private String postcode;
 
+    public Address() {
+
+    }
+
+    public Address( AddressEntity addressEntity ) {
+        setId( addressEntity.getId() );
+        setCity( addressEntity.getCity() );
+        setHouseNumber( addressEntity.getHouseNumber() );
+        setPostcode( addressEntity.getPostcode() );
+        setStreet( addressEntity.getStreet() );
+    }
     public int getId() {
         return id;
     }
