@@ -58,16 +58,21 @@ public class AddressService implements IAddressService {
         
         if ( addressEntity != null ) {
             UserEntity userEntity = this.userCrudRepository.findByUsername( this.authentication.getAuthentication().getName() );
-            boolean isAuthenticated = addressEntity.equals( userEntity.getAddress() );
-    
-            if ( isAuthenticated ) {
-                if ( addressEntity != null ) {
-                    addressEntity.setStreet( address.getStreet() );
-                    addressEntity.setPostcode( address.getPostcode() );
-                    addressEntity.setHouseNumber( address.getHouseNumber() );
-                    addressEntity.setCity( address.getCity() );
-                    this.addressCrudRepository.save( addressEntity );
+            
+            if ( userEntity != null ) {
+                boolean isAuthenticated = addressEntity.equals( userEntity.getAddress() );
+        
+                if ( isAuthenticated ) {
+                    if ( addressEntity != null ) {
+                        addressEntity.setStreet( address.getStreet() );
+                        addressEntity.setPostcode( address.getPostcode() );
+                        addressEntity.setHouseNumber( address.getHouseNumber() );
+                        addressEntity.setCity( address.getCity() );
+                        this.addressCrudRepository.save( addressEntity );
+                    }
                 }
+            } else {
+                throw new UserNotAuthorized();
             }
         }
     }
@@ -87,12 +92,17 @@ public class AddressService implements IAddressService {
     @Override
     public Address getAddressForUser( int userID ) {
         UserEntity userEntity = this.userCrudRepository.findOne( userID );
-        boolean isAuthenticated = userEntity.getUsername().equals( this.authentication.getAuthentication().getName() );
-
-        if ( isAuthenticated ) {
-            AddressEntity addressEntity = userEntity.getAddress();
-            Address address = this.getAddressIfExistant( addressEntity );
-            return address;
+        
+        if ( userEntity != null ) {
+            boolean isAuthenticated = userEntity.getUsername().equals( this.authentication.getAuthentication().getName() );
+    
+            if ( isAuthenticated ) {
+                AddressEntity addressEntity = userEntity.getAddress();
+                Address address = this.getAddressIfExistant( addressEntity );
+                return address;
+            }
+        } else {
+            throw new InvalidUserId();
         }
         return null;
     }
