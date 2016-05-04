@@ -23,7 +23,7 @@ import de.cookyapp.enums.RecipeDifficulty;
 @Entity
 @javax.persistence.Table( name = "Recipe", schema = "Cooky_Dev" )
 public class RecipeEntity {
-    private int id;
+    private Integer id;
     private String name;
     private String shortDescription;
     private String preparation;
@@ -33,6 +33,7 @@ public class RecipeEntity {
     private Integer calories;
     private Short serving;
     private Byte rating;
+    private Integer voteCount;
     private Integer workingTime;
     private Integer cookingTime;
     private Integer restTime;
@@ -40,7 +41,7 @@ public class RecipeEntity {
     private UserEntity author;
     private Collection<CommentEntity> comments;
     private Collection<CookbookEntity> containingCookbooks;
-    //private Collection<TagEntity> tags;
+    private Collection<TagEntity> tags;
     private Collection<RecipeIngredientEntity> ingredients;
 
     public RecipeEntity () {
@@ -49,11 +50,11 @@ public class RecipeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @javax.persistence.Column( name = "ID", nullable = false )
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId( int id ) {
+    public void setId( Integer id ) {
         this.id = id;
     }
 
@@ -135,6 +136,12 @@ public class RecipeEntity {
         this.rating = rating;
     }
 
+    @Basic
+    @javax.persistence.Column( name="VoteCount", nullable = true)
+    public Integer getVoteCount () { return voteCount; }
+
+    public void setVoteCount (Integer voteCount) { this.voteCount = voteCount; }
+
 
     @Basic
     @javax.persistence.Column( name = "WorkingTime", nullable = true )
@@ -201,17 +208,6 @@ public class RecipeEntity {
         this.author = author;
     }
 
-
-    /*@OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
-    public Collection<CommentEntity> getComments() {
-        return comments;
-    }
-
-    public void setComments( Collection<CommentEntity> comments ) {
-        this.comments = comments;
-    }*/
-
-
     @ManyToMany( mappedBy = "recipes" )
     public Collection<CookbookEntity> getContainingCookbooks() {
         return containingCookbooks;
@@ -229,19 +225,6 @@ public class RecipeEntity {
     public void setIngredients( Collection<RecipeIngredientEntity> ingredients ) {
         this.ingredients = ingredients;
     }
-
-
-    /*@ManyToMany( cascade = CascadeType.ALL )
-    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID")
-    )
-    public Collection<TagEntity> getTags() {
-        return tags;
-    }
-
-    public void setTags( Collection<TagEntity> tags ) {
-        this.tags = tags;
-    } */
 
     @Override
     public boolean equals( Object o ) {

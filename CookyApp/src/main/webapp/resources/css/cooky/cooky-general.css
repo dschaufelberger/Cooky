@@ -23,3 +23,31 @@ html, body {
 .cooky-fill {
     height: 100%;
 }
+
+.starSize {
+    width: 28px;
+}
+
+.buttonTransparent {
+    background: transparent;
+    border: 0px;
+}
+
+#backgroundFill {
+    background: url("/resources/images/rating/Star_filled.png");
+}
+
+.ratings_stars {
+    content:    url('/resources/images/rating/Star_empty.png');
+    float:      left;
+    padding:    2px;
+    width:      28px;
+}
+
+.starImage {
+    content: url('/resources/images/rating/Star_filled.png');
+}
+
+.starHighlighted {
+    content: url('/resources/images/rating/Star_filled.png');
+}

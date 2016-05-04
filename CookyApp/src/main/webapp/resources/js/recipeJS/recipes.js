@@ -11,6 +11,23 @@ function addRow (){
     count++;
 };
 
+$(document).ready (function () {
+    var rating = $(".currentRating").val();
+    for (var i = 1; i <= rating; i++) {
+        $(".star"+i).addClass("starImage");
+    }
+
+    $('.ratings_stars').hover(
+        function() {
+            $(this).prevAll().andSelf().addClass("starImage");
+        },
+        function() {
+            $(this).nextAll().andSelf().removeClass("starImage");
+        }
+    );
+});
+
+
 
 
 
