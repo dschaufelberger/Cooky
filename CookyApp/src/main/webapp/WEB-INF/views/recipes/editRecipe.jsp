@@ -72,6 +72,10 @@
                     </form:select></td>
                     <td><form:errors path="difficulty" cssClass="formError"/></td>
                 </tr>
+                <tr>
+                    <td><label>Recipe Image</label></td>
+                    <td><input type="file" name="recipeImage"/></td>
+                </tr>
              <span class="input-group-btn">
                  <tr>
                      <td>

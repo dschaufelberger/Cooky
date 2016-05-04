@@ -78,7 +78,7 @@ public class RecipeController {
     }
 
     @RequestMapping( "/editRecipe" )
-    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult ) {
+    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
         String view;
         boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
         if ( bindingResult.hasErrors() ) {
@@ -110,9 +110,14 @@ public class RecipeController {
                 recipeDTO.setRestTime( recipe.getRestTime() );
                 recipeDTO.setAuthor( userToUserEntity( userCrudService.getCurrentUser() ) );
                 recipeCrudService.updateRecipe( recipeDTO );
+
+                uploadImage( image, recipeDTO.getId() );
+
                 ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
+
             }
-            //Wie in Add recipe wenn bild geändert wird
+
+
             view = "redirect:/recipes";
         }
 
@@ -209,24 +214,26 @@ public class RecipeController {
     }
 
     private void uploadImage( MultipartFile image, int recipeId ) {
-        validateImage( image );
-        InputStream inputStream = null;
-        BufferedImage bufferedImage = null;
-        try {
+        if (image != null) {
+            validateImage( image );
+            InputStream inputStream = null;
+            BufferedImage bufferedImage = null;
             try {
-                inputStream = image.getInputStream();
-                bufferedImage = ImageIO.read( inputStream );
-            } catch (Exception i) {
-                logger.error( "Upload Image ist fehlgeschlagen" );
-                throw i;
-            } finally {
-                if ( inputStream != null ) {
-                    inputStream.close();
+                try {
+                    inputStream = image.getInputStream();
+                    bufferedImage = ImageIO.read( inputStream );
+                } catch (Exception i) {
+                    logger.error( "Upload Image ist fehlgeschlagen" );
+                    throw i;
+                } finally {
+                    if ( inputStream != null ) {
+                        inputStream.close();
+                    }
                 }
+                imageService.saveImage( recipeId, bufferedImage );
+            } catch ( Exception ex ) {
+                ex.toString();
             }
-            imageService.saveImage( recipeId, bufferedImage );
-        } catch ( Exception ex ) {
-            ex.toString();
         }
     }
 }
