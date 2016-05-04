@@ -30,7 +30,7 @@ public class UserRepositoryMock implements IUserCrudRepository {
 
     //UP TO NOW !! only for JUnit tests to test AddressService
     @Override
-    public UserEntity findOne( Integer integer ) {
+    public UserEntity findOne( Integer userId ) {
         return this.createCopy( this.entity );
     }
 
@@ -47,7 +47,7 @@ public class UserRepositoryMock implements IUserCrudRepository {
 
     @Override
     public UserEntity findByUsername( String username ) {
-        return null;
+        return entity;
     }
 
     private UserEntity createCopy( UserEntity entity ) {
@@ -59,6 +59,8 @@ public class UserRepositoryMock implements IUserCrudRepository {
         copy.setSurname( entity.getSurname() );
         copy.setAddress( entity.getAddress() );
         copy.setBirthdate( entity.getBirthdate() );
+        copy.setUsername( entity.getUsername() );
+
 
         return copy;
     }
