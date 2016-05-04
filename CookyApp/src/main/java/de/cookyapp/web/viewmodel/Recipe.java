@@ -51,7 +51,7 @@ public class Recipe {
     @Max( 16777215 )
     private int restTime;
 
-    @Pattern( regexp = "([^\\\\s]+(\\\\.(?i)(jpg|jpeg))$)", message = "Es dürfen nur " )
+    @Pattern( regexp = "([^\\\\s]+(\\\\.(?i)(jpg|jpeg))$)", message = "Es dürfen nur JPG oder JPEG Dateien hochgeladen werden." )
     private String imageLink;
 
     private Collection<Ingredient> ingredients;
