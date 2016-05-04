@@ -8,18 +8,17 @@ import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
-import de.cookyapp.enums.AccountState;
-import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Ingredient;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
+import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,14 +34,16 @@ public class RecipeController {
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
     private IIngredientCrudService ingredientCrudService;
+    private IRecipeRatingService recipeRatingService;
     private IAuthenticationFacade authentication;
     private IUserAuthorization userAuthorization;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization ) {
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IRecipeRatingService recipeRatingService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
+        this.recipeRatingService = recipeRatingService;
         this.authentication = authenticationFacade;
         this.userAuthorization = userAuthorization;
     }
@@ -92,7 +93,6 @@ public class RecipeController {
                 recipeDTO.setPreparation( recipe.getPreparation() );
                 recipeDTO.setRestTime( recipe.getRestTime() );
                 recipeDTO.setImageFileName( "http://placehold.it/320x200" );
-                recipeDTO.setAuthor( userToUserEntity( userCrudService.getCurrentUser() ) );
                 recipeCrudService.updateRecipe( recipeDTO );
                 ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
             }
@@ -102,8 +102,8 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/goToEditRecipe" )
-    public ModelAndView handleEditRecipe( @RequestParam( "id" ) int id ) {
+    @RequestMapping( "/view/{id}" )
+    public ModelAndView showDetail( @PathVariable int id ) {
         Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
         Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
         List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients( id );
@@ -133,8 +133,7 @@ public class RecipeController {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
-            //TODO [dodo] Wir hatten doch gesagt, der Controller behandelt keine Entities...
-            newRecipe.setAuthor( userToUserEntity( userCrudService.getCurrentUser() ) );
+            newRecipe.setAuthor( userCrudService.getCurrentUser() );
             newRecipe.setName( recipe.getName() );
             newRecipe.setWorkingTime( recipe.getWorkingTime() );
             newRecipe.setRestTime( recipe.getRestTime() );
@@ -165,22 +164,9 @@ public class RecipeController {
         return view;
     }
 
-    private UserEntity userToUserEntity( User user ) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId( user.getId() );
-        userEntity.setUsername( user.getUsername() );
-        userEntity.setPassword( user.getPassword() );
-        userEntity.setForename( user.getForename() );
-        userEntity.setSurname( user.getSurname() );
-        userEntity.setEmail( user.getEmail() );
-        userEntity.setGender( user.getGender() );
-        userEntity.setBirthdate( user.getBirthdate() );
-        userEntity.setRegistrationDate( user.getRegistrationDate() );
-        userEntity.setLastLoginDate( user.getLastLoginDate() );
-        userEntity.setAccountState( user.getAccountState() );
-        userEntity.setAccountState( AccountState.REGISTERED );
-        userEntity.setRegistrationDate( LocalDateTime.now() );
-
-        return userEntity;
+    @RequestMapping( "/rateRecipe" )
+    public ModelAndView rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
+        recipeRatingService.rateRecipe( id, rating );
+        return showDetail( id );
     }
 }

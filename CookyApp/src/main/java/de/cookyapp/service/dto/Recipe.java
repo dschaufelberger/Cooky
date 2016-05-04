@@ -24,8 +24,9 @@ public class Recipe {
     private Integer restTime;
     private Short serving;
     private Byte rating;
+    private Integer voteCount;
 
-    private UserEntity author;
+    private User author;
 
     public Recipe() {
     }
@@ -44,7 +45,8 @@ public class Recipe {
         setCookingTime( recipeEntity.getCookingTime() );
         setRestTime( recipeEntity.getRestTime() );
         setWorkingTime( recipeEntity.getWorkingTime() );
-        setAuthor( recipeEntity.getAuthor() );
+        setAuthor( userEntityToUser( recipeEntity.getAuthor() ) );
+        setVoteCount( recipeEntity.getVoteCount() );
     }
 
     public int getId() {
@@ -111,11 +113,19 @@ public class Recipe {
         this.rating = rating;
     }
 
-    public UserEntity getAuthor() {
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount( Integer voteCount ) {
+        this.voteCount = voteCount;
+    }
+
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor( UserEntity author ) {
+    public void setAuthor( User author ) {
         this.author = author;
     }
 
@@ -157,5 +167,10 @@ public class Recipe {
 
     public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
+    }
+
+    private User userEntityToUser( UserEntity userEntity ) {
+        User user = new User( userEntity );
+        return user;
     }
 }

@@ -1,17 +1,19 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -21,11 +23,13 @@ import java.util.List;
 public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
+    private IUserCrudRepository userCrudRepository;
 
     @Autowired
-    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication ) {
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
+        this.userCrudRepository = userCrudRepository;
     }
 
     @Override
@@ -43,32 +47,38 @@ public class RecipeCrudService implements IRecipeCrudService {
 
     @Override
     public Recipe createRecipe( Recipe recipe ) {
-        RecipeEntity recipeEntity = new RecipeEntity();
-        recipeEntity.setAuthor( recipe.getAuthor() );
-        recipeEntity.setName( recipe.getName() );
-        recipeEntity.setRating( recipe.getRating() );
-        recipeEntity.setServing( recipe.getServing() );
-        recipeEntity.setCalories( recipe.getCalories() );
-        recipeEntity.setAuthor( recipe.getAuthor() );
-        recipeEntity.setDifficulty( recipe.getDifficulty() );
-        recipeEntity.setImageFileName( recipe.getImageFileName() );
-        recipeEntity.setShortDescription( recipe.getShortDescription() );
-        recipeEntity.setCreationTime( LocalDateTime.now() );
-        recipeEntity.setWorkingTime( recipe.getWorkingTime() );
-        recipeEntity.setPreparation( recipe.getPreparation() );
-        recipeEntity.setCookingTime( recipe.getCookingTime() );
-        recipeEntity.setRestTime( recipe.getRestTime() );
+        UserEntity user = this.userCrudRepository.findOne( recipe.getId() );
 
-        recipeEntity = recipeCrudRepository.save( recipeEntity );
+        if ( user != null && this.authentication.getAuthentication().getName().equals( user.getUsername() ) ) {
+            RecipeEntity recipeEntity = new RecipeEntity();
+            recipeEntity.setName( recipe.getName() );
+            recipeEntity.setRating( recipe.getRating() );
+            recipeEntity.setServing( recipe.getServing() );
+            recipeEntity.setCalories( recipe.getCalories() );
+            recipeEntity.setDifficulty( recipe.getDifficulty() );
+            recipeEntity.setImageFileName( recipe.getImageFileName() );
+            recipeEntity.setShortDescription( recipe.getShortDescription() );
+            recipeEntity.setCreationTime( LocalDateTime.now() );
+            recipeEntity.setWorkingTime( recipe.getWorkingTime() );
+            recipeEntity.setPreparation( recipe.getPreparation() );
+            recipeEntity.setCookingTime( recipe.getCookingTime() );
+            recipeEntity.setRestTime( recipe.getRestTime() );
+            recipeEntity.setRating( (byte) 0 );
+            recipeEntity.setVoteCount( 0 );
 
-        return new Recipe( recipeEntity );
+            recipeEntity = recipeCrudRepository.save( recipeEntity );
+
+            return new Recipe( recipeEntity );
+        }
+
+        return null;
     }
 
     @Override
     public void updateRecipe( Recipe recipe ) {
         if ( recipe != null ) {
             RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipe.getId() );
-            boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipe.getAuthor().getUsername() );
+            boolean isAuthenticated = authentication.getAuthentication().getName().equals( recipeEntity.getAuthor().getUsername() );
             if ( isAuthenticated ) {
                 recipeEntity.setName( recipe.getName() );
                 recipeEntity.setWorkingTime( recipe.getWorkingTime() );
@@ -80,7 +90,6 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setImageFileName( recipe.getImageFileName() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
-                recipeEntity.setAuthor( recipe.getAuthor() );
                 recipeCrudRepository.save( recipeEntity );
             }
         }
