@@ -29,7 +29,6 @@ public class ImageUploadService implements IImageUploadService {
     @Override
     public void saveImage( int recipeId, BufferedImage image ) throws IOException {
         RecipeEntity currentRecipe = recipeCrudRepository.findOne( recipeId );
-        //Repo entity laden
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write( image, "jpg", baos );
