@@ -14,7 +14,11 @@
 <spring:eval expression="cookbook.visibility == T(de.cookyapp.enums.CookbookVisibility).FRIENDS" var="isShared" />
 
 <h1>${cookbook.name}</h1>
-<p>${cookbook.shortDescription}</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p>${cookbook.shortDescription}</p>
+    </div>
+</div>
 
 <c:if test="${isPublic}">
     <span>This cookbook is visible to all Cookys.</span>
@@ -26,20 +30,23 @@
     <span>This cookbook is visible to all your Cooky Friends.</span>
 </c:if>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Recipes in this cookbook</div>
-    <div class="panel-body">
-        <div class="list-group">
-            <c:forEach var="recipe" items="${cookbook.recipes}">
-                <div class="list-group-item">
-                    <a href="/recipes/goToEditRecipe/${recipe.id}">
-                        <h4 class="list-group-item-heading">${recipe.name}</h4>
-                    </a>
-                    <span>Rating: ${recipe.rating}</span>
-                    <p>${recipe.description}</p>
-                </div>
-
-            </c:forEach>
+<h4>Recipes in this cookbook</h4>
+<div class="list-group">
+    <c:forEach var="recipe" items="${cookbook.recipes}">
+        <div class="list-group-item">
+            <a href="/recipes/goToEditRecipe/${recipe.id}">
+                <h4 class="list-group-item-heading">${recipe.name}</h4>
+            </a>
+            <span>
+                <c:forEach begin="1" end="${recipe.rating}">
+                    <span class="glyphicon glyphicon-star cooky-recipeRating"></span>
+                </c:forEach>
+                <c:forEach begin="${recipe.rating + 1}" end="${recipe.maxRating}">
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                </c:forEach>
+            </span>
+            <p>${recipe.description}</p>
         </div>
-    </div
+
+    </c:forEach>
 </div>

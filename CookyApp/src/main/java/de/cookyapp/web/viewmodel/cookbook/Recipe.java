@@ -8,6 +8,7 @@ public class Recipe {
     private String name;
     private String description;
     private byte rating;
+    private byte maxRating;
 
     public Recipe( de.cookyapp.service.dto.Recipe recipe) {
         this.id = recipe.getId();
@@ -18,6 +19,10 @@ public class Recipe {
 
     //TEST
     public Recipe() {
+    }
+
+    public byte getMaxRating() {
+        return 5;
     }
 
     public int getId() {

@@ -23,3 +23,11 @@ html, body {
 .cooky-fill {
     height: 100%;
 }
+
+.cooky-recipeRating {
+    font-size: 1.5em;
+}
+
+.glyphicon.glyphicon-star.cooky-recipeRating {
+    color: yellow;
+}
