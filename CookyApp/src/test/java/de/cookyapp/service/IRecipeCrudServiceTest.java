@@ -1,14 +1,16 @@
 package de.cookyapp.service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Recipe;
-import de.cookyapp.service.exceptions.InvalidRecipeID;
+import de.cookyapp.service.dto.User;
 import de.cookyapp.service.mocks.AuthenticationMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
+import de.cookyapp.service.mocks.UserRepositoryMock;
 import de.cookyapp.service.services.RecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.junit.Assert;
@@ -24,15 +26,17 @@ public class IRecipeCrudServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private RecipeRepositoryMock repositoryMock;
+    private RecipeRepositoryMock recipeRepositoryMock;
+    private UserRepositoryMock userRepositoryMock;
     private AuthenticationMock authenticationMock;
     private IRecipeCrudService service;
 
     @Before
     public void setUp() throws Exception {
-        repositoryMock = new RecipeRepositoryMock();
+        recipeRepositoryMock = new RecipeRepositoryMock();
         authenticationMock = new AuthenticationMock( "CookyTester" );
-        this.service = new RecipeCrudService( repositoryMock, authenticationMock );
+        this.userRepositoryMock = new UserRepositoryMock();
+        this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock );
     }
 
     @Test
@@ -47,17 +51,16 @@ public class IRecipeCrudServiceTest {
         entityUnderTest.setAuthor( userDummy );
 
         List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
-
-        this.repositoryMock.setEntities( dummyList );
+        this.recipeRepositoryMock.setEntities( dummyList );
 
         // act
         this.service.deleteRecipe( entityUnderTest.getId() );
 
 
         // assert
-        RecipeEntity dummy = this.repositoryMock.findOne( entityUnderTest.getId() );
+        RecipeEntity dummy = this.recipeRepositoryMock.findOne( entityUnderTest.getId() );
         Assert.assertNull( dummy );
-        Assert.assertEquals( dummyList.size() - 1, this.repositoryMock.getEntities().size() );
+        Assert.assertEquals( dummyList.size() - 1, this.recipeRepositoryMock.getEntities().size() );
     }
 
     @Test
@@ -72,32 +75,32 @@ public class IRecipeCrudServiceTest {
         entityUnderTest.setAuthor( userDummy );
 
         List<RecipeEntity> dummyList = createDummyList( 10, userDummy );
-        this.repositoryMock.setEntities( dummyList );
+        this.recipeRepositoryMock.setEntities( dummyList );
 
         // act
         this.service.deleteRecipe( entityUnderTest.getId() );
 
         // assert
-        RecipeEntity dummy = this.repositoryMock.findOne( entityUnderTest.getId() );
+        RecipeEntity dummy = this.recipeRepositoryMock.findOne( entityUnderTest.getId() );
         Assert.assertNotNull( dummy );
-        Assert.assertEquals( dummyList.size(), this.repositoryMock.getEntities().size() );
+        Assert.assertEquals( dummyList.size(), this.recipeRepositoryMock.getEntities().size() );
     }
 
     @Test
     public void testDeleteNonexistingRecipe() throws Exception {
         //arrange
         UserEntity userDummy = new UserEntity();
-        userDummy.setUsername("CookyTester");
+        userDummy.setUsername( "CookyTester" );
 
         // create a dummy user since the service tests the authorization of the user against the authors username
         List<RecipeEntity> dummyList = createDummyList( 10, userDummy );
-        this.repositoryMock.setEntities( dummyList );
+        this.recipeRepositoryMock.setEntities( dummyList );
 
         //act
-        this.service.deleteRecipe(3);
+        this.service.deleteRecipe( 11 );
 
         //assert
-        Assert.assertEquals( dummyList.size(), this.repositoryMock.getEntities().size() );
+        Assert.assertEquals( dummyList.size(), this.recipeRepositoryMock.getEntities().size() );
     }
 
     @Test
@@ -107,31 +110,25 @@ public class IRecipeCrudServiceTest {
 
     @Test
     public void testCreateRecipe() throws Exception {
-        // arrange
-        RecipeEntity entityUnderTest = new RecipeEntity();
-        entityUnderTest.setId( 5 );
-
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
         userDummy.setUsername( "CookyTester" );
-        entityUnderTest.setAuthor( userDummy );
+        LinkedList<UserEntity> userDummyList = new LinkedList<>();
+        userDummyList.add( userDummy );
+        this.userRepositoryMock.setUsers( userDummyList );
 
         //create Dummy Recipe List
         List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
-
-        this.repositoryMock.setEntities( dummyList );
+        this.recipeRepositoryMock.setEntities( dummyList );
 
         //initialize Recipe
         Recipe newRecipe = new Recipe();
-        newRecipe.setId( entityUnderTest.getId() );
-        newRecipe.setAuthor( entityUnderTest.getAuthor() );
+        newRecipe.setAuthor( new User( userDummy ) );
         // act
         this.service.createRecipe( newRecipe );
 
         // assert
-        RecipeEntity dummy = this.repositoryMock.findOne( entityUnderTest.getId() );
-        Assert.assertNotNull( dummy );
-        Assert.assertEquals( dummyList.size() + 1, this.repositoryMock.getEntities().size() );
+        Assert.assertEquals( dummyList.size() + 1, this.recipeRepositoryMock.getEntities().size() );
     }
 
     @Test
@@ -140,8 +137,8 @@ public class IRecipeCrudServiceTest {
         RecipeEntity newRecipeEntity = new RecipeEntity();
         newRecipeEntity.setId( 10 );
 
-        List<RecipeEntity> recipeEntities = new ArrayList<>(  );
-        recipeEntities.add(newRecipeEntity);
+        List<RecipeEntity> recipeEntities = new ArrayList<>();
+        recipeEntities.add( newRecipeEntity );
 
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
@@ -151,17 +148,15 @@ public class IRecipeCrudServiceTest {
         //initalize Recipe
         Recipe newRecipe = new Recipe();
         newRecipe.setId( newRecipeEntity.getId() );
-        newRecipe.setAuthor( newRecipeEntity.getAuthor() );
+        newRecipe.setAuthor( new User( newRecipeEntity.getAuthor() ) );
 
         //act
-        this.repositoryMock.setEntities( recipeEntities );
-        //this.repositoryMock.save( newRecipeEntity );
+        this.recipeRepositoryMock.setEntities( recipeEntities );
+        //this.recipeRepositoryMock.save( newRecipeEntity );
         newRecipe.setShortDescription( "UpdateTest" );
         this.service.updateRecipe( newRecipe );
 
-        //TODO: compare each field
-        //TODO: testUpdateRecipeUnauthorizedUser()
-        Assert.assertEquals( newRecipe.getShortDescription(), this.repositoryMock.findOne( 10 ).getShortDescription() );
+        Assert.assertEquals( newRecipe.getShortDescription(), this.recipeRepositoryMock.findOne( 10 ).getShortDescription() );
     }
 
     @Test
@@ -172,12 +167,11 @@ public class IRecipeCrudServiceTest {
 
         //create Dummy Recipe List
         List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
-        this.repositoryMock.setEntities( dummyList );
+        this.recipeRepositoryMock.setEntities( dummyList );
 
         Recipe recipe = this.service.getRecipe( 5 );
         Assert.assertEquals( recipe.getId(), 5 );
     }
-    //TODO testGetRecipeNotExistant()
 
     @Test
     public void testGetAllRecipes() throws Exception {
@@ -187,11 +181,10 @@ public class IRecipeCrudServiceTest {
 
         //create Dummy Recipe List
         List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
-        this.repositoryMock.setEntities( dummyList );
+        this.recipeRepositoryMock.setEntities( dummyList );
         Assert.assertEquals( this.service.getAllRecipes().size(), dummyList.size() );
     }
-    //TODO testGetAllRecipesOnEmptyRepository
-    //TODO Liste assert not null, vorhandes, assertequal size 0 (leere Liste)
+
     @Test
     public void testGetAllRecipesByName() throws Exception {
         // create a dummy user since the service tests the authorization of the user against the authors username
@@ -200,7 +193,8 @@ public class IRecipeCrudServiceTest {
 
         //create Dummy Recipe List
         List<RecipeEntity> dummyList = this.createDummyListWithUniqueNames( 10, userDummy );
-        Assert.assertEquals(1, this.service.getAllRecipesByName( "CookyTest1" ).size() );
+        this.recipeRepositoryMock.setEntities( dummyList );
+        Assert.assertEquals( 1, this.service.getAllRecipesByName( "CookyTest1" ).size() );
     }
 
     @Test
@@ -211,10 +205,11 @@ public class IRecipeCrudServiceTest {
 
         //create Dummy Recipe List
         List<RecipeEntity> dummyList = this.createDummyList( 10, userDummy );
+        this.recipeRepositoryMock.setEntities( dummyList );
 
-        Assert.assertEquals( this.service.searchRecipesContaining( "Cooky").size(), dummyList.size() );
-        Assert.assertEquals( this.service.searchRecipesContaining( "kyT").size(), dummyList.size() );
-        Assert.assertEquals( this.service.searchRecipesContaining( "Test").size(), dummyList.size() );
+        Assert.assertEquals( this.service.searchRecipesContaining( "Cooky" ).size(), dummyList.size() );
+        Assert.assertEquals( this.service.searchRecipesContaining( "kyT" ).size(), dummyList.size() );
+        Assert.assertEquals( this.service.searchRecipesContaining( "Test" ).size(), dummyList.size() );
     }
 
     private List<RecipeEntity> createDummyList( int numberOfRecipes, UserEntity dummyAuthor ) {
@@ -228,6 +223,7 @@ public class IRecipeCrudServiceTest {
         }
         return dummyList;
     }
+
     private List<RecipeEntity> createDummyListWithUniqueNames( int numberOfRecipes, UserEntity dummyAuthor ) {
         List<RecipeEntity> dummyList = new ArrayList<>();
         for ( int i = 1; i <= numberOfRecipes; i++ ) {

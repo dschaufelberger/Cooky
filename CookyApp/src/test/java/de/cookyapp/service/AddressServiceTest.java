@@ -1,11 +1,12 @@
 package de.cookyapp.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import de.cookyapp.persistence.entities.AddressEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Address;
+import de.cookyapp.service.exceptions.InvalidUserID;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.mocks.AddressRepositoryMock;
 import de.cookyapp.service.mocks.AuthenticationMock;
 import de.cookyapp.service.mocks.UserRepositoryMock;
@@ -21,114 +22,332 @@ import org.junit.rules.ExpectedException;
  * Created by Mario on 03.05.2016.
  */
 public class AddressServiceTest {
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
-    private AddressRepositoryMock repositoryMock;
-    private IAddressService service;
+    private AddressRepositoryMock addressRepositoryMock;
     private UserRepositoryMock userRepositoryMock;
     private AuthenticationMock authentication;
-    private UserEntity userDummy;
-    private Address newAddress;
-
+    private IAddressService service;
 
     @Before
     public void setUp() throws Exception {
-        repositoryMock = new AddressRepositoryMock();
+        addressRepositoryMock = new AddressRepositoryMock();
         userRepositoryMock = new UserRepositoryMock();
-        //Authentication
         authentication = new AuthenticationMock( "CookyTester" );
-        this.service = new AddressService( repositoryMock, userRepositoryMock, authentication );
-
-        //initialize User
-        userDummy = new UserEntity();
-        userDummy.setUsername( "CookyTester" );
-        userDummy.setId( 1 );
-
-        //save user
-        this.userRepositoryMock.save( userDummy );
-
-        //initialize Address
-        newAddress = new Address();
-        newAddress.setStreet( "Teststrasse" );
-        newAddress.setPostcode( "7777" );
-        newAddress.setHouseNumber( "9" );
-        newAddress.setCity( "Testdorf" );
+        this.service = new AddressService( addressRepositoryMock, userRepositoryMock, authentication );
     }
 
     @Test
-    public void testCreateAddressForUser() throws Exception {
+    public void createAddressForExisistingUser() throws Exception {
+        //arrange
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 5 );
+        dummy.setUsername( "CookyTester" );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
+        Address address = new Address();
+        address.setCity( "Karlsruhe" );
+        address.setPostcode( "12345" );
+        address.setHouseNumber( "42" );
+        address.setStreet( "Erzbergerstraße" );
+
         //act
-        this.service.createAddressForUser( userDummy.getId(), newAddress );
+        this.service.createAddressForUser( dummy.getId(), address );
+
         //assert
-        Assert.assertEquals( 1, this.repositoryMock.getEntities().size() );
+        Integer id;
+        Assert.assertEquals( 1, this.addressRepositoryMock.getEntities().size() );
+        Assert.assertNotEquals( 0, (id = this.addressRepositoryMock.getEntities().get( 0 ).getId()) != null ? id.intValue() : 0 );
     }
 
     @Test
-    public void testRemoveAddressFromUser() throws Exception {
-        AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setCity( newAddress.getCity() );
-        addressEntity.setHouseNumber( newAddress.getHouseNumber() );
-        addressEntity.setPostcode( newAddress.getPostcode() );
-        addressEntity.setStreet( newAddress.getStreet() );
-        addressEntity.setId( 1 );
-        //set up list with address entities
-        List<AddressEntity> entityList = new ArrayList<>();
-        entityList.add( addressEntity );
-        this.repositoryMock.setEntities( entityList );
+    public void createAddressForNonexistantUser() throws Exception {
+        thrown.expect( InvalidUserID.class );
+
+        //arrange
+        Address address = new Address();
+        address.setCity( "Karlsruhe" );
+        address.setPostcode( "12345" );
+        address.setHouseNumber( "42" );
+        address.setStreet( "Erzbergerstraße" );
 
         //act
-        this.service.removeAddressFromUser( userDummy.getId(), 1 );
+        this.service.createAddressForUser( 404, address );
+
         //assert
-        Assert.assertEquals( 0, this.repositoryMock.getEntities().size() );
     }
 
     @Test
-    public void updateAddress() throws Exception {
-        AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setCity( newAddress.getCity() );
-        addressEntity.setHouseNumber( newAddress.getHouseNumber() );
-        addressEntity.setPostcode( newAddress.getPostcode() );
-        addressEntity.setStreet( newAddress.getStreet() );
-        addressEntity.setId( 1 );
-        //set up list wth address entities
-        List<AddressEntity> entityList = new ArrayList<>();
-        entityList.add( addressEntity );
-        this.repositoryMock.setEntities( entityList );
-        //set Id for Address DTO
-        newAddress.setId( 1 );
-        //Update fields
-        newAddress.setCity( "Testcity" );
+    public void removeAddressFromUser() throws Exception {
+        //arrange
+        AddressEntity address = new AddressEntity();
+        address.setId( 42 );
+        address.setCity( "Karlsruhe" );
+        address.setPostcode( "12345" );
+        address.setHouseNumber( "1" );
+        address.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( address );
+        this.addressRepositoryMock.setEntities( addresses );
 
-        userDummy.setAddress( addressEntity );
-        this.userRepositoryMock.save( userDummy );
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "CookyTester" );
+        dummy.setAddress( address );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
         //act
-        this.service.updateAddress( newAddress );
+        this.service.removeAddressFromUser( dummy.getId(), address.getId() );
 
-        Assert.assertEquals( "Testcity", this.repositoryMock.getEntities().get( 0 ).getCity() );
+        //assert
+        Assert.assertEquals( 0, this.addressRepositoryMock.getEntities().size() );
+        Assert.assertNull( this.userRepositoryMock.getUsers().getFirst().getAddress() );
     }
 
     @Test
-    public void getAddressForUser() throws Exception {
+    public void updateExistingAddressForAuthorizedUser() throws Exception {
+        //arrange
         AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setCity( newAddress.getCity() );
-        addressEntity.setHouseNumber( newAddress.getHouseNumber() );
-        addressEntity.setPostcode( newAddress.getPostcode() );
-        addressEntity.setStreet( newAddress.getStreet() );
-        addressEntity.setId( 1 );
-        //set up list wth address entities
-        List<AddressEntity> entityList = new ArrayList<>();
-        entityList.add( addressEntity );
-        this.repositoryMock.setEntities( entityList );
-        //set Id for Address DTO
-        newAddress.setId( 1 );
-        // set up user
-        userDummy.setAddress( addressEntity );
-        this.userRepositoryMock.save( userDummy );
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
 
-        Address address = this.service.getAddressForUser( userDummy.getId() );
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "CookyTester" );
+        dummy.setAddress( addressEntity );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
 
-        Assert.assertEquals( newAddress.getId(), address.getId() );
+        //act
+        Address address = new Address( addressEntity );
+        address.setStreet( "Other street" );
+        address.setCity( "Other city" );
+        address.setHouseNumber( "42" );
+        address.setPostcode( "54321" );
+        this.service.updateAddress( address );
+
+        //assert
+        AddressEntity assertionAddress = this.addressRepositoryMock.getEntities().get( 0 );
+        Assert.assertNotNull( assertionAddress );
+        Assert.assertEquals( "Other street", assertionAddress.getStreet() );
+        Assert.assertEquals( "Other city", assertionAddress.getCity() );
+        Assert.assertEquals( "42", assertionAddress.getHouseNumber() );
+        Assert.assertEquals( "54321", assertionAddress.getPostcode() );
+    }
+
+    @Test
+    public void updateNonExistantAddress() throws Exception {
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "CookyTester" );
+        dummy.setAddress( addressEntity );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
+        //act
+        Address address = new Address( addressEntity );
+        address.setId( 0 );
+        address.setStreet( "Other street" );
+        address.setCity( "Other city" );
+        address.setHouseNumber( "42" );
+        address.setPostcode( "54321" );
+        this.service.updateAddress( address );
+
+        //assert
+        AddressEntity assertionAddress = this.addressRepositoryMock.getEntities().get( 0 );
+        Assert.assertNotNull( assertionAddress );
+        Assert.assertEquals( "Erzbergerstraße", assertionAddress.getStreet() );
+        Assert.assertEquals( "Karlsruhe", assertionAddress.getCity() );
+        Assert.assertEquals( "1", assertionAddress.getHouseNumber() );
+        Assert.assertEquals( "12345", assertionAddress.getPostcode() );
+    }
+
+    @Test
+    public void updateExistingAddressForUnauthorizedUser() throws Exception {
+        thrown.expect( UserNotAuthorized.class );
+
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "NotCookyTester" );
+        dummy.setAddress( addressEntity );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
+        //act
+        Address address = new Address( addressEntity );
+        address.setStreet( "Other street" );
+        address.setCity( "Other city" );
+        address.setHouseNumber( "42" );
+        address.setPostcode( "54321" );
+        this.service.updateAddress( address );
+
+        //assert
+    }
+
+    @Test
+    public void getAddressForExistingAndAuthorizedUser() throws Exception {
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "CookyTester" );
+        dummy.setAddress( addressEntity );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
+        //act
+        Address address = this.service.getAddressForUser( dummy.getId() );
+
+        Assert.assertNotNull( address );
+        Assert.assertEquals( "Erzbergerstraße", address.getStreet() );
+        Assert.assertEquals( "Karlsruhe", address.getCity() );
+        Assert.assertEquals( "1", address.getHouseNumber() );
+        Assert.assertEquals( "12345", address.getPostcode() );
+    }
+
+    @Test
+    public void getAddressForExistingButUnauthorizedUser() throws Exception {
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "NotCookyTester" );
+        dummy.setAddress( addressEntity );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
+        //act
+        Address address = this.service.getAddressForUser( dummy.getId() );
+
+        //assert
+        Assert.assertNull( address );
+    }
+
+    @Test
+    public void getAddressForNonexistingUser() throws Exception {
+        thrown.expect( InvalidUserID.class );
+
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        UserEntity dummy = new UserEntity();
+        dummy.setId( 2 );
+        dummy.setUsername( "NotCookyTester" );
+        dummy.setAddress( addressEntity );
+        LinkedList<UserEntity> users = new LinkedList<>();
+        users.add( dummy );
+        this.userRepositoryMock.setUsers( users );
+
+        //act
+        Address address = this.service.getAddressForUser( 42 );
+
+        //assert
+    }
+
+    @Test
+    public void getExistingAddress() throws Exception {
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        //act
+        Address address = this.service.getAddress( 42 );
+
+        //assert
+        Assert.assertNotNull( address );
+        Assert.assertEquals( "Erzbergerstraße", address.getStreet() );
+        Assert.assertEquals( "Karlsruhe", address.getCity() );
+        Assert.assertEquals( "1", address.getHouseNumber() );
+        Assert.assertEquals( "12345", address.getPostcode() );
+    }
+
+    @Test
+    public void getNonexistantAddress() throws Exception {
+        //arrange
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId( 42 );
+        addressEntity.setCity( "Karlsruhe" );
+        addressEntity.setPostcode( "12345" );
+        addressEntity.setHouseNumber( "1" );
+        addressEntity.setStreet( "Erzbergerstraße" );
+        LinkedList<AddressEntity> addresses = new LinkedList<>();
+        addresses.add( addressEntity );
+        this.addressRepositoryMock.setEntities( addresses );
+
+        //act
+        Address address = this.service.getAddress( 1 );
+
+        //assert
+        Assert.assertNull( address );
     }
 }
