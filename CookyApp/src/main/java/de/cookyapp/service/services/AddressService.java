@@ -32,16 +32,21 @@ public class AddressService implements IAddressService {
 
     @Override
     public void createAddressForUser( int userID, Address address ) {
-        AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setCity( address.getCity() );
-        addressEntity.setStreet( address.getStreet() );
-        addressEntity.setPostcode( address.getPostcode() );
-        addressEntity.setHouseNumber( address.getHouseNumber() );
-        addressEntity = this.addressCrudRepository.save( addressEntity );
-
         UserEntity userEntity = this.userCrudRepository.findOne( userID );
-        userEntity.setAddress( addressEntity );
-        this.userCrudRepository.save( userEntity );
+
+        if ( userEntity != null ) {
+            AddressEntity addressEntity = new AddressEntity();
+            addressEntity.setCity( address.getCity() );
+            addressEntity.setStreet( address.getStreet() );
+            addressEntity.setPostcode( address.getPostcode() );
+            addressEntity.setHouseNumber( address.getHouseNumber() );
+            addressEntity = this.addressCrudRepository.save( addressEntity );
+
+            userEntity.setAddress( addressEntity );
+            this.userCrudRepository.save( userEntity );
+        } else {
+            throw new InvalidUserID( userID );
+        }
     }
 
     @Override
@@ -62,9 +67,9 @@ public class AddressService implements IAddressService {
             UserEntity userEntity = this.userCrudRepository.findByUsername( this.authentication.getAuthentication().getName() );
 
             if ( userEntity != null ) {
-                boolean isAuthenticated = addressEntity.equals( userEntity.getAddress() );
+                boolean isAuthorized = addressEntity.equals( userEntity.getAddress() );
 
-                if ( isAuthenticated ) {
+                if ( isAuthorized ) {
                     if ( addressEntity != null ) {
                         addressEntity.setStreet( address.getStreet() );
                         addressEntity.setPostcode( address.getPostcode() );
@@ -81,14 +86,9 @@ public class AddressService implements IAddressService {
 
     @Override
     public Address getAddress( int addressID ) {
-        UserEntity userEntity = this.userCrudRepository.findByUsername( this.authentication.getAuthentication().getName() );
         AddressEntity addressEntity = this.addressCrudRepository.findOne( addressID );
 
-        if ( userEntity.getAddress().equals( addressEntity ) ) {
-            Address address = this.getAddressIfExistant( addressEntity );
-            return address;
-        }
-        return null;
+        return getAddressIfExistant( addressEntity );
     }
 
     @Override
@@ -96,9 +96,9 @@ public class AddressService implements IAddressService {
         UserEntity userEntity = this.userCrudRepository.findOne( userID );
 
         if ( userEntity != null ) {
-            boolean isAuthenticated = userEntity.getUsername().equals( this.authentication.getAuthentication().getName() );
+            boolean isAuthorized = userEntity.getUsername().equals( this.authentication.getAuthentication().getName() );
 
-            if ( isAuthenticated ) {
+            if ( isAuthorized ) {
                 AddressEntity addressEntity = userEntity.getAddress();
                 Address address = this.getAddressIfExistant( addressEntity );
                 return address;
@@ -106,6 +106,7 @@ public class AddressService implements IAddressService {
         } else {
             throw new InvalidUserID( userID );
         }
+
         return null;
     }
 

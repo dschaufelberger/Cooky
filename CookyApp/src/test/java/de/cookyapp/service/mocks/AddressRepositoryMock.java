@@ -59,27 +59,14 @@ public class AddressRepositoryMock implements IAddressCrudRepository {
 
     @Override
     public AddressEntity save( AddressEntity persisted ) {
-        AddressEntity addressEntity = null;
+        AddressEntity address = createCopy( persisted );
 
-        if ( persisted.getId() == 0 ) {
-            persisted.setId( this.idCounter++ );
-            this.entities.add( persisted );
-            addressEntity = persisted;
-        } else {
-            for ( AddressEntity entity : entities ) {
-                if ( entity.getId().equals( entity.getId() ) ) {
-                    entity.setStreet( persisted.getStreet() );
-                    entity.setPostcode( persisted.getPostcode() );
-                    entity.setId( persisted.getId() );
-                    entity.setHouseNumber( persisted.getHouseNumber() );
-                    entity.setCity( persisted.getCity() );
-
-                    addressEntity = entity;
-                }
-            }
+        if ( !this.entities.remove( address ) ) {
+            address.setId( idCounter++ );
         }
+        this.entities.add( address );
 
-        return addressEntity;
+        return address;
     }
 
     @Override

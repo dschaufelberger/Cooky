@@ -47,9 +47,9 @@ public class RecipeCrudService implements IRecipeCrudService {
 
     @Override
     public Recipe createRecipe( Recipe recipe ) {
-        UserEntity user = this.userCrudRepository.findOne( recipe.getId() );
+        UserEntity user = this.userCrudRepository.findByUsername( this.authentication.getAuthentication().getName() );
 
-        if ( user != null && this.authentication.getAuthentication().getName().equals( user.getUsername() ) ) {
+        if ( user != null ) {
             RecipeEntity recipeEntity = new RecipeEntity();
             recipeEntity.setName( recipe.getName() );
             recipeEntity.setRating( recipe.getRating() );
@@ -65,6 +65,7 @@ public class RecipeCrudService implements IRecipeCrudService {
             recipeEntity.setRestTime( recipe.getRestTime() );
             recipeEntity.setRating( (byte) 0 );
             recipeEntity.setVoteCount( 0 );
+            recipeEntity.setAuthor( user );
 
             recipeEntity = recipeCrudRepository.save( recipeEntity );
 

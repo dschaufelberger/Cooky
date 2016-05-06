@@ -70,7 +70,7 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
     public RecipeEntity findOne( Integer integer ) {
         Optional<RecipeEntity> recipeEntity = this.entities
                 .stream()
-                .filter( entity -> entity.getId() == integer )
+                .filter( entity -> entity.getId().equals( integer ) )
                 .findFirst();
 
         return recipeEntity.isPresent() ? recipeEntity.get() : null;
@@ -78,33 +78,14 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
 
     @Override
     public RecipeEntity save( RecipeEntity persisted ) {
-        RecipeEntity recipeEntity = null;
+        RecipeEntity toAdd = createCopy( persisted );
 
-        if ( persisted.getId() == 0 ) {
-            persisted.setId( this.idCounter++ );
-            this.entities.add( persisted );
-            recipeEntity = persisted;
-        } else {
-            for ( RecipeEntity entity : entities ) {
-                if ( entity.getId() == persisted.getId() ) {
-                    entity.setName( persisted.getName() );
-                    entity.setCalories( persisted.getCalories() );
-                    entity.setCookingTime( persisted.getCookingTime() );
-                    entity.setDifficulty( persisted.getDifficulty() );
-                    entity.setImageFileName( persisted.getImageFileName() );
-                    entity.setPreparation( persisted.getPreparation() );
-                    entity.setRating( persisted.getRating() );
-                    entity.setRestTime( persisted.getRestTime() );
-                    entity.setServing( persisted.getServing() );
-                    entity.setWorkingTime( persisted.getWorkingTime() );
-                    entity.setShortDescription( persisted.getShortDescription() );
-
-                    recipeEntity = entity;
-                }
-            }
+        if ( !this.entities.remove( toAdd ) ) {
+            toAdd.setId( idCounter++ );
         }
+        this.entities.add( toAdd );
 
-        return recipeEntity;
+        return toAdd;
     }
 
     @Override
@@ -112,10 +93,7 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
         List<S> entities = new ArrayList<>();
 
         for ( S persistedEntity : persistedEntities ) {
-            RecipeEntity entity = save( persistedEntity );
-            if ( entity != null ) {
-                entities.add( (S) entity );
-            }
+            entities.add( (S) save( persistedEntity ) );
         }
 
         return entities;

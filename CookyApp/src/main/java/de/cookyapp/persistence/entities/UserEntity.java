@@ -3,7 +3,19 @@ package de.cookyapp.persistence.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.enums.Gender;
@@ -14,7 +26,7 @@ import de.cookyapp.enums.Gender;
 @Entity
 @Table( name = "User", schema = "Cooky_Dev" )
 public class UserEntity {
-    private int id;
+    private Integer id;
     private String username;
     private String password;
     private String forename;
@@ -40,11 +52,11 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "ID", nullable = false )
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId( int id ) {
+    public void setId( Integer id ) {
         this.id = id;
     }
 
@@ -245,43 +257,12 @@ public class UserEntity {
 
         if ( id != that.id )
             return false;
-        if ( username != null ? !username.equals( that.username ) : that.username != null )
-            return false;
-        if ( password != null ? !password.equals( that.password ) : that.password != null )
-            return false;
-        if ( forename != null ? !forename.equals( that.forename ) : that.forename != null )
-            return false;
-        if ( surname != null ? !surname.equals( that.surname ) : that.surname != null )
-            return false;
-        if ( email != null ? !email.equals( that.email ) : that.email != null )
-            return false;
-        if ( gender != null ? !gender.equals( that.gender ) : that.gender != null )
-            return false;
-        if ( birthdate != null ? !birthdate.equals( that.birthdate ) : that.birthdate != null )
-            return false;
-        if ( registrationDate != null ? !registrationDate.equals( that.registrationDate ) : that.registrationDate != null )
-            return false;
-        if ( lastLoginDate != null ? !lastLoginDate.equals( that.lastLoginDate ) : that.lastLoginDate != null )
-            return false;
-        if ( accountState != null ? !accountState.equals( that.accountState ) : that.accountState != null )
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (forename != null ? forename.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
-        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
-        result = 31 * result + (lastLoginDate != null ? lastLoginDate.hashCode() : 0);
-        result = 31 * result + (accountState != null ? accountState.hashCode() : 0);
-        return result;
+        return 31 * id;
     }
 }
