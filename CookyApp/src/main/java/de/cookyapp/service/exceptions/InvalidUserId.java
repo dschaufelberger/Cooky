@@ -5,26 +5,26 @@ import java.security.PrivilegedActionException;
 /**
  * Created by Dominik Schaufelberger on 20.04.2016.
  */
-public class InvalidId2 extends IllegalArgumentException {
-    private int id;
-
+public class InvalidUserId extends InvalidId {
     /**
      * Constructs an <code>IllegalArgumentException</code> with no
      * detail message.
+     *
+     * @param id
      */
-    public InvalidId2( int id ) {
-        this.id = id;
+    public InvalidUserId( int id ) {
+        super( id );
     }
 
     /**
      * Constructs an <code>IllegalArgumentException</code> with the
      * specified detail message.
      *
-     * @param s the detail message.
+     * @param s  the detail message.
+     * @param id
      */
-    public InvalidId2( String s, int id ) {
-        super( s );
-        this.id = id;
+    public InvalidUserId( String s, int id ) {
+        super( s, id );
     }
 
     /**
@@ -41,11 +41,11 @@ public class InvalidId2 extends IllegalArgumentException {
      *                {@link Throwable#getCause()} method).  (A <tt>null</tt> value
      *                is permitted, and indicates that the cause is nonexistent or
      *                unknown.)
+     * @param id
      * @since 1.5
      */
-    public InvalidId2( String message, Throwable cause, int id ) {
-        super( message, cause );
-        this.id = id;
+    public InvalidUserId( String message, Throwable cause, int id ) {
+        super( message, cause, id );
     }
 
     /**
@@ -60,14 +60,10 @@ public class InvalidId2 extends IllegalArgumentException {
      *              {@link Throwable#getCause()} method).  (A <tt>null</tt> value is
      *              permitted, and indicates that the cause is nonexistent or
      *              unknown.)
+     * @param id
      * @since 1.5
      */
-    public InvalidId2( Throwable cause, int id ) {
-        super( cause );
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
+    public InvalidUserId( Throwable cause, int id ) {
+        super( cause, id );
     }
 }

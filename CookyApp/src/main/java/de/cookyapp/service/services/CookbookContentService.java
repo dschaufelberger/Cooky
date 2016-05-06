@@ -8,8 +8,8 @@ import de.cookyapp.persistence.entities.CookbookEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.ICookbookRepository;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
-import de.cookyapp.service.exceptions.InvalidCookbookId2;
-import de.cookyapp.service.exceptions.InvalidRecipeId2;
+import de.cookyapp.service.exceptions.InvalidCookbookId;
+import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class CookbookContentService implements ICookbookContentService {
         CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
         if ( cookbook == null ) {
-            throw new InvalidCookbookId2( "Cookbook with given id does not exist.", cookbookId );
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
@@ -50,7 +50,7 @@ public class CookbookContentService implements ICookbookContentService {
 
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
         if ( recipe == null ) {
-            throw new InvalidRecipeId2( "Recipe with the given id does not exist.", recipeId );
+            throw new InvalidRecipeId( "Recipe with the given id does not exist.", recipeId );
         }
         if ( !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
@@ -66,7 +66,7 @@ public class CookbookContentService implements ICookbookContentService {
         CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
         if ( cookbook == null ) {
-            throw new InvalidCookbookId2( "Cookbook with given id does not exist.", cookbookId );
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
@@ -76,7 +76,7 @@ public class CookbookContentService implements ICookbookContentService {
         for ( Integer id : recipesIds ) {
             RecipeEntity recipe = this.recipeRepository.findOne( id );
             if ( recipe == null ) {
-                throw new InvalidRecipeId2( "Recipe with the given id does not exist.", id );
+                throw new InvalidRecipeId( "Recipe with the given id does not exist.", id );
             }
             if ( !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
                 throw new UserNotAuthorized();
@@ -95,7 +95,7 @@ public class CookbookContentService implements ICookbookContentService {
         CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
         if ( cookbook == null ) {
-            throw new InvalidCookbookId2( "Cookbook with given id does not exist.", cookbookId );
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
@@ -115,7 +115,7 @@ public class CookbookContentService implements ICookbookContentService {
         CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
         if ( cookbook == null ) {
-            throw new InvalidCookbookId2( "Cookbook with given id does not exist.", cookbookId );
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
