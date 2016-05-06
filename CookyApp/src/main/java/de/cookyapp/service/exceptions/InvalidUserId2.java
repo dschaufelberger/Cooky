@@ -5,14 +5,14 @@ import java.security.PrivilegedActionException;
 /**
  * Created by Dominik Schaufelberger on 20.04.2016.
  */
-public class InvalidRecipeId extends InvalidId {
+public class InvalidUserId2 extends InvalidId2 {
     /**
      * Constructs an <code>IllegalArgumentException</code> with no
      * detail message.
      *
      * @param id
      */
-    public InvalidRecipeId( int id ) {
+    public InvalidUserId2( int id ) {
         super( id );
     }
 
@@ -23,7 +23,7 @@ public class InvalidRecipeId extends InvalidId {
      * @param s  the detail message.
      * @param id
      */
-    public InvalidRecipeId( String s, int id ) {
+    public InvalidUserId2( String s, int id ) {
         super( s, id );
     }
 
@@ -44,7 +44,7 @@ public class InvalidRecipeId extends InvalidId {
      * @param id
      * @since 1.5
      */
-    public InvalidRecipeId( String message, Throwable cause, int id ) {
+    public InvalidUserId2( String message, Throwable cause, int id ) {
         super( message, cause, id );
     }
 
@@ -63,7 +63,7 @@ public class InvalidRecipeId extends InvalidId {
      * @param id
      * @since 1.5
      */
-    public InvalidRecipeId( Throwable cause, int id ) {
+    public InvalidUserId2( Throwable cause, int id ) {
         super( cause, id );
     }
 }

@@ -8,7 +8,7 @@ import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.service.dto.Recipe;
-import de.cookyapp.service.exceptions.InvalidRecipeId;
+import de.cookyapp.service.exceptions.InvalidRecipeId2;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,7 +94,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( recipeEntity != null ) {
             recipe = new Recipe( recipeEntity );
         } else {
-            throw new InvalidRecipeId( recipeID );
+            throw new InvalidRecipeId2( recipeID );
         }
         return recipe;
     }

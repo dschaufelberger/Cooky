@@ -10,7 +10,7 @@ import de.cookyapp.persistence.repositories.IIngredientCrudRepository;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
 import de.cookyapp.persistence.repositories.IRecipeIngredientCrudRepository;
 import de.cookyapp.service.dto.Ingredient;
-import de.cookyapp.service.exceptions.InvalidId;
+import de.cookyapp.service.exceptions.InvalidId2;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class IngredientCrudService implements IIngredientCrudService {
         RecipeEntity recipe = this.recipeCrudRepository.findOne( recipeId );
 
         if ( recipe == null ) {
-            throw new InvalidId( recipeId );
+            throw new InvalidId2( recipeId );
         } else {
             for ( Ingredient ingredient : ingredients ) {
                 RecipeIngredientEntity entity = this.recipeIngredientCrudRepository.findByRecipeIdAndIngredientId( recipeId, ingredient.getId() );
