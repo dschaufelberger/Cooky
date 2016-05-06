@@ -47,6 +47,7 @@ public class IRecipeCrudServiceTest {
 
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
         entityUnderTest.setAuthor( userDummy );
 
@@ -71,6 +72,7 @@ public class IRecipeCrudServiceTest {
 
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "NotCookyTester" );
         entityUnderTest.setAuthor( userDummy );
 
@@ -90,6 +92,7 @@ public class IRecipeCrudServiceTest {
     public void testDeleteNonexistingRecipe() throws Exception {
         //arrange
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
 
         // create a dummy user since the service tests the authorization of the user against the authors username
@@ -112,6 +115,7 @@ public class IRecipeCrudServiceTest {
     public void testCreateRecipe() throws Exception {
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
         LinkedList<UserEntity> userDummyList = new LinkedList<>();
         userDummyList.add( userDummy );
@@ -142,6 +146,7 @@ public class IRecipeCrudServiceTest {
 
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
         newRecipeEntity.setAuthor( userDummy );
 
@@ -163,6 +168,7 @@ public class IRecipeCrudServiceTest {
     public void testGetRecipe() throws Exception {
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
 
         //create Dummy Recipe List
@@ -177,6 +183,7 @@ public class IRecipeCrudServiceTest {
     public void testGetAllRecipes() throws Exception {
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
 
         //create Dummy Recipe List
@@ -189,6 +196,7 @@ public class IRecipeCrudServiceTest {
     public void testGetAllRecipesByName() throws Exception {
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
 
         //create Dummy Recipe List
@@ -201,6 +209,7 @@ public class IRecipeCrudServiceTest {
     public void testSearchRecipesContaining() throws Exception {
         // create a dummy user since the service tests the authorization of the user against the authors username
         UserEntity userDummy = new UserEntity();
+        userDummy.setId( 1 );
         userDummy.setUsername( "CookyTester" );
 
         //create Dummy Recipe List
