@@ -13,4 +13,6 @@ public interface ICookbookContentService {
     void removeRecipeFromCookbook( int cookbookID, int recipeID );
 
     void removeAllRecipesFromCookbook( int cookbookID );
+
+    void moveRecipeBetweenCookbooks( int recipeId, int currentCookbookId, int newCookbookId );
 }

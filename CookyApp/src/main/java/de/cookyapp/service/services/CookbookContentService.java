@@ -124,4 +124,10 @@ public class CookbookContentService implements ICookbookContentService {
         cookbook.setRecipes( new LinkedList<>() );
         this.cookbookRepository.save( cookbook );
     }
+
+    @Override
+    public void moveRecipeBetweenCookbooks( int recipeId, int currentCookbookId, int newCookbookId ) {
+        removeRecipeFromCookbook( currentCookbookId, recipeId );
+        addRecipeToCookbook( newCookbookId, recipeId );
+    }
 }
