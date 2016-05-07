@@ -44,15 +44,13 @@ public class CookbookContentService implements ICookbookContentService {
         if ( cookbook == null ) {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
-        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
-            throw new UserNotAuthorized();
-        }
 
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
         if ( recipe == null ) {
             throw new InvalidRecipeId( "Recipe with the given id does not exist.", recipeId );
         }
-        if ( !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
+        if ( !cookbook.getOwner().getUsername().equals( currentUsername )
+                || !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
         }
 
@@ -97,15 +95,19 @@ public class CookbookContentService implements ICookbookContentService {
         if ( cookbook == null ) {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
-        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
-            throw new UserNotAuthorized();
-        }
 
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
         if ( recipe != null ) {
+            if ( !cookbook.getOwner().getUsername().equals( currentUsername )
+                    || !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
+                throw new UserNotAuthorized();
+            }
+
             if ( cookbook.getRecipes().remove( recipe ) ) {
                 this.cookbookRepository.save( cookbook );
             }
+        } else {
+            throw new InvalidRecipeId( recipeId );
         }
     }
 
@@ -127,7 +129,9 @@ public class CookbookContentService implements ICookbookContentService {
 
     @Override
     public void moveRecipeBetweenCookbooks( int recipeId, int currentCookbookId, int newCookbookId ) {
-        removeRecipeFromCookbook( currentCookbookId, recipeId );
-        addRecipeToCookbook( newCookbookId, recipeId );
+        if ( currentCookbookId != newCookbookId ) {
+            removeRecipeFromCookbook( currentCookbookId, recipeId );
+            addRecipeToCookbook( newCookbookId, recipeId );
+        }
     }
 }
