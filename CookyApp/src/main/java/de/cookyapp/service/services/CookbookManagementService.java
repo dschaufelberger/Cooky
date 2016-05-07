@@ -55,7 +55,7 @@ public class CookbookManagementService implements ICookbookManagementService {
     }
 
     @Override
-    public List<Cookbook> getPublicCookbooksFromUser( int userId ) {
+    public List<Cookbook> getPublicCookbooksForUser( int userId ) {
         return this.cookbookRepository.findByOwnerIdAndVisibility( userId, CookbookVisibility.PUBLIC )
                 .stream()
                 .map( cookbookEntity -> new Cookbook( cookbookEntity ) )
@@ -98,13 +98,28 @@ public class CookbookManagementService implements ICookbookManagementService {
                     && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
                 throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
             } else if ( !entitiy.isDefault() ) {
-                cookbook = new Cookbook( entitiy );
+                cookbook = getCookbookIfExistant( entitiy );
             }
         } else {
             throw new InvalidCookbookId( cookbookId );
         }
 
         return cookbook;
+    }
+
+    @Override
+    public Cookbook getDefaultCookbookForUser( int userId ) {
+        UserEntity user = this.userCrudRepository.findOne( userId );
+
+        if ( user == null ) {
+            throw new InvalidUserId( userId );
+        } else if ( !this.authentication.getAuthentication().getName().equals( user.getUsername() )
+                && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
+            throw new UserNotAuthorized();
+        } else {
+            CookbookEntity defaultCookbook = this.cookbookRepository.findByOwnerIdAndIsDefaultTrue( userId );
+            return getCookbookIfExistant( defaultCookbook );
+        }
     }
 
     @Override
@@ -172,6 +187,14 @@ public class CookbookManagementService implements ICookbookManagementService {
                 }
             }
         }
+    }
+
+    private Cookbook getCookbookIfExistant( CookbookEntity cookbookEntity ) {
+        if ( cookbookEntity == null ) {
+            return null;
+        }
+
+        return new Cookbook( cookbookEntity );
     }
 
     private Cookbook createCookbook( UserEntity user, Cookbook cookbook, boolean isDefault ) {
