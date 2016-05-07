@@ -9,11 +9,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
+
 <div class="container">
+    <form:form action="/recipes/search" method="post" commandName="search">
+        <cooky:search />
+    </form:form>
     <div class="col-md-12">
         <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
             <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
-            <sec:csrfInput/>
+            <sec:csrfInput />
         </form>
     </div>
     <div class="row">
@@ -31,14 +36,14 @@
                                     <button type="submit" class="btn btn-primary btn-block">Open</button>
                                 </p>
                                 <input type="hidden" name="id" value="${recipes.id}">
-                                <sec:csrfInput/>
+                                <sec:csrfInput />
                             </form>
                             <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
                                 <p align="center">
                                     <button type="submit" class="btn btn-primary btn-block">Remove</button>
                                 </p>
                                 <input type="hidden" name="id" value="${recipes.id}">
-                                <sec:csrfInput/>
+                                <sec:csrfInput />
                             </form>
                         </div>
                     </div>

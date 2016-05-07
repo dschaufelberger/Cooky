@@ -16,6 +16,7 @@ import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
+import de.cookyapp.web.viewmodel.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -51,6 +52,7 @@ public class RecipeController {
     public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
         model.addObject( "recipesList", this.recipeCrudService.getAllRecipes() );
+        model.addObject( "search", new Search() );
         return model;
     }
 
@@ -58,6 +60,13 @@ public class RecipeController {
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
+    }
+
+    @RequestMapping ( "/search" )
+    public ModelAndView search ( @ModelAttribute ("search") @Valid Search search) {
+        ModelAndView modelAndView = new ModelAndView( "RecipeOverviewTile" );
+        modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ));
+        return modelAndView;
     }
 
     @RequestMapping( "/editRecipe" )
