@@ -27,12 +27,13 @@ import javax.servlet.ServletContext;
 public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
-    private String realPath;
+    private ServletContext servletContext;
 
     @Autowired
-    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication ) {
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, ServletContext servletContext ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
+        this.servletContext = servletContext;
     }
 
     @Override
@@ -121,11 +122,6 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    @Override
-    public void realPath (String realPath) {
-        this.realPath = realPath;
-    }
-
     private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
         if ( entities != null ) {
@@ -161,7 +157,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     private String generatePath() {
         String path;
         String imagePath = "resources/images/recipes/";
-        path = this.realPath + imagePath;
+        path = this.servletContext.getRealPath( "/" ) + imagePath;
         if ( !new File( path ).exists() ) {
             File file = new File( path );
             file.mkdirs();

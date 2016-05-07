@@ -53,20 +53,18 @@ public class RecipeController {
     ServletContext servletContext;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService, ServletContext servletContext ) {
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
         this.userAuthorization = userAuthorization;
-        this.servletContext = servletContext;
     }
 
     @RequestMapping( method = RequestMethod.GET )
-    public ModelAndView handleRecipes() throws IOException {
+    public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        this.recipeCrudService.realPath( servletContext.getRealPath( "/" ) );
         model.addObject( "recipesList", this.recipeCrudService.getAllRecipes( ) );
         return model;
     }
@@ -201,7 +199,7 @@ public class RecipeController {
         userEntity.setRegistrationDate( user.getRegistrationDate() );
         userEntity.setLastLoginDate( user.getLastLoginDate() );
         userEntity.setAccountState( user.getAccountState() );
-        userEntity.setAccountState( AccountState.REGISTERED );
+        userEntity.setAccountState( user.getAccountState() );
         userEntity.setRegistrationDate( LocalDateTime.now() );
 
         return userEntity;

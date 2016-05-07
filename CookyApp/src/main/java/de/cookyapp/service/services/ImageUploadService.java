@@ -28,15 +28,17 @@ public class ImageUploadService implements IImageUploadService {
 
     @Override
     public void saveImage( int recipeId, BufferedImage image ) throws IOException {
-        RecipeEntity currentRecipe = recipeCrudRepository.findOne( recipeId );
+        if ( recipeCrudRepository.findOne( recipeId ) != null && image != null ) {
+            RecipeEntity currentRecipe = recipeCrudRepository.findOne( recipeId );
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write( image, "jpg", baos );
-        baos.flush();
-        byte[] imageInByte = baos.toByteArray();
-        currentRecipe.setImageFile( imageInByte );
-        baos.close();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write( image, "jpg", baos );
+            baos.flush();
+            byte[] imageInByte = baos.toByteArray();
+            currentRecipe.setImageFile( imageInByte );
+            baos.close();
 
-        recipeCrudRepository.save( currentRecipe );
+            recipeCrudRepository.save( currentRecipe );
+        }
     }
 }

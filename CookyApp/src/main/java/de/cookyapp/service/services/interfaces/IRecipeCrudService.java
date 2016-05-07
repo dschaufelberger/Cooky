@@ -3,6 +3,8 @@ package de.cookyapp.service.services.interfaces;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import de.cookyapp.service.dto.Recipe;
 
 /**
@@ -16,8 +18,6 @@ public interface IRecipeCrudService {
     void updateRecipe( Recipe recipe );
 
     Recipe getRecipe( int recipeID );
-
-    void realPath (String realPath);
 
     List<Recipe> getAllRecipes( );
 
