@@ -8,6 +8,7 @@ import de.cookyapp.persistence.entities.CookbookEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.ICookbookRepository;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
+import de.cookyapp.service.exceptions.DefaultCookbookContenNotManagable;
 import de.cookyapp.service.exceptions.InvalidCookbookId;
 import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
@@ -45,6 +46,10 @@ public class CookbookContentService implements ICookbookContentService {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
 
+        if ( cookbook.getIsDefault() ) {
+            throw new DefaultCookbookContenNotManagable();
+        }
+
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
         if ( recipe == null ) {
             throw new InvalidRecipeId( "Recipe with the given id does not exist.", recipeId );
@@ -66,6 +71,11 @@ public class CookbookContentService implements ICookbookContentService {
         if ( cookbook == null ) {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
+
+        if ( cookbook.getIsDefault() ) {
+            throw new DefaultCookbookContenNotManagable();
+        }
+
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
         }
@@ -96,6 +106,10 @@ public class CookbookContentService implements ICookbookContentService {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
 
+        if ( cookbook.getIsDefault() ) {
+            throw new DefaultCookbookContenNotManagable();
+        }
+
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
         if ( recipe != null ) {
             if ( !cookbook.getOwner().getUsername().equals( currentUsername )
@@ -119,6 +133,11 @@ public class CookbookContentService implements ICookbookContentService {
         if ( cookbook == null ) {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
+
+        if ( cookbook.getIsDefault() ) {
+            throw new DefaultCookbookContenNotManagable();
+        }
+
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
         }
