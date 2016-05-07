@@ -14,4 +14,6 @@ public interface ICookbookRepository extends IBaseCrudRepository<CookbookEntity,
     Collection<CookbookEntity> findByVisibility( CookbookVisibility visibility );
 
     Collection<CookbookEntity> findByOwnerIdAndVisibility( int ownerId, CookbookVisibility visibility );
+
+    CookbookEntity findByOwnerIdAndIsDefaultTrue( int ownerId );
 }
