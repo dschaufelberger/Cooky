@@ -21,8 +21,8 @@
                 </div>
                 <div id="collapse${cookbook.id}" class="panel-collapse collapse">
                     <ul class="list-group">
-                        <c:forEach var="recipe" items="${cookbook.recipes}">
-                            <li class="list-group-item">${recipe.name}</li>
+                        <c:forEach var="recipeVar" items="${cookbook.recipes}">
+                            <li class="list-group-item">${recipeVar.name}</li>
                         </c:forEach>
                     </ul>
                 </div>

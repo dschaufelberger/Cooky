@@ -34,7 +34,11 @@
     <div class="row cooky-fill">
         <div class="col-md-2"></div>
         <div class="col-md-8 cooky-mainContent cooky-fill">
-            <tiles:insertAttribute name="content" />
+            <div class="row">
+                <div class="col-md-12">
+                    <tiles:insertAttribute name="content" />
+                </div>
+            </div>
         </div>
         <div class="col-md-2"></div>
     </div>
