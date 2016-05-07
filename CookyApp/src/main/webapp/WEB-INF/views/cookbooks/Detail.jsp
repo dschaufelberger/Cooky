@@ -8,45 +8,71 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <spring:eval expression="cookbook.visibility == T(de.cookyapp.enums.CookbookVisibility).PUBLIC" var="isPublic" />
 <spring:eval expression="cookbook.visibility == T(de.cookyapp.enums.CookbookVisibility).PRIVATE" var="isPrivate" />
 <spring:eval expression="cookbook.visibility == T(de.cookyapp.enums.CookbookVisibility).FRIENDS" var="isShared" />
 
-<h1>${cookbook.name}</h1>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <p>${cookbook.shortDescription}</p>
+<div id="cookbookDetail">
+    <h1>${cookbook.name}</h1>
+    <p>${cookbook.shortDescription}</p>
+
+    <c:if test="${isPublic}">
+        <span>This cookbook is visible to all Cookys.</span>
+    </c:if>
+    <c:if test="${isPrivate}">
+        <span>This cookbook is only visibile to you.</span>
+    </c:if>
+    <c:if test="${isShared}">
+        <span>This cookbook is visible to all your Cooky Friends.</span>
+    </c:if>
+
+    <div class="list-group">
+        <c:forEach var="recipeVar" items="${cookbook.recipes}">
+            <jsp:setProperty name="recipe" property="id" value="${recipeVar.id}" />
+
+            <div class="list-group-item">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <a href="/recipes/goToEditRecipe/${recipeVar.id}">
+                            <h3 class="list-group-item-heading">${recipeVar.name}</h3>
+                        </a>
+                        <span>
+                            <c:forEach begin="1" end="${recipeVar.rating}">
+                                <span class="glyphicon glyphicon-star cooky-recipeRating"></span>
+                            </c:forEach>
+                            <c:forEach begin="${recipeVar.rating + 1}" end="${recipeVar.maxRating}">
+                                <span class="glyphicon glyphicon-star-empty cooky-recipeRating"></span>
+                            </c:forEach>
+                        </span>
+                        <p>${recipeVar.description}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <form:form method="post" action="/cookbooks/removeRecipe" commandName="recipe">
+                            <form:hidden path="id" />
+                            <form:hidden path="containingCookbook.id" />
+                            <button type="submit" class="btn btn-default">Remove</button>
+                        </form:form>
+                        <form:form method="post" action="/cookbooks/moveRecipe" commandName="recipe">
+                            <form:hidden path="id" />
+                            <form:hidden path="containingCookbook.id" />
+                            <form:label path="movedToCookbook.id">Move recipe to cookbook:</form:label>
+
+                            <div class="input-group">
+                                <form:select path="movedToCookbook.id" items="${cookbookOverview.cookbooks}"
+                                             itemLabel="name" itemValue="id" cssClass="form-control">
+                                </form:select>
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default">Move</button>
+                                </span>
+                            </div>
+                        </form:form>
+                    </div>
+                </div>
+            </div>
+
+        </c:forEach>
     </div>
-</div>
-
-<c:if test="${isPublic}">
-    <span>This cookbook is visible to all Cookys.</span>
-</c:if>
-<c:if test="${isPrivate}">
-    <span>This cookbook is only visibile to you.</span>
-</c:if>
-<c:if test="${isShared}">
-    <span>This cookbook is visible to all your Cooky Friends.</span>
-</c:if>
-
-<h4>Recipes in this cookbook</h4>
-<div class="list-group">
-    <c:forEach var="recipe" items="${cookbook.recipes}">
-        <div class="list-group-item">
-            <a href="/recipes/goToEditRecipe/${recipe.id}">
-                <h4 class="list-group-item-heading">${recipe.name}</h4>
-            </a>
-            <span>
-                <c:forEach begin="1" end="${recipe.rating}">
-                    <span class="glyphicon glyphicon-star cooky-recipeRating"></span>
-                </c:forEach>
-                <c:forEach begin="${recipe.rating + 1}" end="${recipe.maxRating}">
-                    <span class="glyphicon glyphicon-star-empty"></span>
-                </c:forEach>
-            </span>
-            <p>${recipe.description}</p>
-        </div>
-
-    </c:forEach>
 </div>

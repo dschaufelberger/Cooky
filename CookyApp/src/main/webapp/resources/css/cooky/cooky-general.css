@@ -25,9 +25,10 @@ html, body {
 }
 
 .cooky-recipeRating {
-    font-size: 1.5em;
+    font-size: 1.8em;
+    color: gold;
 }
 
-.glyphicon.glyphicon-star.cooky-recipeRating {
-    color: yellow;
+#cookbookDetail .list-group {
+    margin-top: 15px;
 }
