@@ -9,6 +9,8 @@ public class Recipe {
     private String description;
     private byte rating;
     private byte maxRating;
+    private Cookbook containingCookbook;
+    private Cookbook movedToCookbook;
 
     public Recipe( de.cookyapp.service.dto.Recipe recipe) {
         this.id = recipe.getId();
@@ -17,8 +19,23 @@ public class Recipe {
         this.rating = recipe.getRating();
     }
 
-    //TEST
     public Recipe() {
+    }
+
+    public Cookbook getMovedToCookbook() {
+        return movedToCookbook;
+    }
+
+    public void setMovedToCookbook( Cookbook movedToCookbook ) {
+        this.movedToCookbook = movedToCookbook;
+    }
+
+    public Cookbook getContainingCookbook() {
+        return containingCookbook;
+    }
+
+    public void setContainingCookbook( Cookbook containingCookbook ) {
+        this.containingCookbook = containingCookbook;
     }
 
     public byte getMaxRating() {
