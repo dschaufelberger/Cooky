@@ -67,7 +67,7 @@ public class CookbookRepositoryMock implements ICookbookRepository {
     public CookbookEntity findByOwnerIdAndIsDefaultTrue( int ownerId ) {
         Optional<CookbookEntity> result = this.entities
                 .stream()
-                .filter( entity -> entity.getOwner().getId() == ownerId && entity.isDefault() )
+                .filter( entity -> entity.getOwner().getId() == ownerId && entity.getIsDefault() )
                 .findFirst();
 
         return result.isPresent() ? copyEntity( result.get() ) : null;
@@ -137,7 +137,7 @@ public class CookbookRepositoryMock implements ICookbookRepository {
         copy.setVisibility( entity.getVisibility() );
         copy.setCreationTime( entity.getCreationTime() );
         copy.setShortDescription( entity.getShortDescription() );
-        copy.setDefault( entity.isDefault() );
+        copy.setIsDefault( entity.getIsDefault() );
         copy.setOwnerId( entity.getOwnerId() );
         copy.setRecipes( entity.getRecipes() );
 

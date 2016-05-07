@@ -80,7 +80,7 @@ public class CookbookManagementService implements ICookbookManagementService {
              */
             cookbooks = this.cookbookRepository.findByOwnerId( userId )
                     .stream()
-                    .filter( cookbookEntity -> !cookbookEntity.isDefault() )
+                    .filter( cookbookEntity -> !cookbookEntity.getIsDefault() )
                     .map( cookbookEntity -> new Cookbook( cookbookEntity ) )
                     .collect( Collectors.toList() );
         }
@@ -97,7 +97,7 @@ public class CookbookManagementService implements ICookbookManagementService {
             if ( !this.authentication.getAuthentication().getName().equals( entitiy.getOwner().getUsername() )
                     && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
                 throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
-            } else if ( !entitiy.isDefault() ) {
+            } else if ( !entitiy.getIsDefault() ) {
                 cookbook = getCookbookIfExistant( entitiy );
             }
         } else {
@@ -159,7 +159,7 @@ public class CookbookManagementService implements ICookbookManagementService {
             if ( cookbookEntitiy != null ) {
                 if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
                     throw new UserNotAuthorized();
-                } else if ( !cookbookEntitiy.isDefault() ) {
+                } else if ( !cookbookEntitiy.getIsDefault() ) {
                     cookbookEntitiy.setName( cookbook.getName() );
                     cookbookEntitiy.setShortDescription( cookbook.getShortDescription() );
                     cookbookEntitiy.setVisibility( cookbook.getVisibility() );
@@ -182,7 +182,7 @@ public class CookbookManagementService implements ICookbookManagementService {
             if ( cookbookEntitiy != null ) {
                 if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
                     throw new UserNotAuthorized();
-                } else if ( !cookbookEntitiy.isDefault() ) {
+                } else if ( !cookbookEntitiy.getIsDefault() ) {
                     this.cookbookRepository.delete( cookbookEntitiy );
                 }
             }
@@ -203,7 +203,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         cookbookEntity.setShortDescription( cookbook.getShortDescription() );
         cookbookEntity.setVisibility( cookbook.getVisibility() );
         cookbookEntity.setCreationTime( LocalDateTime.now() );
-        cookbookEntity.setDefault( isDefault );
+        cookbookEntity.setIsDefault( isDefault );
         cookbookEntity.setOwner( user );
 
         CookbookEntity entity = this.cookbookRepository.save( cookbookEntity );

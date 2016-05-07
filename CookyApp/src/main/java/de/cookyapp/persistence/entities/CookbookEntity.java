@@ -26,12 +26,12 @@ import de.cookyapp.enums.CookbookVisibility;
 @Entity
 @Table( name = "Cookbook", schema = "Cooky_Dev" )
 public class CookbookEntity {
+    int ownerId;
     private Integer id;
     private String name;
     private String shortDescription;
     private CookbookVisibility visibility;
     private boolean isDefault;
-    int ownerId;
     private LocalDateTime creationTime;
 
     private UserEntity owner;
@@ -85,11 +85,11 @@ public class CookbookEntity {
 
     @Basic
     @Column( name = "IsDefault", nullable = false )
-    public boolean isDefault() {
+    public boolean getIsDefault() {
         return isDefault;
     }
 
-    public void setDefault( boolean aDefault ) {
+    public void setIsDefault( boolean aDefault ) {
         this.isDefault = aDefault;
     }
 
