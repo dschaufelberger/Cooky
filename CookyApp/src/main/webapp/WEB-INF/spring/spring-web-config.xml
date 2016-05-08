@@ -36,14 +36,14 @@
 
     <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev" />
+        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
         <property name="username" value="tomcat7" />
         <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
 
     <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
+        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev" />
         <property name="username" value="tomcat7" />
         <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
