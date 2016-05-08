@@ -1,5 +1,7 @@
 package de.cookyapp.service.services;
 
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,10 @@ import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -24,16 +30,18 @@ public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
+    private ServletContext servletContext;
 
     @Autowired
-    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository ) {
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext )
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
+        this.servletContext = servletContext;
         this.userCrudRepository = userCrudRepository;
     }
 
     @Override
-    public void deleteRecipe(int recipeID) {
+    public void deleteRecipe( int recipeID ) {
         RecipeEntity deleteRecipe = recipeCrudRepository.findOne( recipeID );
         if ( deleteRecipe != null ) {
             boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() ); //Check current User Authentication
@@ -42,7 +50,6 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeCrudRepository.delete( deleteRecipe );
             }
         }
-
     }
 
     @Override
@@ -88,7 +95,6 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCalories( recipe.getCalories() );
                 recipeEntity.setDifficulty( recipe.getDifficulty() );
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
-                recipeEntity.setImageFileName( recipe.getImageFileName() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
                 recipeCrudRepository.save( recipeEntity );
@@ -132,9 +138,41 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
+                if (entity.getImageFile() == null) {
+                    current.setImageLink("http://placehold.it/320x200");
+                } else {
+                    current.setImageLink( byteArrayToFileLink( entity.getImageFile() ) );
+                }
                 recipes.add( current );
             }
         }
         return recipes;
+    }
+
+    private String byteArrayToFileLink( byte[] bytes){
+        String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
+        String path = generatePath();
+        String completePath = path + imageGUID;
+        String imagePath = "resources/images/recipes/" + imageGUID;
+        InputStream inputStream = new ByteArrayInputStream( bytes );
+        try {
+            BufferedImage bufferedImage = ImageIO.read( inputStream );
+            ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
+        } catch (IOException ex) {
+            ex.toString();
+        }
+
+        return imagePath;
+    }
+
+    private String generatePath() {
+        String path;
+        String imagePath = "resources/images/recipes/";
+        path = this.servletContext.getRealPath( "/" ) + imagePath;
+        if ( !new File( path ).exists() ) {
+            File file = new File( path );
+            file.mkdirs();
+        }
+        return path;
     }
 }

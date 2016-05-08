@@ -28,7 +28,7 @@ public class RecipeEntity {
     private String shortDescription;
     private String preparation;
     private RecipeDifficulty difficulty;
-    private String imageFileName;
+    private byte[] imageFile;
     private LocalDateTime creationTime;
     private Integer calories;
     private Short serving;
@@ -181,13 +181,13 @@ public class RecipeEntity {
 
 
     @Basic
-    @javax.persistence.Column( name = "ImageFileName", nullable = true, length = 255 )
-    public String getImageFileName() {
-        return imageFileName;
+    @javax.persistence.Column( name = "ImageFile", nullable = true)
+    public byte[] getImageFile() {
+        return imageFile;
     }
 
-    public void setImageFileName( String imageFileName ) {
-        this.imageFileName = imageFileName;
+    public void setImageFile( byte[] imageFile ) {
+        this.imageFile = imageFile;
     }
 
 
@@ -212,6 +212,17 @@ public class RecipeEntity {
         this.author = author;
     }
 
+
+    /*@OneToMany( cascade = CascadeType.ALL, mappedBy = "commentedRecipe" )
+    public Collection<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments( Collection<CommentEntity> comments ) {
+        this.comments = comments;
+    }*/
+
+
     @ManyToMany( mappedBy = "recipes" )
     public Collection<CookbookEntity> getContainingCookbooks() {
         return containingCookbooks;
@@ -229,6 +240,19 @@ public class RecipeEntity {
     public void setIngredients( Collection<RecipeIngredientEntity> ingredients ) {
         this.ingredients = ingredients;
     }
+
+
+    /*@ManyToMany( cascade = CascadeType.ALL )
+    @JoinTable(name = "RecipeTag", joinColumns = @JoinColumn(name = "RecipeID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "TagID", referencedColumnName = "ID")
+    )
+    public Collection<TagEntity> getTags() {
+        return tags;
+    }
+
+    public void setTags( Collection<TagEntity> tags ) {
+        this.tags = tags;
+    } */
 
     @Override
     public boolean equals( Object o ) {

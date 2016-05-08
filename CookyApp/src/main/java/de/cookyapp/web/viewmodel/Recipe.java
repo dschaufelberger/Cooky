@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jasper on 30.11.2015.
@@ -50,6 +51,9 @@ public class Recipe {
 
     @Max( 16777215 )
     private int restTime;
+
+    @Pattern( regexp = "([^\\\\s]+(\\\\.(?i)(jpg|jpeg))$)", message = "Es dürfen nur JPG oder JPEG Dateien hochgeladen werden." )
+    private String imageLink;
 
     @Min( 0 )
     @Max( 5 )
@@ -179,6 +183,10 @@ public class Recipe {
     public void setRating( byte rating ) {
         this.rating = rating;
     }
+
+    public String getImageLink ()  { return imageLink; }
+
+    public void setImageLink ( String imageLink ) { this.imageLink = imageLink; }
 
     @Override
     public String toString() {
