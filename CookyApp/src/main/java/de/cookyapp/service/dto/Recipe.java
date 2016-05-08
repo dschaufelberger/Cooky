@@ -1,6 +1,5 @@
 package de.cookyapp.service.dto;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
 
 import de.cookyapp.enums.RecipeDifficulty;

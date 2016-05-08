@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jasper on 30.11.2015.
@@ -184,9 +183,13 @@ public class Recipe {
         this.rating = rating;
     }
 
-    public String getImageLink ()  { return imageLink; }
+    public String getImageLink() {
+        return imageLink;
+    }
 
-    public void setImageLink ( String imageLink ) { this.imageLink = imageLink; }
+    public void setImageLink( String imageLink ) {
+        this.imageLink = imageLink;
+    }
 
     @Override
     public String toString() {

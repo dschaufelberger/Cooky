@@ -1,16 +1,16 @@
 package de.cookyapp.service.services;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
-import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
 
 /**
  * Created by Jasper on 24.04.2016.
@@ -22,7 +22,7 @@ public class ImageUploadService implements IImageUploadService {
     IRecipeCrudRepository recipeCrudRepository;
 
     @Autowired
-    public ImageUploadService (IRecipeCrudRepository recipeCrudRepository) {
+    public ImageUploadService( IRecipeCrudRepository recipeCrudRepository ) {
         this.recipeCrudRepository = recipeCrudRepository;
     }
 

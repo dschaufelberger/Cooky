@@ -36,7 +36,7 @@ public class IRecipeCrudServiceTest {
         recipeRepositoryMock = new RecipeRepositoryMock();
         authenticationMock = new AuthenticationMock( "CookyTester" );
         this.userRepositoryMock = new UserRepositoryMock();
-        this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock );
+        this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock, null );
     }
 
     @Test

@@ -1,8 +1,8 @@
 package de.cookyapp.persistence.repositories;
 
-import de.cookyapp.persistence.entities.RecipeIngredientEntity;
-
 import java.util.List;
+
+import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 
 /**
  * Created by Jasper on 12.04.2016.

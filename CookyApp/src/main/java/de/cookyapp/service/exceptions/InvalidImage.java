@@ -9,10 +9,12 @@ public class InvalidImage extends RuntimeException {
 
     private MultipartFile image;
 
-    public InvalidImage ( MultipartFile image) { this.image = image; }
+    public InvalidImage( MultipartFile image ) {
+        this.image = image;
+    }
 
-    public InvalidImage (MultipartFile image, String s) {
-        super (s);
+    public InvalidImage( MultipartFile image, String s ) {
+        super( s );
         this.image = image;
     }
 
