@@ -108,7 +108,6 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
         copy.setCalories( entity.getCalories() );
         copy.setCookingTime( entity.getCookingTime() );
         copy.setDifficulty( entity.getDifficulty() );
-        copy.setImageFileName( entity.getImageFileName() );
         copy.setPreparation( entity.getPreparation() );
         copy.setRating( entity.getRating() );
         copy.setRestTime( entity.getRestTime() );

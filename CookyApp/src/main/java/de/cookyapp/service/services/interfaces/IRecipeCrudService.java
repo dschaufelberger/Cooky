@@ -1,9 +1,6 @@
 package de.cookyapp.service.services.interfaces;
 
-import java.io.IOException;
 import java.util.List;
-
-import javax.servlet.ServletContext;
 
 import de.cookyapp.service.dto.Recipe;
 
@@ -19,7 +16,7 @@ public interface IRecipeCrudService {
 
     Recipe getRecipe( int recipeID );
 
-    List<Recipe> getAllRecipes( );
+    List<Recipe> getAllRecipes();
 
     List<Recipe> getAllRecipesByName( String recipeName );
 

@@ -10,7 +10,7 @@ import org.springframework.data.repository.Repository;
  * Created by Dominik Schaufelberger on 03.04.2016.
  */
 @NoRepositoryBean
-public interface IBaseCrudRepository<T, ID extends Serializable> extends Repository<T, ID> {
+public interface IBaseCrudRepository <T, ID extends Serializable> extends Repository<T, ID> {
     void delete( T deleted );
 
     void delete( Iterable<? extends T> entities );

@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td><label>Recipe Image</label></td>
-                        <td><input type="file" name="recipeImage"/></td>
+                        <td><input type="file" name="recipeImage" /></td>
                     </tr>
                     <tr>
                         <td><input type="submit" value="Add" class="btn btn-default"></td>

@@ -1,10 +1,15 @@
 package de.cookyapp.service.services;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
@@ -16,10 +21,6 @@ import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 
 /**
  * Created by Dominik Schaufelberger on 09.04.2016.
@@ -33,11 +34,11 @@ public class RecipeCrudService implements IRecipeCrudService {
     private ServletContext servletContext;
 
     @Autowired
-    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext )
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
-        this.servletContext = servletContext;
         this.userCrudRepository = userCrudRepository;
+        this.servletContext = servletContext;
     }
 
     @Override
@@ -63,7 +64,6 @@ public class RecipeCrudService implements IRecipeCrudService {
             recipeEntity.setServing( recipe.getServing() );
             recipeEntity.setCalories( recipe.getCalories() );
             recipeEntity.setDifficulty( recipe.getDifficulty() );
-            recipeEntity.setImageFileName( recipe.getImageFileName() );
             recipeEntity.setShortDescription( recipe.getShortDescription() );
             recipeEntity.setCreationTime( LocalDateTime.now() );
             recipeEntity.setWorkingTime( recipe.getWorkingTime() );
@@ -138,8 +138,8 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
-                if (entity.getImageFile() == null) {
-                    current.setImageLink("http://placehold.it/320x200");
+                if ( entity.getImageFile() == null ) {
+                    current.setImageLink( "http://placehold.it/320x200" );
                 } else {
                     current.setImageLink( byteArrayToFileLink( entity.getImageFile() ) );
                 }
@@ -149,7 +149,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    private String byteArrayToFileLink( byte[] bytes){
+    private String byteArrayToFileLink( byte[] bytes ) {
         String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
         String path = generatePath();
         String completePath = path + imageGUID;
@@ -158,7 +158,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         try {
             BufferedImage bufferedImage = ImageIO.read( inputStream );
             ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
-        } catch (IOException ex) {
+        } catch ( IOException ex ) {
             ex.toString();
         }
 

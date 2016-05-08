@@ -1,21 +1,17 @@
 package de.cookyapp.web.controller;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.service.dto.Ingredient;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidImage;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
@@ -48,23 +44,25 @@ public class RecipeController {
     private IRecipeCrudService recipeCrudService;
     private IIngredientCrudService ingredientCrudService;
     private IImageUploadService imageService;
+    private IRecipeRatingService ratingService;
     private IAuthenticationFacade authentication;
-    private IUserAuthorization userAuthorization;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService ) {
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
+                             IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService,
+                             IRecipeRatingService ratingService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
-        this.userAuthorization = userAuthorization;
+        this.ratingService = ratingService;
     }
 
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes( ) );
+        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes() );
         return model;
     }
 
@@ -105,7 +103,6 @@ public class RecipeController {
                 recipeDTO.setServing( recipe.getServing() );
                 recipeDTO.setPreparation( recipe.getPreparation() );
                 recipeDTO.setRestTime( recipe.getRestTime() );
-                recipeDTO.setAuthor( userToUserEntity( userCrudService.getCurrentUser() ) );
                 recipeCrudService.updateRecipe( recipeDTO );
 
                 uploadImage( image, recipeDTO.getId() );
@@ -149,7 +146,6 @@ public class RecipeController {
             view = "RecipeCreationTile";
         } else {
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
-            newRecipe.setAuthor( userToUserEntity( userCrudService.getCurrentUser()  ) );
             newRecipe.setName( recipe.getName() );
             newRecipe.setWorkingTime( recipe.getWorkingTime() );
             newRecipe.setRestTime( recipe.getRestTime() );
@@ -160,7 +156,6 @@ public class RecipeController {
             newRecipe.setServing( recipe.getServing() );
             newRecipe.setShortDescription( recipe.getShortDescription() );
             newRecipe.setCreationDate( LocalDateTime.now() );
-            newRecipe.setImageFileName( "http://placehold.it/320x200" );
 
             List<de.cookyapp.web.viewmodel.Ingredient> ingredientList = new ArrayList<>( recipe.getIngredients() );
             List<Ingredient> ingredients = new ArrayList<>();
@@ -185,18 +180,18 @@ public class RecipeController {
 
     @RequestMapping( "/rateRecipe" )
     public ModelAndView rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
-        recipeRatingService.rateRecipe( id, rating );
+        ratingService.rateRecipe( id, rating );
         return showDetail( id );
     }
 
     private void validateImage( MultipartFile image ) {
         if ( !image.getContentType().equals( "image/jpeg" ) && !image.getContentType().equals( "image/jpg" ) ) {
-            throw new InvalidImage( image ,"Only JPG images are accepted" );
+            throw new InvalidImage( image, "Only JPG images are accepted" );
         }
     }
 
     private void uploadImage( MultipartFile image, int recipeId ) {
-        if (image != null) {
+        if ( image != null ) {
             validateImage( image );
             InputStream inputStream = null;
             BufferedImage bufferedImage = null;
@@ -204,7 +199,7 @@ public class RecipeController {
                 try {
                     inputStream = image.getInputStream();
                     bufferedImage = ImageIO.read( inputStream );
-                } catch (Exception i) {
+                } catch ( Exception i ) {
                     logger.error( "Upload Image ist fehlgeschlagen" );
                     throw i;
                 } finally {

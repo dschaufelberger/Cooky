@@ -181,7 +181,7 @@ public class RecipeEntity {
 
 
     @Basic
-    @javax.persistence.Column( name = "ImageFile", nullable = true)
+    @javax.persistence.Column( name = "ImageFile", nullable = true )
     public byte[] getImageFile() {
         return imageFile;
     }
