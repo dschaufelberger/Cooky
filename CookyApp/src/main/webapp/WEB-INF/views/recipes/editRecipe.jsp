@@ -12,7 +12,7 @@
 <script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
 
 <div class="container">
-    <form:form action="/recipes/editRecipe" method="post" commandName="recipe">
+    <form:form action="/recipes/editRecipe" method="post" commandName="recipe" enctype="multipart/form-data">
         <form:hidden path="id" />
         <div class="col-md-6">
             <div class="input-group">
