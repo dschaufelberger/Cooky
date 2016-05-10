@@ -14,15 +14,15 @@ function addRow (){
 $(document).ready(function () {
     var rating = $(".currentRating").val();
     for (var i = 1; i <= rating; i++) {
-        $(".star" + i).addClass("starImage");
+        $(".star" + i).addClass("cooky-recipeRating");
     }
 
     $('.ratings_stars').hover(
         function () {
-            $(this).prevAll().andSelf().addClass("starImage");
+            $(this).prevAll().andSelf().addClass("cooky-recipeRating");
         },
         function () {
-            $(this).nextAll().andSelf().removeClass("starImage");
+            $(this).nextAll().andSelf().removeClass("cooky-recipeRating");
         }
     );
 });

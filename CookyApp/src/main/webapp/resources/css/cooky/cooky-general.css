@@ -24,36 +24,17 @@ html, body {
     height: 100%;
 }
 
-.starSize {
-    width: 28px;
-}
-
-.buttonTransparent {
+.button_transparent {
     background: transparent;
-    border: 0px;
-}
-
-#backgroundFill {
-    background: url("/resources/images/rating/Star_filled.png");
+    border:none;
 }
 
 .ratings_stars {
-    content: url('/resources/images/rating/Star_empty.png');
-    float: left;
-    padding: 2px;
-    width: 28px;
-}
-
-.starImage {
-    content: url('/resources/images/rating/Star_filled.png');
-}
-
-.starHighlighted {
-    content: url('/resources/images/rating/Star_filled.png');
+    font-size:1.4em;
 }
 
 .cooky-recipeRating {
-    font-size: 1.8em;
+    font-size: 1.4em;
     color: gold;
 }
 

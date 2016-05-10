@@ -118,24 +118,29 @@
         <table>
             <tr>
                 <td>
-                    <button type="submit" class="buttonTransparent" value="1" name="rating"><img
-                            class="ratings_stars star1"></button>
+                    <button type="submit" class="button_transparent" value="1" name="rating">
+                        <i class="glyphicon glyphicon-star-empty ratings_stars star1"></i>
+                    </button>
                 </td>
                 <td>
-                    <button type="submit" class="buttonTransparent" value="2" name="rating"><img
-                            class="ratings_stars star2"></button>
+                    <button type="submit" class="button_transparent" value="2" name="rating">
+                        <i class="glyphicon glyphicon-star-empty ratings_stars star2"></i>
+                    </button>
                 </td>
                 <td>
-                    <button type="submit" class="buttonTransparent" value="3" name="rating"><img
-                            class="ratings_stars star3"></button>
+                    <button type="submit" class="button_transparent" value="3" name="rating">
+                        <i class="glyphicon glyphicon-star-empty ratings_stars star3"></i>
+                    </button>
                 </td>
                 <td>
-                    <button type="submit" class="buttonTransparent" value="4" name="rating"><img
-                            class="ratings_stars star4"></button>
+                    <button type="submit" class="button_transparent" value="4" name="rating">
+                        <i class="glyphicon glyphicon-star-empty ratings_stars star4"></i>
+                    </button>
                 </td>
                 <td>
-                    <button type="submit" class="buttonTransparent" value="5" name="rating"><img
-                            class="ratings_stars star5"></button>
+                    <button type="submit" class="button_transparent" value="5" name="rating">
+                        <i class="glyphicon glyphicon-star-empty ratings_stars star5"></i>
+                    </button>
                 </td>
             </tr>
         </table>
