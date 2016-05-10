@@ -1,6 +1,12 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -9,8 +15,8 @@ import javax.persistence.*;
 @Table( name = "CookbookRecipe", schema = "Cooky_Dev" )
 @IdClass( CookbookRecipeEntityPK.class )
 public class CookbookRecipeEntity {
-    private int cookbookId;
-    private int recipeId;
+    private Integer cookbookId;
+    private Integer recipeId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

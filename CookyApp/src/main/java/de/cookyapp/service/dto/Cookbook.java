@@ -1,6 +1,7 @@
 package de.cookyapp.service.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class Cookbook {
     private List<Recipe> recipes;
 
     public Cookbook() {
+        this.recipes = new ArrayList<>();
     }
 
     public Cookbook( CookbookEntity cookbookEntity ) {
@@ -29,7 +31,9 @@ public class Cookbook {
         setVisibility( cookbookEntity.getVisibility() );
         setCreationTime( cookbookEntity.getCreationTime() );
         setOwner( new User( cookbookEntity.getOwner() ) );
-        setRecipes( cookbookEntity.getRecipes().stream().map( entity -> new Recipe( entity ) ).collect( Collectors.toList()) );
+
+        ArrayList<Recipe> recipes = cookbookEntity.getRecipes().stream().map( Recipe::new ).collect( Collectors.toCollection( ArrayList::new ) );
+        setRecipes( recipes );
     }
 
     public int getId() {

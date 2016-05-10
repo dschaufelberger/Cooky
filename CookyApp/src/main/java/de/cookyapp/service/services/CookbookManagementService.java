@@ -14,7 +14,8 @@ import de.cookyapp.persistence.repositories.ICookbookRepository;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.User;
-import de.cookyapp.service.exceptions.InvalidUserID;
+import de.cookyapp.service.exceptions.InvalidCookbookId;
+import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.exceptions.NotAuthenticated;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -54,7 +55,7 @@ public class CookbookManagementService implements ICookbookManagementService {
     }
 
     @Override
-    public List<Cookbook> getPublicCookbooksFromUser( int userId ) {
+    public List<Cookbook> getPublicCookbooksForUser( int userId ) {
         return this.cookbookRepository.findByOwnerIdAndVisibility( userId, CookbookVisibility.PUBLIC )
                 .stream()
                 .map( cookbookEntity -> new Cookbook( cookbookEntity ) )
@@ -79,7 +80,7 @@ public class CookbookManagementService implements ICookbookManagementService {
              */
             cookbooks = this.cookbookRepository.findByOwnerId( userId )
                     .stream()
-                    .filter( cookbookEntity -> !cookbookEntity.isDefault() )
+                    .filter( cookbookEntity -> !cookbookEntity.getIsDefault() )
                     .map( cookbookEntity -> new Cookbook( cookbookEntity ) )
                     .collect( Collectors.toList() );
         }
@@ -93,15 +94,32 @@ public class CookbookManagementService implements ICookbookManagementService {
         Cookbook cookbook = null;
 
         if ( entitiy != null ) {
-            if ( this.userCrudService.getCurrentUser().getId() != entitiy.getOwnerId()
+            if ( !this.authentication.getAuthentication().getName().equals( entitiy.getOwner().getUsername() )
                     && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
-                throw new UserNotAuthorized();
-            } else if ( !entitiy.isDefault() ) {
-                cookbook = new Cookbook( entitiy );
+                throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
+            } else if ( !entitiy.getIsDefault() ) {
+                cookbook = getCookbookIfExistant( entitiy );
             }
+        } else {
+            throw new InvalidCookbookId( cookbookId );
         }
 
         return cookbook;
+    }
+
+    @Override
+    public Cookbook getDefaultCookbookForUser( int userId ) {
+        UserEntity user = this.userCrudRepository.findOne( userId );
+
+        if ( user == null ) {
+            throw new InvalidUserId( userId );
+        } else if ( !this.authentication.getAuthentication().getName().equals( user.getUsername() )
+                && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
+            throw new UserNotAuthorized();
+        } else {
+            CookbookEntity defaultCookbook = this.cookbookRepository.findByOwnerIdAndIsDefaultTrue( userId );
+            return getCookbookIfExistant( defaultCookbook );
+        }
     }
 
     @Override
@@ -109,7 +127,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         UserEntity user = this.userCrudRepository.findOne( userId );
 
         if ( user == null ) {
-            throw new InvalidUserID( userId );
+            throw new InvalidUserId( userId );
         } else if ( !this.authentication.getAuthentication().getName().equals( user.getUsername() )
                 && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
             throw new UserNotAuthorized();
@@ -123,7 +141,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         UserEntity user = this.userCrudRepository.findOne( userId );
 
         if ( user == null ) {
-            throw new InvalidUserID( userId );
+            throw new InvalidUserId( userId );
         } else {
             return createCookbook( user, cookbook, true );
         }
@@ -141,7 +159,7 @@ public class CookbookManagementService implements ICookbookManagementService {
             if ( cookbookEntitiy != null ) {
                 if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
                     throw new UserNotAuthorized();
-                } else if ( !cookbookEntitiy.isDefault() ) {
+                } else if ( !cookbookEntitiy.getIsDefault() ) {
                     cookbookEntitiy.setName( cookbook.getName() );
                     cookbookEntitiy.setShortDescription( cookbook.getShortDescription() );
                     cookbookEntitiy.setVisibility( cookbook.getVisibility() );
@@ -164,11 +182,19 @@ public class CookbookManagementService implements ICookbookManagementService {
             if ( cookbookEntitiy != null ) {
                 if ( cookbookEntitiy.getOwnerId() != currentUser.getId() ) {
                     throw new UserNotAuthorized();
-                } else if ( !cookbookEntitiy.isDefault() ) {
+                } else if ( !cookbookEntitiy.getIsDefault() ) {
                     this.cookbookRepository.delete( cookbookEntitiy );
                 }
             }
         }
+    }
+
+    private Cookbook getCookbookIfExistant( CookbookEntity cookbookEntity ) {
+        if ( cookbookEntity == null ) {
+            return null;
+        }
+
+        return new Cookbook( cookbookEntity );
     }
 
     private Cookbook createCookbook( UserEntity user, Cookbook cookbook, boolean isDefault ) {
@@ -177,7 +203,7 @@ public class CookbookManagementService implements ICookbookManagementService {
         cookbookEntity.setShortDescription( cookbook.getShortDescription() );
         cookbookEntity.setVisibility( cookbook.getVisibility() );
         cookbookEntity.setCreationTime( LocalDateTime.now() );
-        cookbookEntity.setDefault( isDefault );
+        cookbookEntity.setIsDefault( isDefault );
         cookbookEntity.setOwner( user );
 
         CookbookEntity entity = this.cookbookRepository.save( cookbookEntity );

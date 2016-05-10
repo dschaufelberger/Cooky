@@ -51,3 +51,12 @@ html, body {
 .starHighlighted {
     content: url('/resources/images/rating/Star_filled.png');
 }
+
+.cooky-recipeRating {
+    font-size: 1.8em;
+    color: gold;
+}
+
+#cookbookDetail .list-group {
+    margin-top: 15px;
+}

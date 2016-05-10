@@ -6,46 +6,68 @@ package de.cookyapp.web.viewmodel.cookbook;
 public class Recipe {
     private int id;
     private String name;
-    private String descrption;
+    private String description;
     private byte rating;
+    private byte maxRating;
+    private Cookbook containingCookbook;
+    private Cookbook movedToCookbook;
 
     public Recipe( de.cookyapp.service.dto.Recipe recipe) {
         this.id = recipe.getId();
         this.name = recipe.getName();
-        this.descrption = recipe.getShortDescription();
+        this.description = recipe.getShortDescription();
         this.rating = recipe.getRating();
+    }
+
+    public Recipe() {
+    }
+
+    public Cookbook getMovedToCookbook() {
+        return movedToCookbook;
+    }
+
+    public void setMovedToCookbook( Cookbook movedToCookbook ) {
+        this.movedToCookbook = movedToCookbook;
+    }
+
+    public Cookbook getContainingCookbook() {
+        return containingCookbook;
+    }
+
+    public void setContainingCookbook( Cookbook containingCookbook ) {
+        this.containingCookbook = containingCookbook;
+    }
+
+    public byte getMaxRating() {
+        return 5;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescrption() {
-        return descrption;
-    }
-
-    public byte getRating() {
-        return rating;
-    }
-
-    //TEST
-    public Recipe() {
-    }
-
     public void setId( int id ) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName( String name ) {
         this.name = name;
     }
 
-    public void setDescrption( String descrption ) {
-        this.descrption = descrption;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
+    }
+
+    public byte getRating() {
+        return rating;
     }
 
     public void setRating( byte rating ) {
