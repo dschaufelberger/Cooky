@@ -18,7 +18,6 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-
                     <%-- If the user is authorized render "Hallo 'Username'" and set the icon to a user icon. --%>
                     <sec:authorize access="isAuthenticated()">
                         <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">
@@ -47,6 +46,11 @@
                     </sec:authorize>
                 </li>
             </ul>
+            <form:form action="/recipes/search" method="post" cssClass="navbar-form navbar-left" commandName="search">
+                <div class="form-group">
+                    <cooky:search />
+                </div>
+            </form:form>
         </div>
         <!-- /.navbar-collapse -->
     </div>

@@ -52,7 +52,6 @@ public class RecipeController {
     public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
         model.addObject( "recipesList", this.recipeCrudService.getAllRecipes() );
-        model.addObject( "search", new Search() );
         return model;
     }
 

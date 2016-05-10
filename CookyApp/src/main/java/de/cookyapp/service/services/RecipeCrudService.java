@@ -51,7 +51,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         recipeEntity.setCalories( recipe.getCalories() );
         recipeEntity.setAuthor( recipe.getAuthor() );
         recipeEntity.setDifficulty( recipe.getDifficulty() );
-        recipeEntity.setImageFileName( recipe.getImageFileName() );
+        //recipeEntity.setImageFileName( recipe.getImageFileName() );
         recipeEntity.setShortDescription( recipe.getShortDescription() );
         recipeEntity.setCreationTime( LocalDateTime.now() );
         recipeEntity.setWorkingTime( recipe.getWorkingTime() );
@@ -77,7 +77,7 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCalories( recipe.getCalories() );
                 recipeEntity.setDifficulty( recipe.getDifficulty() );
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
-                recipeEntity.setImageFileName( recipe.getImageFileName() );
+                //recipeEntity.setImageFileName( recipe.getImageFileName() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
                 recipeEntity.setAuthor( recipe.getAuthor() );

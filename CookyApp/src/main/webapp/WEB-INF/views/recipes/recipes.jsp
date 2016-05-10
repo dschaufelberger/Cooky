@@ -12,9 +12,6 @@
 <%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 
 <div class="container">
-    <form:form action="/recipes/search" method="post" commandName="search">
-        <cooky:search />
-    </form:form>
     <div class="col-md-12">
         <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
             <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
@@ -26,7 +23,6 @@
             <c:forEach var="recipes" items="${recipesList}">
                 <div class="col-md-4">
                     <div class="thumbnail">
-                        <img src="${recipes.imageFileName}" alt="ALT NAME" class="img-responsive" />
 
                         <div class="caption">
                             <h3>${recipes.name}</h3>

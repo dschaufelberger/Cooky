@@ -71,13 +71,9 @@ public class Recipe {
         this.shortDescription = shortDescription;
     }
 
-    public String getImageFileName() {
-        return imageFileName;
-    }
+    public String getImageFileName() { return imageFileName; }
 
-    public void setImageFileName( String imageFileName ) {
-        this.imageFileName = imageFileName;
-    }
+    public void setImageFileName( String imageFileName ) { this.imageFileName = imageFileName; }
 
     public RecipeDifficulty getDifficulty() {
         return difficulty;
