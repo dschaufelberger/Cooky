@@ -32,11 +32,17 @@
         <c:forEach var="recipeVar" items="${cookbook.recipes}">
             <jsp:setProperty name="recipe" property="id" value="${recipeVar.id}" />
 
+            <spring:url var="recipeUrl" value="/recipes/view/{recipeId}">
+                <spring:param name="recipeId" value="${recipe.id}" />
+            </spring:url>
+            <spring:url var="removeRecipeUrl" value="/cookbooks/removeRecipe" />
+            <spring:url var="moveRecipeUrl" value="/cookbooks/moveRecipe" />
+
             <div class="list-group-item">
 
                 <div class="row">
                     <div class="col-md-9">
-                        <a href="/recipes/goToEditRecipe/${recipeVar.id}">
+                        <a href="${recipeUrl}">
                             <h3 class="list-group-item-heading">${recipeVar.name}</h3>
                         </a>
                         <span>
@@ -50,12 +56,12 @@
                         <p>${recipeVar.description}</p>
                     </div>
                     <div class="col-md-3">
-                        <form:form method="post" action="/cookbooks/removeRecipe" commandName="recipe">
+                        <form:form method="post" action="${removeRecipeUrl}" commandName="recipe">
                             <form:hidden path="id" />
                             <form:hidden path="containingCookbook.id" />
                             <button type="submit" class="btn btn-default">Remove</button>
                         </form:form>
-                        <form:form method="post" action="/cookbooks/moveRecipe" commandName="recipe">
+                        <form:form method="post" action="${moveRecipeUrl}" commandName="recipe">
                             <form:hidden path="id" />
                             <form:hidden path="containingCookbook.id" />
                             <form:label path="movedToCookbook.id">Move recipe to cookbook:</form:label>

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import de.cookyapp.persistence.entities.AddressEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Address;
-import de.cookyapp.service.exceptions.InvalidUserID;
+import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.mocks.AddressRepositoryMock;
 import de.cookyapp.service.mocks.AuthenticationMock;
@@ -64,7 +64,7 @@ public class AddressServiceTest {
 
     @Test
     public void createAddressForNonexistantUser() throws Exception {
-        thrown.expect( InvalidUserID.class );
+        thrown.expect( InvalidUserId.class );
 
         //arrange
         Address address = new Address();
@@ -280,7 +280,7 @@ public class AddressServiceTest {
 
     @Test
     public void getAddressForNonexistingUser() throws Exception {
-        thrown.expect( InvalidUserID.class );
+        thrown.expect( InvalidUserId.class );
 
         //arrange
         AddressEntity addressEntity = new AddressEntity();

@@ -6,7 +6,7 @@ import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.IAddressCrudRepository;
 import de.cookyapp.persistence.repositories.IUserCrudRepository;
 import de.cookyapp.service.dto.Address;
-import de.cookyapp.service.exceptions.InvalidUserID;
+import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class AddressService implements IAddressService {
             userEntity.setAddress( addressEntity );
             this.userCrudRepository.save( userEntity );
         } else {
-            throw new InvalidUserID( userID );
+            throw new InvalidUserId( userID );
         }
     }
 
@@ -104,7 +104,7 @@ public class AddressService implements IAddressService {
                 return address;
             }
         } else {
-            throw new InvalidUserID( userID );
+            throw new InvalidUserId( userID );
         }
 
         return null;
