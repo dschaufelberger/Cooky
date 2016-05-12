@@ -33,7 +33,7 @@
     <!-- The Welcome page for all users, mapped to the root "/" -->
     <definition name="WelcomeTile" extends="startpage.definition">
         <put-attribute name="title" value="Cooky" />
-        <put-attribute name="content" value="/WEB-INF/views/Index.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/LandingPage.jsp"/>
     </definition>
 
 
