@@ -2,26 +2,22 @@ package de.cookyapp.persistence.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-
-import de.cookyapp.enums.Role;
 
 /**
  * Created by Dominik Schaufelberger on 14.05.2016.
  */
 @Entity
-@Table( name = "UserRole", schema = "Cooky_Dev_Users", catalog = "" )
+@Table( name = "UserRole", schema = "Cooky_Dev_Users", catalog = "Cooky_Dev_Users" )
 @IdClass( UserRoleEntityPK.class )
 public class UserRoleEntity {
     private String username;
-    private Role role;
+    private String role;
 
     @Id
-    @Column( name = "Username", nullable = false, length = 30 )
+    @Column( name = "Username", nullable = false, insertable = false, updatable = false, length = 30 )
     public String getUsername() {
         return username;
     }
@@ -31,13 +27,12 @@ public class UserRoleEntity {
     }
 
     @Id
-    @Enumerated( EnumType.STRING )
-    @Column( name = "Role", nullable = false, length = 20 )
-    public Role getRole() {
+    @Column( name = "Role", nullable = false, insertable = false, updatable = false, length = 20 )
+    public String getRole() {
         return role;
     }
 
-    public void setRole( Role role ) {
+    public void setRole( String role ) {
         this.role = role;
     }
 
@@ -50,16 +45,16 @@ public class UserRoleEntity {
 
         UserRoleEntity that = (UserRoleEntity) o;
 
-        if ( !username.equals( that.username ) )
+        if ( username != null ? !username.equals( that.username ) : that.username != null )
             return false;
-        return role == that.role;
+        return role != null ? role.equals( that.role ) : that.role == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = username.hashCode();
-        result = 31 * result + role.hashCode();
+        int result = username != null ? username.hashCode() : 0;
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 }

@@ -2,18 +2,14 @@ package de.cookyapp.persistence.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
-
-import de.cookyapp.enums.Role;
 
 /**
  * Created by Dominik Schaufelberger on 14.05.2016.
  */
 public class UserRoleEntityPK implements Serializable {
     private String username;
-    private Role role;
+    private String role;
 
     @Column( name = "Username", nullable = false, length = 30 )
     @Id
@@ -27,12 +23,11 @@ public class UserRoleEntityPK implements Serializable {
 
     @Column( name = "Role", nullable = false, length = 20 )
     @Id
-    @Enumerated( EnumType.STRING )
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole( Role role ) {
+    public void setRole( String role ) {
         this.role = role;
     }
 
@@ -47,10 +42,8 @@ public class UserRoleEntityPK implements Serializable {
 
         if ( username != null ? !username.equals( that.username ) : that.username != null )
             return false;
-        if ( role != null ? !role.equals( that.role ) : that.role != null )
-            return false;
+        return role != null ? role.equals( that.role ) : that.role == null;
 
-        return true;
     }
 
     @Override

@@ -13,19 +13,19 @@ import de.cookyapp.enums.Role;
  * Created by Dominik Schaufelberger on 14.05.2016.
  */
 @Entity
-@Table( name = "Role", schema = "Cooky_Dev_Users" )
+@Table( name = "Role", schema = "Cooky_Dev_Users", catalog = "Cooky_Dev_Users" )
 public class RoleEntity {
-    private Role roleName;
+    private Role role;
 
     @Id
     @Enumerated( EnumType.STRING )
     @Column( name = "RoleName", nullable = false, length = 20 )
-    public Role getRoleName() {
-        return roleName;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleName( Role roleName ) {
-        this.roleName = roleName;
+    public void setRole( Role role ) {
+        this.role = role;
     }
 
     @Override
@@ -37,12 +37,12 @@ public class RoleEntity {
 
         RoleEntity that = (RoleEntity) o;
 
-        return roleName == that.roleName;
+        return role == that.role;
 
     }
 
     @Override
     public int hashCode() {
-        return roleName.hashCode();
+        return role.hashCode();
     }
 }
