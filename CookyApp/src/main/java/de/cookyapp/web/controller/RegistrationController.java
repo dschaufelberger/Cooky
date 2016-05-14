@@ -5,9 +5,11 @@ import javax.validation.Valid;
 
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.enums.CookbookVisibility;
+import de.cookyapp.enums.Role;
 import de.cookyapp.service.services.interfaces.IAddressService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.service.services.interfaces.IUserRoleService;
 import de.cookyapp.web.viewmodel.registration.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,15 +30,18 @@ public class RegistrationController {
     private IUserCrudService userCrudService;
     private IAddressService addressService;
     private ICookbookManagementService cookbookManagementService;
+    private IUserRoleService roleService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public RegistrationController( IUserCrudService userCrudService, IAddressService addressService,
-                                   ICookbookManagementService cookbookManagementService, PasswordEncoder passwordEncoder ) {
+                                   ICookbookManagementService cookbookManagementService, PasswordEncoder passwordEncoder,
+                                   IUserRoleService roleService ) {
         this.userCrudService = userCrudService;
         this.addressService = addressService;
         this.cookbookManagementService = cookbookManagementService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @RequestMapping( method = RequestMethod.GET )
@@ -79,6 +84,8 @@ public class RegistrationController {
                 cookbookDTO.setCreationTime( LocalDateTime.now() );
                 cookbookDTO.setOwner( userDTO );
                 this.cookbookManagementService.createDefaultCookbookForUser( userDTO.getId(), cookbookDTO );
+
+                this.roleService.addRoleToUser( userDTO, Role.COOKY_USER );
 
                 view = "RegistrationSuccessTile";
             } else {
