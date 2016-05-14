@@ -21,80 +21,75 @@
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
-    <definition name="startpage.definition" template="/WEB-INF/views/layout/Layout_landingpage.jsp">
+    <definition name="page.definition" extends="base.definition">
         <put-attribute name="title" value="" />
         <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
-        <put-attribute name="navigation" value="/WEB-INF/views/layout/Navigation.jsp" />
-        <put-attribute name="content" value="" />
+        <put-attribute name="content" value="/WEB-INF/views/layout/PageContent.jsp"/>
+        <put-attribute name="pagecontent" value="" />
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
 
     <!-- The Welcome page for all users, mapped to the root "/" -->
-    <definition name="WelcomeTile" extends="startpage.definition">
+    <definition name="WelcomeTile" extends="base.definition">
         <put-attribute name="title" value="Cooky" />
         <put-attribute name="content" value="/WEB-INF/views/LandingPage.jsp"/>
     </definition>
 
 
     <!-- The Registration page containing the registration form, mapped to "/registration" -->
-    <definition name="RegistrationTile" extends="base.definition">
+    <definition name="RegistrationTile" extends="page.definition">
         <put-attribute name="title" value="Register on Cooky." />
-        <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationForm.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/registration/RegistrationForm.jsp" />
     </definition>
 
 
     <!-- The Registration page containing the registration form, mapped to "/registration" -->
-    <definition name="RegistrationSuccessTile" extends="base.definition">
+    <definition name="RegistrationSuccessTile" extends="page.definition">
         <put-attribute name="title" value="Welcome to Cooky!" />
-        <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationSuccess.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/registration/RegistrationSuccess.jsp" />
     </definition>
 
     <!-- The Login page containing the login form, mapped to "/signin" -->
-    <definition name="LoginTile" extends="base.definition">
+    <definition name="LoginTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Login" />
-        <put-attribute name="content" value="/WEB-INF/views/authentication/LoginPage.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/authentication/LoginPage.jsp" />
     </definition>
 
     <!-- The Login error page containing the login form, mapped to "/signinError" -->
-    <definition name="LoginErrorTile" extends="base.definition">
+    <definition name="LoginErrorTile" extends="page.definition">
         <put-attribute name="title" value="Login Error"/>
-        <put-attribute name="content" value="/WEB-INF/views/authentication/LoginError.jsp"/>
+        <put-attribute name="pagecontent" value="/WEB-INF/views/authentication/LoginError.jsp"/>
     </definition>
 
     <!-- A users personal account management page, mapped to "/account/details" -->
-    <definition name="UserAccountTile" extends="base.definition">
+    <definition name="UserAccountTile" extends="page.definition">
         <put-attribute name="title" value="Your Account Information"/>
-        <put-attribute name="content" value="/WEB-INF/views/account/accountForm.jsp"/>
+        <put-attribute name="pagecontent" value="/WEB-INF/views/account/accountForm.jsp"/>
     </definition>
 
     <!-- A users personal password management page, mapped to "/account/changePassword" -->
-    <definition name="UserPasswordTile" extends="base.definition">
+    <definition name="UserPasswordTile" extends="page.definition">
         <put-attribute name="title" value="Your Account Information"/>
-        <put-attribute name="content" value="/WEB-INF/views/account/passwordForm.jsp"/>
+        <put-attribute name="pagecontent" value="/WEB-INF/views/account/passwordForm.jsp"/>
     </definition>
 
     <!-- The recipe overview page, mapped to "/recipes -->
-    <definition name="RecipeOverviewTile" extends="base.definition">
+    <definition name="RecipeOverviewTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipes" />
-        <put-attribute name="content" value="/WEB-INF/views/recipes/recipes.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/recipes.jsp" />
     </definition>
 
     <!-- Page to create a new recipe, mapped to "/recipes/create -->
-    <definition name="RecipeEditTile" extends="base.definition">
+    <definition name="RecipeEditTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
-        <put-attribute name="content" value="/WEB-INF/views/recipes/editRecipe.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/editRecipe.jsp" />
     </definition>
 
     <!-- The recipe overview page, mapped to "/recipes -->
-    <definition name="RecipeCreationTile" extends="base.definition">
+    <definition name="RecipeCreationTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
-        <put-attribute name="content" value="/WEB-INF/views/recipes/addRecipe.jsp" />
-    </definition>
-
-    <definition name="TestTile" extends="base.definition">
-        <put-attribute name="title" value="Test" />
-        <put-attribute name="content" value="/WEB-INF/views/Test.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/addRecipe.jsp" />
     </definition>
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
