@@ -5,7 +5,6 @@
   Time: 14:50
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div>
     <!-- Intro Header -->
     <header class="intro">
@@ -70,7 +69,7 @@
     <!-- Footer -->
     <footer>
         <div class="container text-center">
-            <p>Copyright &copy; Cooky Corp 2016</p>
+            <p>Copyright &copy; Cooky 2016</p>
         </div>
     </footer>
 
