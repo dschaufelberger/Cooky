@@ -22,7 +22,7 @@
     <!-- Custom CSS -->
     <link href="<spring:url value="/resources/css/cooky/grayscale.css" />" rel="stylesheet">
     <!-- Custom Fonts -->
-    <link href="<spring:url value="/resources/fonts/font-awesome.min.css" />" rel="stylesheet">
+    <link href="<spring:url value="/resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css" />" rel="stylesheet">
     <!-- Plugin JavaScript -->
     <script src="<spring:url value="/resources/js/jquery/jquery.easing.min.js" />"></script>
     <!-- Custom Theme JavaScript -->
