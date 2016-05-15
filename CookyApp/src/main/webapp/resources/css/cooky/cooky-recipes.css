@@ -3,8 +3,6 @@
 }
 
 .size {
-!important;
-    height: 420px;
-!important;
-    width: 345px;
+    height: 420px !important;
+    width: 345px !important;
 }

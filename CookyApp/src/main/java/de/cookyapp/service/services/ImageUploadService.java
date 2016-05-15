@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
-import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

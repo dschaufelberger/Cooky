@@ -1,4 +1,4 @@
-package de.cookyapp.persistence.repositories;
+package de.cookyapp.persistence.repositories.app;
 
 import java.util.Collection;
 

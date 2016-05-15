@@ -3,8 +3,8 @@ package de.cookyapp.service.services;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.AddressEntity;
 import de.cookyapp.persistence.entities.UserEntity;
-import de.cookyapp.persistence.repositories.IAddressCrudRepository;
-import de.cookyapp.persistence.repositories.IUserCrudRepository;
+import de.cookyapp.persistence.repositories.app.IAddressCrudRepository;
+import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Address;
 import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
@@ -70,13 +70,11 @@ public class AddressService implements IAddressService {
                 boolean isAuthorized = addressEntity.equals( userEntity.getAddress() );
 
                 if ( isAuthorized ) {
-                    if ( addressEntity != null ) {
-                        addressEntity.setStreet( address.getStreet() );
-                        addressEntity.setPostcode( address.getPostcode() );
-                        addressEntity.setHouseNumber( address.getHouseNumber() );
-                        addressEntity.setCity( address.getCity() );
-                        this.addressCrudRepository.save( addressEntity );
-                    }
+                    addressEntity.setStreet( address.getStreet() );
+                    addressEntity.setPostcode( address.getPostcode() );
+                    addressEntity.setHouseNumber( address.getHouseNumber() );
+                    addressEntity.setCity( address.getCity() );
+                    this.addressCrudRepository.save( addressEntity );
                 }
             } else {
                 throw new UserNotAuthorized();

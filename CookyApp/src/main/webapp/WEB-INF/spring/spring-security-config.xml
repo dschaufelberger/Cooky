@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <sec:http authentication-manager-ref="in-memory-auth">
-        <sec:intercept-url pattern="/secured" access="hasRole('ROLE_ADMIN')" />
+    <sec:http authentication-manager-ref="jdbc-auth">
+        <sec:intercept-url pattern="/cookbooks/**" access="hasAuthority('COOKY_USER')" />
+        <sec:intercept-url pattern="/account/**" access="hasAuthority('COOKY_USER')" />
+        <sec:intercept-url pattern="/recipes/view/*" access="permitAll()" />
+        <sec:intercept-url pattern="/recipes" access="permitAll()" />
+        <sec:intercept-url pattern="/recipes/**" access="hasAuthority('COOKY_USER')" />
 
         <sec:form-login login-page="/signin"
                         default-target-url="/"

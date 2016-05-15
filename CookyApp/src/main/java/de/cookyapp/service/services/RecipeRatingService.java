@@ -1,7 +1,7 @@
 package de.cookyapp.service.services;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
-import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

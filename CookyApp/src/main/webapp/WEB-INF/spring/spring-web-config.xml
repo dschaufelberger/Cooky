@@ -22,24 +22,24 @@
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="applicationTransactionManager" />
 
-    <jpa:repositories base-package="de.cookyapp.persistence.repositories"
-                      entity-manager-factory-ref="entityManagerFactory"
-                      transaction-manager-ref="transactionManager" />
+    <jpa:repositories base-package="de.cookyapp.persistence.repositories.app"
+                      entity-manager-factory-ref="applicationEntityManagerFactory"
+                      transaction-manager-ref="applicationTransactionManager" />
+    <jpa:repositories base-package="de.cookyapp.persistence.repositories.auth"
+                      entity-manager-factory-ref="authenticationEntityManageFactory"
+                      transaction-manager-ref="authenticationTransactionManager" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="order" value="2" />
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
     </bean>
-
-    <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
-        <property name="username" value="tomcat7" />
-        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     </bean>
+
+    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
     <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -47,26 +47,46 @@
         <property name="username" value="tomcat7" />
         <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
+    <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
+        <property name="username" value="tomcat7" />
+        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
+    </bean>
 
-    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    <bean id="applicationHibernateVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+    <bean id="authenticationHibernateVendorAdapter"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 
-    <bean id="hibernateVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <bean id="applicationEntityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="applicationDataSource" />
         <property name="packagesToScan" value="de.cookyapp.persistence.entities" />
-        <property name="jpaVendorAdapter" ref="hibernateVendorAdapter" />
+        <property name="jpaVendorAdapter" ref="applicationHibernateVendorAdapter" />
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
             </props>
         </property>
     </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    <bean id="authenticationEntityManageFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="authenticationDataSource" />
+        <property name="packagesToScan" value="de.cookyapp.persistence.entities" />
+        <property name="jpaVendorAdapter" ref="authenticationHibernateVendorAdapter" />
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <bean id="applicationTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="applicationEntityManagerFactory" />
+    </bean>
+    <bean id="authenticationTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="authenticationEntityManageFactory" />
     </bean>
 </beans>

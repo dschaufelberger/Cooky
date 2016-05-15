@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.service.dto.Ingredient;
-import de.cookyapp.service.exceptions.InvalidImage;
+import de.cookyapp.service.exceptions.InvalidContentFileFormat;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
@@ -186,7 +186,7 @@ public class RecipeController {
 
     private void validateImage( MultipartFile image ) {
         if ( !image.getContentType().equals( "image/jpeg" ) && !image.getContentType().equals( "image/jpg" ) ) {
-            throw new InvalidImage( image, "Only JPG images are accepted" );
+            throw new InvalidContentFileFormat( image.getName(), image.getContentType(), "Only JPG images are accepted" );
         }
     }
 
@@ -209,7 +209,7 @@ public class RecipeController {
                 }
                 imageService.saveImage( recipeId, bufferedImage );
             } catch ( Exception ex ) {
-                ex.toString();
+                logger.error( ex.getMessage(), ex );
             }
         }
     }

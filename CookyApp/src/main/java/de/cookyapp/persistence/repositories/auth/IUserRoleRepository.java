@@ -1,4 +1,4 @@
-package de.cookyapp.persistence.repositories;
+package de.cookyapp.persistence.repositories.auth;
 
 import de.cookyapp.persistence.entities.UserRoleEntity;
 import de.cookyapp.persistence.entities.UserRoleEntityPK;

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.cookyapp.persistence.entities.UserEntity;
-import de.cookyapp.persistence.repositories.IUserCrudRepository;
+import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 
 /**
  * Created by Mario on 03.05.2016.

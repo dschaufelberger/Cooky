@@ -6,9 +6,9 @@ import java.util.List;
 import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.RecipeIngredientEntity;
-import de.cookyapp.persistence.repositories.IIngredientCrudRepository;
-import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
-import de.cookyapp.persistence.repositories.IRecipeIngredientCrudRepository;
+import de.cookyapp.persistence.repositories.app.IIngredientCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeIngredientCrudRepository;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.exceptions.InvalidId;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
@@ -55,39 +55,42 @@ public class IngredientCrudService implements IIngredientCrudService {
             throw new InvalidId( recipeId );
         } else {
             for ( Ingredient ingredient : ingredients ) {
-                RecipeIngredientEntity entity = this.recipeIngredientCrudRepository.findByRecipeIdAndIngredientId( recipeId, ingredient.getId() );
-                IngredientEntity ingredientEntity = this.ingredientCrudRepository.findOne( ingredient.getId() );
+                if ( ingredient != null ) {
+                    RecipeIngredientEntity entity = this.recipeIngredientCrudRepository.findByRecipeIdAndIngredientId( recipeId, ingredient.getId() );
+                    IngredientEntity ingredientEntity = this.ingredientCrudRepository.findOne( ingredient.getId() );
 
-                if ( entity == null ) {
-                    if ( ingredientEntity == null ) {
-                        ingredientEntity = new IngredientEntity();
-                        ingredientEntity.setName( ingredient.getName() );
-                        ingredientEntity = this.ingredientCrudRepository.save( ingredientEntity );
-                    }
-
-                    entity = new RecipeIngredientEntity();
-                    entity.setRecipe( recipe );
-                } else {
-                    if ( ingredient != null && !ingredientEntity.getName().equals( ingredient.getName() ) ) {
-                        ingredientEntity = this.ingredientCrudRepository.findFirstByName( ingredient.getName() );
-
+                    if ( entity == null ) {
                         if ( ingredientEntity == null ) {
                             ingredientEntity = new IngredientEntity();
                             ingredientEntity.setName( ingredient.getName() );
                             ingredientEntity = this.ingredientCrudRepository.save( ingredientEntity );
                         }
-                    }
-                }
 
-                entity.setAmount( ingredient.getAmount() );
-                entity.setUnit( ingredient.getUnit() );
-                entity.setIngredient( ingredientEntity );
-                updatedEntities.add( entity );
+                        entity = new RecipeIngredientEntity();
+                        entity.setRecipe( recipe );
+                    } else {
+                        if ( !ingredientEntity.getName().equals( ingredient.getName() ) ) {
+                            ingredientEntity = this.ingredientCrudRepository.findFirstByName( ingredient.getName() );
+
+                            if ( ingredientEntity == null ) {
+                                ingredientEntity = new IngredientEntity();
+                                ingredientEntity.setName( ingredient.getName() );
+                                ingredientEntity = this.ingredientCrudRepository.save( ingredientEntity );
+                            }
+                        }
+                    }
+
+                    entity.setAmount( ingredient.getAmount() );
+                    entity.setUnit( ingredient.getUnit() );
+                    entity.setIngredient( ingredientEntity );
+                    updatedEntities.add( entity );
+                }
             }
         }
 
         List<RecipeIngredientEntity> allIngredients = this.recipeIngredientCrudRepository.findByRecipeId( recipeId );
         List<RecipeIngredientEntity> entitiesToDelete = new ArrayList<>();
+
         for ( RecipeIngredientEntity recipeIngredient : allIngredients ) {
             if ( !updatedEntities.contains( recipeIngredient ) ) {
                 entitiesToDelete.add( recipeIngredient );

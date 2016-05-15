@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.cookyapp.persistence.entities.AddressEntity;
-import de.cookyapp.persistence.repositories.IAddressCrudRepository;
+import de.cookyapp.persistence.repositories.app.IAddressCrudRepository;
 
 /**
  * Created by Mario on 03.05.2016.

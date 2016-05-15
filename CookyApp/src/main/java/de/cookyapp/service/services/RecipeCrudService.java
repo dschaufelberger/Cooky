@@ -14,10 +14,11 @@ import javax.servlet.ServletContext;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
-import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
-import de.cookyapp.persistence.repositories.IUserCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 public class RecipeCrudService implements IRecipeCrudService {
+    private Logger logger = Logger.getLogger( RecipeCrudService.class );
+
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
@@ -159,7 +162,7 @@ public class RecipeCrudService implements IRecipeCrudService {
             BufferedImage bufferedImage = ImageIO.read( inputStream );
             ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
         } catch ( IOException ex ) {
-            ex.toString();
+            logger.error( ex.getMessage(), ex );
         }
 
         return imagePath;
