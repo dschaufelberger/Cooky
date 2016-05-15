@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import de.cookyapp.persistence.entities.RecipeEntity;
-import de.cookyapp.persistence.repositories.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
 
 /**
  * Created by Dominik Schaufelberger on 26.04.2016.

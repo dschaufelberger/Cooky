@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
-import de.cookyapp.persistence.repositories.IUserCrudRepository;
+import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.services.interfaces.IUserCrudService;

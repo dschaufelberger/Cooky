@@ -24,12 +24,12 @@
 
     <tx:annotation-driven transaction-manager="applicationTransactionManager" />
 
-    <jpa:repositories base-package="de.cookyapp.persistence.repositories"
+    <jpa:repositories base-package="de.cookyapp.persistence.repositories.app"
                       entity-manager-factory-ref="applicationEntityManagerFactory"
                       transaction-manager-ref="applicationTransactionManager" />
-    <jpa:repositories base-package="de.cookyapp.persistence.repositories"
+    <jpa:repositories base-package="de.cookyapp.persistence.repositories.auth"
                       entity-manager-factory-ref="authenticationEntityManageFactory"
-                      transaction-manager-ref="applicationTransactionManager" />
+                      transaction-manager-ref="authenticationTransactionManager" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="order" value="2" />
@@ -41,15 +41,15 @@
 
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-    <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
-        <property name="username" value="tomcat7" />
-        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
-    </bean>
     <bean id="applicationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev" />
+        <property name="username" value="tomcat7" />
+        <property name="password" value="GTURiMRd8owaLw3MO4hv" />
+    </bean>
+    <bean id="authenticationDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/Cooky_Dev_Users" />
         <property name="username" value="tomcat7" />
         <property name="password" value="GTURiMRd8owaLw3MO4hv" />
     </bean>
@@ -77,6 +77,8 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
             </props>
         </property>
     </bean>
@@ -87,5 +89,4 @@
     <bean id="authenticationTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="authenticationEntityManageFactory" />
     </bean>
-
 </beans>

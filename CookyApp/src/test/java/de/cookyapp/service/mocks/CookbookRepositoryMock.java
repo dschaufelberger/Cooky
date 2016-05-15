@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import de.cookyapp.enums.CookbookVisibility;
 import de.cookyapp.persistence.entities.CookbookEntity;
-import de.cookyapp.persistence.repositories.ICookbookRepository;
+import de.cookyapp.persistence.repositories.app.ICookbookRepository;
 
 /**
  * Created by Dominik Schaufelberger on 07.05.2016.

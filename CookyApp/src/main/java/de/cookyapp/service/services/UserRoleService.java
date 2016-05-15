@@ -1,14 +1,17 @@
 package de.cookyapp.service.services;
 
+import java.util.Collection;
+
 import de.cookyapp.enums.Role;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.entities.UserRoleEntity;
 import de.cookyapp.persistence.entities.UserRoleEntityPK;
-import de.cookyapp.persistence.repositories.IUserCrudRepository;
-import de.cookyapp.persistence.repositories.IUserRoleRepository;
+import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
+import de.cookyapp.persistence.repositories.auth.IUserRoleRepository;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.services.interfaces.IUserRoleService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserRoleService implements IUserRoleService {
+    private Logger logger = Logger.getLogger( UserRoleService.class );
     private IUserRoleRepository roleRepository;
     private IUserCrudRepository userRepository;
 
@@ -26,6 +30,15 @@ public class UserRoleService implements IUserRoleService {
     public UserRoleService( IUserRoleRepository recipeRepository, IUserCrudRepository userRepository ) {
         this.roleRepository = recipeRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public void getAllRoles() {
+        Collection<UserRoleEntity> roles = this.roleRepository.findAll();
+
+        for ( UserRoleEntity role : roles ) {
+            logger.debug( role.getUsername() + " : " + role.getRole() );
+        }
     }
 
     @Override
@@ -44,11 +57,11 @@ public class UserRoleService implements IUserRoleService {
         id.setRole( role.name() );
         id.setUsername( user.getUsername() );
 
-        if ( this.roleRepository.findOne( id ) == null ) {
+        if ( this.roleRepository.findByUsernameAndRole( userEntity.getUsername(), role.name() ) == null ) {
             UserRoleEntity roleEntity = new UserRoleEntity();
             roleEntity.setRole( role.name() );
             roleEntity.setUsername( userEntity.getUsername() );
-            this.roleRepository.save( roleEntity );
+            UserRoleEntity entity = this.roleRepository.save( roleEntity );
         }
     }
 
