@@ -209,7 +209,7 @@ public class RecipeController {
                 }
                 imageService.saveImage( recipeId, bufferedImage );
             } catch ( Exception ex ) {
-                ex.toString();
+                logger.error( ex.getMessage(), ex );
             }
         }
     }
