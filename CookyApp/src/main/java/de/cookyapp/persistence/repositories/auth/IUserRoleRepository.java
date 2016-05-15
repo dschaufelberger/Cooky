@@ -1,7 +1,5 @@
 package de.cookyapp.persistence.repositories.auth;
 
-import java.util.Collection;
-
 import de.cookyapp.persistence.entities.UserRoleEntity;
 import de.cookyapp.persistence.entities.UserRoleEntityPK;
 import org.springframework.data.repository.Repository;
@@ -15,8 +13,4 @@ public interface IUserRoleRepository extends Repository<UserRoleEntity, UserRole
     void delete( UserRoleEntity deleted );
 
     UserRoleEntity findOne( UserRoleEntityPK id );
-
-    UserRoleEntity findByUsernameAndRole( String username, String role );
-
-    Collection<UserRoleEntity> findAll();
 }

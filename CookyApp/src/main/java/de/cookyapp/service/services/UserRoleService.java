@@ -1,7 +1,5 @@
 package de.cookyapp.service.services;
 
-import java.util.Collection;
-
 import de.cookyapp.enums.Role;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.entities.UserRoleEntity;
@@ -33,15 +31,6 @@ public class UserRoleService implements IUserRoleService {
     }
 
     @Override
-    public void getAllRoles() {
-        Collection<UserRoleEntity> roles = this.roleRepository.findAll();
-
-        for ( UserRoleEntity role : roles ) {
-            logger.debug( role.getUsername() + " : " + role.getRole() );
-        }
-    }
-
-    @Override
     public void addRoleToUser( User user, Role role ) {
         if ( user == null || role == null ) {
             throw new IllegalArgumentException();
@@ -57,7 +46,7 @@ public class UserRoleService implements IUserRoleService {
         id.setRole( role.name() );
         id.setUsername( user.getUsername() );
 
-        if ( this.roleRepository.findByUsernameAndRole( userEntity.getUsername(), role.name() ) == null ) {
+        if ( this.roleRepository.findOne( id ) == null ) {
             UserRoleEntity roleEntity = new UserRoleEntity();
             roleEntity.setRole( role.name() );
             roleEntity.setUsername( userEntity.getUsername() );
