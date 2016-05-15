@@ -70,13 +70,11 @@ public class AddressService implements IAddressService {
                 boolean isAuthorized = addressEntity.equals( userEntity.getAddress() );
 
                 if ( isAuthorized ) {
-                    if ( addressEntity != null ) {
-                        addressEntity.setStreet( address.getStreet() );
-                        addressEntity.setPostcode( address.getPostcode() );
-                        addressEntity.setHouseNumber( address.getHouseNumber() );
-                        addressEntity.setCity( address.getCity() );
-                        this.addressCrudRepository.save( addressEntity );
-                    }
+                    addressEntity.setStreet( address.getStreet() );
+                    addressEntity.setPostcode( address.getPostcode() );
+                    addressEntity.setHouseNumber( address.getHouseNumber() );
+                    addressEntity.setCity( address.getCity() );
+                    this.addressCrudRepository.save( addressEntity );
                 }
             } else {
                 throw new UserNotAuthorized();

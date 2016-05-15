@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.enums.AccountState;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
@@ -24,11 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserCrudService implements IUserCrudService {
     private IUserCrudRepository userCrudRepository;
     private IAuthenticationFacade authentication;
+    private IUserAuthorization userAuthorization;
 
     @Autowired
-    public UserCrudService( IUserCrudRepository userCrudRepository, IAuthenticationFacade authenticationFacade ) {
+    public UserCrudService( IUserCrudRepository userCrudRepository, IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization ) {
         this.userCrudRepository = userCrudRepository;
         this.authentication = authenticationFacade;
+        this.userAuthorization = userAuthorization;
     }
 
     @Override
@@ -36,10 +39,9 @@ public class UserCrudService implements IUserCrudService {
         if ( username != null && !username.isEmpty() ) {
             boolean isAuthorized = this.authentication.getAuthentication().getName().equals( username );
 
-            //TODO [dodo] define authority roles and check if the current authority is authorized for this action.
-            //if (!isAuthorized) {
-            //    isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" );
-            //}
+            if ( !isAuthorized ) {
+                isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" );
+            }
 
             if ( isAuthorized ) {
                 UserEntity userEntity = this.userCrudRepository.findByUsername( username );
@@ -85,13 +87,12 @@ public class UserCrudService implements IUserCrudService {
     public void updateUser( User user ) {
         UserEntity userEntity = this.userCrudRepository.findOne( user.getId() );
         if ( userEntity != null ) {
-            //TODO [dodo] define authority roles and check if the current authority is authorized for this action
             Authentication authentication = this.authentication.getAuthentication();
-            boolean isAuthorized = true;    //authentication.getName().equals( user.getUsername() );
+            boolean isAuthorized = authentication.getName().equals( user.getUsername() );
 
-            //if ( !isAuthorized ) {
-            //    isAuthorized = this.userAuthorization.hasAuthority( authentication, "COOKY_ADMIN" );
-            //}
+            if ( !isAuthorized ) {
+                isAuthorized = this.userAuthorization.hasAuthority( authentication, "COOKY_ADMIN" );
+            }
 
             if ( isAuthorized ) {
                 userEntity.setForename( user.getForename() );
@@ -106,8 +107,7 @@ public class UserCrudService implements IUserCrudService {
 
     @Override
     public User getUserByID( int userID ) {
-        //TODO [dodo] define authority roles and check if the current authority is authorized for this action
-        boolean isAuthorized = true;    // this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
+        boolean isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
         User user = null;
 
         if ( isAuthorized ) {
@@ -119,8 +119,7 @@ public class UserCrudService implements IUserCrudService {
 
     @Override
     public User getUserByUsername( String username ) {
-        //TODO [dodo] define authority roles and check if the current authority is authorized for this action
-        boolean isAuthorized = true;    // this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
+        boolean isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_USER" );
         User user = null;
 
         if ( isAuthorized ) {
@@ -163,10 +162,9 @@ public class UserCrudService implements IUserCrudService {
         if ( userEntity != null ) {
             boolean isAuthorized = this.authentication.getAuthentication().getName().equals( userEntity.getUsername() );
 
-            //TODO [dodo] define authority roles and check if the current authority is authorized for this action.
-            //if (!isAuthorized) {
-            //    isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" );
-            //}
+            if ( !isAuthorized ) {
+                isAuthorized = this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" );
+            }
 
             if ( isAuthorized ) {
                 this.userCrudRepository.delete( userEntity );
