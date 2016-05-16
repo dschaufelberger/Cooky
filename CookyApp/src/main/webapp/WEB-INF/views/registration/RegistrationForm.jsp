@@ -115,6 +115,6 @@
             changeYear: true,
             dateForm: 'yy-mm-dd'
         });
-        $('#birthdate').datepicker('option', 'dateFormat', 'dd-mm-yy');
+        $('#birthdate').datepicker('option', 'dateFormat', 'yy-mm-dd');
     });
 </script>
