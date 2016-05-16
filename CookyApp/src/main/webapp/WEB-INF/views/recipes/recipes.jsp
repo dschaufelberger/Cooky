@@ -23,7 +23,7 @@
             <c:forEach var="recipes" items="${recipesList}">
                 <div class="col-md-4">
                     <div class="thumbnail">
-
+                        <img src="${recipes.imageFileName}" alt="ALT NAME" class="img-responsive" />
                         <div class="caption">
                             <h3>${recipes.name}</h3>
 

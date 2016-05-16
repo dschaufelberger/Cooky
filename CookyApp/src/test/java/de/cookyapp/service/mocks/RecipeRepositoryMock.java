@@ -45,7 +45,7 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
     public List<RecipeEntity> findByNameContaining( String name ) {
         return this.entities
                 .stream()
-                .filter( entity -> entity.getName().contains( name ) )
+                .filter( entity -> entity.getName().equals( name ) )
                 .collect( Collectors.toList() );
     }
 
