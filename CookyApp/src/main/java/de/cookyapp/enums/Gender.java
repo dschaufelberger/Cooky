@@ -4,7 +4,7 @@ package de.cookyapp.enums;
  * Created by Dominik Schaufelberger on 27.11.2015.
  */
 public enum Gender {
-    MALE( "Herr" ), FEMALE( "Frau" );
+    MALE( "Male" ), FEMALE( "Female" );
 
     private String addressForm;
 

@@ -7,7 +7,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.Gender;
-import de.cookyapp.persistence.entities.UserEntity;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,35 +15,39 @@ import org.springframework.format.annotation.DateTimeFormat;
  * Created by Dominik Schaufelberger on 27.11.2015.
  */
 public class User {
-    @NotBlank( message = "Der Benutzername muss zwischen 8 und 30 Zeichen lang sein." )
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß][a-zA-ZäöüÄÖÜß0-9_-]*$", message = "Der Benutzername muss mit einem Buchstaben beginnen und darf neben Buchstaben und Zahlen folgende Sonderzeichen enthalten: \"-_\"." )
-    @Size( min = 5, max = 30, message = "Der Benutzername muss zwischen 8 und 30 Zeichen lang sein." )
+    @NotBlank( message = "The username must have a length between 8 and 30 characters." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß][a-zA-ZäöüÄÖÜß0-9_-]*$", message = "The username must begin with a letter, can contain letters and numbers and the following special characters: \"-_\"." )
+    @Size( min = 5, max = 30, message = "The username must have a length between 8 and 30 characters." )
     private String username;
 
-    @NotBlank( message = "Das Passwort muss zwischen 8 und 32 Zeichen lang sein." )
-    @Size( min = 8, max = 32, message = "Das Passwort muss zwischen 8 und 32 Zeichen lang sein." )
-    @Pattern( regexp = "^[a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*]*$", message = "Das Passwort darf nur aus Klein- und Großbuchstaben, Zahlen und folgenden Sonderzeichen bestehen: \"-_!#?()$%&+*\"." )
+    @NotBlank( message = "The password must have a length between 8 and 32 characters." )
+    @Size( min = 8, max = 32, message = "The password must have a length between 8 and 32 characters." )
+    @Pattern( regexp = "^[a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*]*$", message = "The password can only contain letters, numbers and the following special characters: \"-_!#?()$%&+*\"." )
     private String password;
 
-    @NotBlank( message = "Bitte geben Sie Ihren Namen an." )
-    @Size( max = 30, message = "Der Name darf nur aus 30 Zeichen bestehen." )
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben und einem Bindestrich bestehen." )
+    @NotBlank( message = "The password must have a length between 8 and 32 characters." )
+    @Size( min = 8, max = 32, message = "The password must have a length between 8 and 32 characters." )
+    @Pattern( regexp = "^[a-zA-Z0-9äöüÄÖÜß\\-_!#\\?\\(\\)\\$%&\\+\\*]*$", message = "The password can only contain letters, numbers and the following special characters: \"-_!#?()$%&+*\"." )
+    private String repeatedPassword;
+
+    @NotBlank( message = "Please enter your forename." )
+    @Size( max = 30, message = "The forename can only contain a maximum of 30 characters." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*$", message = "The forename can only contain letters and hyphens and must begin with a letter." )
     private String forename;
 
-    @NotBlank( message = "Bitte geben Sie Ihren Namen an." )
-    @Size( max = 30, message = "Der Name darf nur aus maximal 30 Zeichen bestehen." )
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben und einem Bindestrich bestehen." )
+    @NotBlank( message = "Please enter your surname.\"" )
+    @Size( max = 30, message = "The surname can only contain a maximum of 30 characters." )
+    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß]+(-?[a-zA-ZäöüÄÖÜß]*)*$", message = "The surname can only contain letters and hyphens and must begin with a letter." )
     private String surname;
 
     @Email
-    @Size( max = 50, message = "Die Email darf nur aus maximal 50 Zeichen bestehen." )
+    @Size( max = 50, message = "The email can only contain a maximum of 50 characters." )
     private String email;
 
-    @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
+    @NotNull( message = "Please select one of the values." )
     private Gender gender;
 
-    @NotNull( message = "Bitte geben Sie ein gültiges Datum an." )
-    //@Past(message = "Das Geburtstdatum muss in der Vergangeheit liegen.")
+    @NotNull( message = "Please enter a valid date in the yyyy-mm-dd format." )
     @DateTimeFormat( iso = DateTimeFormat.ISO.DATE )
     private LocalDate birthdate;
 
@@ -52,18 +55,6 @@ public class User {
     private Address address;
 
     public User() {
-    }
-
-    public UserEntity createUserEntity() {
-        UserEntity user = new UserEntity();
-        user.setUsername( this.username );
-        user.setForename( this.forename );
-        user.setSurname( this.surname );
-        user.setEmail( this.email );
-        user.setGender( this.gender );
-        user.setBirthdate( this.birthdate );
-
-        return user;
     }
 
     public String getUsername() {
@@ -75,7 +66,6 @@ public class User {
         this.username = username;
     }
 
-
     public String getPassword() {
         return password;
     }
@@ -84,6 +74,14 @@ public class User {
         this.password = password;
     }
 
+
+    public String getRepeatedPassword() {
+        return repeatedPassword;
+    }
+
+    public void setRepeatedPassword( String repeatedPassword ) {
+        this.repeatedPassword = repeatedPassword;
+    }
 
     public String getForename() {
         return forename;
