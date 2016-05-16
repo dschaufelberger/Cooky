@@ -4,4 +4,4 @@
 
 [![Quality Gate](http://sonarqube.it.dh-karlsruhe.de/api/badges/gate?key=Cooky%3ACookyApp)](http://sonarqube.it.dh-karlsruhe.de/overview?id=Cooky%3ACookyApp)
 
-[![Code Coverage](http://sonarqube.it.dh-karlsruhe.de/api/badges/gate?key=Cooky%3ACookyApp&metric=overall_coverage)](http://sonarqube.it.dh-karlsruhe.de/overview?id=Cooky%3ACookyApp)
+[![Quality Gate](http://sonarqube.it.dh-karlsruhe.de/api/badges/gate?key=Cooky%3ACookyApp&metric=coverage)](http://sonarqube.it.dh-karlsruhe.de/overview?id=Cooky%3ACookyApp)
