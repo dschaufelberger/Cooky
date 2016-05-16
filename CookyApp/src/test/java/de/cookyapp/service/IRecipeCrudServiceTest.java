@@ -9,6 +9,8 @@ import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.mocks.AuthenticationMock;
+import de.cookyapp.service.mocks.CookbookContentServiceMock;
+import de.cookyapp.service.mocks.CookbookManagementServiceMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
 import de.cookyapp.service.mocks.UserRepositoryMock;
 import de.cookyapp.service.services.RecipeCrudService;
@@ -29,6 +31,8 @@ public class IRecipeCrudServiceTest {
     private RecipeRepositoryMock recipeRepositoryMock;
     private UserRepositoryMock userRepositoryMock;
     private AuthenticationMock authenticationMock;
+    private CookbookContentServiceMock cookbookContentServiceMock;
+    private CookbookManagementServiceMock cookbookManagementServiceMock;
     private IRecipeCrudService service;
 
     @Before
@@ -36,7 +40,10 @@ public class IRecipeCrudServiceTest {
         recipeRepositoryMock = new RecipeRepositoryMock();
         authenticationMock = new AuthenticationMock( "CookyTester" );
         this.userRepositoryMock = new UserRepositoryMock();
-        this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock, null, null, null );
+        this.cookbookContentServiceMock = new CookbookContentServiceMock();
+        this.cookbookManagementServiceMock = new CookbookManagementServiceMock();
+        this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock, null,
+                this.cookbookManagementServiceMock, this.cookbookContentServiceMock );
     }
 
     @Test
