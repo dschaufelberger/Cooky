@@ -59,8 +59,8 @@
                 </p>
                 <ul class="list-inline banner-social-buttons">
                     <li>
-                        <a href="https://github.com/1developer1/Cooky" class="btn btn-default btn-lg"><i
-                                class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                        <a href="https://github.com/1developer1/Cooky" class="btn btn-default btn-lg"><span
+                                class="fa fa-github fa-fw"></span> <span class="network-name">Github</span></a>
                     </li>
                 </ul>
             </div>
