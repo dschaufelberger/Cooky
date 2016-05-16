@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:sec="http://www.springframework.org/schema/security"
-       xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
@@ -15,7 +16,8 @@
 
         <sec:form-login login-page="/signin"
                         default-target-url="/"
-                        authentication-failure-url="/signinError" />
+                        authentication-failure-url="/signinError"
+                        authentication-success-handler-ref="authenticationSuccessHandler" />
         <sec:logout logout-success-url="/" />
     </sec:http>
 
@@ -23,7 +25,8 @@
         <sec:authentication-provider>
             <sec:password-encoder hash="bcrypt" />
             <sec:user-service>
-                <sec:user name="dominik" authorities="ROLE_ADMIN" password="$2a$04$MxmpUuzUeLIYJ.iew2/LxeTxTUnx0FPlDUPH.Ta7GrgzSMNJY733u" />
+                <sec:user name="dominik" authorities="ROLE_ADMIN"
+                          password="$2a$04$MxmpUuzUeLIYJ.iew2/LxeTxTUnx0FPlDUPH.Ta7GrgzSMNJY733u" />
             </sec:user-service>
         </sec:authentication-provider>
     </sec:authentication-manager>
@@ -38,4 +41,9 @@
                                    authorities-by-username-query="SELECT Username, Role FROM UserRole WHERE Username = ?" />
         </sec:authentication-provider>
     </sec:authentication-manager>
-</beans>
+
+    <!-- Override the default authenticationSuccessHandler beans from Spring to provide update functionality for user accounts on successfull login. -->
+    <beans:bean id="authenticationSuccessHandler" class="de.cookyapp.web.CookyAuthenticationSuccessHandler">
+        <beans:property name="useReferer" value="true" />
+    </beans:bean>
+</beans:beans>
