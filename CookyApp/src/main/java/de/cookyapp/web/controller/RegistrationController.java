@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import javax.validation.Valid;
 
 import de.cookyapp.enums.AccountState;
-import de.cookyapp.enums.CookbookVisibility;
 import de.cookyapp.enums.Role;
 import de.cookyapp.service.services.interfaces.IAddressService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -79,11 +78,8 @@ public class RegistrationController {
                 address.setPostcode( user.getAddress().getPostcode() );
                 this.addressService.createAddressForUser( userDTO.getId(), address );
 
-                cookbookDTO.setName( "personalCookbook-" + userDTO.getUsername() );
-                cookbookDTO.setVisibility( CookbookVisibility.PRIVATE );
-                cookbookDTO.setCreationTime( LocalDateTime.now() );
-                cookbookDTO.setOwner( userDTO );
-                this.cookbookManagementService.createDefaultCookbookForUser( userDTO.getId(), cookbookDTO );
+
+                this.cookbookManagementService.createDefaultCookbookForUser( userDTO );
 
                 this.roleService.addRoleToUser( userDTO, Role.COOKY_USER );
 
