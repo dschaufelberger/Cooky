@@ -11,21 +11,32 @@ function addRow (){
     count++;
 };
 
-$(document).ready(function () {
-    var rating = $(".currentRating").val();
-    for (var i = 1; i <= rating; i++) {
-        $(".star" + i).addClass("cooky-recipeRating");
-    }
 
+
+$(document).ready(function () {
     $('.ratings_stars').hover(
         function () {
-            $(this).prevAll().andSelf().addClass("cooky-recipeRating");
+            $(this).prevAll().andSelf().addClass("glyphicon-star");
+            $(this).prevAll().andSelf().removeClass("glyphicon-star-empty");
         },
         function () {
-            $(this).nextAll().andSelf().removeClass("cooky-recipeRating");
+            $(this).nextAll().removeClass("glyphicon-star");
+            $(this).nextAll().addClass("glyphicon-star-empty");
         }
     );
 });
+
+function rate (id) {
+    var currentRating = id;
+    var recipeId = $(".recipeId").val();
+    $.ajax({
+        url: "../rateRecipe",
+        data: {
+            id : recipeId,
+            rating : currentRating
+        },
+    });
+}
 
 
 

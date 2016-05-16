@@ -112,37 +112,24 @@
             </div>
         </div>
     </form:form>
-    <form:form action="/recipes/rateRecipe">
-        <input type="hidden" name="id" value="${recipe.id}">
-        <input type="hidden" class="currentRating" name="currentRating" value="${recipe.rating}">
-        <table>
-            <tr>
-                <td>
-                    <button type="submit" class="button_transparent" value="1" name="rating">
-                        <i class="glyphicon glyphicon-star-empty ratings_stars star1"></i>
-                    </button>
-                </td>
-                <td>
-                    <button type="submit" class="button_transparent" value="2" name="rating">
-                        <i class="glyphicon glyphicon-star-empty ratings_stars star2"></i>
-                    </button>
-                </td>
-                <td>
-                    <button type="submit" class="button_transparent" value="3" name="rating">
-                        <i class="glyphicon glyphicon-star-empty ratings_stars star3"></i>
-                    </button>
-                </td>
-                <td>
-                    <button type="submit" class="button_transparent" value="4" name="rating">
-                        <i class="glyphicon glyphicon-star-empty ratings_stars star4"></i>
-                    </button>
-                </td>
-                <td>
-                    <button type="submit" class="button_transparent" value="5" name="rating">
-                        <i class="glyphicon glyphicon-star-empty ratings_stars star5"></i>
-                    </button>
-                </td>
-            </tr>
-        </table>
-    </form:form>
+    <div class="input-group">
+        <input type="hidden" name="id" class="recipeId" value="${recipe.id}">
+
+        <div class="rating">
+            <c:set var="recipeRating" scope="request" value="${recipe.rating}" />
+            <c:set var="count" value="1" />
+            <c:forEach begin="1" end="${recipeRating}">
+                <span id="${count}" class="glyphicon glyphicon-star cooky-recipeRating ratings_stars"
+                      onclick="rate(this.id)">
+                </span>
+                <c:set var="count" value="${count + 1}" />
+            </c:forEach>
+            <c:forEach begin="${recipeRating + 1}" end="5">
+                 <span id="${count}" class="glyphicon glyphicon-star-empty cooky-recipeRating ratings_stars"
+                       onclick="rate(this.id)">
+                 </span>
+                <c:set var="count" value="${count + 1}" />
+            </c:forEach>
+        </div>
+    </div>
 </div>

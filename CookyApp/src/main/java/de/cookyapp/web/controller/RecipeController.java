@@ -179,9 +179,10 @@ public class RecipeController {
     }
 
     @RequestMapping( "/rateRecipe" )
-    public ModelAndView rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
+    public String rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
         ratingService.rateRecipe( id, rating );
-        return showDetail( id );
+        String view = "redirect:/recipes/view/" + id;
+        return view;
     }
 
     private void validateImage( MultipartFile image ) {

@@ -33,10 +33,14 @@ public class RecipeRatingService implements IRecipeRatingService {
             if ( currentRecipe.getRating() != 0 ) {
                 currentRating = currentRecipe.getRating();
                 ratingCount = currentRecipe.getVoteCount();
-                int multiplier = ratingCount;
+                double multiplier = ratingCount;
                 ratingCount++;
-                int calculatedRating = 0;
-                calculatedRating = ((currentRating * multiplier) + rating) / ratingCount;
+                double calculatedRating = 0;
+                if (currentRating == 1) {
+                    calculatedRating = Math.ceil((((currentRating * multiplier) + rating) / ratingCount));
+                } else {
+                    calculatedRating = ((currentRating * multiplier) + rating) / ratingCount;
+                }
                 newRating = (byte) calculatedRating;
             } else {
                 newRating = rating;
