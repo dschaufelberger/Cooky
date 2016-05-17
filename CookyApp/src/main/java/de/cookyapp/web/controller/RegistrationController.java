@@ -83,7 +83,7 @@ public class RegistrationController {
                     this.addressService.createAddressForUser( userDTO.getId(), address );
 
 
-                    this.cookbookManagementService.createDefaultCookbookForUser( userDTO );
+                this.cookbookManagementService.createDefaultCookbookForUser( userDTO );
 
                     this.roleService.addRoleToUser( userDTO, Role.COOKY_USER );
 
