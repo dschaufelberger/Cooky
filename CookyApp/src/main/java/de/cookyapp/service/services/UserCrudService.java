@@ -74,7 +74,6 @@ public class UserCrudService implements IUserCrudService {
         userEntity.setEmail( user.getEmail() );
         userEntity.setGender( user.getGender() );
         userEntity.setBirthdate( user.getBirthdate() );
-        userEntity.setRegistrationDate( user.getRegistrationDate() );
         userEntity.setLastLoginDate( user.getLastLoginDate() );
         userEntity.setAccountState( user.getAccountState() );
         userEntity.setAccountState( AccountState.REGISTERED );
