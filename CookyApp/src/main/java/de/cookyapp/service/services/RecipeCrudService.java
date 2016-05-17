@@ -149,7 +149,7 @@ public class RecipeCrudService implements IRecipeCrudService {
 
     @Override
     public List<Recipe> searchRecipesContaining( String searchTerm ) {
-        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByNameLike( searchTerm );
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByNameContaining( searchTerm );
         List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
         return recipes;
     }

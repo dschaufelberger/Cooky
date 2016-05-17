@@ -1,12 +1,9 @@
 package de.cookyapp.web.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
@@ -19,6 +16,7 @@ import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
+import de.cookyapp.web.viewmodel.Search;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +54,7 @@ public class RecipeController {
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
+        this.userAuthorization = userAuthorization;
         this.ratingService = ratingService;
     }
 
@@ -70,6 +69,13 @@ public class RecipeController {
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
+    }
+
+    @RequestMapping ( "/search" )
+    public ModelAndView search ( @ModelAttribute ("search") @Valid Search search) {
+        ModelAndView modelAndView = new ModelAndView( "RecipeOverviewTile" );
+        modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ));
+        return modelAndView;
     }
 
     @RequestMapping( "/editRecipe" )
