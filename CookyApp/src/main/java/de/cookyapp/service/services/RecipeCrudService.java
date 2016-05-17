@@ -174,7 +174,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
         String path = generatePath();
         String completePath = path + imageGUID;
-        String imagePath = "resources/images/recipes/" + imageGUID;
+        String imagePath = "/resources/images/recipes/" + imageGUID;
         InputStream inputStream = new ByteArrayInputStream( bytes );
         try {
             BufferedImage bufferedImage = ImageIO.read( inputStream );
