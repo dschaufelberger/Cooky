@@ -16,7 +16,11 @@ import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
+import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
+import de.cookyapp.service.dto.User;
+import de.cookyapp.service.services.interfaces.ICookbookContentService;
+import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +39,19 @@ public class RecipeCrudService implements IRecipeCrudService {
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
     private ServletContext servletContext;
+    private ICookbookManagementService cookbookManagementService;
+    private ICookbookContentService cookbookContentService;
 
     @Autowired
-    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext ) {
+    public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
+                              IUserCrudRepository userCrudRepository, ServletContext servletContext,
+                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
         this.servletContext = servletContext;
+        this.cookbookManagementService = cookbookManagementService;
+        this.cookbookContentService = cookbookContentService;
     }
 
     @Override
@@ -78,6 +88,14 @@ public class RecipeCrudService implements IRecipeCrudService {
             recipeEntity.setAuthor( user );
 
             recipeEntity = recipeCrudRepository.save( recipeEntity );
+
+            Cookbook defaultCookbook = this.cookbookManagementService.getDefaultCookbookForUser( user.getId() );
+
+            if ( defaultCookbook == null ) {
+                defaultCookbook = this.cookbookManagementService.createDefaultCookbookForUser( new User( user ) );
+            }
+
+            this.cookbookContentService.addRecipeToDefaultCookbook( defaultCookbook.getId(), recipeEntity.getId() );
 
             return new Recipe( recipeEntity );
         }
