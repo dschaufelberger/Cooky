@@ -8,6 +8,11 @@
   Time: 12:26
   To change this template use File | Settings | File Templates.
 --%>
+<script>
+    var body = $('body');
+    body.addClass('cooky-seamless-background');
+</script>
+
 <div class="container-fluid cooky-fill">
     <div class="row cooky-fill">
         <div class="col-md-2"></div>

@@ -18,21 +18,23 @@
     <link href="<spring:url value="/resources/css/jQueryUI/jquery-ui.structure.min.css" />" rel="stylesheet">
     <link href="<spring:url value="/resources/css/jQueryUI/jquery-ui.theme.min.css" />" rel="stylesheet">
     <link href="<spring:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet">
-    <%--<link href="<spring:url value="/resources/css/cooky/big-picture-css.css"/>" rel="stylesheet">--%>
     <link href="<spring:url value="/resources/css/cooky/cooky-general.css"/>" rel="stylesheet">
+    <link href="<spring:url value="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"/>"
+          rel="stylesheet" type="text/css">
+    <link href="<spring:url value="http://fonts.googleapis.com/css?family=Montserrat:400,700"/>" rel="stylesheet"
+          type="text/css">
+    <!-- Grayscale Theme CSS -->
+    <link href="<spring:url value="/resources/css/cooky/grayscale.css" />" rel="stylesheet">
+    <!-- Font Awesome fonts -->
+    <link href="<spring:url value="/resources/css/font-awesome.min.css" />" rel="stylesheet">
+
     <script src="<spring:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<spring:url value="/resources/js/jQueryUI/jquery-ui.min.js" />"></script>
     <script src="<spring:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
-    <!-- Custom CSS -->
-    <link href="<spring:url value="/resources/css/cooky/grayscale.css" />" rel="stylesheet">
-    <!-- Custom Fonts -->
-    <link href="<spring:url value="/resources/css/font-awesome.min.css" />" rel="stylesheet">
     <!-- Plugin JavaScript -->
     <script src="<spring:url value="/resources/js/jquery/jquery.easing.min.js" />"></script>
-    <!-- Custom Theme JavaScript -->
+    <!-- Grayscale Them JavaScript -->
     <script src="<spring:url value="/resources/js/grayscale/grayscale.js" />"></script>
-    <link href="<spring:url value="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"/>" rel="stylesheet" type="text/css">
-    <link href="<spring:url value="http://fonts.googleapis.com/css?family=Montserrat:400,700"/>" rel="stylesheet" type="text/css">
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
@@ -40,7 +42,6 @@
 
 <tiles:insertAttribute name="navigation" />
 <tiles:insertAttribute name="content" />
-
 
 <%--<div>
     <tiles:insertAttribute name="footer" />
