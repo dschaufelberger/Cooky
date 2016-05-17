@@ -10,6 +10,7 @@
     <sec:http authentication-manager-ref="jdbc-auth">
         <sec:intercept-url pattern="/cookbooks/**" access="hasAuthority('COOKY_USER')" />
         <sec:intercept-url pattern="/account/**" access="hasAuthority('COOKY_USER')" />
+        <sec:intercept-url pattern="/recipes/search" access="permitAll()" />
         <sec:intercept-url pattern="/recipes/view/*" access="permitAll()" />
         <sec:intercept-url pattern="/recipes" access="permitAll()" />
         <sec:intercept-url pattern="/recipes/**" access="hasAuthority('COOKY_USER')" />
