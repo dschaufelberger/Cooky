@@ -13,7 +13,7 @@
 
 <div class="form-group">
     <form:input path="searchQuery" cssClass="form-control input-sm" />
-        <button class="btn btn-default btn-sm" type="submit">
-            <span class="glyphicon glyphicon-search"></span>
-        </button>
+    <button class="btn btn-default btn-sm" type="submit">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
 </div>

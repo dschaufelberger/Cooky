@@ -11,19 +11,19 @@ public class Search {
 
     private List<String> filter;
 
-    public void setSearchQuery ( String searchQuery ) {
-        this.searchQuery = searchQuery;
-    }
-
-    public String getSearchQuery () {
+    public String getSearchQuery() {
         return searchQuery;
     }
 
-    public void setFilter ( List<String> filter ) {
-        this.filter = filter;
+    public void setSearchQuery( String searchQuery ) {
+        this.searchQuery = searchQuery;
     }
 
-    public List<String> getFilter () {
+    public List<String> getFilter() {
         return filter;
+    }
+
+    public void setFilter( List<String> filter ) {
+        this.filter = filter;
     }
 }

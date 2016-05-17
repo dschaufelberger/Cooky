@@ -1,13 +1,15 @@
 package de.cookyapp.web.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.exceptions.InvalidContentFileFormat;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
@@ -47,14 +49,12 @@ public class RecipeController {
 
     @Autowired
     public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
-                             IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService,
-                             IRecipeRatingService ratingService ) {
+                             IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
-        this.userAuthorization = userAuthorization;
         this.ratingService = ratingService;
     }
 
@@ -71,10 +71,10 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
-    @RequestMapping ( "/search" )
-    public ModelAndView search ( @ModelAttribute ("search") @Valid Search search) {
+    @RequestMapping( "/search" )
+    public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
         ModelAndView modelAndView = new ModelAndView( "RecipeOverviewTile" );
-        modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ));
+        modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
         return modelAndView;
     }
 

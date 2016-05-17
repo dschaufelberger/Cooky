@@ -46,11 +46,11 @@
                     </sec:authorize>
                 </li>
             </ul>
-            <form:form action="/recipes/search" method="post" cssClass="navbar-form navbar-left" commandName="search">
-                <div class="form-group">
-                    <cooky:search />
-                </div>
-            </form:form>
+            <%--<form:form action="/recipes/search" method="post" cssClass="navbar-form navbar-left" commandName="search">--%>
+            <%--<div class="form-group">--%>
+            <%--<cooky:search />--%>
+            <%--</div>--%>
+            <%--</form:form>--%>
         </div>
         <!-- /.navbar-collapse -->
     </div>
