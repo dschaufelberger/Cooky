@@ -137,14 +137,22 @@ public class CookbookManagementService implements ICookbookManagementService {
     }
 
     @Override
-    public Cookbook createDefaultCookbookForUser( int userId, Cookbook cookbook ) {
-        UserEntity user = this.userCrudRepository.findOne( userId );
+    public Cookbook createDefaultCookbookForUser( User user ) {
+        if ( user != null ) {
+            UserEntity owner = this.userCrudRepository.findOne( user.getId() );
 
-        if ( user == null ) {
-            throw new InvalidUserId( userId );
-        } else {
-            return createCookbook( user, cookbook, true );
+            if ( owner == null ) {
+                throw new InvalidUserId( user.getId() );
+            }
+
+            Cookbook cookbook = new Cookbook();
+            cookbook.setName( "personalCookbook-" + owner.getUsername() );
+            cookbook.setVisibility( CookbookVisibility.PRIVATE );
+
+            return createCookbook( owner, cookbook, true );
         }
+
+        return null;
     }
 
     @Override
@@ -197,14 +205,14 @@ public class CookbookManagementService implements ICookbookManagementService {
         return new Cookbook( cookbookEntity );
     }
 
-    private Cookbook createCookbook( UserEntity user, Cookbook cookbook, boolean isDefault ) {
+    private Cookbook createCookbook( UserEntity owner, Cookbook cookbook, boolean isDefault ) {
         CookbookEntity cookbookEntity = new CookbookEntity();
         cookbookEntity.setName( cookbook.getName() );
         cookbookEntity.setShortDescription( cookbook.getShortDescription() );
         cookbookEntity.setVisibility( cookbook.getVisibility() );
         cookbookEntity.setCreationTime( LocalDateTime.now() );
         cookbookEntity.setIsDefault( isDefault );
-        cookbookEntity.setOwner( user );
+        cookbookEntity.setOwner( owner );
 
         CookbookEntity entity = this.cookbookRepository.save( cookbookEntity );
 

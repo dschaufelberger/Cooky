@@ -39,6 +39,15 @@ public class CookbookContentService implements ICookbookContentService {
 
     @Override
     public void addRecipeToCookbook( int cookbookId, int recipeId ) {
+        addRecipe( cookbookId, recipeId, true );
+    }
+
+    @Override
+    public void addRecipeToDefaultCookbook( int cookbookId, int recipeId ) {
+        addRecipe( cookbookId, recipeId, false );
+    }
+
+    private void addRecipe( int cookbookId, int recipeId, boolean makeDefaultCheck ) {
         String currentUsername = this.authentication.getAuthentication().getName();
         CookbookEntity cookbook = this.cookbookRepository.findOne( cookbookId );
 
@@ -46,7 +55,7 @@ public class CookbookContentService implements ICookbookContentService {
             throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
 
-        if ( cookbook.getIsDefault() ) {
+        if ( makeDefaultCheck && cookbook.getIsDefault() ) {
             throw new DefaultCookbookContenNotManagable();
         }
 

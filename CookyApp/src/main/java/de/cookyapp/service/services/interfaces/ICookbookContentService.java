@@ -8,6 +8,8 @@ import java.util.List;
 public interface ICookbookContentService {
     void addRecipeToCookbook( int cookbookID, int recipeID );
 
+    void addRecipeToDefaultCookbook( int cookbookId, int recipeId );
+
     void addRecipesToCookbook( int cookbookID, List<Integer> recipesIDs );
 
     void removeRecipeFromCookbook( int cookbookID, int recipeID );

@@ -3,6 +3,7 @@ package de.cookyapp.service.services.interfaces;
 import java.util.List;
 
 import de.cookyapp.service.dto.Cookbook;
+import de.cookyapp.service.dto.User;
 
 /**
  * Created by Dominik Schaufelberger on 21.04.2016.
@@ -20,7 +21,7 @@ public interface ICookbookManagementService {
 
     Cookbook createCookbookForUser( int userId, Cookbook cookbook );
 
-    Cookbook createDefaultCookbookForUser( int userId, Cookbook cookbook );
+    Cookbook createDefaultCookbookForUser( User user );
 
     void saveCookbook( Cookbook cookbook );
 
