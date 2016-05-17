@@ -7,9 +7,8 @@ html, body {
 }
 
 .cooky-background {
-    /* background: url("../../images/food_background.jpg") repeat;
-    background-size: 600px; */
-    background-color: #00FF99;
+    background: url("../../images/cooky-seamless-food.png") repeat;
+    background-size: 250px;
 }
 
 .cooky-mainContent {
