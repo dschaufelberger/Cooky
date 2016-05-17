@@ -11,21 +11,32 @@ function addRow (){
     count++;
 };
 
-$(document).ready(function () {
-    var rating = $(".currentRating").val();
-    for (var i = 1; i <= rating; i++) {
-        $(".star" + i).addClass("starImage");
-    }
 
+
+$(document).ready(function () {
     $('.ratings_stars').hover(
         function () {
-            $(this).prevAll().andSelf().addClass("starImage");
+            $(this).prevAll().andSelf().addClass("glyphicon-star");
+            $(this).prevAll().andSelf().removeClass("glyphicon-star-empty");
         },
         function () {
-            $(this).nextAll().andSelf().removeClass("starImage");
+            $(this).nextAll().removeClass("glyphicon-star");
+            $(this).nextAll().addClass("glyphicon-star-empty");
         }
     );
 });
+
+function rate (id) {
+    var currentRating = id;
+    var recipeId = $(".recipeId").val();
+    $.ajax({
+        url: "../rateRecipe",
+        data: {
+            id : recipeId,
+            rating : currentRating
+        },
+    });
+}
 
 
 
