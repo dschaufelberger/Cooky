@@ -58,38 +58,43 @@ public class RegistrationController {
             boolean isUniqueUser = !this.userCrudService.userExsists( user.getUsername() );
 
             if ( isUniqueUser ) {
-                de.cookyapp.service.dto.User userDTO = new de.cookyapp.service.dto.User();
-                de.cookyapp.service.dto.Address address = new de.cookyapp.service.dto.Address();
-                de.cookyapp.service.dto.Cookbook cookbookDTO = new de.cookyapp.service.dto.Cookbook();
+                if ( !user.getPassword().equals( user.getRepeatedPassword() ) ) {
+                    bindingResult.addError( new FieldError( "user", "repeatedPassword", "The repeated password was not correct." ) );
+                    view = "RegistrationTile";
+                } else {
+                    de.cookyapp.service.dto.User userDTO = new de.cookyapp.service.dto.User();
+                    de.cookyapp.service.dto.Address address = new de.cookyapp.service.dto.Address();
+                    de.cookyapp.service.dto.Cookbook cookbookDTO = new de.cookyapp.service.dto.Cookbook();
 
-                userDTO.setForename( user.getForename() );
-                userDTO.setSurname( user.getSurname() );
-                userDTO.setUsername( user.getUsername() );
-                userDTO.setPassword( this.passwordEncoder.encode( user.getPassword() ) );
-                userDTO.setGender( user.getGender() );
-                userDTO.setBirthdate( user.getBirthdate() );
-                userDTO.setEmail( user.getEmail() );
-                userDTO.setAccountState( AccountState.REGISTERED );
-                userDTO.setRegistrationDate( LocalDateTime.now() );
-                userDTO = this.userCrudService.createUser( userDTO );
+                    userDTO.setForename( user.getForename() );
+                    userDTO.setSurname( user.getSurname() );
+                    userDTO.setUsername( user.getUsername() );
+                    userDTO.setPassword( this.passwordEncoder.encode( user.getPassword() ) );
+                    userDTO.setGender( user.getGender() );
+                    userDTO.setBirthdate( user.getBirthdate() );
+                    userDTO.setEmail( user.getEmail() );
+                    userDTO.setAccountState( AccountState.REGISTERED );
+                    userDTO.setRegistrationDate( LocalDateTime.now() );
+                    userDTO = this.userCrudService.createUser( userDTO );
 
-                address.setStreet( user.getAddress().getStreet() );
-                address.setHouseNumber( user.getAddress().getHouseNumber() );
-                address.setCity( user.getAddress().getCity() );
-                address.setPostcode( user.getAddress().getPostcode() );
-                this.addressService.createAddressForUser( userDTO.getId(), address );
+                    address.setStreet( user.getAddress().getStreet() );
+                    address.setHouseNumber( user.getAddress().getHouseNumber() );
+                    address.setCity( user.getAddress().getCity() );
+                    address.setPostcode( user.getAddress().getPostcode() );
+                    this.addressService.createAddressForUser( userDTO.getId(), address );
 
-                cookbookDTO.setName( "personalCookbook-" + userDTO.getUsername() );
-                cookbookDTO.setVisibility( CookbookVisibility.PRIVATE );
-                cookbookDTO.setCreationTime( LocalDateTime.now() );
-                cookbookDTO.setOwner( userDTO );
-                this.cookbookManagementService.createDefaultCookbookForUser( userDTO.getId(), cookbookDTO );
+                    cookbookDTO.setName( "personalCookbook-" + userDTO.getUsername() );
+                    cookbookDTO.setVisibility( CookbookVisibility.PRIVATE );
+                    cookbookDTO.setCreationTime( LocalDateTime.now() );
+                    cookbookDTO.setOwner( userDTO );
+                    this.cookbookManagementService.createDefaultCookbookForUser( userDTO.getId(), cookbookDTO );
 
-                this.roleService.addRoleToUser( userDTO, Role.COOKY_USER );
+                    this.roleService.addRoleToUser( userDTO, Role.COOKY_USER );
 
-                view = "RegistrationSuccessTile";
+                    view = "RegistrationSuccessTile";
+                }
             } else {
-                bindingResult.addError( new FieldError( "user", "username", "Der Benutzername ist bereits vergeben. Bitte wählen Sie einen Neuen." ) );
+                bindingResult.addError( new FieldError( "user", "username", "The selected username already exists. Please select another one." ) );
                 view = "RegistrationTile";
             }
         }
