@@ -23,28 +23,28 @@
     <script src="<spring:url value="/resources/js/jquery/jquery-1.11.3.min.js" />"></script>
     <script src="<spring:url value="/resources/js/jQueryUI/jquery-ui.min.js" />"></script>
     <script src="<spring:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
+    <!-- Custom CSS -->
+    <link href="<spring:url value="/resources/css/cooky/grayscale.css" />" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="<spring:url value="/resources/css/font-awesome.min.css" />" rel="stylesheet">
+    <!-- Plugin JavaScript -->
+    <script src="<spring:url value="/resources/js/jquery/jquery.easing.min.js" />"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="<spring:url value="/resources/js/grayscale/grayscale.js" />"></script>
+    <link href="<spring:url value="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"/>" rel="stylesheet" type="text/css">
+    <link href="<spring:url value="http://fonts.googleapis.com/css?family=Montserrat:400,700"/>" rel="stylesheet" type="text/css">
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
 <body class="cooky-background">
 
 <tiles:insertAttribute name="navigation" />
+<tiles:insertAttribute name="content" />
 
-<div class="container-fluid cooky-fill">
-    <div class="row cooky-fill">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 cooky-mainContent cooky-fill">
-            <div class="row">
-                <div class="col-md-12">
-                    <tiles:insertAttribute name="content" />
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2"></div>
-    </div>
-</div>
+
 <%--<div>
     <tiles:insertAttribute name="footer" />
 </div>--%>
+
 </body>
 </html>

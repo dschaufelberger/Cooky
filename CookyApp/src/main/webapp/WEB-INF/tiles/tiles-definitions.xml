@@ -21,65 +21,73 @@
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
+    <definition name="page.definition" extends="base.definition">
+        <put-attribute name="title" value="" />
+        <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
+        <put-attribute name="content" value="/WEB-INF/views/layout/PageContent.jsp"/>
+        <put-attribute name="pagecontent" value="" cascade="true"/>
+        <!--<put-attribute name="footer" value="" />-->
+    </definition>
+
 
     <!-- The Welcome page for all users, mapped to the root "/" -->
     <definition name="WelcomeTile" extends="base.definition">
         <put-attribute name="title" value="Cooky" />
-        <put-attribute name="content" value="/WEB-INF/views/Index.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/LandingPage.jsp"/>
     </definition>
 
 
     <!-- The Registration page containing the registration form, mapped to "/registration" -->
-    <definition name="RegistrationTile" extends="base.definition">
+    <definition name="RegistrationTile" extends="page.definition">
         <put-attribute name="title" value="Register on Cooky." />
-        <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationForm.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/registration/RegistrationForm.jsp" cascade="true" />
     </definition>
 
 
     <!-- The Registration page containing the registration form, mapped to "/registration" -->
-    <definition name="RegistrationSuccessTile" extends="base.definition">
+    <definition name="RegistrationSuccessTile" extends="page.definition">
         <put-attribute name="title" value="Welcome to Cooky!" />
-        <put-attribute name="content" value="/WEB-INF/views/registration/RegistrationSuccess.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/registration/RegistrationSuccess.jsp" cascade="true" />
     </definition>
 
     <!-- The Login page containing the login form, mapped to "/signin" -->
-    <definition name="LoginTile" extends="base.definition">
+    <definition name="LoginTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Login" />
-        <put-attribute name="content" value="/WEB-INF/views/authentication/LoginPage.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/authentication/LoginPage.jsp" cascade="true" />
     </definition>
 
     <!-- The Login error page containing the login form, mapped to "/signinError" -->
-    <definition name="LoginErrorTile" extends="base.definition">
+    <definition name="LoginErrorTile" extends="page.definition">
         <put-attribute name="title" value="Login Error"/>
-        <put-attribute name="content" value="/WEB-INF/views/authentication/LoginError.jsp"/>
+        <put-attribute name="pagecontent" value="/WEB-INF/views/authentication/LoginError.jsp" cascade="true"/>
     </definition>
 
     <!-- A users personal account management page, mapped to "/account/details" -->
-    <definition name="UserAccountTile" extends="base.definition">
+    <definition name="UserAccountTile" extends="page.definition">
         <put-attribute name="title" value="Your Account Information"/>
-        <put-attribute name="content" value="/WEB-INF/views/account/accountForm.jsp"/>
+        <put-attribute name="pagecontent" value="/WEB-INF/views/account/accountForm.jsp" cascade="true"/>
     </definition>
 
     <!-- A users personal password management page, mapped to "/account/changePassword" -->
-    <definition name="UserPasswordTile" extends="base.definition">
+    <definition name="UserPasswordTile" extends="page.definition">
         <put-attribute name="title" value="Your Account Information"/>
-        <put-attribute name="content" value="/WEB-INF/views/account/passwordForm.jsp"/>
+        <put-attribute name="pagecontent" value="/WEB-INF/views/account/passwordForm.jsp" cascade="true"/>
     </definition>
 
     <!-- The recipe overview page, mapped to "/recipes -->
-    <definition name="RecipeOverviewTile" extends="base.definition">
+    <definition name="RecipeOverviewTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipes" />
-        <put-attribute name="content" value="/WEB-INF/views/recipes/recipes.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/recipes.jsp" cascade="true" />
     </definition>
 
-    <!-- Page to create a new recipe, mapped to "/recipes/create" -->
-    <definition name="RecipeEditTile" extends="base.definition">
+    <!-- Page to create a new recipe, mapped to "/recipes/create -->
+    <definition name="RecipeEditTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
-        <put-attribute name="content" value="/WEB-INF/views/recipes/editRecipe.jsp" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/editRecipe.jsp" cascade="true" />
     </definition>
 
-    <!-- The recipe overview page, mapped to "/recipes" -->
-    <definition name="RecipeCreationTile" extends="base.definition">
+    <!-- The recipe overview page, mapped to "/recipes -->
+    <definition name="RecipeCreationTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="content" value="/WEB-INF/views/recipes/addRecipe.jsp" />
     </definition>
