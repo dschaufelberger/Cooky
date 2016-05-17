@@ -11,9 +11,12 @@
 
 <jsp:useBean id="search" class="de.cookyapp.web.viewmodel.Search" scope="request" />
 
-<div class="form-group">
-    <form:input path="searchQuery" cssClass="form-control input-sm" />
-    <button class="btn btn-default btn-sm" type="submit">
-        <span class="glyphicon glyphicon-search"></span>
+<div class="input-group">
+    <form:input path="searchQuery" cssClass="form-control input-sm" placeholder="Search for recipes..." />
     </button>
+    <span class="input-group-btn">
+        <button type="submit" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </span>
 </div>

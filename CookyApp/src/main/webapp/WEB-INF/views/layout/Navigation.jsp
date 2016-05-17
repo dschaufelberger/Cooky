@@ -17,35 +17,52 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li>
+                    <a href="/recipes">Recipes</a>
+                </li>
                 <sec:authorize access="isAuthenticated()">
                     <li>
-                        <a href="/account/details">My Account</a>
-                    </li>
-                    <li>
-                        <a href="/recipes">My Recipes</a>
+                        <a href="/cookbooks/manage">Cookbooks</a>
                     </li>
                 </sec:authorize>
             </ul>
+
+            <form:form action="/recipes/search" method="post" cssClass="navbar-form navbar-left" commandName="search">
+                <cooky:search />
+            </form:form>
+
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <%-- If the user is authorized render "Hallo 'Username'" and set the icon to a user icon. --%>
+                    <%-- If the user is authorized render "Hello 'Username'" and set the icon to a user icon. --%>
                     <sec:authorize access="isAuthenticated()">
-                        <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown">
-                            Hallo <sec:authentication property="principal.username" />
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Hello <sec:authentication property="principal.username" />
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="glyphicon glyphicon-log-out" href="#"
-                                   onclick="$('form#logOutForm').submit();">Logout</a>
-                                <form:form id="logOutForm" method="post" action="/logout">
-                                </form:form>
+                                <a href="/account/details">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    Manage Account
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="$('form#logOutForm').submit();">
+                                    <form:form id="logOutForm" method="post" action="/logout">
+                                    </form:form>
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    Logout
+                                </a>
+                                    <%--"--%>
+                                    <%----%>
                             </li>
                         </ul>
                     </sec:authorize>
 
                     <%-- Else render "Login" and a login icon. --%>
                     <sec:authorize access="not isAuthenticated()">
-                        <a class="dropdown-toggle glyphicon glyphicon-log-in" data-toggle="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-log-in"></span>
                             Login
                         </a>
 
@@ -55,11 +72,6 @@
                     </sec:authorize>
                 </li>
             </ul>
-            <form:form action="/recipes/search" method="post" cssClass="navbar-form navbar-left" commandName="search">
-                <div class="form-group">
-                    <cooky:search />
-                </div>
-            </form:form>
         </div>
         <!-- /.navbar-collapse -->
     </div>

@@ -38,7 +38,7 @@
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>
-<body class="cooky-background">
+<body>
 
 <tiles:insertAttribute name="navigation" />
 <tiles:insertAttribute name="content" />

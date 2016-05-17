@@ -25,7 +25,7 @@
         <put-attribute name="title" value="" />
         <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
         <put-attribute name="content" value="/WEB-INF/views/layout/PageContent.jsp" />
-        <put-attribute name="pagecontent" value="" cascade="true" />
+        <put-attribute name="pagecontent" value="" />
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
@@ -104,7 +104,7 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/cookbooks/Manage.jsp" cascade="true" />
     </definition>
 
-    <!-- The detail page for a specific cookbook, mapped to "/cookbooks/manage/view/{id}"-->
+    <!-- The detail page for a specific cookbook, mapped to "/cookbooks/view/{id}"-->
     <definition name="CookbookDetailTile" extends="page.definition">
         <put-attribute name="title" value="Cookbook details" />
         <put-attribute name="pagecontent" value="/WEB-INF/views/cookbooks/Detail.jsp" cascade="true" />
