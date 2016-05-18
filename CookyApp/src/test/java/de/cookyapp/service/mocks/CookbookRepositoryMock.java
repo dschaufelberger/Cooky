@@ -74,6 +74,11 @@ public class CookbookRepositoryMock implements ICookbookRepository {
     }
 
     @Override
+    public CookbookEntity findOneByIdAndRecipes_Id( int id, int Id ) {
+        return null;
+    }
+
+    @Override
     public void delete( CookbookEntity deleted ) {
         this.entities.remove( deleted );
     }
