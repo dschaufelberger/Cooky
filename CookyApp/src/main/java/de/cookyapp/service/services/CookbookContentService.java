@@ -63,13 +63,16 @@ public class CookbookContentService implements ICookbookContentService {
         if ( recipe == null ) {
             throw new InvalidRecipeId( "Recipe with the given id does not exist.", recipeId );
         }
-        if ( !cookbook.getOwner().getUsername().equals( currentUsername )
-                || !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
+        if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
             throw new UserNotAuthorized();
         }
 
-        cookbook.getRecipes().add( recipe );
-        this.cookbookRepository.save( cookbook );
+        CookbookEntity existingMapping = this.cookbookRepository.findOneByIdAndRecipes_Id( cookbook.getId(), recipe.getId() );
+
+        if ( existingMapping == null ) {
+            cookbook.getRecipes().add( recipe );
+            this.cookbookRepository.save( cookbook );
+        }
     }
 
     @Override
@@ -95,11 +98,12 @@ public class CookbookContentService implements ICookbookContentService {
             if ( recipe == null ) {
                 throw new InvalidRecipeId( "Recipe with the given id does not exist.", id );
             }
-            if ( !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
-                throw new UserNotAuthorized();
-            }
 
-            recipes.add( recipe );
+            CookbookEntity existingMapping = this.cookbookRepository.findOneByIdAndRecipes_Id( cookbook.getId(), recipe.getId() );
+
+            if ( existingMapping == null ) {
+                recipes.add( recipe );
+            }
         }
 
         cookbook.getRecipes().addAll( recipes );
@@ -121,8 +125,7 @@ public class CookbookContentService implements ICookbookContentService {
 
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
         if ( recipe != null ) {
-            if ( !cookbook.getOwner().getUsername().equals( currentUsername )
-                    || !recipe.getAuthor().getUsername().equals( currentUsername ) ) {
+            if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
                 throw new UserNotAuthorized();
             }
 

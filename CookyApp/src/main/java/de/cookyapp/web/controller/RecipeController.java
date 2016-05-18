@@ -6,19 +6,25 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.service.dto.Ingredient;
+import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidContentFileFormat;
+import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
+import de.cookyapp.web.viewmodel.RecipeCookbook;
 import de.cookyapp.web.viewmodel.Search;
+import de.cookyapp.web.viewmodel.cookbook.Cookbook;
+import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,16 +52,19 @@ public class RecipeController {
     private IImageUploadService imageService;
     private IRecipeRatingService ratingService;
     private IAuthenticationFacade authentication;
+    private ICookbookManagementService cookbookManagementService;
 
     @Autowired
     public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
-                             IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService ) {
+                             IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService,
+                             ICookbookManagementService cookbookManagementService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
         this.ratingService = ratingService;
+        this.cookbookManagementService = cookbookManagementService;
     }
 
     @RequestMapping( method = RequestMethod.GET )
@@ -135,8 +144,26 @@ public class RecipeController {
             ingredientCollection.add( ingredientViewmodel );
         }
         recipe.setIngredients( ingredientCollection );
-        ModelAndView model = new ModelAndView( "RecipeEditTile", "recipe", recipe );
-        return model;
+
+        ModelAndView modelAndView = new ModelAndView( "RecipeEditTile" );
+        User user = this.userCrudService.getCurrentUser();
+
+        if ( user != null ) {
+            List<Cookbook> cookbooks = this.cookbookManagementService.getCookbooksForUser( user.getId() )
+                    .stream()
+                    .map( cookbook -> new Cookbook( cookbook ) )
+                    .collect( Collectors.toList() );
+
+            CookbookOverview overview = new CookbookOverview( cookbooks );
+            RecipeCookbook cookbook = new RecipeCookbook();
+            cookbook.setRecipeId( id );
+
+            modelAndView.addObject( "cookbook", cookbook );
+            modelAndView.addObject( "cookbookOverview", overview );
+        }
+        modelAndView.addObject( "recipe", recipe );
+
+        return modelAndView;
     }
 
     @RequestMapping( "/goToAddRecipe" )

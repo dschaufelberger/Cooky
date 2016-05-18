@@ -9,6 +9,7 @@ import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.RecipeCookbook;
 import de.cookyapp.web.viewmodel.cookbook.Cookbook;
 import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
 import de.cookyapp.web.viewmodel.cookbook.Recipe;
@@ -149,6 +150,13 @@ public class CookbookController {
         modelAndView.addObject( "cookbookOverview", cookbookOverview );
 
         return modelAndView;
+    }
+
+    @RequestMapping( value = "/addRecipe" )
+    public String addRecipeToCookbook( RecipeCookbook cookbook ) {
+        this.contentService.addRecipeToCookbook( cookbook.getCookbookId(), cookbook.getRecipeId() );
+
+        return "redirect:/recipes/view/" + cookbook.getRecipeId();
     }
 
     @RequestMapping( value = "/removeRecipe" )

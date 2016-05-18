@@ -12,73 +12,67 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="container">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapsePrivate">Private Cookbooks</a>
-                    <span class="glyphicon glyphicon-user"></span>
-                </h4>
-            </div>
-            <div id="collapsePrivate" class="panel-collapse collapse">
-                <ul class="list-group cooky-cookbooks">
-                    <c:forEach var="currentCookbook" items="${overview.privateCookbooks}">
-                        <li class="list-group-item">
-                                <cooky:cookbookItem item="${currentCookbook}" />
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapsePrivate">Private Cookbooks</a>
+                <span class="glyphicon glyphicon-user"></span>
+            </h4>
+        </div>
+        <div id="collapsePrivate" class="panel-collapse collapse">
+            <ul class="list-group cooky-cookbooks">
+                <c:forEach var="currentCookbook" items="${overview.privateCookbooks}">
+                    <li class="list-group-item">
+                        <cooky:cookbookItem item="${currentCookbook}" />
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapseShared">Shared Cookbooks</a>
-                    <span class="glyphicon glyphicon-share-alt"></span>
-                </h4>
-            </div>
-            <div id="collapseShared" class="panel-collapse collapse">
-                <ul class="list-group cooky-cookbooks">
-                    <c:forEach var="currentCookbook" items="${overview.sharedCookbooks}">
-                        <li class="list-group-item">
-                                <cooky:cookbookItem item="${currentCookbook}" />
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapseShared">Shared Cookbooks</a>
+                <span class="glyphicon glyphicon-share-alt"></span>
+            </h4>
+        </div>
+        <div id="collapseShared" class="panel-collapse collapse">
+            <ul class="list-group cooky-cookbooks">
+                <c:forEach var="currentCookbook" items="${overview.sharedCookbooks}">
+                    <li class="list-group-item">
+                        <cooky:cookbookItem item="${currentCookbook}" />
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapsePublic">Public Cookbooks</a>
-                    <span class="glyphicon glyphicon-eye-open"></span>
-                </h4>
-            </div>
-            <div id="collapsePublic" class="panel-collapse collapse">
-                <ul class="list-group cooky-cookbooks">
-                    <c:forEach var="currentCookbook" items="${overview.publicCookbooks}">
-                        <li class="list-group-item">
-                            <cooky:cookbookItem item="${currentCookbook}" />
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapsePublic">Public Cookbooks</a>
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </h4>
+        </div>
+        <div id="collapsePublic" class="panel-collapse collapse">
+            <ul class="list-group cooky-cookbooks">
+                <c:forEach var="currentCookbook" items="${overview.publicCookbooks}">
+                    <li class="list-group-item">
+                        <cooky:cookbookItem item="${currentCookbook}" />
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </div>
 
-<div class="container">
+<div class="row">
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -90,8 +84,10 @@
                     </div>
                     <div class="form-group">
                         <form:label path="shortDescription">Description</form:label>
-                        <form:textarea path="shortDescription" cssClass="form-control" placeholder="A short description for the Cookbook ..." />
-                        <form:errors path="shortDescription" cssClass="cooky-formError" element="div class=\"col-sm-10\"" />
+                        <form:textarea path="shortDescription" cssClass="form-control"
+                                       placeholder="A short description for the Cookbook ..." />
+                        <form:errors path="shortDescription" cssClass="cooky-formError"
+                                     element="div class=\"col-sm-10\"" />
                     </div>
                     <div class="form-group">
                         <form:label path="visibility">Visibility</form:label>
@@ -114,7 +110,7 @@
         var settings = {
             method: 'POST',
             url: '/cookbooks/manage/delete/' + id,
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
             }
         }
