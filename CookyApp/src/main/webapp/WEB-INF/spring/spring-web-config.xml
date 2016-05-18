@@ -20,7 +20,7 @@
     <context:annotation-config />
 
     <mvc:annotation-driven />
-    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/resources/**" location="/resources/" cache-period="31556926" />
 
     <tx:annotation-driven transaction-manager="applicationTransactionManager" />
 
