@@ -50,6 +50,11 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
     }
 
     @Override
+    public List<RecipeEntity> findTop10ByOrderByRatingDesc() {
+        return null;
+    }
+
+    @Override
     public void delete( RecipeEntity deleted ) {
         this.entities.remove( deleted );
     }
