@@ -136,7 +136,8 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
+
+    public List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
@@ -152,7 +153,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    private String byteArrayToFileLink( byte[] bytes ) {
+    public String byteArrayToFileLink( byte[] bytes ) {
         String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
         String path = generatePath();
         String completePath = path + imageGUID;
