@@ -20,19 +20,16 @@ public class Recipe {
 
     @NotBlank( message = "Bitte geben Sie einen Rezeptnamen an." )
     @Size( max = 100, message = "Der Name darf nur aus maximal 100 Zeichen bestehen." )
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9\\w\\s]+(-?[a-zA-ZäöüÄÖÜß0-9\\w\\s]*)*$", message = "Der Name darf nur aus Klein- und Großbuchstaben, einem Bindestrich und Zahlen bestehen." )
     private String name;
 
     @NotBlank( message = "Bitte geben Sie eine kurze Beschreibung des Rezpetes an" )
     @Size( max = 500, message = "Die Beschreibung darf höchstesn 500 Zeichen enthalten" )
-    @Pattern( regexp = "^[a-zA-ZäöüÄÖÜß0-9!?:()\\w\\s]+(-?[a-zA-ZäöüÄÖÜß0-9!?:()\\w\\s]*)*$", message = "Die Beschreibung darf nur aus Klein- und Großbuchstaben, Bindestrichen und Zahlen bestehen." )
     private String shortDescription;
 
     @Max( 255 )
     private Short serving;
 
     @NotBlank( message = "Bitte geben Sie die Zubereitungs Hinweise ein" )
-    @Pattern( regexp = "^[\\w\\säöüÄÖÜß!:()]+(-?[\\w\\säöüÄÖÜß:()]*)*$", message = "Die Zubereitungs Hinweise dürfen nur Klein- und Großbuchstaben, Zahlen, Bindestriche sowie Ausrufezeichen, Fragezeichen, Doppelpunkt und öffnende bzw. schließende Klammern" )
     private String preparation;
 
     @Max( value = 65535, message = "Werte nur bis 65535" )

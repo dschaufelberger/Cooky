@@ -225,7 +225,7 @@ public class RecipeController {
     }
 
     private void uploadImage( MultipartFile image, int recipeId ) {
-        if ( image != null ) {
+        if ( !image.isEmpty() ) {
             validateImage( image );
             InputStream inputStream = null;
             BufferedImage bufferedImage = null;
