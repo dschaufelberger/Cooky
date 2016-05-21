@@ -50,6 +50,11 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
     }
 
     @Override
+    public List<RecipeEntity> findByIngredientsIngredientNameIn(List<String> ingredientName) {
+        return null;
+    }
+
+    @Override
     public List<RecipeEntity> findByNameLike( String name ) {
         return this.entities
                 .stream()

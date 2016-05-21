@@ -80,6 +80,11 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/recipes.jsp" cascade="true" />
     </definition>
 
+    <definition name="RecipeSuggestionsTile" extends="page.definition">
+        <put-attribute name="title" value="Recipe Suggestions" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/suggestions.jsp" cascade="true" />
+    </definition>
+
     <!-- Page to create a new recipe, mapped to "/recipes/create -->
     <definition name="RecipeEditTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />

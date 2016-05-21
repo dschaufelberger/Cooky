@@ -20,6 +20,7 @@ import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.IngredientSuggestions;
 import de.cookyapp.web.viewmodel.Recipe;
 import de.cookyapp.web.viewmodel.RecipeCookbook;
 import de.cookyapp.web.viewmodel.Search;
@@ -209,6 +210,20 @@ public class RecipeController {
             view = "redirect:/recipes";
         }
         return view;
+    }
+
+    @RequestMapping("/suggestions")
+    public ModelAndView suggestions () {
+        ModelAndView model = new ModelAndView("RecipeSuggestionsTile", "ingredientSuggestion", new IngredientSuggestions());
+        return model;
+    }
+
+    @RequestMapping("/recipeSuggestions")
+    public ModelAndView recipeSuggestions (@ModelAttribute ( "suggestions" ) @Valid IngredientSuggestions suggestions) {
+        ModelAndView modelAndView;
+        modelAndView = new ModelAndView( "RecipeOverviewTile" );
+        modelAndView.addObject( "recipesList", recipeCrudService.recipeSuggestions(suggestions.getIngredients()) );
+        return modelAndView;
     }
 
     @RequestMapping( "/rateRecipe" )

@@ -154,6 +154,13 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
+    @Override
+    public List<Recipe> recipeSuggestions( List<String> ingredientNames ) {
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByIngredientsIngredientNameIn( ingredientNames );
+        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
+        return recipes;
+    }
+
     private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
         if ( entities != null ) {

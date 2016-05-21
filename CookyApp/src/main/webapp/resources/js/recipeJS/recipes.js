@@ -2,6 +2,8 @@
  * Created by Jasper on 29.11.2015.
  */
 var count = 1;
+var counter = 1;
+
 function addRow (){
     $(".ingredients tbody").append("<tr>" +
         "<td><form:input path='ingredients["+ count +"].name' /></td> " +
@@ -38,9 +40,19 @@ function rate (id) {
     });
 }
 
+function addIngredientRow() {
+    var fieldsFilled = true;
+    $(".ingredients").each(function () {
+        if ($(this).val() == "") {
+            fieldsFilled = false;
+            return false;
+        }
+    });
 
-
-
-
-
-
+    if (fieldsFilled) {
+        $("</br><input id='ingredients"+ counter +".name' name='ingredients["+ counter +"].name' " +
+            "onchange='addIngredientRow()' class='form-control ingredients' type='text' value=''>")
+            .appendTo(".ingredientSuggestions");
+        counter = counter + 1;
+    }
+};

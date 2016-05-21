@@ -14,4 +14,6 @@ public interface IRecipeCrudRepository extends IBaseCrudRepository<RecipeEntity,
 
     List<RecipeEntity> findByNameContaining( String name );
 
+    List<RecipeEntity> findByIngredientsIngredientNameIn( List<String> ingredientName );
+
 }
