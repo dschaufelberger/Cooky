@@ -30,7 +30,7 @@ function rate (id) {
     var currentRating = id;
     var recipeId = $(".recipeId").val();
     $.ajax({
-        url: "../rateRecipe",
+        url: "../rate",
         data: {
             id : recipeId,
             rating : currentRating

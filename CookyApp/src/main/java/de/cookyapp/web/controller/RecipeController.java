@@ -211,7 +211,7 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/rateRecipe" )
+    @RequestMapping( "/rate" )
     public String rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
         ratingService.rateRecipe( id, rating );
         String view = "redirect:/recipes/view/" + id;
