@@ -8,7 +8,11 @@
 <!-- and also the mapped url part. -->
 <!-- For better visibility in the controller files, please give a name ending with "Tile" -->
 <tiles-definitions>
-
+    <!--
+        ******************
+        ABSTRACT LAYOUT DEFINITIONS
+        ******************
+    -->
 
     <!-- This is the base definition for all web pages in the Cooky application -->
     <!-- Other Tiles definition have to extend this one as it specifies the base layout and contains the navigation -->
@@ -41,13 +45,30 @@
         <put-attribute name="errorContent" value="" />
     </definition>
 
-    <definition name="IdExceptionTile" extends="exception.definition">
-        <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/InvalidId.jsp" cascade="true" />
-    </definition>
 
+    <!--
+        ******************
+        ERROR PAGE DEFINITIONS
+        ******************
+    -->
     <definition name="DefaultExceptionTile" extends="exception.definition">
         <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/DefaultException.jsp" cascade="true" />
     </definition>
+
+    <definition name="UserNotAuthorizedTile" extends="exception.definition">
+        <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/UserNotAuthorized.jsp" cascade="true" />
+    </definition>
+
+    <definition name="InvalidCookbookIdTile" extends="exception.definition">
+        <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/InvalidCookbookId.jsp" cascade="true" />
+    </definition>
+
+
+    <!--
+        ******************
+        CONTENT PAGE DEFINITIONS
+        ******************
+    -->
 
     <!-- The Welcome page for all users, mapped to the root "/" -->
     <definition name="WelcomeTile" extends="base.definition">

@@ -9,7 +9,7 @@
 --%>
 
 <div class="alert alert-danger" role="alert">
-    <span><h3>Oops, something went wrong! Cooky could not handle your request.</h3></span>
+    <span><h3>Oops, something went wrong!</h3></span>
     <span>
         <tiles:insertAttribute name="errorContent" />
     </span>

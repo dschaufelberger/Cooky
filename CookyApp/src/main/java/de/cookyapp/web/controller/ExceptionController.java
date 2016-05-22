@@ -1,9 +1,13 @@
 package de.cookyapp.web.controller;
 
 import java.security.Principal;
+import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 
+import de.cookyapp.service.exceptions.InvalidCookbookId;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,12 +19,28 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionController {
     private Logger logger = Logger.getLogger( ExceptionController.class );
 
-    @ExceptionHandler( value = Exception.class )
-    public ModelAndView defaultExceptionHandler( Exception exception, Principal principal, HttpServletRequest request ) {
-        return createResponseModel( "DefaultExceptionTile", principal, request, exception );
+    @ExceptionHandler( value = UserNotAuthorized.class )
+    public ModelAndView userNotAuthorizedHandler( UserNotAuthorized exception, Principal principal, Authentication authentication, HttpServletRequest request ) {
+        ModelAndView model = createResponseModel( "UserNotAuthorizedTile", exception, principal, request );
+        model.addObject( "authorities", authentication != null ? authentication.getAuthorities() : new LinkedList<>() );
+
+        return model;
     }
 
-    private ModelAndView createResponseModel( String view, Principal principal, HttpServletRequest request, Exception exception ) {
+    @ExceptionHandler( value = InvalidCookbookId.class )
+    public ModelAndView invalidCookbookIdHandler( InvalidCookbookId exception, Principal principal, HttpServletRequest request ) {
+        ModelAndView model = createResponseModel( "InvalidCookbookIdTile", exception, principal, request );
+        model.addObject( "id", exception.getId() );
+
+        return model;
+    }
+
+    @ExceptionHandler( value = Exception.class )
+    public ModelAndView defaultExceptionHandler( Exception exception, Principal principal, HttpServletRequest request ) {
+        return createResponseModel( "DefaultExceptionTile", exception, principal, request );
+    }
+
+    private ModelAndView createResponseModel( String view, Exception exception, Principal principal, HttpServletRequest request ) {
         logger.error( "Cookyapp Exception (url=\"" + request.getRequestURL() + "\"" +
                 ", username=\"" + principal.getName() + "\")", exception );
 
