@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * Created by Dominik Schaufelberger on 22.05.2016.
@@ -38,6 +39,11 @@ public class ExceptionController {
     @ExceptionHandler( value = Exception.class )
     public ModelAndView defaultExceptionHandler( Exception exception, Principal principal, HttpServletRequest request ) {
         return createResponseModel( "DefaultExceptionTile", exception, principal, request );
+    }
+
+    @ExceptionHandler( value = NoHandlerFoundException.class )
+    public String noHandlerFound404() {
+        return "404Tile";
     }
 
     private ModelAndView createResponseModel( String view, Exception exception, Principal principal, HttpServletRequest request ) {

@@ -63,6 +63,9 @@
         <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/InvalidCookbookId.jsp" cascade="true" />
     </definition>
 
+    <definition name="404Tile" extends="exception.definition">
+        <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/404.jsp" cascade="true" />
+    </definition>
 
     <!--
         ******************
