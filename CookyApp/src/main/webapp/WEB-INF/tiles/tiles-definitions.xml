@@ -21,6 +21,9 @@
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
+    <!-- This is the base definition for all content pages in the Cooky application -->
+    <!-- Other Tiles definition have to extend this one as it specifies the base layout and contains the navigation -->
+    <!-- and probably soon the upcoming footer-->
     <definition name="page.definition" extends="base.definition">
         <put-attribute name="title" value="" />
         <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
@@ -29,6 +32,22 @@
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
+    <!-- This is the base definition for all error pages in the Cooky application -->
+    <!-- Other Tiles definition have to extend this one as it specifies the base layout and contains the navigation -->
+    <!-- and probably soon the upcoming footer-->
+    <definition name="exception.definition" extends="page.definition">
+        <put-attribute name="title" value="Opps. Cooky encountered an error." />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/layout/Exception.jsp" cascade="true" />
+        <put-attribute name="errorContent" value="" />
+    </definition>
+
+    <definition name="IdExceptionTile" extends="exception.definition">
+        <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/InvalidId.jsp" cascade="true" />
+    </definition>
+
+    <definition name="DefaultExceptionTile" extends="exception.definition">
+        <put-attribute name="errorContent" value="/WEB-INF/views/exceptions/DefaultException.jsp" cascade="true" />
+    </definition>
 
     <!-- The Welcome page for all users, mapped to the root "/" -->
     <definition name="WelcomeTile" extends="base.definition">
