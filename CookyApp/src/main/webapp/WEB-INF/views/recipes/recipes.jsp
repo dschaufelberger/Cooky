@@ -12,7 +12,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
+        <form id="addRecipe" action="/recipes/add" method="post">
             <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
             <sec:csrfInput />
         </form>

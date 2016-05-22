@@ -11,7 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
 <div class="container">
-    <form:form method="POST" action="/recipes/addRecipe" commandName="recipe" enctype="multipart/form-data">
+    <form:form method="POST" action="/recipes/create" commandName="recipe" enctype="multipart/form-data">
         <div class="col-md-6">
             <div class="input-group">
                 <table class="table table-hover">

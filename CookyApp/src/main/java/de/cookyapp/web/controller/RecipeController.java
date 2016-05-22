@@ -166,13 +166,13 @@ public class RecipeController {
         return modelAndView;
     }
 
-    @RequestMapping( "/goToAddRecipe" )
+    @RequestMapping( "/add" )
     public ModelAndView handleGoToRecipe() {
         ModelAndView model = new ModelAndView( "RecipeCreationTile", "recipe", new Recipe() );
         return model;
     }
 
-    @RequestMapping( value = "/addRecipe" )
+    @RequestMapping( value = "/create" )
     public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {
         String view;
         if ( bindingResult.hasErrors() ) {
