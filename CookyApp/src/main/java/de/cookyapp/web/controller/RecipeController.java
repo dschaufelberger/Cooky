@@ -74,7 +74,7 @@ public class RecipeController {
         return model;
     }
 
-    @RequestMapping( "/removeRecipe" )
+    @RequestMapping( "/remove" )
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";

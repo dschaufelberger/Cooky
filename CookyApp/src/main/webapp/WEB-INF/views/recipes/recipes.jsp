@@ -34,7 +34,7 @@
                     <a href="/recipes/view/${recipes.id}" class="btn btn-primary btn-block">Open</a>
                 </p>
 
-                <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
+                <form id="removeRecipe" action="/recipes/remove" method="post">
                     <p align="center">
                         <button type="submit" class="btn btn-primary btn-block">Remove</button>
                     </p>
