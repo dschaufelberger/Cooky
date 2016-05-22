@@ -42,7 +42,8 @@ public class ExceptionController {
     }
 
     @ExceptionHandler( value = NoHandlerFoundException.class )
-    public String noHandlerFound404() {
+    public String noHandlerFound404( NoHandlerFoundException exception ) {
+        logger.error( "HTTP 404 Error " + exception.getHttpMethod() + " " + exception.getRequestURL() );
         return "404Tile";
     }
 
