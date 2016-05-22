@@ -87,7 +87,7 @@ public class RecipeController {
         return modelAndView;
     }
 
-    @RequestMapping( "/editRecipe" )
+    @RequestMapping( "/edit" )
     public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
         String view;
         boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
