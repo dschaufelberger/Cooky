@@ -8,7 +8,7 @@ import de.cookyapp.persistence.entities.CookbookEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.repositories.app.ICookbookRepository;
 import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
-import de.cookyapp.service.exceptions.DefaultCookbookContenNotManagable;
+import de.cookyapp.service.exceptions.DefaultCookbookContentNotManagable;
 import de.cookyapp.service.exceptions.InvalidCookbookId;
 import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
@@ -56,7 +56,7 @@ public class CookbookContentService implements ICookbookContentService {
         }
 
         if ( makeDefaultCheck && cookbook.getIsDefault() ) {
-            throw new DefaultCookbookContenNotManagable();
+            throw new DefaultCookbookContentNotManagable();
         }
 
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
@@ -85,7 +85,7 @@ public class CookbookContentService implements ICookbookContentService {
         }
 
         if ( cookbook.getIsDefault() ) {
-            throw new DefaultCookbookContenNotManagable();
+            throw new DefaultCookbookContentNotManagable();
         }
 
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
@@ -120,7 +120,7 @@ public class CookbookContentService implements ICookbookContentService {
         }
 
         if ( cookbook.getIsDefault() ) {
-            throw new DefaultCookbookContenNotManagable();
+            throw new DefaultCookbookContentNotManagable();
         }
 
         RecipeEntity recipe = this.recipeRepository.findOne( recipeId );
@@ -147,7 +147,7 @@ public class CookbookContentService implements ICookbookContentService {
         }
 
         if ( cookbook.getIsDefault() ) {
-            throw new DefaultCookbookContenNotManagable();
+            throw new DefaultCookbookContentNotManagable();
         }
 
         if ( !cookbook.getOwner().getUsername().equals( currentUsername ) ) {
