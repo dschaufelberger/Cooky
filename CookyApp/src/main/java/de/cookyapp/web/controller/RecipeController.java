@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidContentFileFormat;
@@ -18,6 +19,7 @@ import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
+import de.cookyapp.service.services.interfaces.IRecipeOfTheMonthService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
@@ -48,6 +50,7 @@ public class RecipeController {
 
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
+    private IRecipeOfTheMonthService recipeOfTheMonthService;
     private IIngredientCrudService ingredientCrudService;
     private IImageUploadService imageService;
     private IRecipeRatingService ratingService;
@@ -55,11 +58,12 @@ public class RecipeController {
     private ICookbookManagementService cookbookManagementService;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IRecipeOfTheMonthService recipeOfTheMonthService, IIngredientCrudService ingredientCrudService,
                              IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService,
                              ICookbookManagementService cookbookManagementService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
+        this.recipeOfTheMonthService = recipeOfTheMonthService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
@@ -78,6 +82,13 @@ public class RecipeController {
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
+    }
+
+    @RequestMapping( "/recipeOTM" )
+    public ModelAndView showRecipeOfTheMonth( ) {
+        ModelAndView model = new ModelAndView( "RecipeOfTheMonthTile" );
+        model.addObject( "recipeOfTheMonth", this.recipeOfTheMonthService.getRecipeOfTheMonth() );
+        return model;
     }
 
     @RequestMapping( "/search" )
@@ -225,7 +236,7 @@ public class RecipeController {
     }
 
     private void uploadImage( MultipartFile image, int recipeId ) {
-        if ( !image.isEmpty() ) {
+        if ( image != null ) {
             validateImage( image );
             InputStream inputStream = null;
             BufferedImage bufferedImage = null;

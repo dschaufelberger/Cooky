@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.RecipeOfTheMonthEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
@@ -154,6 +155,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
+
     private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
         if ( entities != null ) {
@@ -169,6 +171,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         }
         return recipes;
     }
+
 
     private String byteArrayToFileLink( byte[] bytes ) {
         String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
