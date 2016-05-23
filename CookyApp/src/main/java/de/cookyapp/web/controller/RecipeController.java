@@ -74,20 +74,20 @@ public class RecipeController {
         return model;
     }
 
-    @RequestMapping( "/remove" )
+    @RequestMapping( value = "/remove", method = RequestMethod.POST )
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
     }
 
-    @RequestMapping( "/search" )
+    @RequestMapping( value = "/search", method = RequestMethod.GET )
     public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
         ModelAndView modelAndView = new ModelAndView( "RecipeOverviewTile" );
         modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
         return modelAndView;
     }
 
-    @RequestMapping( "/edit" )
+    @RequestMapping( value = "/edit", method = RequestMethod.POST )
     public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
         String view;
         boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
@@ -130,7 +130,7 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/view/{id}" )
+    @RequestMapping( value = "/view/{id}", method = RequestMethod.GET )
     public ModelAndView showDetail( @PathVariable int id ) {
         Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
         Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
@@ -166,13 +166,13 @@ public class RecipeController {
         return modelAndView;
     }
 
-    @RequestMapping( "/add" )
+    @RequestMapping( value = "/add", method = RequestMethod.GET )
     public ModelAndView handleGoToRecipe() {
         ModelAndView model = new ModelAndView( "RecipeCreationTile", "recipe", new Recipe() );
         return model;
     }
 
-    @RequestMapping( value = "/create" )
+    @RequestMapping( value = "/create", method = RequestMethod.POST )
     public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {
         String view;
         if ( bindingResult.hasErrors() ) {
@@ -211,7 +211,7 @@ public class RecipeController {
         return view;
     }
 
-    @RequestMapping( "/rate" )
+    @RequestMapping( value = "/rate", method = RequestMethod.POST )
     public String rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
         ratingService.rateRecipe( id, rating );
         String view = "redirect:/recipes/view/" + id;
