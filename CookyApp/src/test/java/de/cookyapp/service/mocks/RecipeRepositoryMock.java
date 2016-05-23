@@ -50,14 +50,6 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
     }
 
     @Override
-    public List<RecipeEntity> findByNameLike( String name ) {
-        return this.entities
-                .stream()
-                .filter( entity -> entity.getName().equals( name ) )
-                .collect( Collectors.toList() );
-    }
-
-    @Override
     public void delete( RecipeEntity deleted ) {
         this.entities.remove( deleted );
     }
