@@ -68,7 +68,7 @@ public class RecipeOfTheMonthEntity {
     }
 
     @Basic
-    @Column( name = "Updated On", nullable = true )
+    @Column( name = "UpdatedOn", nullable = true )
     public LocalDate getUpdated() {
         return updated;
     }

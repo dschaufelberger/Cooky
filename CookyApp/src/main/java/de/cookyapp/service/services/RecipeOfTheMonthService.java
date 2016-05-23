@@ -1,5 +1,6 @@
 package de.cookyapp.service.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -45,18 +46,22 @@ public class RecipeOfTheMonthService implements IRecipeOfTheMonthService {
 
     @Override
     public Recipe getRecipeOfTheMonth() {
-        Calendar now = Calendar.getInstance();
-        RecipeOfTheMonthEntity recipeOfTheMonthEntity = recipeOfTheMonthRepository.findFirstByOrderByIdDesc();
-        // month start from 0 to 11
-        if(recipeOfTheMonthEntity.getUpdated().getMonthValue()  < (now.get( Calendar.MONTH ) + 1) ){
-            RecipeEntity recipeEntity = recipeCrudRepository.findTopByOrderByRatingDescVoteCountDesc();
-            recipeOfTheMonthEntity.setRecipe( recipeEntity );
-            recipeOfTheMonthRepository.save( recipeOfTheMonthEntity );
-        }
         Recipe recipe = null;
-        if ( recipeOfTheMonthEntity != null ) {
-            RecipeEntity entity = recipeCrudRepository.findOne( recipeOfTheMonthRepository.findFirstByOrderByIdDesc().getRecipe().getId() );
-            recipe = new Recipe(entity );
+        Calendar now = Calendar.getInstance();
+        RecipeOfTheMonthEntity recipeOfTheMonthEntity = recipeOfTheMonthRepository.findFirstByOrderByUpdatedDesc();
+        if(recipeOfTheMonthEntity != null) {
+            // month start from 0 to 11
+            if ( recipeOfTheMonthEntity.getUpdated().getMonthValue() < (now.get( Calendar.MONTH ) + 1) ) {
+                RecipeEntity recipeEntity = recipeCrudRepository.findTopByOrderByRatingDesc();
+                RecipeOfTheMonthEntity newRecipeOfTheMonthEntity = null;
+                newRecipeOfTheMonthEntity.setRecipe( recipeEntity );
+                newRecipeOfTheMonthEntity.setUpdated( LocalDate.now() );
+                recipeOfTheMonthEntity = recipeOfTheMonthRepository.save( newRecipeOfTheMonthEntity );
+            }
+            if ( recipeOfTheMonthEntity.getRecipe() != null && recipeOfTheMonthEntity != null  ) {
+                RecipeEntity entity = recipeOfTheMonthEntity.getRecipe();
+                recipe = new Recipe( entity );
+            }
         }
         return recipe;
     }

@@ -8,6 +8,6 @@ import de.cookyapp.persistence.entities.RecipeOfTheMonthEntity;
  */
 public interface IRecipeOfTheMonthRepository extends IBaseCrudRepository<RecipeOfTheMonthEntity, Integer>{
 
-    RecipeOfTheMonthEntity findFirstByOrderByIdDesc();
+    RecipeOfTheMonthEntity findFirstByOrderByUpdatedDesc();
 
 }
