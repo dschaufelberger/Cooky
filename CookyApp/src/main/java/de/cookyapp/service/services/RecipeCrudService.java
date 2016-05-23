@@ -19,6 +19,7 @@ import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
@@ -58,10 +59,12 @@ public class RecipeCrudService implements IRecipeCrudService {
     public void deleteRecipe( int recipeID ) {
         RecipeEntity deleteRecipe = recipeCrudRepository.findOne( recipeID );
         if ( deleteRecipe != null ) {
-            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() ); //Check current User Authentication
-            //TODO if (!isAuthorized) --> Check if Admin delete Recipe
+            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() );
+
             if ( isAuthorized ) {
                 recipeCrudRepository.delete( deleteRecipe );
+            } else {
+                throw new UserNotAuthorized();
             }
         }
     }
