@@ -7,18 +7,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import de.cookyapp.persistence.entities.UserEntity;
+import de.cookyapp.persistence.repositories.app.IIngredientCrudRepository;
 import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
@@ -36,6 +41,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     private Logger logger = Logger.getLogger( RecipeCrudService.class );
 
     private IRecipeCrudRepository recipeCrudRepository;
+    private IIngredientCrudRepository ingredientCrudRepository;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
     private ServletContext servletContext;
@@ -45,8 +51,10 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Autowired
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
                               IUserCrudRepository userCrudRepository, ServletContext servletContext,
-                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService ) {
+                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService,
+                              IIngredientCrudRepository ingredientCrudRepository) {
         this.recipeCrudRepository = recipeCrudRepository;
+        this.ingredientCrudRepository = ingredientCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
         this.servletContext = servletContext;
@@ -159,6 +167,28 @@ public class RecipeCrudService implements IRecipeCrudService {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findByIngredientsIngredientNameIn( ingredientNames );
         List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
         return recipes;
+    }
+
+    @Override
+    public List<Recipe> recipeSuggestionsAllIn( List<String> ingredientNames ) {
+        ingredientNames.remove(ingredientNames.size() -1);
+        List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
+        List<RecipeEntity> result = new ArrayList<>();
+        for (RecipeEntity current : recipeEntities) {
+            if (current.getIngredients().size() == ingredientNames.size()) {
+                List<String> recipeIngredients = new ArrayList<>();
+                for (RecipeIngredientEntity recipeIngredientEntity : current.getIngredients()) {
+                    recipeIngredients.add(recipeIngredientEntity.getIngredient().getName());
+                }
+                Collections.sort(ingredientNames);
+                Collections.sort(recipeIngredients);
+                //Check in this direction because an empty recipeIngredients list would be a true statement
+                if (recipeIngredients.containsAll(ingredientNames)) {
+                    result.add(current);
+                }
+            }
+        }
+        return recipeEntityListToRecipeList(result);
     }
 
     private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {

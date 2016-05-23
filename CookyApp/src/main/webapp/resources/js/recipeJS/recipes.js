@@ -50,7 +50,7 @@ function addIngredientRow() {
     });
 
     if (fieldsFilled) {
-        $("</br><input id='ingredients"+ counter +".name' name='ingredients["+ counter +"].name' " +
+        $("</br><input id='ingredients"+ counter +"' name='ingredients["+ counter +"]' " +
             "onchange='addIngredientRow()' class='form-control ingredients' type='text' value=''>")
             .appendTo(".ingredientSuggestions");
         counter = counter + 1;
