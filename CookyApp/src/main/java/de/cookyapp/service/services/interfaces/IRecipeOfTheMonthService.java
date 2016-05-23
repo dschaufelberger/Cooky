@@ -2,6 +2,7 @@ package de.cookyapp.service.services.interfaces;
 
 import java.util.List;
 
+import de.cookyapp.persistence.entities.RecipeOfTheMonthEntity;
 import de.cookyapp.service.dto.Recipe;
 
 /**
@@ -9,9 +10,8 @@ import de.cookyapp.service.dto.Recipe;
  */
 public interface IRecipeOfTheMonthService {
 
-    List<Recipe> getRecipeOfTheMonth();
+    Recipe getRecipeOfTheMonth();
 
-    List<Recipe> updateRecipeOfTheMonth();
-
+    List<RecipeOfTheMonthEntity> getAllRecipesOfTheMonth();
 
 }

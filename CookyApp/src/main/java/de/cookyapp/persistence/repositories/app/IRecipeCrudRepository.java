@@ -13,6 +13,6 @@ public interface IRecipeCrudRepository extends IBaseCrudRepository<RecipeEntity,
 
     List<RecipeEntity> findByNameLike( String name );
 
-    List<RecipeEntity> findTop10ByOrderByRatingDescVoteCountDesc();
+    RecipeEntity findTopByOrderByRatingDescVoteCountDesc();
 
 }

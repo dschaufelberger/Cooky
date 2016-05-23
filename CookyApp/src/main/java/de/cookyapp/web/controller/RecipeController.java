@@ -16,6 +16,7 @@ import de.cookyapp.service.exceptions.InvalidContentFileFormat;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
+import de.cookyapp.service.services.interfaces.IRecipeOfTheMonthService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Recipe;
@@ -42,17 +43,19 @@ public class RecipeController {
 
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
+    private IRecipeOfTheMonthService recipeOfTheMonthService;
     private IIngredientCrudService ingredientCrudService;
     private IImageUploadService imageService;
     private IRecipeRatingService ratingService;
     private IAuthenticationFacade authentication;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IRecipeOfTheMonthService recipeOfTheMonthService, IIngredientCrudService ingredientCrudService,
                              IAuthenticationFacade authenticationFacade, IUserAuthorization userAuthorization, IImageUploadService imageService,
                              IRecipeRatingService ratingService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
+        this.recipeOfTheMonthService = recipeOfTheMonthService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
@@ -70,6 +73,13 @@ public class RecipeController {
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
+    }
+
+    @RequestMapping( "/recipeOTM" )
+    public ModelAndView showRecipeOfTheMonth( ) {
+        ModelAndView model = new ModelAndView( "RecipeOfTheMonthTile" );
+        model.addObject( "recipeOfTheMonth", this.recipeOfTheMonthService.getRecipeOfTheMonth() );
+        return model;
     }
 
     @RequestMapping( "/editRecipe" )
