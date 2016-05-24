@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,10 +48,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping( "/recipes" )
 public class RecipeController {
     private Logger logger = Logger.getLogger( RecipeController.class );
-
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
-    private IRecipeOfTheMonthService recipeOfTheMonthService;
     private IIngredientCrudService ingredientCrudService;
     private IImageUploadService imageService;
     private IRecipeRatingService ratingService;
@@ -58,12 +57,11 @@ public class RecipeController {
     private ICookbookManagementService cookbookManagementService;
 
     @Autowired
-    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IRecipeOfTheMonthService recipeOfTheMonthService, IIngredientCrudService ingredientCrudService,
+    public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
                              IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService,
                              ICookbookManagementService cookbookManagementService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
-        this.recipeOfTheMonthService = recipeOfTheMonthService;
         this.ingredientCrudService = ingredientCrudService;
         this.imageService = imageService;
         this.authentication = authenticationFacade;
@@ -82,13 +80,6 @@ public class RecipeController {
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
-    }
-
-    @RequestMapping( "/recipeOTM" )
-    public ModelAndView showRecipeOfTheMonth( ) {
-        ModelAndView model = new ModelAndView( "RecipeOfTheMonthTile" );
-        model.addObject( "recipeOfTheMonth", this.recipeOfTheMonthService.getRecipeOfTheMonth() );
-        return model;
     }
 
     @RequestMapping( "/search" )
