@@ -14,7 +14,6 @@ public class Recipe {
     private int id;
     private String name;
     private String shortDescription;
-    private String imageFileName;
     private String preparation;
     private RecipeDifficulty difficulty;
     private LocalDateTime creationDate;
@@ -26,6 +25,7 @@ public class Recipe {
     private Byte rating;
     private Integer voteCount;
     private String imageLink;
+    private byte[] imageData;
 
     private User author;
 
@@ -75,10 +75,6 @@ public class Recipe {
 
     public String getImageLink() {
         return imageLink;
-    }
-
-    public void setImageLink( String imageLink ) {
-        this.imageLink = imageLink;
     }
 
     public RecipeDifficulty getDifficulty() {
@@ -167,6 +163,10 @@ public class Recipe {
 
     public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
+    }
+
+    public void setImageData( byte[] imageData ) {
+        this.imageData = imageData;
     }
 
     private User userEntityToUser( UserEntity userEntity ) {

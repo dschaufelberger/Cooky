@@ -1,20 +1,18 @@
 package de.cookyapp.web.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.ImageUploadFailed;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
-import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
@@ -49,19 +47,17 @@ public class RecipeController {
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
     private IIngredientCrudService ingredientCrudService;
-    private IImageUploadService imageService;
     private IRecipeRatingService ratingService;
     private IAuthenticationFacade authentication;
     private ICookbookManagementService cookbookManagementService;
 
     @Autowired
     public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
-                             IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService,
+                             IAuthenticationFacade authenticationFacade, IRecipeRatingService ratingService,
                              ICookbookManagementService cookbookManagementService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
-        this.imageService = imageService;
         this.authentication = authenticationFacade;
         this.ratingService = ratingService;
         this.cookbookManagementService = cookbookManagementService;
@@ -128,10 +124,19 @@ public class RecipeController {
                 recipeDTO.setServing( recipe.getServing() );
                 recipeDTO.setPreparation( recipe.getPreparation() );
                 recipeDTO.setRestTime( recipe.getRestTime() );
+
+                try {
+                    recipeDTO.setImageData( image.getBytes() );
+                } catch ( IOException e ) {
+                    logger.error( "Error on uploading image. " +
+                                    "Image name: " + image.getName() +
+                                    ", Content type: " + image.getContentType() +
+                                    ", Recipe name: " + recipe.getName(),
+                            e );
+                    throw new ImageUploadFailed( image.getName(), image.getContentType(), e );
+                }
+
                 recipeCrudService.updateRecipe( recipeDTO );
-
-                uploadImage( image, recipeDTO.getId() );
-
                 ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
             }
             view = "redirect:/recipes";
@@ -209,6 +214,16 @@ public class RecipeController {
             newRecipe.setServing( recipe.getServing() );
             newRecipe.setShortDescription( recipe.getShortDescription() );
             newRecipe.setCreationDate( LocalDateTime.now() );
+            try {
+                newRecipe.setImageData( image.getBytes() );
+            } catch ( IOException e ) {
+                logger.error( "Error on uploading image. " +
+                                "Image name: " + image.getName() +
+                                ", Content type: " + image.getContentType() +
+                                ", Recipe name: " + recipe.getName(),
+                        e );
+                throw new ImageUploadFailed( image.getName(), image.getContentType(), e );
+            }
 
             List<de.cookyapp.web.viewmodel.Ingredient> ingredientList = new ArrayList<>( recipe.getIngredients() );
             List<Ingredient> ingredients = new ArrayList<>();
@@ -222,9 +237,6 @@ public class RecipeController {
 
             ingredientCrudService.save( ingredients );
             de.cookyapp.service.dto.Recipe current = recipeCrudService.createRecipe( newRecipe );
-
-            uploadImage( image, current.getId() );
-
             ingredientCrudService.saveRecipeIngredient( current.getId(), ingredients );
             view = "redirect:/recipes";
         }
@@ -246,29 +258,5 @@ public class RecipeController {
         }
 
         return isValid;
-    }
-
-    private void uploadImage( MultipartFile image, int recipeId ) {
-        if ( !image.isEmpty() ) {
-            //validateImage( image );
-            InputStream inputStream = null;
-            BufferedImage bufferedImage = null;
-            try {
-                try {
-                    inputStream = image.getInputStream();
-                    bufferedImage = ImageIO.read( inputStream );
-                } catch ( Exception i ) {
-                    logger.error( "Upload Image ist fehlgeschlagen" );
-                    throw i;
-                } finally {
-                    if ( inputStream != null ) {
-                        inputStream.close();
-                    }
-                }
-                imageService.saveImage( recipeId, bufferedImage );
-            } catch ( Exception ex ) {
-                logger.error( ex.getMessage(), ex );
-            }
-        }
     }
 }
