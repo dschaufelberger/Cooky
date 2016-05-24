@@ -51,14 +51,14 @@ public class RecipeOfTheMonthService implements IRecipeOfTheMonthService {
         RecipeOfTheMonthEntity recipeOfTheMonthEntity = recipeOfTheMonthRepository.findFirstByOrderByUpdatedDesc();
         if(recipeOfTheMonthEntity != null) {
             // month start from 0 to 11
-            if ( recipeOfTheMonthEntity.getUpdated().getMonthValue() < (now.get( Calendar.MONTH ) + 1) ) {
-                RecipeEntity recipeEntity = recipeCrudRepository.findTopByOrderByRatingDesc();
-                RecipeOfTheMonthEntity newRecipeOfTheMonthEntity = null;
+            if (( recipeOfTheMonthEntity.getUpdated().getMonthValue() < (now.get( Calendar.MONTH ) + 1)) || (recipeOfTheMonthEntity.getUpdated().getYear() < (now.get(Calendar.YEAR))) ) {
+                RecipeEntity recipeEntity = recipeCrudRepository.findTopByOrderByRatingDescVoteCountDesc();
+                RecipeOfTheMonthEntity newRecipeOfTheMonthEntity = new RecipeOfTheMonthEntity();
                 newRecipeOfTheMonthEntity.setRecipe( recipeEntity );
                 newRecipeOfTheMonthEntity.setUpdated( LocalDate.now() );
                 recipeOfTheMonthEntity = recipeOfTheMonthRepository.save( newRecipeOfTheMonthEntity );
             }
-            if ( recipeOfTheMonthEntity.getRecipe() != null && recipeOfTheMonthEntity != null  ) {
+            if ( recipeOfTheMonthEntity != null && recipeOfTheMonthEntity.getRecipe() != null  ) {
                 RecipeEntity entity = recipeOfTheMonthEntity.getRecipe();
                 recipe = new Recipe( entity );
             }
