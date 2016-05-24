@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
@@ -47,7 +46,6 @@ public class Recipe {
     @Max( 16777215 )
     private int restTime;
 
-    @Pattern( regexp = "([^\\\\s]+(\\\\.(?i)(jpg|jpeg))$)", message = "Es dürfen nur JPG oder JPEG Dateien hochgeladen werden." )
     private String imageLink;
 
     @Min( 0 )

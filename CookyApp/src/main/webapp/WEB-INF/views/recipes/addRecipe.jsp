@@ -71,7 +71,8 @@
                     </tr>
                     <tr>
                         <td><label>Recipe Image</label></td>
-                        <td><input type="file" name="recipeImage" /></td>
+                        <td><input type="file" name="recipeImage" accept="image/jpeg" /></td>
+                        <td><form:errors path="imageLink" cssClass="formError" /></td>
                     </tr>
                     <tr>
                         <td><input type="submit" value="Add" class="btn btn-default"></td>

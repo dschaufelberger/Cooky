@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
-import de.cookyapp.service.exceptions.InvalidContentFileFormat;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
@@ -29,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,10 +90,20 @@ public class RecipeController {
     @RequestMapping( value = "/edit", method = RequestMethod.POST )
     public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
         String view;
-        boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
         if ( bindingResult.hasErrors() ) {
             view = "RecipeEditTile";
         } else {
+            ArrayList<String> contentTypes = new ArrayList<>( 2 );
+            contentTypes.add( "image/jpeg" );
+            contentTypes.add( "image/jpg" );
+
+            if ( !validateImage( image, contentTypes ) ) {
+                bindingResult.addError( new FieldError( "recipeImage", "imageLink", "Only JPEG images are allowed." ) );
+
+                return "RecipeCreationTile";
+            }
+
+            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
             if ( isAuthorized ) {
                 de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipe.getId() );
                 ArrayList<de.cookyapp.web.viewmodel.Ingredient> newIngredients = new ArrayList<>( recipe.getIngredients() );
@@ -178,6 +188,16 @@ public class RecipeController {
         if ( bindingResult.hasErrors() ) {
             view = "RecipeCreationTile";
         } else {
+            ArrayList<String> contentTypes = new ArrayList<>( 2 );
+            contentTypes.add( "image/jpeg" );
+            contentTypes.add( "image/jpg" );
+
+            if ( !validateImage( image, contentTypes ) ) {
+                bindingResult.addError( new FieldError( "recipeImage", "imageLink", "Only JPEG images are allowed." ) );
+
+                return "RecipeCreationTile";
+            }
+
             de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
             newRecipe.setName( recipe.getName() );
             newRecipe.setWorkingTime( recipe.getWorkingTime() );
@@ -218,15 +238,19 @@ public class RecipeController {
         return view;
     }
 
-    private void validateImage( MultipartFile image ) {
-        if ( !image.getContentType().equals( "image/jpeg" ) && !image.getContentType().equals( "image/jpg" ) ) {
-            throw new InvalidContentFileFormat( image.getName(), image.getContentType(), "Only JPG images are accepted" );
+    private boolean validateImage( MultipartFile image, List<String> validImageContentTypes ) {
+        boolean isValid = true;
+
+        for ( String contentType : validImageContentTypes ) {
+            isValid &= image.getContentType().equals( contentType );
         }
+
+        return isValid;
     }
 
     private void uploadImage( MultipartFile image, int recipeId ) {
         if ( !image.isEmpty() ) {
-            validateImage( image );
+            //validateImage( image );
             InputStream inputStream = null;
             BufferedImage bufferedImage = null;
             try {
