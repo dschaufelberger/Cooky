@@ -84,7 +84,7 @@ public class RecipeController {
     }
 
     @RequestMapping( value = "/edit", method = RequestMethod.POST )
-    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
+    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {
         String view;
         if ( bindingResult.hasErrors() ) {
             view = "RecipeEditTile";
