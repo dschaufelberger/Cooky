@@ -1,10 +1,12 @@
 package de.cookyapp.service.services;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,7 @@ public class RecipeCrudService implements IRecipeCrudService {
             recipeEntity.setRating( (byte) 0 );
             recipeEntity.setVoteCount( 0 );
             recipeEntity.setAuthor( user );
+            recipeEntity.setImageFile( recipe.getImageData() );
 
             recipeEntity = recipeCrudRepository.save( recipeEntity );
 
@@ -121,6 +124,7 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
+                recipeEntity.setImageFile( recipe.getImageData() );
                 recipeCrudRepository.save( recipeEntity );
             }
         }
@@ -162,41 +166,92 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
+
+                String imageLink;
+
                 if ( entity.getImageFile() == null ) {
-                    current.setImageLink( "http://placehold.it/320x200" );
+                    imageLink = "http://placehold.it/320x200";
                 } else {
-                    current.setImageLink( byteArrayToFileLink( entity.getImageFile() ) );
+                    try {
+                        imageLink = writeImageThumbnail( entity.getImageFile() );
+                    } catch ( IOException e ) {
+                        logger.error( "Image file could not be created. Recipe id: " + current.getId() );
+                        imageLink = "http://placehold.it/320x200";
+                    }
                 }
+
+                current.setImageLink( imageLink );
                 recipes.add( current );
             }
         }
         return recipes;
     }
 
-    private String byteArrayToFileLink( byte[] bytes ) {
-        String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
-        String path = generatePath();
-        String completePath = path + imageGUID;
-        String imagePath = "/resources/images/recipes/" + imageGUID;
-        InputStream inputStream = new ByteArrayInputStream( bytes );
-        try {
-            BufferedImage bufferedImage = ImageIO.read( inputStream );
-            ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
-        } catch ( IOException ex ) {
-            logger.error( ex.getMessage(), ex );
-        }
+    private String writeImageThumbnail( byte[] imageData ) throws IOException {
+        String directoryPath = Paths.get( "resources", "images", "recipes" ).toString();
+        String absoluteDirectoryPath = this.servletContext.getRealPath( directoryPath );
+        createDirectoryIfNonexistant( absoluteDirectoryPath );
 
-        return imagePath;
+        String imageUUID = java.util.UUID.randomUUID().toString();
+        String filename = imageUUID + ".jpg";
+        String absoluteFilePath = absoluteDirectoryPath + File.separator + filename;
+
+        InputStream inputStream = new ByteArrayInputStream( imageData );
+        BufferedImage original = ImageIO.read( inputStream );
+        BufferedImage scaled = scaleImage( original, new Dimension( 320, 200 ) );
+
+        ImageIO.write( scaled, "jpg", new File( absoluteFilePath ) );
+
+        String imageUrl = (directoryPath + "/" + filename).replace( File.separator, "/" );
+        return imageUrl;
     }
 
-    private String generatePath() {
-        String path;
-        String imagePath = "resources/images/recipes/";
-        path = this.servletContext.getRealPath( "/" ) + imagePath;
-        if ( !new File( path ).exists() ) {
-            File file = new File( path );
+    private BufferedImage scaleImage( BufferedImage image, Dimension boundary ) {
+        double scaleFactor = Math.min( 1d,
+                getScaleFactorToFit( new Dimension( image.getWidth(), image.getHeight() ), boundary ) );
+
+        int scaleWidth = (int) Math.round( image.getWidth() * scaleFactor );
+        int scaleHeight = (int) Math.round( image.getHeight() * scaleFactor );
+
+        Image scaled = image.getScaledInstance( scaleWidth, scaleHeight, Image.SCALE_SMOOTH );
+
+        BufferedImage scaledImage = new BufferedImage( scaled.getWidth( null ), scaled.getHeight( null ), BufferedImage.TYPE_3BYTE_BGR );
+        Graphics2D g = scaledImage.createGraphics();
+        g.drawImage( scaled, 0, 0, null );
+        g.dispose();
+
+        return scaledImage;
+    }
+
+    private double getScaleFactorToFit( Dimension original, Dimension toFit ) {
+        double scale = 1d;
+
+        if ( original != null && toFit != null ) {
+            double scaleWidth = getScaleFactor( (int) original.getWidth(), (int) toFit.getWidth() );
+            double scaleHeight = getScaleFactor( (int) original.getHeight(), (int) toFit.getHeight() );
+
+            scale = Math.min( scaleHeight, scaleWidth );
+        }
+
+        return scale;
+    }
+
+    private double getScaleFactor( int originalSize, int targetSize ) {
+        double scale = 1d;
+
+        if ( originalSize > targetSize ) {
+            scale = (double) targetSize / (double) originalSize;
+        } else {
+            scale = (double) targetSize / (double) originalSize;
+        }
+
+        return scale;
+    }
+
+    private void createDirectoryIfNonexistant( String absoluteDirectoryPath ) {
+        File file = new File( absoluteDirectoryPath );
+        if ( !file.exists() ) {
             file.mkdirs();
         }
-        return path;
     }
 }
