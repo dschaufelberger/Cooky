@@ -251,10 +251,10 @@ public class RecipeController {
     }
 
     private boolean validateImage( MultipartFile image, List<String> validImageContentTypes ) {
-        boolean isValid = true;
+        boolean isValid = false;
 
         for ( String contentType : validImageContentTypes ) {
-            isValid &= image.getContentType().equals( contentType );
+            isValid |= image.getContentType().equals( contentType );
         }
 
         return isValid;

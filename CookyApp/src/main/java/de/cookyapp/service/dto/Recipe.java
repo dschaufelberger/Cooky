@@ -77,6 +77,10 @@ public class Recipe {
         return imageLink;
     }
 
+    public void setImageLink( String imageLink ) {
+        this.imageLink = imageLink;
+    }
+
     public RecipeDifficulty getDifficulty() {
         return difficulty;
     }
@@ -163,6 +167,10 @@ public class Recipe {
 
     public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
     }
 
     public void setImageData( byte[] imageData ) {
