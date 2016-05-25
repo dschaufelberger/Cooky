@@ -215,12 +215,18 @@ public class RecipeCrudService implements IRecipeCrudService {
 
         Image scaled = image.getScaledInstance( scaleWidth, scaleHeight, Image.SCALE_SMOOTH );
 
-        BufferedImage scaledImage = new BufferedImage( scaled.getWidth( null ), scaled.getHeight( null ), BufferedImage.TYPE_3BYTE_BGR );
-        Graphics2D g = scaledImage.createGraphics();
-        g.drawImage( scaled, 0, 0, null );
+        BufferedImage canvasImage = new BufferedImage( (int) boundary.getWidth(), (int) boundary.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
+        Graphics2D g = canvasImage.createGraphics();
+
+        int x = (canvasImage.getWidth() - scaled.getWidth( null )) / 2;
+        int y = (canvasImage.getHeight() - scaled.getHeight( null )) / 2;
+
+        g.setColor( Color.WHITE );
+        g.fillRect( 0, 0, canvasImage.getWidth(), canvasImage.getHeight() );
+        g.drawImage( scaled, x, y, null );
         g.dispose();
 
-        return scaledImage;
+        return canvasImage;
     }
 
     private double getScaleFactorToFit( Dimension original, Dimension toFit ) {
