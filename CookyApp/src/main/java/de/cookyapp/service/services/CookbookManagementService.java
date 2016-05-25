@@ -96,12 +96,12 @@ public class CookbookManagementService implements ICookbookManagementService {
         if ( entitiy != null ) {
             if ( !this.authentication.getAuthentication().getName().equals( entitiy.getOwner().getUsername() )
                     && !this.userAuthorization.hasAuthority( this.authentication.getAuthentication(), "COOKY_ADMIN" ) ) {
-                throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
+                throw new UserNotAuthorized();
             } else if ( !entitiy.getIsDefault() ) {
                 cookbook = getCookbookIfExistant( entitiy );
             }
         } else {
-            throw new InvalidCookbookId( cookbookId );
+            throw new InvalidCookbookId( "Cookbook with given id does not exist.", cookbookId );
         }
 
         return cookbook;
