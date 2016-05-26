@@ -66,7 +66,7 @@ public class RecipeController {
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes().stream().map( recipe -> new de.cookyapp.web.viewmodel.cookbook.Recipe( recipe ) ).collect( Collectors.toList() ) );
+        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes().stream().map( recipe -> new de.cookyapp.web.viewmodel.Recipe( recipe ) ).collect( Collectors.toList() ) );
         return model;
     }
 
@@ -227,6 +227,10 @@ public class RecipeController {
     }
 
     private byte[] getImageBytes( MultipartFile image ) {
+        if ( image.isEmpty() ) {
+            return null;
+        }
+
         try {
             return image.getBytes();
         } catch ( IOException e ) {
@@ -241,6 +245,10 @@ public class RecipeController {
 
     private boolean validateImage( MultipartFile image, List<String> validImageContentTypes ) {
         boolean isValid = false;
+
+        if ( image.isEmpty() ) {
+            return true;
+        }
 
         for ( String contentType : validImageContentTypes ) {
             isValid |= image.getContentType().equals( contentType );

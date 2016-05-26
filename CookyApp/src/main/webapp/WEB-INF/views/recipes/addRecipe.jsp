@@ -92,6 +92,7 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <!-- Render with form:input if there were existing ingredients -->
                     <tr>
                         <td><input name='ingredients[0].name' /></td>
                         <td><input name='ingredients[0].amount' /></td>

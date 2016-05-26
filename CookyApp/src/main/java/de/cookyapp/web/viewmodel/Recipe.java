@@ -1,6 +1,7 @@
 package de.cookyapp.web.viewmodel;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.Max;
@@ -58,7 +59,12 @@ public class Recipe {
         ingredients = new ArrayList<>();
     }
 
+    public Recipe( de.cookyapp.service.dto.Recipe recipe ) {
+        this( recipe, new LinkedList<>() );
+    }
+
     public Recipe( de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredients ) {
+
         this.id = recipe.getId();
         this.ingredients = new ArrayList<>();
         this.name = recipe.getName();
@@ -71,6 +77,7 @@ public class Recipe {
         this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
         this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
         this.rating = recipe.getRating();
+        this.imageLink = recipe.getImageLink();
         this.ingredients = mapIngredientsToViewModel( ingredients );
     }
 

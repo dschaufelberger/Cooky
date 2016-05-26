@@ -27,6 +27,10 @@ public class Ingredient {
 
     private int id;
 
+    public Ingredient() {
+
+    }
+
     public Ingredient( de.cookyapp.service.dto.Ingredient ingredient ) {
         setId( ingredient.getId() );
         setName( ingredient.getName() );
