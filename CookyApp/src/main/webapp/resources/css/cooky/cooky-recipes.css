@@ -6,3 +6,25 @@
     height: 420px !important;
     width: 345px !important;
 }
+
+.cooky-sidebar{
+    padding: 20px 0 10px 0;
+    background: #fff;
+}
+.sidebar-title{
+    text-align: center;
+    margin-top: 20px;
+}
+.sidebar-recipe-name{
+    color: #5a7391;
+    font-size: 50px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+.sidebar-recipe-shortdesc{
+    text-transform: uppercase;
+    color: #5b9bd1;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
