@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.ImageUploadFailed;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -16,6 +15,7 @@ import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.Ingredient;
 import de.cookyapp.web.viewmodel.Recipe;
 import de.cookyapp.web.viewmodel.RecipeCookbook;
 import de.cookyapp.web.viewmodel.Search;
@@ -101,11 +101,11 @@ public class RecipeController {
             boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
             if ( isAuthorized ) {
                 de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipe.getId() );
-                ArrayList<de.cookyapp.web.viewmodel.Ingredient> newIngredients = new ArrayList<>( recipe.getIngredients() );
-                List<Ingredient> ingredients = new ArrayList<>();
-                for ( de.cookyapp.web.viewmodel.Ingredient current : newIngredients ) {
+                ArrayList<Ingredient> newIngredients = new ArrayList<>( recipe.getIngredients() );
+                List<de.cookyapp.service.dto.Ingredient> ingredients = new ArrayList<>();
+                for ( Ingredient current : newIngredients ) {
                     if ( current != null ) {
-                        Ingredient ingredient = new Ingredient();
+                        de.cookyapp.service.dto.Ingredient ingredient = new de.cookyapp.service.dto.Ingredient();
                         ingredient.setAmount( current.getAmount() );
                         ingredient.setName( current.getName() );
                         ingredient.setUnit( current.getUnit() );
@@ -202,6 +202,8 @@ public class RecipeController {
             newRecipe.setServing( recipe.getServing() );
             newRecipe.setShortDescription( recipe.getShortDescription() );
             newRecipe.setCreationDate( LocalDateTime.now() );
+
+
             try {
                 newRecipe.setImageData( image.getBytes() );
             } catch ( IOException e ) {
@@ -213,10 +215,10 @@ public class RecipeController {
                 throw new ImageUploadFailed( image.getName(), image.getContentType(), e );
             }
 
-            List<de.cookyapp.web.viewmodel.Ingredient> ingredientList = new ArrayList<>( recipe.getIngredients() );
-            List<Ingredient> ingredients = new ArrayList<>();
-            for ( de.cookyapp.web.viewmodel.Ingredient current : ingredientList ) {
-                Ingredient ingredient = new Ingredient();
+            ArrayList<Ingredient> ingredientViewmodels = new ArrayList<>( recipe.getIngredients() );
+            ArrayList<de.cookyapp.service.dto.Ingredient> ingredients = new ArrayList<>( ingredientViewmodels.size() );
+            for ( Ingredient current : ingredientViewmodels ) {
+                de.cookyapp.service.dto.Ingredient ingredient = new de.cookyapp.service.dto.Ingredient();
                 ingredient.setName( current.getName() );
                 ingredient.setAmount( current.getAmount() );
                 ingredient.setUnit( current.getUnit() );
