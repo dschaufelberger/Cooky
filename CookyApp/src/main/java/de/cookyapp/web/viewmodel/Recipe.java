@@ -1,7 +1,6 @@
 package de.cookyapp.web.viewmodel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.Max;
@@ -27,13 +26,13 @@ public class Recipe {
     private String shortDescription;
 
     @Max( 255 )
-    private Short serving;
+    private short serving;
 
     @NotBlank( message = "Bitte geben Sie die Zubereitungs Hinweise ein" )
     private String preparation;
 
     @Max( value = 65535, message = "Werte nur bis 65535" )
-    private Integer calories;
+    private int calories;
 
     @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
     private RecipeDifficulty difficulty;
@@ -53,7 +52,7 @@ public class Recipe {
     @Max( 5 )
     private byte rating;
 
-    private Collection<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
     public Recipe() {
         ingredients = new ArrayList<>();
@@ -99,7 +98,7 @@ public class Recipe {
         this.shortDescription = shortDescription;
     }
 
-    public Short getServing() {
+    public short getServing() {
         return serving;
     }
 
@@ -115,7 +114,7 @@ public class Recipe {
         this.preparation = preparation;
     }
 
-    public Integer getCalories() {
+    public int getCalories() {
         return calories;
     }
 
@@ -151,11 +150,11 @@ public class Recipe {
         return RecipeDifficulty.values();
     }
 
-    public Collection<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients( Collection<Ingredient> ingredients ) {
+    public void setIngredients( List<Ingredient> ingredients ) {
         this.ingredients = ingredients;
     }
 

@@ -2,15 +2,14 @@
  * Created by Jasper on 29.11.2015.
  */
 var count = 1;
-function addRow (){
+function addRow() {
     $(".ingredients tbody").append("<tr>" +
-        "<td><form:input path='ingredients["+ count +"].name' /></td> " +
-        "<td><form:input path='ingredients["+count+"].amount' /></td> " +
-        "<td><form:input path='ingredients["+count+"].unit'/></td>" +
+        "<td><input name='ingredients[" + count + "].name' /></td>" +
+        "<td><input name='ingredients[" + count + "].amount' /></td>" +
+        "<td><input name='ingredients[" + count + "].unit'/></td>" +
         "</tr>")
     count++;
 };
-
 
 
 $(document).ready(function () {
@@ -26,14 +25,14 @@ $(document).ready(function () {
     );
 });
 
-function rate (id) {
+function rate(id) {
     var currentRating = id;
     var recipeId = $(".recipeId").val();
     $.ajax({
-        url: "../rate",
+        url: "/recipes/rate",
         data: {
-            id : recipeId,
-            rating : currentRating
+            id: recipeId,
+            rating: currentRating
         },
     });
 }

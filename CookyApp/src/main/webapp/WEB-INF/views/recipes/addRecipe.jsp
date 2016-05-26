@@ -93,9 +93,9 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td><form:input path="ingredients[0].name" /></td>
-                        <td><form:input path="ingredients[0].amount" /></td>
-                        <td><form:input path="ingredients[0].unit" /></td>
+                        <td><input name='ingredients[0].name' /></td>
+                        <td><input name='ingredients[0].amount' /></td>
+                        <td><input name='ingredients[0].unit' /></td>
                     </tr>
                     </tbody>
                 </table>
