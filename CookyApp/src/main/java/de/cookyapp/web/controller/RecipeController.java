@@ -3,7 +3,6 @@ package de.cookyapp.web.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -148,17 +147,6 @@ public class RecipeController {
     @RequestMapping( value = "/view/{id}", method = RequestMethod.GET )
     public ModelAndView showDetail( @PathVariable int id ) {
         Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
-        Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
-        List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients( id );
-        for ( Ingredient current : ingredients ) {
-            de.cookyapp.web.viewmodel.Ingredient ingredientViewmodel = new de.cookyapp.web.viewmodel.Ingredient();
-            ingredientViewmodel.setAmount( current.getAmount() );
-            ingredientViewmodel.setName( current.getName() );
-            ingredientViewmodel.setUnit( current.getUnit() );
-            ingredientViewmodel.setId( current.getId() );
-            ingredientCollection.add( ingredientViewmodel );
-        }
-        recipe.setIngredients( ingredientCollection );
 
         ModelAndView modelAndView = new ModelAndView( "RecipeEditTile" );
         User user = this.userCrudService.getCurrentUser();

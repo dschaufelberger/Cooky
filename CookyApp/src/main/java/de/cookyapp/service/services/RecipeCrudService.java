@@ -45,20 +45,20 @@ public class RecipeCrudService implements IRecipeCrudService {
     private ServletContext servletContext;
     private ICookbookManagementService cookbookManagementService;
     private ICookbookContentService cookbookContentService;
+
+    @Autowired
     private IImageScaling imageScaling;
 
     @Autowired
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
                               IUserCrudRepository userCrudRepository, ServletContext servletContext,
-                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService,
-                              IImageScaling imageScaling ) {
+                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
         this.servletContext = servletContext;
         this.cookbookManagementService = cookbookManagementService;
         this.cookbookContentService = cookbookContentService;
-        this.imageScaling = imageScaling;
     }
 
     @Override
@@ -173,7 +173,7 @@ public class RecipeCrudService implements IRecipeCrudService {
 
                 String imageLink;
 
-                if ( entity.getImageFile() == null ) {
+                if ( entity.getImageFile() == null || this.imageScaling == null ) {
                     imageLink = "http://placehold.it/320x200";
                 } else {
                     try {

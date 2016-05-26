@@ -3,7 +3,6 @@ package de.cookyapp.web.viewmodel;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -28,15 +27,11 @@ public class Ingredient {
 
     private int id;
 
-    public Ingredient() {
-
-    }
-
-    public Ingredient( RecipeIngredientEntity entity ) {
-        this.name = entity.getIngredient().getName();
-        this.amount = entity.getAmount();
-        this.unit = entity.getUnit();
-        this.id = id;
+    public Ingredient( de.cookyapp.service.dto.Ingredient ingredient ) {
+        setId( ingredient.getId() );
+        setName( ingredient.getName() );
+        setAmount( ingredient.getAmount() );
+        setUnit( ingredient.getUnit() );
     }
 
     public Ingredient( String name, String unit, String amount ) {
