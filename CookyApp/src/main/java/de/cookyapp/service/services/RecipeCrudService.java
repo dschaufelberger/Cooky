@@ -25,6 +25,7 @@ import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IImageScaling;
+import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class RecipeCrudService implements IRecipeCrudService {
     private ServletContext servletContext;
     private ICookbookManagementService cookbookManagementService;
     private ICookbookContentService cookbookContentService;
+    private IIngredientCrudService ingredientService;
 
     @Autowired
     private IImageScaling imageScaling;
@@ -52,13 +54,15 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Autowired
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
                               IUserCrudRepository userCrudRepository, ServletContext servletContext,
-                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService ) {
+                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService,
+                              IIngredientCrudService ingredientService ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
         this.servletContext = servletContext;
         this.cookbookManagementService = cookbookManagementService;
         this.cookbookContentService = cookbookContentService;
+        this.ingredientService = ingredientService;
     }
 
     @Override
@@ -96,15 +100,14 @@ public class RecipeCrudService implements IRecipeCrudService {
             recipeEntity.setVoteCount( 0 );
             recipeEntity.setAuthor( user );
             recipeEntity.setImageFile( recipe.getImageData() );
-
             recipeEntity = recipeCrudRepository.save( recipeEntity );
 
-            Cookbook defaultCookbook = this.cookbookManagementService.getDefaultCookbookForUser( user.getId() );
+            this.ingredientService.saveRecipeIngredient( recipeEntity.getId(), recipe.getIngredients() );
 
+            Cookbook defaultCookbook = this.cookbookManagementService.getDefaultCookbookForUser( user.getId() );
             if ( defaultCookbook == null ) {
                 defaultCookbook = this.cookbookManagementService.createDefaultCookbookForUser( new User( user ) );
             }
-
             this.cookbookContentService.addRecipeToDefaultCookbook( defaultCookbook.getId(), recipeEntity.getId() );
 
             return new Recipe( recipeEntity );
@@ -130,6 +133,8 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setServing( recipe.getServing() );
                 recipeEntity.setImageFile( recipe.getImageData() );
                 recipeCrudRepository.save( recipeEntity );
+
+                this.ingredientService.saveRecipeIngredient( recipeEntity.getId(), recipe.getIngredients() );
             }
         }
     }

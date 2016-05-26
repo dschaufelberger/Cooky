@@ -8,9 +8,11 @@ import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.mocks.AuthenticationMock;
 import de.cookyapp.service.mocks.CookbookContentServiceMock;
 import de.cookyapp.service.mocks.CookbookManagementServiceMock;
+import de.cookyapp.service.mocks.IngredientServiceMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
 import de.cookyapp.service.mocks.UserRepositoryMock;
 import de.cookyapp.service.services.RecipeCrudService;
@@ -33,6 +35,7 @@ public class IRecipeCrudServiceTest {
     private AuthenticationMock authenticationMock;
     private CookbookContentServiceMock cookbookContentServiceMock;
     private CookbookManagementServiceMock cookbookManagementServiceMock;
+    private IngredientServiceMock ingredientServiceMock;
     private IRecipeCrudService service;
 
     @Before
@@ -42,8 +45,9 @@ public class IRecipeCrudServiceTest {
         this.userRepositoryMock = new UserRepositoryMock();
         this.cookbookContentServiceMock = new CookbookContentServiceMock();
         this.cookbookManagementServiceMock = new CookbookManagementServiceMock();
+        this.ingredientServiceMock = new IngredientServiceMock();
         this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock, null,
-                this.cookbookManagementServiceMock, this.cookbookContentServiceMock );
+                this.cookbookManagementServiceMock, this.cookbookContentServiceMock, this.ingredientServiceMock );
     }
 
     @Test
@@ -73,6 +77,7 @@ public class IRecipeCrudServiceTest {
 
     @Test
     public void testDeleteRecipeByUnauthorizedUser() {
+        thrown.expect( UserNotAuthorized.class );
         // arrange
         RecipeEntity entityUnderTest = new RecipeEntity();
         entityUnderTest.setId( 3 );
@@ -88,11 +93,6 @@ public class IRecipeCrudServiceTest {
 
         // act
         this.service.deleteRecipe( entityUnderTest.getId() );
-
-        // assert
-        RecipeEntity dummy = this.recipeRepositoryMock.findOne( entityUnderTest.getId() );
-        Assert.assertNotNull( dummy );
-        Assert.assertEquals( dummyList.size(), this.recipeRepositoryMock.getEntities().size() );
     }
 
     @Test

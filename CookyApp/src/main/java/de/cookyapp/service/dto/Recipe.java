@@ -1,6 +1,8 @@
 package de.cookyapp.service.dto;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.persistence.entities.RecipeEntity;
@@ -26,13 +28,16 @@ public class Recipe {
     private Integer voteCount;
     private String imageLink;
     private byte[] imageData;
-
     private User author;
+    private List<Ingredient> ingredients;
 
     public Recipe() {
+        this.ingredients = new LinkedList<>();
     }
 
     public Recipe( RecipeEntity recipeEntity ) {
+        this();
+
         setId( recipeEntity.getId() );
         setName( recipeEntity.getName() );
         setShortDescription( recipeEntity.getShortDescription() );
@@ -175,6 +180,14 @@ public class Recipe {
 
     public void setImageData( byte[] imageData ) {
         this.imageData = imageData;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients( List<Ingredient> ingredients ) {
+        this.ingredients = ingredients;
     }
 
     private User userEntityToUser( UserEntity userEntity ) {
