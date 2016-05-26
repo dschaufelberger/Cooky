@@ -19,6 +19,7 @@
     <link href="<spring:url value="/resources/css/jQueryUI/jquery-ui.theme.min.css" />" rel="stylesheet">
     <link href="<spring:url value="/resources/css/bootstrap/bootstrap.min.css" />" rel="stylesheet">
     <link href="<spring:url value="/resources/css/cooky/cooky-general.css"/>" rel="stylesheet">
+    <link href="<spring:url value="/resources/css/cooky/cooky-recipes.css"/>" rel="stylesheet">
     <link href="<spring:url value="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"/>"
           rel="stylesheet" type="text/css">
     <link href="<spring:url value="http://fonts.googleapis.com/css?family=Montserrat:400,700"/>" rel="stylesheet"

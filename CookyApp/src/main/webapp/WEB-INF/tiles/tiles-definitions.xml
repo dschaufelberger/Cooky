@@ -26,6 +26,7 @@
         <!--<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />-->
         <put-attribute name="content" value="/WEB-INF/views/layout/PageContent.jsp" />
         <put-attribute name="pagecontent" value="" />
+        <put-attribute name="rightsidebar" value="/WEB-INF/views/layout/Sidebar.jsp" cascade="true"/>
         <!--<put-attribute name="footer" value="" />-->
     </definition>
 
@@ -78,12 +79,6 @@
     <definition name="RecipeOverviewTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipes" />
         <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/recipes.jsp" cascade="true" />
-    </definition>
-
-    <!-- Tile for the Recipe of the Month -->
-    <definition name="RecipeOfTheMonthTile" extends="page.definition">
-        <put-attribute name="title" value="Cooky Recipes" />
-        <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/recipeOfTheMonth.jsp" cascade="true" />
     </definition>
 
     <!-- Page to create a new recipe, mapped to "/recipes/create" -->

@@ -19,6 +19,8 @@
         <div class="col-md-8 cooky-mainContent cooky-fill">
             <tiles:insertAttribute name="pagecontent" />
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-2">
+            <tiles:insertAttribute name="rightsidebar" />
+        </div>
     </div>
 </div>
