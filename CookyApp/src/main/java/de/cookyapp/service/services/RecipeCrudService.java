@@ -19,6 +19,7 @@ import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IIngredientCrudRepository;
 import de.cookyapp.persistence.repositories.app.IRecipeCrudRepository;
+import de.cookyapp.persistence.repositories.app.IRecipeIngredientCrudRepository;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
@@ -42,6 +43,7 @@ public class RecipeCrudService implements IRecipeCrudService {
 
     private IRecipeCrudRepository recipeCrudRepository;
     private IIngredientCrudRepository ingredientCrudRepository;
+    private IRecipeIngredientCrudRepository recipeIngredientCrudRepository;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
     private ServletContext servletContext;
@@ -52,9 +54,11 @@ public class RecipeCrudService implements IRecipeCrudService {
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
                               IUserCrudRepository userCrudRepository, ServletContext servletContext,
                               ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService,
-                              IIngredientCrudRepository ingredientCrudRepository) {
+                              IIngredientCrudRepository ingredientCrudRepository,
+                              IRecipeIngredientCrudRepository recipeIngredientCrudRepository) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.ingredientCrudRepository = ingredientCrudRepository;
+        this.recipeIngredientCrudRepository = recipeIngredientCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
         this.servletContext = servletContext;
@@ -189,6 +193,34 @@ public class RecipeCrudService implements IRecipeCrudService {
             }
         }
         return recipeEntityListToRecipeList(result);
+    }
+
+    @Override
+    public List<Recipe> completeIngredientsInRecipe( List<String> ingredientNames ) {
+        List<Integer> ingredientIds = ingredientEntitiesToIngredientIds(ingredientCrudRepository.findByNameIn(ingredientNames));
+        List<Recipe> recipes = recipeIngredientEntitiesToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
+        return recipes;
+    }
+
+    private List<Recipe> recipeIngredientEntitiesToRecipes (List<RecipeIngredientEntity> recipeIngredientEntities) {
+        List<Recipe> recipes = new ArrayList<>();
+        if (recipeIngredientEntities != null) {
+            for (RecipeIngredientEntity entity : recipeIngredientEntities) {
+                Recipe current = new Recipe(entity.getRecipe());
+                recipes.add(current);
+            }
+        }
+        return recipes;
+    }
+
+    private List<Integer> ingredientEntitiesToIngredientIds (List<IngredientEntity> ingredientEntities) {
+        List<Integer> ingredientIds = new ArrayList<>();
+        if (ingredientEntities != null) {
+            for  (IngredientEntity entity : ingredientEntities) {
+                ingredientIds.add(entity.getId());
+            }
+        }
+        return ingredientIds;
     }
 
     private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {

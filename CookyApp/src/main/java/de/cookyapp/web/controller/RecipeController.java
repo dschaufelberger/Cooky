@@ -223,9 +223,9 @@ public class RecipeController {
         ModelAndView modelAndView;
         modelAndView = new ModelAndView( "RecipeOverviewTile" );
         if (suggestions.isOnlyRecipesContainingAllIngredients()) {
-            modelAndView.addObject("recipesList", recipeCrudService.recipeSuggestionsAllIn(suggestions.getIngredients()));
+            modelAndView.addObject("recipesList", recipeCrudService.completeIngredientsInRecipe(suggestions.getIngredients()));
         } else {
-            modelAndView.addObject( "recipesList", recipeCrudService.recipeSuggestionsAllIn(suggestions.getIngredients()) );
+            modelAndView.addObject( "recipesList", recipeCrudService.completeIngredientsInRecipe(suggestions.getIngredients()) );
         }
         return modelAndView;
     }

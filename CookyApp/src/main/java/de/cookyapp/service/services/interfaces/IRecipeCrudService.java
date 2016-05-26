@@ -24,6 +24,8 @@ public interface IRecipeCrudService {
 
     List<Recipe> recipeSuggestions( List<String> ingredientName );
 
+    List<Recipe> completeIngredientsInRecipe( List<String> ingredientNames );
+
     List<Recipe> recipeSuggestionsAllIn( List<String> ingredientNames );
 
 }

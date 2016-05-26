@@ -14,6 +14,7 @@ import de.cookyapp.service.mocks.CookbookManagementServiceMock;
 import de.cookyapp.service.mocks.RecipeRepositoryMock;
 import de.cookyapp.service.mocks.UserRepositoryMock;
 import de.cookyapp.service.services.RecipeCrudService;
+import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,6 +35,7 @@ public class IRecipeCrudServiceTest {
     private CookbookContentServiceMock cookbookContentServiceMock;
     private CookbookManagementServiceMock cookbookManagementServiceMock;
     private IRecipeCrudService service;
+    private IIngredientCrudService ingredientCrudService;
 
     @Before
     public void setUp() throws Exception {
@@ -43,7 +45,7 @@ public class IRecipeCrudServiceTest {
         this.cookbookContentServiceMock = new CookbookContentServiceMock();
         this.cookbookManagementServiceMock = new CookbookManagementServiceMock();
         this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock, null,
-                this.cookbookManagementServiceMock, this.cookbookContentServiceMock );
+                this.cookbookManagementServiceMock, this.cookbookContentServiceMock, null, null );
     }
 
     @Test
