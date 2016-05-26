@@ -10,6 +10,7 @@ import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +30,8 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute
-    public ModelAndView showRecipeOfTheMonth( ) {
-        ModelAndView model = new ModelAndView( "RecipeOfTheMonthTile" );
-        model.addObject( "recipeOfTheMonth", this.recipeOfTheMonthService.getRecipeOfTheMonth() );
-        return model;
+    public void showRecipeOfTheMonth( Model model) {
+        model.addAttribute( "recipeOfTheMonth", this.recipeOfTheMonthService.getRecipeOfTheMonth() );
     }
 
 }
