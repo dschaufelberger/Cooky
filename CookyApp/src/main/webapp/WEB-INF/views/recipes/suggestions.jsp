@@ -14,6 +14,7 @@
 
 <div class="container">
     <form:form method="POST" action="/recipes/recipeSuggestions" commandName="ingredientSuggestion">
+        <form:checkbox path="recipesContainingAtLeastOneIngredient"/>Get Recipes which contain at least one of the inserted Ingredients
         <div class="form-group ingredientSuggestions">
             <form:input path="ingredients[0]" cssClass="form-control ingredients" onchange="addIngredientRow()" />
         </div>

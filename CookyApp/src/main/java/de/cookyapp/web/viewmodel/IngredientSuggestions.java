@@ -8,7 +8,7 @@ import java.util.List;
 public class IngredientSuggestions {
 
     private List<String> ingredients;
-    private boolean onlyRecipesContainingAllIngredients;
+    private boolean recipesContainingAtLeastOneIngredient;
 
     public IngredientSuggestions () { }
 
@@ -19,11 +19,11 @@ public class IngredientSuggestions {
     public void setIngredients ( List<String> ingredients ) { this.ingredients = ingredients; }
 
 
-    public boolean isOnlyRecipesContainingAllIngredients() {
-        return onlyRecipesContainingAllIngredients;
+    public boolean isRecipesContainingAtLeastOneIngredient() {
+        return recipesContainingAtLeastOneIngredient;
     }
 
-    public void setOnlyRecipesContainingAllIngredients(boolean onlyRecipesContainingAllIngredients) {
-        this.onlyRecipesContainingAllIngredients = onlyRecipesContainingAllIngredients;
+    public void setRecipesContainingAtLeastOneIngredient(boolean recipesContainingAtLeastOneIngredient) {
+        this.recipesContainingAtLeastOneIngredient = recipesContainingAtLeastOneIngredient;
     }
 }

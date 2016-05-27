@@ -174,31 +174,14 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public List<Recipe> recipeSuggestionsAllIn( List<String> ingredientNames ) {
-        ingredientNames.remove(ingredientNames.size() -1);
-        List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
-        List<RecipeEntity> result = new ArrayList<>();
-        for (RecipeEntity current : recipeEntities) {
-            if (current.getIngredients().size() == ingredientNames.size()) {
-                List<String> recipeIngredients = new ArrayList<>();
-                for (RecipeIngredientEntity recipeIngredientEntity : current.getIngredients()) {
-                    recipeIngredients.add(recipeIngredientEntity.getIngredient().getName());
-                }
-                Collections.sort(ingredientNames);
-                Collections.sort(recipeIngredients);
-                //Check in this direction because an empty recipeIngredients list would be a true statement
-                if (recipeIngredients.containsAll(ingredientNames)) {
-                    result.add(current);
-                }
+    public List<Recipe> completeIngredientsInRecipe( List<String> ingredientNames ) {
+        List<Recipe> recipes = new ArrayList<>();
+        if (ingredientNames != null && ingredientNames.size() > 0) {
+            List<Integer> ingredientIds = ingredientEntitiesToIngredientIds(ingredientCrudRepository.findByNameIn(ingredientNames));
+            if (ingredientIds != null && ingredientIds.size() > 0 && ingredientIds.size() == ingredientNames.size() -1) {
+                recipes = recipeIngredientEntitiesToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
             }
         }
-        return recipeEntityListToRecipeList(result);
-    }
-
-    @Override
-    public List<Recipe> completeIngredientsInRecipe( List<String> ingredientNames ) {
-        List<Integer> ingredientIds = ingredientEntitiesToIngredientIds(ingredientCrudRepository.findByNameIn(ingredientNames));
-        List<Recipe> recipes = recipeIngredientEntitiesToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
         return recipes;
     }
 
@@ -207,6 +190,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         if (recipeIngredientEntities != null) {
             for (RecipeIngredientEntity entity : recipeIngredientEntities) {
                 Recipe current = new Recipe(entity.getRecipe());
+                current.setImageLink(generateImagePath(entity.getRecipe()));
                 recipes.add(current);
             }
         }
@@ -228,15 +212,21 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
-                if ( entity.getImageFile() == null ) {
-                    current.setImageLink( "http://placehold.it/320x200" );
-                } else {
-                    current.setImageLink( byteArrayToFileLink( entity.getImageFile() ) );
-                }
+                current.setImageLink(generateImagePath(entity));
                 recipes.add( current );
             }
         }
         return recipes;
+    }
+
+    private String generateImagePath (RecipeEntity recipeEntity) {
+        String path = "";
+        if ( recipeEntity.getImageFile() == null ) {
+            path = "http://placehold.it/320x200";
+        } else {
+            path = byteArrayToFileLink( recipeEntity.getImageFile());
+        }
+        return path;
     }
 
     private String byteArrayToFileLink( byte[] bytes ) {

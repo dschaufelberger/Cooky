@@ -222,8 +222,8 @@ public class RecipeController {
     public ModelAndView recipeSuggestions (@ModelAttribute ( "suggestions" ) @Valid IngredientSuggestions suggestions) {
         ModelAndView modelAndView;
         modelAndView = new ModelAndView( "RecipeOverviewTile" );
-        if (suggestions.isOnlyRecipesContainingAllIngredients()) {
-            modelAndView.addObject("recipesList", recipeCrudService.completeIngredientsInRecipe(suggestions.getIngredients()));
+        if (suggestions.isRecipesContainingAtLeastOneIngredient()) {
+            modelAndView.addObject("recipesList", recipeCrudService.recipeSuggestions(suggestions.getIngredients()));
         } else {
             modelAndView.addObject( "recipesList", recipeCrudService.completeIngredientsInRecipe(suggestions.getIngredients()) );
         }
