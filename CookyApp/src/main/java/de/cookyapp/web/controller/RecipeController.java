@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.ImageUploadFailed;
 import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -16,12 +15,9 @@ import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
-import de.cookyapp.web.viewmodel.Ingredient;
-import de.cookyapp.web.viewmodel.Recipe;
-import de.cookyapp.web.viewmodel.RecipeCookbook;
-import de.cookyapp.web.viewmodel.Search;
-import de.cookyapp.web.viewmodel.cookbook.Cookbook;
-import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
+import de.cookyapp.web.viewmodel.recipes.Ingredient;
+import de.cookyapp.web.viewmodel.recipes.Recipe;
+import de.cookyapp.web.viewmodel.recipes.Search;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,7 +62,7 @@ public class RecipeController {
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes().stream().map( recipe -> new de.cookyapp.web.viewmodel.Recipe( recipe ) ).collect( Collectors.toList() ) );
+        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes().stream().map( recipe -> new Recipe( recipe ) ).collect( Collectors.toList() ) );
         return model;
     }
 
@@ -141,24 +137,28 @@ public class RecipeController {
 
     @RequestMapping( value = "/view/{id}", method = RequestMethod.GET )
     public ModelAndView showDetail( @PathVariable int id ) {
+        ModelAndView modelAndView = new ModelAndView( "RecipeDetailTile" );
+
         Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
+        recipe.setShortDescription( htmlEscapeNewLines( recipe.getShortDescription() ) );
+        recipe.setPreparation( htmlEscapeNewLines( recipe.getPreparation() ) );
 
-        ModelAndView modelAndView = new ModelAndView( "RecipeEditTile" );
-        User user = this.userCrudService.getCurrentUser();
-
-        if ( user != null ) {
-            List<Cookbook> cookbooks = this.cookbookManagementService.getCookbooksForUser( user.getId() )
-                    .stream()
-                    .map( cookbook -> new Cookbook( cookbook ) )
-                    .collect( Collectors.toList() );
-
-            CookbookOverview overview = new CookbookOverview( cookbooks );
-            RecipeCookbook cookbook = new RecipeCookbook();
-            cookbook.setRecipeId( id );
-
-            modelAndView.addObject( "cookbook", cookbook );
-            modelAndView.addObject( "cookbookOverview", overview );
-        }
+        // TODO needed in edit view
+        //User user = this.userCrudService.getCurrentUser();
+        //
+        //if ( user != null ) {
+        //    List<Cookbook> cookbooks = this.cookbookManagementService.getCookbooksForUser( user.getId() )
+        //            .stream()
+        //            .map( cookbook -> new Cookbook( cookbook ) )
+        //            .collect( Collectors.toList() );
+        //
+        //    CookbookOverview overview = new CookbookOverview( cookbooks );
+        //    RecipeCookbook cookbook = new RecipeCookbook();
+        //    cookbook.setRecipeId( id );
+        //
+        //    modelAndView.addObject( "cookbook", cookbook );
+        //    modelAndView.addObject( "cookbookOverview", overview );
+        //}
         modelAndView.addObject( "recipe", recipe );
 
         return modelAndView;
@@ -224,6 +224,10 @@ public class RecipeController {
         ratingService.rateRecipe( id, rating );
         String view = "redirect:/recipes/view/" + id;
         return view;
+    }
+
+    private String htmlEscapeNewLines( String text ) {
+        return text.replaceAll( "\\r?\\n", "<br>" );
     }
 
     private byte[] getImageBytes( MultipartFile image ) {

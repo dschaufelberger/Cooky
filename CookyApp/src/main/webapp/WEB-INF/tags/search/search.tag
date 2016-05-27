@@ -9,7 +9,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<jsp:useBean id="search" class="de.cookyapp.web.viewmodel.Search" scope="request" />
+<jsp:useBean id="search" class="de.cookyapp.web.viewmodel.recipes.Search" scope="request" />
 
 <div class="input-group">
     <form:input path="searchQuery" cssClass="form-control input-sm" placeholder="Search for recipes..." />

@@ -42,3 +42,16 @@ html, body {
 #cookbookDetail .list-group {
     margin-top: 15px;
 }
+
+.recipe-detail-rightside {
+    padding: 15px;
+    width: 320px;
+}
+
+.recipe-detail-rightside.recipe-thumbnail {
+    padding: 15px 0;
+}
+
+.recipe-author {
+    background-color: darkcyan;
+}

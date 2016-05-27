@@ -21,6 +21,7 @@ import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -142,9 +143,25 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Override
     public Recipe getRecipe( int recipeID ) {
         RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipeID );
-        Recipe recipe = null;
+        Recipe recipe;
         if ( recipeEntity != null ) {
             recipe = new Recipe( recipeEntity );
+            String imageUrl;
+
+            if ( recipeEntity.getImageFile() == null || this.imageScaling == null ) {
+                imageUrl = "http://placehold.it/320x200";
+            } else {
+                try {
+                    imageUrl = writeImageThumbnail( recipeEntity.getImageFile() );
+                } catch ( IOException e ) {
+                    logger.error( "Image file could not be created. Recipe id: " + recipeEntity.getId() );
+                    imageUrl = "http://placehold.it/320x200";
+                }
+            }
+
+            recipe.setImageLink( imageUrl );
+        } else {
+            throw new InvalidRecipeId( recipeID );
         }
         return recipe;
     }

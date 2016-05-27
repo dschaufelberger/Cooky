@@ -53,6 +53,8 @@ public class Recipe {
     @Max( 5 )
     private byte rating;
 
+    private Author author;
+
     private List<Ingredient> ingredients;
 
     public Recipe() {
@@ -64,7 +66,6 @@ public class Recipe {
     }
 
     public Recipe( de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredients ) {
-
         this.id = recipe.getId();
         this.ingredients = new ArrayList<>();
         this.name = recipe.getName();
@@ -79,6 +80,11 @@ public class Recipe {
         this.rating = recipe.getRating();
         this.imageLink = recipe.getImageLink();
         this.ingredients = mapIngredientsToViewModel( ingredients );
+        this.author = new Author( recipe.getAuthor() );
+    }
+
+    public Author getAuthor() {
+        return author;
     }
 
     public int getId() {
