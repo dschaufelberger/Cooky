@@ -80,13 +80,13 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/recipes.jsp" cascade="true" />
     </definition>
 
-    <!-- Page to create a new recipe, mapped to "/recipes/edit -->
+    <!-- Recipe edit page, mapped to "/recipes/edit -->
     <definition name="RecipeEditTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/editRecipe.jsp" cascade="true" />
     </definition>
 
-    <!-- The recipe overview page, mapped to "/recipes/create -->
+    <!-- The recipe creation page, mapped to "/recipes/add -->
     <definition name="RecipeCreationTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="pagecontent" value="/WEB-INF/views/recipes/addRecipe.jsp" cascade="true" />
