@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
@@ -177,6 +175,8 @@ public class RecipeCrudService implements IRecipeCrudService {
     public List<Recipe> completeIngredientsInRecipe( List<String> ingredientNames ) {
         List<Recipe> recipes = new ArrayList<>();
         if (ingredientNames != null && ingredientNames.size() > 0) {
+            Set<String> set = new LinkedHashSet<String>(ingredientNames);
+            ingredientNames = new ArrayList<>(set);
             List<Integer> ingredientIds = ingredientEntitiesToIngredientIds(ingredientCrudRepository.findByNameIn(ingredientNames));
             if (ingredientIds != null && ingredientIds.size() > 0 && ingredientIds.size() == ingredientNames.size() -1) {
                 recipes = recipeIngredientEntitiesToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
