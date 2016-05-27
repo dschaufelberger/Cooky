@@ -1,4 +1,4 @@
-package de.cookyapp.web.viewmodel;
+package de.cookyapp.web.viewmodel.recipes;
 
 /**
  * Created by Dominik Schaufelberger on 18.05.2016.

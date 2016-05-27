@@ -1,4 +1,4 @@
-package de.cookyapp.web.viewmodel;
+package de.cookyapp.web.viewmodel.recipes;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
