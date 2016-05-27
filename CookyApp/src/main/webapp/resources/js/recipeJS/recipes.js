@@ -1,14 +1,14 @@
 /**
  * Created by Jasper on 29.11.2015.
  */
-var count = 1;
-var counter = 1;
+var countForAddIngredient = 1;
+var countForSuggestions = 1;
 
 function addRow (){
     $(".ingredients tbody").append("<tr>" +
-        "<td><form:input path='ingredients["+ count +"].name' /></td> " +
-        "<td><form:input path='ingredients["+count+"].amount' /></td> " +
-        "<td><form:input path='ingredients["+count+"].unit'/></td>" +
+        "<td><form:input path='ingredients["+ countForAddIngredient +"].name' /></td> " +
+        "<td><form:input path='ingredients["+countForAddIngredient+"].amount' /></td> " +
+        "<td><form:input path='ingredients["+countForAddIngredient+"].unit'/></td>" +
         "</tr>")
     count++;
 };
@@ -50,9 +50,9 @@ function addIngredientRow() {
     });
 
     if (fieldsFilled) {
-        $("</br><input id='ingredients"+ counter +"' name='ingredients["+ counter +"]' " +
+        $("</br><input id='ingredients"+ countForSuggestions +"' name='ingredients["+ countForSuggestions +"]' " +
             "onchange='addIngredientRow()' class='form-control ingredients' type='text' value=''>")
             .appendTo(".ingredientSuggestions");
-        counter = counter + 1;
+        countForSuggestions = countForSuggestions + 1;
     }
 };

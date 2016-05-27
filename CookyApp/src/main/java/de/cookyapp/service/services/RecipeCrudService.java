@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
@@ -22,7 +25,6 @@ import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
-import de.cookyapp.service.dto.Ingredient;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
@@ -146,46 +148,45 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Override
     public List<Recipe> getAllRecipes() {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findAll();
-        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
+        List<Recipe> recipes = mapToRecipeList( recipeEntities );
         return recipes;
     }
 
     @Override
-    public List<Recipe> getAllRecipesByName( String recipeName ) {
+    public List<Recipe> getAllRecipesByName(String recipeName ) {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findByName( recipeName );
-        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
+        List<Recipe> recipes = mapToRecipeList( recipeEntities );
         return recipes;
     }
 
     @Override
     public List<Recipe> searchRecipesContaining( String searchTerm ) {
         List<RecipeEntity> recipeEntities = recipeCrudRepository.findByNameContaining( searchTerm );
-        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
+        List<Recipe> recipes = mapToRecipeList( recipeEntities );
         return recipes;
     }
 
     @Override
-    public List<Recipe> recipeSuggestions( List<String> ingredientNames ) {
-        List<RecipeEntity> recipeEntities = recipeCrudRepository.findByIngredientsIngredientNameIn( ingredientNames );
-        List<Recipe> recipes = recipeEntityListToRecipeList( recipeEntities );
-        return recipes;
-    }
-
-    @Override
-    public List<Recipe> completeIngredientsInRecipe( List<String> ingredientNames ) {
+    public List<Recipe> recipeSuggestions( List<String> ingredientNames, boolean atLeastOne ) {
         List<Recipe> recipes = new ArrayList<>();
         if (ingredientNames != null && ingredientNames.size() > 0) {
-            Set<String> set = new LinkedHashSet<String>(ingredientNames);
-            ingredientNames = new ArrayList<>(set);
-            List<Integer> ingredientIds = ingredientEntitiesToIngredientIds(ingredientCrudRepository.findByNameIn(ingredientNames));
-            if (ingredientIds != null && ingredientIds.size() > 0 && ingredientIds.size() == ingredientNames.size() -1) {
-                recipes = recipeIngredientEntitiesToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
+            if (atLeastOne) {
+                List<RecipeEntity> recipeEntities = recipeCrudRepository.findByIngredientsIngredientNameIn( ingredientNames );
+                recipes = mapToRecipeList( recipeEntities );
+
+            } else {
+                Set<String> set = new LinkedHashSet<String>(ingredientNames);
+                ingredientNames = new ArrayList<>(set);
+                List<Integer> ingredientIds = mapToIds(ingredientCrudRepository.findByNameIn(ingredientNames));
+                if (ingredientIds != null && ingredientIds.size() > 0 && ingredientIds.size() == ingredientNames.size() -1) {
+                    recipes = mapToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
+                }
             }
         }
         return recipes;
     }
 
-    private List<Recipe> recipeIngredientEntitiesToRecipes (List<RecipeIngredientEntity> recipeIngredientEntities) {
+    private List<Recipe> mapToRecipes (List<RecipeIngredientEntity> recipeIngredientEntities) {
         List<Recipe> recipes = new ArrayList<>();
         if (recipeIngredientEntities != null) {
             for (RecipeIngredientEntity entity : recipeIngredientEntities) {
@@ -197,7 +198,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    private List<Integer> ingredientEntitiesToIngredientIds (List<IngredientEntity> ingredientEntities) {
+    private List<Integer> mapToIds (List<IngredientEntity> ingredientEntities) {
         List<Integer> ingredientIds = new ArrayList<>();
         if (ingredientEntities != null) {
             for  (IngredientEntity entity : ingredientEntities) {
@@ -207,7 +208,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         return ingredientIds;
     }
 
-    private List<Recipe> recipeEntityListToRecipeList( List<RecipeEntity> entities ) {
+    private List<Recipe> mapToRecipeList( List<RecipeEntity> entities ) {
         List<Recipe> recipes = new ArrayList<>();
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {

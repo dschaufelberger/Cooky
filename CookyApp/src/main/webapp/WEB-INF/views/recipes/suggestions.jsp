@@ -12,16 +12,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
 
-<div class="container">
-    <form:form method="POST" action="/recipes/recipeSuggestions" commandName="ingredientSuggestion">
-        <form:checkbox path="recipesContainingAtLeastOneIngredient"/>Get Recipes which contain at least one of the inserted Ingredients
-        <div class="form-group ingredientSuggestions">
-            <form:input path="ingredients[0]" cssClass="form-control ingredients" onchange="addIngredientRow()" />
-        </div>
+<form:form method="POST" action="/recipes/recipeSuggestions" commandName="ingredientSuggestion">
+    <form:checkbox
+            path="recipesContainingAtLeastOneIngredient"/>Get Recipes which contain at least one of the inserted Ingredients
+    <div class="form-group ingredientSuggestions">
+        <form:input path="ingredients[0]" cssClass="form-control ingredients" onchange="addIngredientRow()"/>
+    </div>
         <span class="input-group-btn">
         <button type="submit" class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
     </span>
-    </form:form>
-</div>
+</form:form>

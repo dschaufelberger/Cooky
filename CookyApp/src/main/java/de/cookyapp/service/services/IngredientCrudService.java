@@ -46,12 +46,6 @@ public class IngredientCrudService implements IIngredientCrudService {
         }
     }
 
-    public Ingredient loadIngredient (String name) {
-        IngredientEntity ingredientEntity = ingredientCrudRepository.findFirstByName(name);
-        Ingredient ingredient = new Ingredient(ingredientEntity);
-        return ingredient;
-    }
-
     @Override
     public void saveRecipeIngredient( int recipeId, List<Ingredient> ingredients ) {
         List<RecipeIngredientEntity> updatedEntities = new ArrayList<>( ingredients.size() );
