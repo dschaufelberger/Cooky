@@ -22,6 +22,7 @@ import javax.persistence.Table;
 public class RecipeOfTheMonthEntity {
     private int id;
     private LocalDate updated;
+    private String imagename;
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -77,7 +78,15 @@ public class RecipeOfTheMonthEntity {
         this.updated = updated;
     }
 
+    @Basic
+    @Column( name = "ImageName", nullable = true )
+    public String getImageName() {
+        return imagename;
+    }
 
+    public void setImageName( String imagename ) {
+        this.imagename = imagename;
+    }
 }
 
 

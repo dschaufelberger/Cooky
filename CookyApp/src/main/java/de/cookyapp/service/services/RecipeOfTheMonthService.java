@@ -30,18 +30,20 @@ public class RecipeOfTheMonthService implements IRecipeOfTheMonthService {
     private Logger logger = Logger.getLogger( RecipeOfTheMonthService.class );
 
     private IRecipeCrudRepository recipeCrudRepository;
+    private IRecipeCrudService recipeCrudService;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
     private ServletContext servletContext;
     private IRecipeOfTheMonthRepository recipeOfTheMonthRepository;
 
     @Autowired
-    public RecipeOfTheMonthService( IRecipeOfTheMonthRepository recipeOfTheMonthRepository, IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext) {
+    public RecipeOfTheMonthService( IRecipeOfTheMonthRepository recipeOfTheMonthRepository, IRecipeCrudService recipeCrudService, IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
         this.servletContext = servletContext;
         this.recipeOfTheMonthRepository = recipeOfTheMonthRepository;
+        this.recipeCrudService = recipeCrudService;
     }
 
     @Override
@@ -56,6 +58,7 @@ public class RecipeOfTheMonthService implements IRecipeOfTheMonthService {
                 RecipeOfTheMonthEntity newRecipeOfTheMonthEntity = new RecipeOfTheMonthEntity();
                 newRecipeOfTheMonthEntity.setRecipe( recipeEntity );
                 newRecipeOfTheMonthEntity.setUpdated( LocalDate.now() );
+                newRecipeOfTheMonthEntity.setImageName( this.recipeCrudService.writeImageThumbnail(recipeEntity.getImageFile()) );
                 recipeOfTheMonthEntity = recipeOfTheMonthRepository.save( newRecipeOfTheMonthEntity );
             }
             if ( recipeOfTheMonthEntity != null && recipeOfTheMonthEntity.getRecipe() != null  ) {

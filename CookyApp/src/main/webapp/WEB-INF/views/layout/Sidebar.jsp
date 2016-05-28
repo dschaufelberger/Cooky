@@ -12,7 +12,7 @@
 
 <div class="cooky-sidebar">
     <div class="sidebar-rotmpic">
-        <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg"
+        <img src="${recipeOfTheMonth.imageName}"
              class="img-responsive" alt="">
     </div>
     <div class="sidebar-title">
