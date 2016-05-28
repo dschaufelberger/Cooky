@@ -23,4 +23,8 @@
         <name>search</name>
         <path>/WEB-INF/tags/search/search.tag</path>
     </tag-file>
+    <tag-file>
+        <name>rating</name>
+        <path>/WEB-INF/tags/recipes/Rating.tag</path>
+    </tag-file>
 </taglib>

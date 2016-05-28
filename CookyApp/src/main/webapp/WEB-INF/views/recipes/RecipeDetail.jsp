@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dominik Schaufelberger
@@ -32,6 +33,9 @@
     <div class="col-md-4">
         <div class="recipe-detail-rightside recipe-thumbnail">
             <img src="${recipe.imageLink}" alt="recipe-image">
+        </div>
+        <div class="recipe-detail-rightside">
+            <cooky:rating rating="${recipe.rating}" maxRating="${recipe.maxRating}" />
         </div>
         <div class="recipe-detail-rightside recipe-author">
             <!-- TODO provide link to user profile, when profiles are implemented -->

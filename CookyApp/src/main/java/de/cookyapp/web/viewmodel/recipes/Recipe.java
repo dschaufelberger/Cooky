@@ -53,6 +53,8 @@ public class Recipe {
     @Max( 5 )
     private byte rating;
 
+    private byte maxRating = 5;
+
     private Author author;
 
     private List<Ingredient> ingredients;
@@ -81,6 +83,10 @@ public class Recipe {
         this.imageLink = recipe.getImageLink();
         this.ingredients = mapIngredientsToViewModel( ingredients );
         this.author = new Author( recipe.getAuthor() );
+    }
+
+    public byte getMaxRating() {
+        return maxRating;
     }
 
     public Author getAuthor() {

@@ -8,7 +8,7 @@ public class Recipe {
     private String name;
     private String description;
     private byte rating;
-    private byte maxRating;
+    private byte maxRating = 5;
     private Cookbook containingCookbook;
     private Cookbook movedToCookbook;
 
@@ -39,7 +39,7 @@ public class Recipe {
     }
 
     public byte getMaxRating() {
-        return 5;
+        return maxRating;
     }
 
     public int getId() {
