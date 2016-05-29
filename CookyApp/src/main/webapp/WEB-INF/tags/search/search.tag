@@ -13,7 +13,9 @@
 
 <div class="input-group">
     <form:input path="searchQuery" cssClass="form-control input-sm" placeholder="Search for recipes..." />
-    </button>
+    <sec:authorize access="isAuthenticated()">
+    <form:select path="searchType" cssClass="form-control" items="${availableSearchTypes}"/>
+    </sec:authorize>
     <span class="input-group-btn">
         <button type="submit" class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-search"></span>
