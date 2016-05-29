@@ -15,7 +15,7 @@
     <div class="col-md-8">
         <p class="recipe-description">${recipe.shortDescription}</p>
 
-        Ingredients:
+        <strong>Ingredients:</strong>
         <table class="table">
             <tbody>
             <c:forEach var="ingredient" items="${recipe.ingredients}">
@@ -37,7 +37,7 @@
 
         </div>
 
-        Preparation:
+        <strong>Preparation:</strong>
         <div class="well well-sm">
             ${recipe.preparation}
         </div>
