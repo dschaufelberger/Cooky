@@ -61,6 +61,11 @@ html, body {
     background-color: darkcyan;
 }
 
+.recipe-author a.btn {
+    display: block;
+    margin-top: 10px;
+}
+
 .recipe-information {
     display: flex;
     justify-content: space-between;

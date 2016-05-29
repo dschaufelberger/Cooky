@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dominik Schaufelberger
@@ -52,6 +53,16 @@
         <div class="recipe-detail-rightside recipe-author">
             <!-- TODO provide link to user profile, when profiles are implemented -->
             <span>Author: <a href="#"><c:out value="${recipe.author.name}" /></a></span>
+
+            <sec:authorize access="isAuthenticated()">
+                <c:set var="username">
+                    <sec:authentication property="principal.username" />
+                </c:set>
+
+                <c:if test="${recipe.author.name eq username}">
+                    <a href="/recipes/edit/${recipe.id}" class="btn btn-primary">Edit your recipe</a>
+                </c:if>
+            </sec:authorize>
         </div>
     </div>
 </div>
