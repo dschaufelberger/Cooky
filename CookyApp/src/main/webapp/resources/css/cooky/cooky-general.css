@@ -43,6 +43,11 @@ html, body {
     margin-top: 15px;
 }
 
+.recipe-description {
+    font-size: medium;
+    color: #aaaaaa;
+}
+
 .recipe-detail-rightside {
     padding: 15px;
     width: 320px;
@@ -54,4 +59,18 @@ html, body {
 
 .recipe-author {
     background-color: darkcyan;
+}
+
+.recipe-information {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.recipe-information .glyphicon {
+    margin-right: 5px;
+}
+
+table.table .amount {
+    text-align: right;
 }

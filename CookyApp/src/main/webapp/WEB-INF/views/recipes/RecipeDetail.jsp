@@ -13,8 +13,9 @@
 
 <div class="row">
     <div class="col-md-8">
-        <p class="cooky-recipeDescription">${recipe.shortDescription}</p>
+        <p class="recipe-description">${recipe.shortDescription}</p>
 
+        Ingredients:
         <table class="table">
             <tbody>
             <c:forEach var="ingredient" items="${recipe.ingredients}">
@@ -26,6 +27,17 @@
             </tbody>
         </table>
 
+        <div class="recipe-information">
+            <span>Serving: ${recipe.serving}</span>
+            <span>Difficulty: ${recipe.difficulty.displayName}</span>
+            <span><span class="glyphicon glyphicon-fire"></span>Calories: ${recipe.calories}</span>
+            <span><span class="glyphicon glyphicon-time"></span>Working time: ${recipe.workingTime}</span>
+            <span><span class="glyphicon glyphicon-time"></span>Cooking time: ${recipe.cookingTime}</span>
+            <span><span class="glyphicon glyphicon-time"></span>Resting time: ${recipe.restTime}</span>
+
+        </div>
+
+        Preparation:
         <div class="well well-sm">
             ${recipe.preparation}
         </div>

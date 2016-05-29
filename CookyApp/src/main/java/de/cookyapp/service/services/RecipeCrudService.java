@@ -228,7 +228,7 @@ public class RecipeCrudService implements IRecipeCrudService {
 
         ImageIO.write( scaled, "jpg", new File( absoluteFilePath ) );
 
-        String imageUrl = (directoryPath + "/" + filename).replace( File.separator, "/" );
+        String imageUrl = "/" + (directoryPath + "/" + filename).replace( File.separator, "/" );
         return imageUrl;
     }
 
