@@ -3,6 +3,7 @@ package de.cookyapp.web.controller;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.account.Password;
 import de.cookyapp.web.viewmodel.account.User;
@@ -34,7 +35,7 @@ public class UserAccountController {
 
     @RequestMapping( "/details" )
     public ModelAndView showAccount() {
-        de.cookyapp.service.dto.User userDTO = userCrudService.getUserByUsername( this.authentication.getAuthentication().getName() );
+        de.cookyapp.service.dto.User userDTO = userCrudService.getCurrentUser();
 
         if ( userDTO != null ) {
             User user = new User( userDTO );
@@ -45,11 +46,8 @@ public class UserAccountController {
             return model;
 
         } else {
-            //TODO [Dodo - 10.01.16] das wird später nicht mehr nötig sein, da der bereich generell geschützt wird => nicht eingeloggt -> verweis auf login seite
-            ModelAndView model = new ModelAndView( "authentication/LoginPage" );
-            return model;
+            throw new UserNotAuthorized();
         }
-
     }
 
     @RequestMapping( "/changePassword" )
