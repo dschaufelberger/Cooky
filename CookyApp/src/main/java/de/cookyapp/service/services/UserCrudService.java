@@ -160,7 +160,7 @@ public class UserCrudService implements IUserCrudService {
 
     @Override
     public List<User> searchUsersContaining( String searchTerm ) {
-        List<UserEntity> userEntities = this.userCrudRepository.findByNameContaining( searchTerm );
+        List<UserEntity> userEntities = this.userCrudRepository.findByUsernameContaining( searchTerm );
         List<User> users = userEntities.stream().map( userEntity -> getUserIfExistant( userEntity ) ).collect( Collectors.<User>toList() );
         return users;
     }

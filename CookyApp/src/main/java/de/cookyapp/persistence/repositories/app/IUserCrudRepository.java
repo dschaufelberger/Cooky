@@ -11,5 +11,5 @@ import de.cookyapp.persistence.entities.UserEntity;
 public interface IUserCrudRepository extends IBaseCrudRepository<UserEntity, Integer> {
     UserEntity findByUsername( String username );
 
-    List<UserEntity> findByNameContaining( String name );
+    List<UserEntity> findByUsernameContaining( String username );
 }
