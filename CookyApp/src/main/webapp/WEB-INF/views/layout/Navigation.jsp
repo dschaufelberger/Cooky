@@ -27,7 +27,7 @@
                 </sec:authorize>
             </ul>
 
-            <form:form action="/recipes/search" method="post" cssClass="navbar-form navbar-left" commandName="search">
+            <form:form action="/search" method="post" cssClass="navbar-form navbar-left" commandName="search">
                 <cooky:search />
             </form:form>
 
