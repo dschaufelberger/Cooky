@@ -1,14 +1,17 @@
 package de.cookyapp.service.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.enums.AccountState;
+import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
+import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
@@ -155,6 +158,13 @@ public class UserCrudService implements IUserCrudService {
         return this.userCrudRepository.findByUsername( username ) != null;
     }
 
+    @Override
+    public List<User> searchUsersContaining( String searchTerm ) {
+        List<UserEntity> userEntities = this.userCrudRepository.findByNameContaining( searchTerm );
+        List<User> users = userEntities.stream().map( userEntity -> getUserIfExistant( userEntity ) ).collect( Collectors.<User>toList() );
+        return users;
+    }
+
     private void deleteUserById( int id ) {
         UserEntity userEntity = this.userCrudRepository.findOne( id );
 
@@ -174,4 +184,5 @@ public class UserCrudService implements IUserCrudService {
     private User getUserIfExistant( UserEntity userEntity ) {
         return userEntity == null ? null : new User( userEntity );
     }
+
 }
