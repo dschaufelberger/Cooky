@@ -71,7 +71,7 @@
                     <td><form:label path="difficulty">Difficulty:</form:label></td>
                     <td><form:select path="difficulty">
                         <form:option value="" label="${recipe.difficulty.name().toLowerCase()}" />
-                        <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty" />
+                        <form:options items="${availableDifficulty}" itemLabel="displayName" />
                     </form:select></td>
                     <td><form:errors path="difficulty" cssClass="formError" /></td>
                 </tr>

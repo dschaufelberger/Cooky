@@ -35,6 +35,7 @@ public class Recipe {
     @Max( value = 65535, message = "Werte nur bis 65535" )
     private int calories;
 
+    // TODO write custom validator for enum values
     @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
     private RecipeDifficulty difficulty;
 
@@ -163,10 +164,6 @@ public class Recipe {
 
     public void setCookingTime( int cookingTime ) {
         this.cookingTime = cookingTime;
-    }
-
-    public RecipeDifficulty[] getAvailableDifficulty() {
-        return RecipeDifficulty.values();
     }
 
     public List<Ingredient> getIngredients() {

@@ -3,17 +3,20 @@ package de.cookyapp.web.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
+import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.service.exceptions.ImageUploadFailed;
 import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
+import de.cookyapp.service.services.interfaces.IRecipeUtilityService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.recipes.Ingredient;
 import de.cookyapp.web.viewmodel.recipes.Recipe;
@@ -39,6 +42,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping( "/recipes" )
 public class RecipeController {
     private Logger logger = Logger.getLogger( RecipeController.class );
+
+    @Autowired
+    private IRecipeUtilityService recipeUtilityService;
 
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
@@ -166,9 +172,17 @@ public class RecipeController {
 
     @RequestMapping( value = "/add", method = RequestMethod.GET )
     public ModelAndView handleGoToRecipe() {
-        ModelAndView model = new ModelAndView( "RecipeCreationTile", "recipe", new Recipe() );
+        ModelAndView model = new ModelAndView( "RecipeCreationTile" );
+
+        List<RecipeDifficulty> difficulties = this.recipeUtilityService != null ?
+                this.recipeUtilityService.getAvailableDifficulties() :
+                new LinkedList<>();
+        model.addObject( "recipe", new Recipe() );
+        model.addObject( "availableDifficulties", difficulties );
         return model;
     }
+
+    //  TODO add /edit mapping
 
     @RequestMapping( value = "/create", method = RequestMethod.POST )
     public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {

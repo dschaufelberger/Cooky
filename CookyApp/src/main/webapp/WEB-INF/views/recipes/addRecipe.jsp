@@ -49,8 +49,9 @@
                     <tr>
                         <td><form:label path="difficulty">Difficulty:</form:label></td>
                         <td><form:select path="difficulty">
-                            <form:option value="" label="Bitte auswählen..." />
-                            <form:options items="${availableDifficulty}" itemLabel="recipeDifficulty" />
+                            <%-- NONE is an existing value for the recipe difficulty but no valid selection --%>
+                            <form:option value="NONE" label="Please select..." />
+                            <form:options items="${availableDifficulties}" itemLabel="displayName" />
                         </form:select></td>
                         <td><form:errors path="difficulty" cssClass="formError" /></td>
                     </tr>
