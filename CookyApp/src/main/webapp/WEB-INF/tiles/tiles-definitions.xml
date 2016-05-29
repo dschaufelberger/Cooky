@@ -111,6 +111,12 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/account/accountForm.jsp" cascade="true" />
     </definition>
 
+    <!-- The recipe overview page, mapped to "/recipes -->
+    <definition name="UserOverviewTile" extends="page.definition">
+        <put-attribute name="title" value="Cooky Users" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/users/users.jsp" cascade="true" />
+    </definition>
+
     <!-- A users personal password management page, mapped to "/account/changePassword" -->
     <definition name="UserPasswordTile" extends="page.definition">
         <put-attribute name="title" value="Your Account Information"/>
