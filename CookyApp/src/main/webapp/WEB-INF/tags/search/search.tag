@@ -14,7 +14,7 @@
 <div class="input-group">
     <form:input path="searchQuery" cssClass="form-control input-sm" placeholder="Search for recipes..." />
     <sec:authorize access="isAuthenticated()">
-    <form:select path="searchType" cssClass="form-control" items="${availableSearchTypes}"/>
+    <span class="input-group-addon" style="padding: 0px"><form:select path="searchType" cssClass="selectpicker cooky-form-control" items="${availableSearchTypes}"/></span>
     </sec:authorize>
     <span class="input-group-btn">
         <button type="submit" class="btn btn-default btn-sm">

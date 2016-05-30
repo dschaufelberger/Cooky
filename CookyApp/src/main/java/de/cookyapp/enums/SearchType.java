@@ -5,8 +5,7 @@ package de.cookyapp.enums;
  */
 public enum SearchType {
     RECIPES("Recipes"),
-    USERS("Users"),
-    BOTH("Recipes & Users");
+    USERS("Users");
 
     private String name;
 

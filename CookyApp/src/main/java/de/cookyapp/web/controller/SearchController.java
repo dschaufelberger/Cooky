@@ -35,14 +35,14 @@ public class SearchController {
 
     @RequestMapping("/search")
         public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
-            ModelAndView modelAndView = null;
+            ModelAndView modelAndView;
             Enum<SearchType> searchType = search.getSearchType();
-            if(searchType == SearchType.RECIPES) {
-                modelAndView = new ModelAndView( "RecipeOverviewTile" );
-                modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
-            }else if(searchType == SearchType.USERS) {
+            if(searchType == SearchType.USERS) {
                 modelAndView = new ModelAndView( "UserOverviewTile" );
                 modelAndView.addObject( "usersList", userCrudService.searchUsersContaining( search.getSearchQuery() ));
+            }else {
+                modelAndView = new ModelAndView( "RecipeOverviewTile" );
+                modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
             }
             return modelAndView;
         }
