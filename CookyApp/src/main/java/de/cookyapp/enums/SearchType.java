@@ -9,10 +9,12 @@ public enum SearchType {
 
     private String name;
 
-    private SearchType(String name) {
+    SearchType(String name) {
         this.name = name;
     }
-    public String getSearchType() {
+
+    @Override
+    public String toString() {
         return this.name;
     }
 }
