@@ -111,7 +111,7 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/account/accountForm.jsp" cascade="true" />
     </definition>
 
-    <!-- The recipe overview page, mapped to "/recipes -->
+    <!-- The user overview page, which is only used (in the moment) to display search results-->
     <definition name="UserOverviewTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Users" />
         <put-attribute name="pagecontent" value="/WEB-INF/views/users/users.jsp" cascade="true" />

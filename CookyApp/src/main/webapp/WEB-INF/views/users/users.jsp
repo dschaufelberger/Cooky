@@ -20,7 +20,7 @@
         <div class="thumbnail size">
             <div class="caption">
                 <!-- TODO: add link to user profile -->
-                <a href=""><h3>${user.username}</h3></a>
+                <a><h3>${user.username}</h3></a>
             </div>
         </div>
     </div>

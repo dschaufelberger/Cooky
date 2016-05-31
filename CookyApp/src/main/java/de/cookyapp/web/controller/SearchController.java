@@ -1,9 +1,11 @@
 package de.cookyapp.web.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.enums.SearchType;
+import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.web.viewmodel.Search;
@@ -36,14 +38,16 @@ public class SearchController {
     @RequestMapping("/search")
         public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
             ModelAndView modelAndView;
-            Enum<SearchType> searchType = search.getSearchType();
+            List<User> userList;
+            SearchType searchType = search.getSearchType();
             if(searchType == SearchType.USERS) {
                 modelAndView = new ModelAndView( "UserOverviewTile" );
-                modelAndView.addObject( "usersList", userCrudService.searchUsersContaining( search.getSearchQuery() ));
+                userList= userCrudService.searchUsersContaining( search.getSearchQuery());
+                modelAndView.addObject( "usersList", userList );
             }else {
                 modelAndView = new ModelAndView( "RecipeOverviewTile" );
                 modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
             }
-            return modelAndView;
+        return modelAndView;
         }
 }

@@ -22,7 +22,7 @@ public class Search {
         this.searchQuery = searchQuery;
     }
 
-    public Enum<SearchType> getSearchType() {
+    public SearchType getSearchType() {
         return searchType;
     }
 

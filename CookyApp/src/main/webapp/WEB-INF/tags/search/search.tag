@@ -13,7 +13,7 @@
 <jsp:useBean id="search" class="de.cookyapp.web.viewmodel.Search" scope="request" />
 
 <div class="input-group">
-    <form:input path="searchQuery" id="searchPlaceholder" cssClass="form-control input-sm"  placeholder="Search for recipes..." />
+    <form:input path="searchQuery" id="searchPlaceholder" cssClass="form-control input-sm"  placeholder="Search for ..." />
     <sec:authorize access="isAuthenticated()">
     <span class="input-group-addon" style="padding: 0px"><form:select path="searchType" id="searchTypeDropdown" onchange="changeSearchPlaceholder()" cssClass="btn-sm" items="${availableSearchTypes}"/></span>
     </sec:authorize>

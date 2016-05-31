@@ -80,12 +80,6 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
-    @RequestMapping( "/search" )
-    public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
-        ModelAndView modelAndView = new ModelAndView( "RecipeOverviewTile" );
-        modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
-        return modelAndView;
-    }
 
     @RequestMapping( "/editRecipe" )
     public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
