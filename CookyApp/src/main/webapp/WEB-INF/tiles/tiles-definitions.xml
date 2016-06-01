@@ -153,6 +153,11 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/cookbooks/Detail.jsp" cascade="true" />
     </definition>
 
+    <definition name="CategoryTile" extends="page.definition">
+        <put-attribute name="title" value="Add your preferences and get matches" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/matches/categories.jsp" cascade="true" />
+    </definition>
+
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
     <definition name="" extends="base.definition">
