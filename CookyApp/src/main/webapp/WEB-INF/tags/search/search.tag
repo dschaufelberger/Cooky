@@ -12,13 +12,11 @@
 <script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
 <jsp:useBean id="search" class="de.cookyapp.web.viewmodel.Search" scope="request" />
 
-<div class="input-group">
+<div id="search-group" class="input-group search-group">
     <form:input path="searchQuery" id="searchPlaceholder" cssClass="form-control input-sm"  placeholder="Search for ..." />
     <sec:authorize access="isAuthenticated()">
-        <span class="input-group-addon" style="padding: 0px"><form:select path="searchType" id="searchTypeDropdown"
-                                                                          cssClass="btn-sm"
-                                                                          items="${availableSearchTypes}"
-                                                                          itemLabel="searchType" /></span>
+        <form:select path="searchType" id="searchTypeDropdown" cssClass="form-control input-sm"
+                     items="${availableSearchTypes}" itemLabel="searchType" />
     </sec:authorize>
     <span class="input-group-btn">
         <button type="submit" class="btn btn-default btn-sm">
