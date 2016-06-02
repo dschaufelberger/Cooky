@@ -93,6 +93,19 @@ public class UserRepositoryMock implements IUserCrudRepository {
         return null;
     }
 
+    @Override
+    public List<UserEntity> findByUsernameContaining( String username ) {
+        List<UserEntity> result = new LinkedList<>();
+
+        for ( UserEntity user : users ) {
+            if ( user.getUsername().contains( username ) ) {
+                result.add( user );
+            }
+        }
+
+        return result;
+    }
+
     private UserEntity createCopy( UserEntity entity ) {
         UserEntity copy = new UserEntity();
         copy.setId( entity.getId() );

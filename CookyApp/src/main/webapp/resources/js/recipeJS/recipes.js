@@ -34,7 +34,7 @@ function rate (id) {
         data: {
             id : recipeId,
             rating : currentRating
-        },
+        }
     });
 }
 

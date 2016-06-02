@@ -29,4 +29,6 @@ public interface IUserCrudService {
     boolean userExists( User user );
 
     boolean userExsists( String username );
+
+    List<User> searchUsersContaining( String searchTerm );
 }

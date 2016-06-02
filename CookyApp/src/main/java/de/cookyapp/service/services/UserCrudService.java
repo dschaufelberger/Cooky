@@ -1,6 +1,7 @@
 package de.cookyapp.service.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -155,6 +156,20 @@ public class UserCrudService implements IUserCrudService {
         return this.userCrudRepository.findByUsername( username ) != null;
     }
 
+    @Override
+    public List<User> searchUsersContaining( String searchTerm ) {
+        List<User> users = new ArrayList<>();
+        if(searchTerm!= null) {
+            List<UserEntity> userEntities = this.userCrudRepository.findByUsernameContaining( searchTerm );
+            users = userEntities
+                    .stream()
+                    .map( userEntity -> getUserIfExistant( userEntity ) )
+                    .filter( userEntity -> userEntity != null )
+                    .collect( Collectors.<User>toList() );
+        }
+        return users;
+    }
+
     private void deleteUserById( int id ) {
         UserEntity userEntity = this.userCrudRepository.findOne( id );
 
@@ -174,4 +189,5 @@ public class UserCrudService implements IUserCrudService {
     private User getUserIfExistant( UserEntity userEntity ) {
         return userEntity == null ? null : new User( userEntity );
     }
+
 }

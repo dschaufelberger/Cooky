@@ -6,6 +6,14 @@ html, body {
     margin-bottom: 0px;
 }
 
+#search-group #searchPlaceholder {
+    width: 50%;
+}
+
+#search-group #searchTypeDropdown {
+    width: 50%;
+}
+
 .cooky-seamless-background {
     background: url("../../images/cooky-seamless-food.png") repeat;
     background-size: 250px;
