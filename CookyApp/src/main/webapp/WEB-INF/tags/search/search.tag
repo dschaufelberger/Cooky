@@ -15,7 +15,10 @@
 <div class="input-group">
     <form:input path="searchQuery" id="searchPlaceholder" cssClass="form-control input-sm"  placeholder="Search for ..." />
     <sec:authorize access="isAuthenticated()">
-    <span class="input-group-addon" style="padding: 0px"><form:select path="searchType" id="searchTypeDropdown" onchange="changeSearchPlaceholder()" cssClass="btn-sm" items="${availableSearchTypes}"/></span>
+        <span class="input-group-addon" style="padding: 0px"><form:select path="searchType" id="searchTypeDropdown"
+                                                                          cssClass="btn-sm"
+                                                                          items="${availableSearchTypes}"
+                                                                          itemLabel="searchType" /></span>
     </sec:authorize>
     <span class="input-group-btn">
         <button type="submit" class="btn btn-default btn-sm">

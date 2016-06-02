@@ -8,10 +8,8 @@ import java.util.stream.Collectors;
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.authentication.IUserAuthorization;
 import de.cookyapp.enums.AccountState;
-import de.cookyapp.persistence.entities.RecipeEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
-import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.InvalidUserId;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
@@ -160,10 +158,14 @@ public class UserCrudService implements IUserCrudService {
 
     @Override
     public List<User> searchUsersContaining( String searchTerm ) {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         if(searchTerm!= null) {
             List<UserEntity> userEntities = this.userCrudRepository.findByUsernameContaining( searchTerm );
-            users = userEntities.stream().map( userEntity -> getUserIfExistant( userEntity ) ).collect( Collectors.<User>toList() );
+            users = userEntities
+                    .stream()
+                    .map( userEntity -> getUserIfExistant( userEntity ) )
+                    .filter( userEntity -> userEntity != null )
+                    .collect( Collectors.<User>toList() );
         }
         return users;
     }

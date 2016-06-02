@@ -38,12 +38,6 @@ function rate (id) {
     });
 }
 
-function changeSearchPlaceholder() {
-    var searchType = $("#searchTypeDropdown").val();
-    $("#searchPlaceholder").val('');
-    $("#searchPlaceholder").attr("placeholder", "Search for " + searchType.toString().toLowerCase() + "...");
-}
-
 
 
 

@@ -9,7 +9,7 @@ import de.cookyapp.enums.SearchType;
  */
 public class Search {
 
-    private String searchQuery;
+    private String searchQuery = "";
     private SearchType searchType;
 
     private List<String> filter;

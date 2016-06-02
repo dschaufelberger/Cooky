@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by Mario on 29.05.2016.
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping( "/search" )
 public class SearchController {
     private IRecipeCrudService recipeCrudService;
     private IUserCrudService userCrudService;
@@ -35,7 +35,7 @@ public class SearchController {
         this.userCrudService = userCrudService;
     }
 
-    @RequestMapping("/search")
+    @RequestMapping( method = RequestMethod.POST )
         public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
             ModelAndView modelAndView;
             List<User> userList;
