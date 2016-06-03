@@ -10,11 +10,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<sec:authorize access="isAuthenticated()">
 <div class="row">
     <div class="col-md-12">
         <a href="/recipes/add" class="btn btn-primary btn-block">Add Recipe</a>
     </div>
 </div>
+</sec:authorize>
 
 <c:forEach var="recipes" items="${recipesList}" varStatus="loop">
     <c:if test="${loop.index % 3 == 0}">

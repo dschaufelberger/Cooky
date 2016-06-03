@@ -35,7 +35,7 @@ html, body {
 }
 
 .cooky-recipeRating {
-    font-size: 1.4em;
+    font-size: 2.0em;
     color: gold;
 }
 
@@ -57,11 +57,11 @@ html, body {
     padding: 15px 0;
 }
 
-.recipe-author {
-    background-color: darkcyan;
+.recipe-detail-action {
+    background-color: lightgrey;
 }
 
-.recipe-author a.btn {
+.recipe-detail-action a.btn {
     display: block;
     margin-top: 10px;
 }
@@ -78,6 +78,10 @@ html, body {
 
 .recipe-form-short .form-control {
     width: 40%;
+}
+
+#imageFileUpload {
+    display: none;
 }
 
 table.table .amount {

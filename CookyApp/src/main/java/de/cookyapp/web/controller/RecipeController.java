@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.enums.RecipeDifficulty;
+import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.ImageUploadFailed;
 import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
@@ -18,8 +19,11 @@ import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IRecipeUtilityService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.cookbook.Cookbook;
+import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
 import de.cookyapp.web.viewmodel.recipes.Ingredient;
 import de.cookyapp.web.viewmodel.recipes.Recipe;
+import de.cookyapp.web.viewmodel.recipes.RecipeCookbook;
 import de.cookyapp.web.viewmodel.recipes.Search;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,22 +153,21 @@ public class RecipeController {
         recipe.setShortDescription( htmlEscapeNewLines( recipe.getShortDescription() ) );
         recipe.setPreparation( htmlEscapeNewLines( recipe.getPreparation() ) );
 
-        // TODO needed in edit view
-        //User user = this.userCrudService.getCurrentUser();
-        //
-        //if ( user != null ) {
-        //    List<Cookbook> cookbooks = this.cookbookManagementService.getCookbooksForUser( user.getId() )
-        //            .stream()
-        //            .map( cookbook -> new Cookbook( cookbook ) )
-        //            .collect( Collectors.toList() );
-        //
-        //    CookbookOverview overview = new CookbookOverview( cookbooks );
-        //    RecipeCookbook cookbook = new RecipeCookbook();
-        //    cookbook.setRecipeId( id );
-        //
-        //    modelAndView.addObject( "cookbook", cookbook );
-        //    modelAndView.addObject( "cookbookOverview", overview );
-        //}
+        User user = this.userCrudService.getCurrentUser();
+
+        if ( user != null ) {
+            List<Cookbook> cookbooks = this.cookbookManagementService.getCookbooksForUser( user.getId() )
+                    .stream()
+                    .map( cookbook -> new Cookbook( cookbook ) )
+                    .collect( Collectors.toList() );
+
+            CookbookOverview overview = new CookbookOverview( cookbooks );
+            RecipeCookbook cookbook = new RecipeCookbook();
+            cookbook.setRecipeId( id );
+
+            modelAndView.addObject( "cookbook", cookbook );
+            modelAndView.addObject( "cookbookOverview", overview );
+        }
         modelAndView.addObject( "recipe", recipe );
 
         return modelAndView;
