@@ -76,6 +76,10 @@ html, body {
     margin-right: 5px;
 }
 
+.recipe-form-short .form-control {
+    width: 40%;
+}
+
 table.table .amount {
     text-align: right;
 }

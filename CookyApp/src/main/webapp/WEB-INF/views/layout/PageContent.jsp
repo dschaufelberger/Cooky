@@ -17,7 +17,7 @@
     <div class="row cooky-fill">
         <div class="col-md-2"></div>
         <div class="col-md-8 cooky-mainContent cooky-fill">
-            <tiles:insertAttribute name="pagecontent" />
+            <tiles:insertAttribute name="pageContent" />
         </div>
         <div class="col-md-2"></div>
     </div>

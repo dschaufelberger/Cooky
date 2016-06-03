@@ -182,7 +182,18 @@ public class RecipeController {
         return model;
     }
 
-    //  TODO add /edit mapping
+    @RequestMapping(value ="/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView editRecipe(@PathVariable("id") int recipeId) {
+        ModelAndView model = new ModelAndView( "RecipeCreationTile" );
+
+        List<RecipeDifficulty> difficulties = this.recipeUtilityService != null ?
+                this.recipeUtilityService.getAvailableDifficulties() :
+                new LinkedList<>();
+
+        model.addObject( "availableDifficulties", difficulties );
+
+        return model;
+    }
 
     @RequestMapping( value = "/create", method = RequestMethod.POST )
     public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {
