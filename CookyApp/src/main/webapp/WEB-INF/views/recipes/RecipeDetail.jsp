@@ -35,7 +35,9 @@
             <span><span class="glyphicon glyphicon-time"></span>Working time: ${recipe.workingTime}</span>
             <span><span class="glyphicon glyphicon-time"></span>Cooking time: ${recipe.cookingTime}</span>
             <span><span class="glyphicon glyphicon-time"></span>Resting time: ${recipe.restTime}</span>
-
+        </div>
+        <div class="recipe-information">
+            <span><span class="glyphicon glyphicon-time"></span>All times in minutes</span>
         </div>
 
         <strong>Preparation:</strong>
