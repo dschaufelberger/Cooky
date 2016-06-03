@@ -173,15 +173,17 @@ public class RecipeCrudService implements IRecipeCrudService {
         if (ingredientNames != null && ingredientNames.size() > 0) {
             List<String> names = ingredientNames.stream()
                     .distinct()
-                    .filter(name -> isBlank(name))
+                    .filter(name -> !isBlank(name))
                     .collect(Collectors.toList());
 
             List<IngredientEntity> ingredientEntities = new ArrayList<>();
             for (String ingredientName : names) {
                 ingredientEntities.addAll(ingredientCrudRepository.findByNameContaining(ingredientName));
             }
-            List<RecipeIngredientEntity> recipeIngredientEntities = recipeIngredientCrudRepository.findRecipeIngredients(mapToIds(ingredientEntities), ingredientNames.size());
-            recipes = mapToRecipes(recipeIngredientEntities);
+            if (names.size() > 0 && ingredientEntities.size() > 0) {
+                List<RecipeIngredientEntity> recipeIngredientEntities = recipeIngredientCrudRepository.findRecipeIngredients(mapToIds(ingredientEntities), names.size());
+                recipes = mapToRecipes(recipeIngredientEntities);
+            }
         }
         return recipes;
     }
