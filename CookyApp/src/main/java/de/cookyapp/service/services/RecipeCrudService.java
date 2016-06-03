@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
@@ -167,21 +168,20 @@ public class RecipeCrudService implements IRecipeCrudService {
     }
 
     @Override
-    public List<Recipe> recipeSuggestions( List<String> ingredientNames, boolean atLeastOne ) {
+    public List<Recipe> recipeSuggestions( List<String> ingredientNames) {
         List<Recipe> recipes = new ArrayList<>();
         if (ingredientNames != null && ingredientNames.size() > 0) {
-            if (atLeastOne) {
-                List<RecipeEntity> recipeEntities = recipeCrudRepository.findByIngredientsIngredientNameIn( ingredientNames );
-                recipes = mapToRecipeList( recipeEntities );
+            List<String> names = ingredientNames.stream()
+                    .distinct()
+                    .filter(name -> isBlank(name))
+                    .collect(Collectors.toList());
 
-            } else {
-                Set<String> set = new LinkedHashSet<String>(ingredientNames);
-                ingredientNames = new ArrayList<>(set);
-                List<Integer> ingredientIds = mapToIds(ingredientCrudRepository.findByNameIn(ingredientNames));
-                if (ingredientIds != null && ingredientIds.size() > 0 && ingredientIds.size() == ingredientNames.size() -1) {
-                    recipes = mapToRecipes(recipeIngredientCrudRepository.findRecipeIngredients (ingredientIds, ingredientIds.size()));
-                }
+            List<IngredientEntity> ingredientEntities = new ArrayList<>();
+            for (String ingredientName : names) {
+                ingredientEntities.addAll(ingredientCrudRepository.findByNameContaining(ingredientName));
             }
+            List<RecipeIngredientEntity> recipeIngredientEntities = recipeIngredientCrudRepository.findRecipeIngredients(mapToIds(ingredientEntities), ingredientNames.size());
+            recipes = mapToRecipes(recipeIngredientEntities);
         }
         return recipes;
     }
@@ -189,11 +189,10 @@ public class RecipeCrudService implements IRecipeCrudService {
     private List<Recipe> mapToRecipes (List<RecipeIngredientEntity> recipeIngredientEntities) {
         List<Recipe> recipes = new ArrayList<>();
         if (recipeIngredientEntities != null) {
-            for (RecipeIngredientEntity entity : recipeIngredientEntities) {
-                Recipe current = new Recipe(entity.getRecipe());
-                current.setImageLink(generateImagePath(entity.getRecipe()));
-                recipes.add(current);
-            }
+            recipes = recipeIngredientEntities.stream()
+                    .map(entity -> new Recipe(entity.getRecipe()))
+                    .distinct()
+                    .collect(Collectors.toList());
         }
         return recipes;
     }
@@ -244,6 +243,20 @@ public class RecipeCrudService implements IRecipeCrudService {
         }
 
         return imagePath;
+    }
+
+    private boolean isBlank( String s ) {
+        if ( s == null || (s.length() == 0) ) {
+            return true;
+        }
+
+        for ( char c : s.toCharArray() ) {
+            if ( !Character.isWhitespace( c ) ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private String generatePath() {

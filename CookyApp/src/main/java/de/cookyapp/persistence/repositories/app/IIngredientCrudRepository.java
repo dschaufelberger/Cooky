@@ -11,5 +11,7 @@ import java.util.List;
 public interface IIngredientCrudRepository extends IBaseCrudRepository<IngredientEntity, Integer> {
     IngredientEntity findFirstByName( String ingredient );
 
+    List<IngredientEntity> findByNameContaining(String ingredient);
+
     List<IngredientEntity> findByNameIn( List<String> ingredientNames );
 }

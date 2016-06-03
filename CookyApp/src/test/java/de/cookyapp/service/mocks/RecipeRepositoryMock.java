@@ -50,7 +50,7 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
     }
 
     @Override
-    public List<RecipeEntity> findByIngredientsIngredientNameIn(List<String> ingredientName) {
+    public List<RecipeEntity> findByIngredientsIngredientName_In(List<String> ingredientName) {
         return null;
     }
 

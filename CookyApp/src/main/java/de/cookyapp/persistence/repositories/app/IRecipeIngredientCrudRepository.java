@@ -14,7 +14,7 @@ public interface IRecipeIngredientCrudRepository extends IBaseCrudRepository<Rec
 
     RecipeIngredientEntity findByRecipeIdAndIngredientId( int recipeId, int ingredientId );
 
-    @Query( nativeQuery = true, value = "SELECT * FROM RecipeIngredient WHERE IngredientID in :ingredientIds GROUP BY RecipeID HAVING COUNT(DISTINCT IngredientID)=:idCount")
+    @Query( nativeQuery = true, value = "SELECT * FROM RecipeIngredient WHERE IngredientID in :ingredientIds GROUP BY RecipeID HAVING COUNT(DISTINCT IngredientID)>=:idCount")
     List<RecipeIngredientEntity> findRecipeIngredients (@Param("ingredientIds") List<Integer> ids,
                                                           @Param("idCount") int idcount);
 }

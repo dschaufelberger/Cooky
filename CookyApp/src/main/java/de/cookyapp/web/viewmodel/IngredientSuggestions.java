@@ -8,7 +8,6 @@ import java.util.List;
 public class IngredientSuggestions {
 
     private List<String> ingredients;
-    private boolean recipesContainingAtLeastOneIngredient;
 
     public IngredientSuggestions () { }
 
@@ -17,13 +16,4 @@ public class IngredientSuggestions {
     public List<String> getIngredients () { return ingredients; }
 
     public void setIngredients ( List<String> ingredients ) { this.ingredients = ingredients; }
-
-
-    public boolean isRecipesContainingAtLeastOneIngredient() {
-        return recipesContainingAtLeastOneIngredient;
-    }
-
-    public void setRecipesContainingAtLeastOneIngredient(boolean recipesContainingAtLeastOneIngredient) {
-        this.recipesContainingAtLeastOneIngredient = recipesContainingAtLeastOneIngredient;
-    }
 }

@@ -22,5 +22,5 @@ public interface IRecipeCrudService {
 
     List<Recipe> searchRecipesContaining( String searchTerm );
 
-    List<Recipe> recipeSuggestions( List<String> ingredientName, boolean atLeastOne );
+    List<Recipe> recipeSuggestions( List<String> ingredientName);
 }
