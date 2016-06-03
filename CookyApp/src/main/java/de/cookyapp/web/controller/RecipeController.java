@@ -120,7 +120,9 @@ public class RecipeController {
                     recipeDTO.setCalories( recipe.getCalories() );
                     recipeDTO.setDifficulty( recipe.getDifficulty() );
                     recipeDTO.setServing( recipe.getServing() );
-                    recipeDTO.setImageData( getImageBytes( image ) );
+                    if ( !image.isEmpty() ) {
+                        recipeDTO.setImageData( getImageBytes( image ) );
+                    }
 
                     ArrayList<Ingredient> ingredientViewmodels = new ArrayList<>( recipe.getIngredients() );
                     ArrayList<de.cookyapp.service.dto.Ingredient> ingredients = new ArrayList<>( ingredientViewmodels.size() );
@@ -187,12 +189,17 @@ public class RecipeController {
 
     @RequestMapping(value ="/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editRecipe(@PathVariable("id") int recipeId) {
-        ModelAndView model = new ModelAndView( "RecipeCreationTile" );
+        ModelAndView model = new ModelAndView( "RecipeEditTile" );
 
+        de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipeId );
+        List<de.cookyapp.service.dto.Ingredient> ingredients = this.ingredientCrudService.loadRecipeIngredients( recipeDTO.getId() );
+
+        Recipe recipe = new Recipe( recipeDTO, ingredients );
         List<RecipeDifficulty> difficulties = this.recipeUtilityService != null ?
                 this.recipeUtilityService.getAvailableDifficulties() :
                 new LinkedList<>();
 
+        model.addObject( "recipe", recipe );
         model.addObject( "availableDifficulties", difficulties );
 
         return model;

@@ -76,14 +76,18 @@ html, body {
     margin-right: 5px;
 }
 
-.recipe-form-short .form-control {
-    width: 40%;
-}
-
 #imageFileUpload {
     display: none;
 }
 
 table.table .amount {
+    text-align: right;
+}
+
+#recipe-form-ingredients {
+    margin-top: 35px;
+}
+
+#recipe-form-ingredientsLabel {
     text-align: right;
 }

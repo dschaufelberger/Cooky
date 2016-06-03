@@ -91,6 +91,7 @@
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="pageContent" value="/WEB-INF/views/recipes/RecipeForm.jsp" cascade="true" />
         <put-attribute name="formUrl" value="/recipes/save" cascade="true"/>
+        <put-attribute name="pageHeadline" value="Edit your recipe" cascade="true" />
     </definition>
 
     <!-- The recipe creation page, mapped to "/recipes/add -->
@@ -98,6 +99,7 @@
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="pageContent" value="/WEB-INF/views/recipes/RecipeForm.jsp" cascade="true" />
         <put-attribute name="formUrl" value="/recipes/create" cascade="true"/>
+        <put-attribute name="pageHeadline" value="Write and share a super tasty recipe on Cooky" cascade="true" />
     </definition>
 
     <!-- The overview page for all public cookbooks, mapped to "/cookbooks" -->

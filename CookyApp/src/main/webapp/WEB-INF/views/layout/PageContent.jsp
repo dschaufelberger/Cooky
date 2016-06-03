@@ -14,7 +14,7 @@
 </script>
 
 <div class="container-fluid cooky-fill">
-    <div class="row cooky-fill">
+    <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 cooky-mainContent cooky-fill">
             <tiles:insertAttribute name="pageContent" />
