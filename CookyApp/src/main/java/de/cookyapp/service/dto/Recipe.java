@@ -51,6 +51,7 @@ public class Recipe {
         setRestTime( recipeEntity.getRestTime() );
         setWorkingTime( recipeEntity.getWorkingTime() );
         setAuthor( userEntityToUser( recipeEntity.getAuthor() ) );
+        setImageData( recipeEntity.getImageFile() );
         setVoteCount( recipeEntity.getVoteCount() );
     }
 
