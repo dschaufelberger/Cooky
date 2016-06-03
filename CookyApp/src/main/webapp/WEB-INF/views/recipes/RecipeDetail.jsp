@@ -51,10 +51,12 @@
         <div class="recipe-detail-rightside recipe-thumbnail">
             <img src="${recipe.imageLink}" alt="recipe-image">
         </div>
+
         <div class="recipe-detail-rightside">
             <cooky:rating rating="${recipe.rating}" maxRating="${recipe.maxRating}" />
         </div>
-        <div class="recipe-detail-rightside recipe-detail-action">
+
+        <div class="recipe-detail-rightside recipe-author-action">
             <!-- TODO provide link to user profile, when profiles are implemented -->
             <span>Author: <a href="#"><c:out value="${recipe.author.name}" /></a></span>
 
@@ -64,13 +66,19 @@
                 </c:set>
 
                 <c:if test="${recipe.author.name eq username}">
-                    <a href="/recipes/edit/${recipe.id}" class="btn btn-primary">Edit your recipe</a>
+                    <a href="/recipes/edit/${recipe.id}" class="btn btn-primary">Edit</a>
+
+                    <form id="removeRecipe" action="/recipes/remove" method="post">
+                        <button type="submit" class="btn btn-primary btn-block">Remove</button>
+                        <input type="hidden" name="id" value="${recipe.id}">
+                        <sec:csrfInput />
+                    </form>
                 </c:if>
             </sec:authorize>
         </div>
 
         <sec:authorize access="${userIsAuthenticated}">
-            <div class="recipe-detail-rightside recipe-detail-action">
+            <div class="recipe-detail-rightside">
                 <spring:url var="addRecipeUrl" value="/cookbooks/addRecipe" />
                 <form:form method="post" action="${addRecipeUrl}" commandName="cookbook">
                     <form:hidden path="recipeId" />
@@ -80,9 +88,9 @@
                         <form:select path="cookbookId" items="${cookbookOverview.cookbooks}"
                                      itemLabel="name" itemValue="id" cssClass="form-control">
                         </form:select>
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary">Add</button>
-        </span>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </span>
                     </div>
                 </form:form>
             </div>
