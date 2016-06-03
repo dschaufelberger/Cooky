@@ -11,35 +11,56 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authorize access="isAuthenticated()">
-<div class="row">
-    <div class="col-md-12">
-        <a href="/recipes/add" class="btn btn-primary btn-block">Add Recipe</a>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/recipes/add" class="btn btn-primary btn-block">Add Recipe</a>
+        </div>
     </div>
-</div>
 </sec:authorize>
 
-<c:forEach var="recipes" items="${recipesList}" varStatus="loop">
+<c:set var="username">
+    <sec:authentication property="principal.username" />
+</c:set>
+
+<c:forEach var="recipe" items="${recipesList}" varStatus="loop">
+    <c:if test="${recipe.author.name eq username}" var="isOwner">
+        <c:set var="viewColClass" value="col-md-4" />
+    </c:if>
+    <c:if test="${not isOwner}">
+        <c:set var="viewColClass" value="col-md-12" />
+    </c:if>
+
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">
     </c:if>
 
     <div class="col-md-4">
         <div class="thumbnail">
-            <img src="${recipes.imageLink}" alt="image">
+            <img src="${recipe.imageLink}" alt="image">
             <div class="caption">
-                <h3>${recipes.name}</h3>
+                <h3>${recipe.name}</h3>
 
-                <p align="center">
-                    <a href="/recipes/view/${recipes.id}" class="btn btn-primary btn-block">Open</a>
-                </p>
+                <div class="row">
+                    <div class="${viewColClass}">
+                        <a href="/recipes/view/${recipe.id}" class="btn btn-primary btn-block">View</a>
+                    </div>
 
-                <form id="removeRecipe" action="/recipes/remove" method="post">
-                    <p align="center">
-                        <button type="submit" class="btn btn-primary btn-block">Remove</button>
-                    </p>
-                    <input type="hidden" name="id" value="${recipes.id}">
-                    <sec:csrfInput />
-                </form>
+                    <c:if test="${isOwner}">
+
+                        <div class="col-md-4">
+                            <a href="/recipes/edit/${recipe.id}" class="btn btn-primary btn-block">Edit</a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <form id="removeRecipe" action="/recipes/remove" method="post">
+                                <button type="submit" class="btn btn-primary btn-block">Remove</button>
+                                <input type="hidden" name="id" value="${recipe.id}">
+                                <sec:csrfInput />
+                            </form>
+                        </div>
+                    </c:if>
+                </div>
+
             </div>
         </div>
     </div>
