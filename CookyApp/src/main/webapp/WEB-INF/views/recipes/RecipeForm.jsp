@@ -110,7 +110,7 @@
                 <label>Ingredients: </label>
             </div>
             <div class="col-md-8">
-                <table class="table">
+                <table id="recipe-ingredient-table" class="table">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -159,3 +159,25 @@
         </div>
     </div>
 </form:form>
+
+<script>
+    $('#recipe-ingredient-table').on("change", this, function (eventArgs) {
+        debugger;
+        var ingredientNames = $('tr td input[name$=".name"]');
+        var leastOneEmpty = false;
+        ingredientNames.each(function (index, item) {
+            leastOneEmpty = leastOneEmpty || !$(item).val().trim();
+        });
+
+        if (!leastOneEmpty) {
+            var ingredientAmount = ingredientNames.length;
+            var tableRow = '<tr>' +
+                    '<td><input name="ingredients[' + ingredientAmount + '].name" class="form-control"></td>' +
+                    '<td><input name="ingredients[' + ingredientAmount + '].amount" class="form-control"></td>' +
+                    '<td><input name="ingredients[' + ingredientAmount + '].unit" class="form-control"></td>' +
+                    '</tr>';
+            var table = eventArgs.currentTarget;
+            $('tbody', table).append(tableRow);
+        }
+    });
+</script>
