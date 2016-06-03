@@ -1,6 +1,16 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -11,6 +21,8 @@ public class RecipeIngredientEntity {
     private int id;
     private String amount;
     private String unit;
+    private IngredientEntity ingredient;
+    private RecipeEntity recipe;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,26 +34,6 @@ public class RecipeIngredientEntity {
     public void setId( int id ) {
         this.id = id;
     }
-
-    //@Basic
-    //@Column( name = "RecipeID", nullable = false )
-    //public int getRecipeId() {
-    //    return recipeId;
-    //}
-    //
-    //public void setRecipeId( int recipeId ) {
-    //    this.recipeId = recipeId;
-    //}
-    //
-    //@Basic
-    //@Column( name = "IngredientID", nullable = false )
-    //public int getIngredientId() {
-    //    return ingredientId;
-    //}
-    //
-    //public void setIngredientId( int ingredientId ) {
-    //    this.ingredientId = ingredientId;
-    //}
 
     @Basic
     @Column( name = "Amount", nullable = true, length = 20 )
@@ -83,9 +75,7 @@ public class RecipeIngredientEntity {
         return 31 * this.id;
     }
 
-    private IngredientEntity ingredient;
-
-    @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false )
+    @ManyToOne( cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false )
     @JoinColumn(name = "IngredientID")
     public IngredientEntity getIngredient() {
         return ingredient;
@@ -94,8 +84,6 @@ public class RecipeIngredientEntity {
     public void setIngredient( IngredientEntity ingredient ) {
         this.ingredient = ingredient;
     }
-
-    private RecipeEntity recipe;
 
     @ManyToOne( optional = false )
     @JoinColumn(name = "RecipeID" )
