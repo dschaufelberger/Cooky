@@ -111,18 +111,6 @@
 </div>
 
 <script>
-    function deleteRecipe(id) {
-        var settings = {
-            method: 'POST',
-            url: '/cookbooks/manage/delete/' + id,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
-            }
-        }
-
-        $.ajax(settings);
-    }
-
     $(function () {
         $('.cooky-cookbook input').hide();
         $('.cooky-cookbook textarea').hide();
