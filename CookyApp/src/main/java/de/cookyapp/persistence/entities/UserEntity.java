@@ -45,8 +45,6 @@ public class UserEntity {
     private Collection<MessageEntity> sentMessages;
     private Collection<MessageEntity> receivedMessages;
     private Collection<ShoppingListEntity> shoppingListEntries;
-    private Collection<FriendshipEntity> outgoingFriendships;
-    private Collection<FriendshipEntity> incomingFriendships;
 
 
     @Id
@@ -226,24 +224,6 @@ public class UserEntity {
 
     public void setShoppingListEntries( Collection<ShoppingListEntity> shoppingListEntries ) {
         this.shoppingListEntries = shoppingListEntries;
-    }
-
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "askingFriend" )
-    public Collection<FriendshipEntity> getOutgoingFriendships() {
-        return outgoingFriendships;
-    }
-
-    public void setOutgoingFriendships( Collection<FriendshipEntity> outgoingFriendships ) {
-        this.outgoingFriendships = outgoingFriendships;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "acceptingFriend" )
-    public Collection<FriendshipEntity> getIncomingFriendships() {
-        return incomingFriendships;
-    }
-
-    public void setIncomingFriendships( Collection<FriendshipEntity> incomingFriendships ) {
-        this.incomingFriendships = incomingFriendships;
     }
 
     @Override
