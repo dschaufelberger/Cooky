@@ -1,10 +1,8 @@
 package de.cookyapp.service.services;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import javax.servlet.ServletContext;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
@@ -35,6 +33,7 @@ public class RecipeOfTheMonthService implements IRecipeOfTheMonthService {
     private IUserCrudRepository userCrudRepository;
     private ServletContext servletContext;
     private IRecipeOfTheMonthRepository recipeOfTheMonthRepository;
+    private RecipeOfTheMonthEntity recipeOfTheMonthEntity;
 
     @Autowired
     public RecipeOfTheMonthService( IRecipeOfTheMonthRepository recipeOfTheMonthRepository, IRecipeCrudService recipeCrudService, IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication, IUserCrudRepository userCrudRepository, ServletContext servletContext) {
@@ -50,25 +49,30 @@ public class RecipeOfTheMonthService implements IRecipeOfTheMonthService {
     public Recipe getRecipeOfTheMonth() {
         Recipe recipe = null;
         Calendar now = Calendar.getInstance();
-        RecipeOfTheMonthEntity recipeOfTheMonthEntity = recipeOfTheMonthRepository.findFirstByOrderByUpdatedDesc();
+        recipeOfTheMonthEntity = recipeOfTheMonthRepository.findFirstByOrderByUpdatedDesc();
         if(recipeOfTheMonthEntity != null) {
             // month start from 0 to 11
             if (( recipeOfTheMonthEntity.getUpdated().getMonthValue() < (now.get( Calendar.MONTH ) + 1)) || (recipeOfTheMonthEntity.getUpdated().getYear() < (now.get(Calendar.YEAR))) ) {
-                RecipeEntity recipeEntity = recipeCrudRepository.findTopByOrderByRatingDescVoteCountDesc();
-                RecipeOfTheMonthEntity newRecipeOfTheMonthEntity = new RecipeOfTheMonthEntity();
-                newRecipeOfTheMonthEntity.setRecipe( recipeEntity );
-                newRecipeOfTheMonthEntity.setUpdated( LocalDate.now() );
-                newRecipeOfTheMonthEntity.setImageName( this.recipeCrudService.writeImageThumbnail(recipeEntity.getImageFile()) );
-                recipeOfTheMonthEntity = recipeOfTheMonthRepository.save( newRecipeOfTheMonthEntity );
+                createNewRecipeOfTheMonth();
             }
-            if ( recipeOfTheMonthEntity != null && recipeOfTheMonthEntity.getRecipe() != null  ) {
+            if ( recipeOfTheMonthEntity.getRecipe() != null ) {
                 RecipeEntity entity = recipeOfTheMonthEntity.getRecipe();
                 recipe = new Recipe( entity );
             }
+        } else {
+            createNewRecipeOfTheMonth();
         }
         return recipe;
     }
 
+    private void createNewRecipeOfTheMonth() {
+        RecipeEntity recipeEntity = recipeCrudRepository.findTopByOrderByRatingDescVoteCountDesc();
+        RecipeOfTheMonthEntity newRecipeOfTheMonthEntity = new RecipeOfTheMonthEntity();
+        newRecipeOfTheMonthEntity.setRecipe( recipeEntity );
+        newRecipeOfTheMonthEntity.setUpdated( LocalDate.now() );
+        newRecipeOfTheMonthEntity.setImageName( this.recipeCrudService.writeImageThumbnail( recipeEntity.getImageFile() ) );
+        recipeOfTheMonthEntity = recipeOfTheMonthRepository.save( newRecipeOfTheMonthEntity );
+    }
     @Override
     public List<RecipeOfTheMonthEntity> getAllRecipesOfTheMonth() {
         List<RecipeOfTheMonthEntity> recipeOfTheMonthEntities = recipeOfTheMonthRepository.findAll();
