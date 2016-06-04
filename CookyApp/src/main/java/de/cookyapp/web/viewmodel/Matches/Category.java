@@ -1,6 +1,6 @@
-package de.cookyapp.web.viewmodel;
+package de.cookyapp.web.viewmodel.Matches;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * Created by Jasper on 01.06.2016.
@@ -9,7 +9,6 @@ public class Category {
 
     private String categoryName;
     private String superCategory;
-    private String [] names;
 
     public Category () {
     }
@@ -19,11 +18,11 @@ public class Category {
         this.superCategory = category.getSuperCategory();
     }
 
-    public String getCategoryNames() {
+    public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryNames(String categoryName) {
+    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
@@ -33,13 +32,5 @@ public class Category {
 
     public void setSuperCategory(String superCategory) {
         this.superCategory = superCategory;
-    }
-
-    public String[] getNames() {
-        return names;
-    }
-
-    public void setNames(String[] names) {
-        this.names = names;
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface IUserPreferenceCrudRepository extends IBaseCrudRepository<UserPreferenceEntity, Integer> {
     List<UserPreferenceEntity> findByCategoryName ( String category );
+
+    List<UserPreferenceEntity> findByUserId ( int id );
 }

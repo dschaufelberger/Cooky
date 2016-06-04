@@ -1,13 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -60,16 +53,5 @@ public class CategoryEntity {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (superCategory != null ? superCategory.hashCode() : 0);
         return result;
-    }
-
-    private CategoryEntity parent;
-
-    @ManyToOne
-    public CategoryEntity getParent() {
-        return parent;
-    }
-
-    public void setParent( CategoryEntity parent ) {
-        this.parent = parent;
     }
 }

@@ -10,6 +10,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<c:forEach var="category" items="${categories}" varStatus="loop">
-    <form:checkbox path="names" value="${category.categoryName}" />
-</c:forEach>
+<form:form method="POST" action="cookingMatches/addPreferences" commandName="categories">
+    <c:forEach var="category" items="${categories.categories}">
+        <form:checkbox path="userCategories" value="${category.categoryName}" />${category.categoryName} </br>
+    </c:forEach>
+    <input type="submit" value="Send" class="btn btn-default">
+</form:form>

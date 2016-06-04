@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.cookyapp.persistence.entities.IngredientEntity;
 import de.cookyapp.persistence.entities.RecipeEntity;
+import de.cookyapp.persistence.entities.RecipeIngredientEntity;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
@@ -238,6 +240,21 @@ public class IRecipeCrudServiceTest {
             dummyList.add( dummy );
         }
         return dummyList;
+    }
+
+    private RecipeIngredientEntity createDummyRecipeIngredients(RecipeEntity recipe, String ingredientName, int ingredientId) {
+        RecipeIngredientEntity recipeIngredientEntity = new RecipeIngredientEntity();
+        recipeIngredientEntity.setRecipe(recipe);
+
+        IngredientEntity ingredientEntity = new IngredientEntity();
+        ingredientEntity.setId(ingredientId);
+        ingredientEntity.setName(ingredientName);
+
+        recipeIngredientEntity.setIngredient(ingredientEntity);
+        recipeIngredientEntity.setUnit("gr");
+        recipeIngredientEntity.setAmount("100");
+
+        return recipeIngredientEntity;
     }
 
     private List<RecipeEntity> createDummyListWithUniqueNames( int numberOfRecipes, UserEntity dummyAuthor ) {
