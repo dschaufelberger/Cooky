@@ -1,8 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
 <%--
   Created by IntelliJ IDEA.
   User: Dominik Schaufelberger
@@ -10,7 +12,7 @@
   Time: 21:20
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<input id="csrf_token" type="hidden" value="${_csrf.token}">
 
 <h1><c:out value="${recipe.name}" /></h1>
 
@@ -53,14 +55,39 @@
         </div>
 
         <div class="recipe-detail-rightside">
-            <cooky:rating rating="${recipe.rating}" maxRating="${recipe.maxRating}" />
+            <sec:authorize access="isAuthenticated()" var="userIsAuthenticated">
+                <input type="hidden" name="id" class="recipeId" value="${recipe.id}">
+
+                <div class="rating">
+                    <c:set var="recipeRating" scope="request" value="${recipe.rating}" />
+                    <c:set var="count" value="1" />
+                    <c:forEach begin="1" end="${recipeRating}">
+                        <span id="${count}" class="glyphicon glyphicon-star cooky-recipeRating ratings_stars"
+                              onclick="rate(this.id)">
+                        </span>
+                        <c:set var="count" value="${count + 1}" />
+                    </c:forEach>
+                    <c:forEach begin="${recipeRating + 1}" end="5">
+                 <span id="${count}" class="glyphicon glyphicon-star-empty cooky-recipeRating ratings_stars"
+                       onclick="rate(this.id)">
+                 </span>
+                        <c:set var="count" value="${count + 1}" />
+                    </c:forEach>
+                </div>
+                Rate this recipe!
+            </sec:authorize>
+
+            <c:if test="${not userIsAuthenticated}">
+                <cooky:rating rating="${recipe.rating}" maxRating="${recipe.maxRating}" />
+            </c:if>
         </div>
+
 
         <div class="recipe-detail-rightside recipe-author-action">
             <!-- TODO provide link to user profile, when profiles are implemented -->
             <span>Author: <a href="#"><c:out value="${recipe.author.name}" /></a></span>
 
-            <sec:authorize access="isAuthenticated()" var="userIsAuthenticated">
+            <sec:authorize access="${userIsAuthenticated}">
                 <c:set var="username">
                     <sec:authentication property="principal.username" />
                 </c:set>

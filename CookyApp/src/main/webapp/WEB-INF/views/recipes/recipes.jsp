@@ -10,7 +10,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<sec:authorize access="isAuthenticated()">
+<sec:authorize access="isAuthenticated()" var="userIsAuthenticated">
     <div class="row">
         <div class="col-md-12">
             <a href="/recipes/add" class="btn btn-primary btn-block">Add Recipe</a>
@@ -18,17 +18,14 @@
     </div>
 </sec:authorize>
 
-<c:set var="username">
-    <sec:authentication property="principal.username" />
-</c:set>
+<c:if test="${userIsAuthenticated}">
+    <c:set var="username">
+        <sec:authentication property="principal.username" />
+    </c:set>
+</c:if>
 
 <c:forEach var="recipe" items="${recipesList}" varStatus="loop">
-    <c:if test="${recipe.author.name eq username}" var="isOwner">
-        <c:set var="viewColClass" value="col-md-4" />
-    </c:if>
-    <c:if test="${not isOwner}">
-        <c:set var="viewColClass" value="col-md-12" />
-    </c:if>
+    <c:if test="${userIsAuthenticated && (recipe.author.name eq username)}" var="isOwner" />
 
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">
@@ -41,7 +38,7 @@
                 <h3>${recipe.name}</h3>
 
                 <div class="row">
-                    <div class="${viewColClass}">
+                    <div class="${isOwner ? 'col-md-4' : 'col-md-12'}">
                         <a href="/recipes/view/${recipe.id}" class="btn btn-primary btn-block">View</a>
                     </div>
 

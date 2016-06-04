@@ -1,26 +1,27 @@
 /**
  * Created by Jasper on 29.11.2015.
  */
-var count = 1;
-function addRow() {
-    $(".ingredients tbody").append("<tr>" +
-        "<td><input name='ingredients[" + count + "].name' /></td>" +
-        "<td><input name='ingredients[" + count + "].amount' /></td>" +
-        "<td><input name='ingredients[" + count + "].unit'/></td>" +
-        "</tr>")
-    count++;
-};
-
-
 $(document).ready(function () {
     $('.ratings_stars').hover(
         function () {
-            $(this).prevAll().andSelf().addClass("glyphicon-star");
-            $(this).prevAll().andSelf().removeClass("glyphicon-star-empty");
+            $(this).prevAll().andSelf().each(function (index, item) {
+                var element = $(item);
+                element.data('beforeHoverClasses', element.attr('class'));
+                element.addClass('glyphicon-star');
+                element.removeClass("glyphicon-star-empty");
+            });
+            $(this).nextAll().each(function (index, item) {
+                var element = $(item);
+                element.data('beforeHoverClasses', element.attr('class'));
+                element.removeClass('glyphicon-star');
+                element.addClass('glyphicon-star-empty');
+            });
         },
         function () {
-            $(this).nextAll().removeClass("glyphicon-star");
-            $(this).nextAll().addClass("glyphicon-star-empty");
+            $('.ratings_stars').each(function (index, item) {
+                var element = $(item);
+                element.attr('class', element.data('beforeHoverClasses'));
+            });
         }
     );
 });
@@ -28,13 +29,21 @@ $(document).ready(function () {
 function rate(id) {
     var currentRating = id;
     var recipeId = $(".recipeId").val();
-    $.ajax({
-        url: "/recipes/rate",
+
+    var csrf_token = $('#csrf_token').val();
+    var settings = {
+        method: 'POST',
+        url: '/recipes/rate/',
         data: {
             id: recipeId,
             rating: currentRating
         },
-    });
+        headers: {
+            'X-CSRF-TOKEN': csrf_token
+        }
+    };
+
+    $.ajax(settings);
 }
 
 
