@@ -1,19 +1,17 @@
 package de.cookyapp.service.services;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.entities.UserPreferenceEntity;
 import de.cookyapp.persistence.repositories.app.ICategoryCrudRepository;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.persistence.repositories.app.IUserPreferenceCrudRepository;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.dto.UserPreference;
-import de.cookyapp.service.services.interfaces.IUserCrudService;
 import de.cookyapp.service.services.interfaces.IUserPreferenceCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,9 +43,13 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
     @Override
     public void savePreferences(List<UserPreference> preferences) {
         if (preferences != null) {
+            List<UserPreferenceEntity> result = new ArrayList<>();
             for (UserPreference preference : preferences) {
-                preferenceCrudRepository.save(mapToEntity(preference));
+                UserPreferenceEntity entity = mapToEntity(preference);
+                result.add(entity);
             }
+            preferenceCrudRepository.save(result);
+
         }
     }
 
@@ -60,10 +62,18 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
         }
     }
 
+    @Override
+    public void deletePreference (int id) {
+        UserPreferenceEntity preference = preferenceCrudRepository.findOne(id);
+        if (preference != null) {
+            preferenceCrudRepository.delete(preference);
+        }
+    }
+
     private UserPreferenceEntity mapToEntity (UserPreference preference) {
         UserPreferenceEntity preferenceEntity = new UserPreferenceEntity();
-        preferenceEntity.setUser(userCrudRepository.findOne(preference.getUserId()));
-        preferenceEntity.setCategory(categoryCrudRepository.findByName(preference.getCategoryName()));
+        preferenceEntity.setUserId(preference.getUserId());
+        preferenceEntity.setCategoryName(preference.getCategoryName());
         return preferenceEntity;
     }
 

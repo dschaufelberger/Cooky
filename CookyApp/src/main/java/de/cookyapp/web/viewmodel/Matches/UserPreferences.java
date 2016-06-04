@@ -1,22 +1,23 @@
-package de.cookyapp.service.dto;
+package de.cookyapp.web.viewmodel.Matches;
 
-import de.cookyapp.persistence.entities.UserPreferenceEntity;
+import de.cookyapp.service.dto.User;
+import de.cookyapp.service.dto.UserPreference;
 
 /**
  * Created by Jasper on 04.06.2016.
  */
-public class UserPreference {
+public class UserPreferences {
     private int id;
     private int userId;
     private String categoryName;
 
-    public UserPreference() {
+    public UserPreferences () {
     }
 
-    public UserPreference(UserPreferenceEntity entity) {
-        this.id = entity.getId();
-        this.userId = entity.getUserId();
-        this.categoryName = entity.getCategoryName();
+    public UserPreferences (UserPreference userPreference) {
+        this.id = userPreference.getId();
+        this.userId = userPreference.getUserId();
+        this.categoryName = userPreference.getCategoryName();
     }
 
     public int getId() {

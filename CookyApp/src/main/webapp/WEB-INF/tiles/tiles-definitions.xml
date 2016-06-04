@@ -158,6 +158,11 @@
         <put-attribute name="pagecontent" value="/WEB-INF/views/matches/categories.jsp" cascade="true" />
     </definition>
 
+    <definition name="MatchCenterTile" extends="page.definition">
+        <put-attribute name="title" value="Match-Center" />
+        <put-attribute name="pagecontent" value="/WEB-INF/views/matches/matchCenter.jsp" cascade="true" />
+    </definition>
+
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
     <definition name="" extends="base.definition">

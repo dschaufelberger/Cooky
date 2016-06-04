@@ -1,13 +1,6 @@
 package de.cookyapp.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Dominik on 23.11.2015.
@@ -21,6 +14,7 @@ public class UserPreferenceEntity {
 
     @Id
     @Column( name = "ID", nullable = false )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     public int getId() {
         return id;
     }
@@ -40,7 +34,7 @@ public class UserPreferenceEntity {
     }
 
     @Basic
-    @Column( name = "CategoryName", nullable = false, length = 30 )
+    @Column( name = "CategoryName", nullable = false )
     public String getCategoryName() {
         return categoryName;
     }
@@ -78,7 +72,7 @@ public class UserPreferenceEntity {
 
     private UserEntity user;
 
-    @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
+    @ManyToOne( cascade = {CascadeType.ALL, CascadeType.REFRESH}, optional = false )
     public UserEntity getUser() {
         return user;
     }
@@ -89,7 +83,7 @@ public class UserPreferenceEntity {
 
     private CategoryEntity category;
 
-    @OneToOne( optional = false )
+    @OneToOne( cascade = {CascadeType.ALL, CascadeType.REFRESH}, optional = false )
     public CategoryEntity getCategory() {
         return category;
     }

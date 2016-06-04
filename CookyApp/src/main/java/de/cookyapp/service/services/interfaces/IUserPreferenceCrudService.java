@@ -10,9 +10,11 @@ import java.util.List;
  */
 public interface IUserPreferenceCrudService {
 
-    List<UserPreference> getPreferencesByUserId (int id);
+    List<UserPreference> getPreferencesByUserId(int id);
 
-    void savePreferences (List<UserPreference> preferences);
+    void savePreferences(List<UserPreference> preferences);
 
-    void deletePreference (UserPreference preference);
+    void deletePreference(UserPreference preference);
+
+    void deletePreference(int id);
 }

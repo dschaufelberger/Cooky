@@ -12,7 +12,7 @@
 
 <form:form method="POST" action="cookingMatches/addPreferences" commandName="categories">
     <c:forEach var="category" items="${categories.categories}">
-        <form:checkbox path="userCategories" value="${category.categoryName}" />${category.categoryName} </br>
+        <form:checkbox path="userCategories" value="${category.name}" />${category.name} </br>
     </c:forEach>
     <input type="submit" value="Send" class="btn btn-default">
 </form:form>
