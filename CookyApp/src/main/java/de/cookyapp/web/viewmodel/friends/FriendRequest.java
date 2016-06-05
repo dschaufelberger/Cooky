@@ -1,6 +1,7 @@
 package de.cookyapp.web.viewmodel.friends;
 
 
+import de.cookyapp.enums.FriendRequestState;
 import de.cookyapp.service.dto.User;
 
 /**
@@ -10,6 +11,7 @@ public class FriendRequest {
     private String inquirerUsername;
     private int inquirerId;
     private int requestedId;
+    private FriendRequestState requestState;
 
     public FriendRequest( User user ) {
         this.inquirerUsername = user.getUsername();
@@ -30,5 +32,9 @@ public class FriendRequest {
 
     public String getInquirerUsername() {
         return inquirerUsername;
+    }
+
+    public FriendRequestState getRequestState() {
+        return requestState;
     }
 }

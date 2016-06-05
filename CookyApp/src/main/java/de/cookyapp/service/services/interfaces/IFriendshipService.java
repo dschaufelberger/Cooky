@@ -16,6 +16,8 @@ public interface IFriendshipService {
 
     void sendFriendRequest( int from, int to );
 
+    void removeFriend( int user, int friend );
+
     void acceptFriendRequest( int from, int to );
 
     void rejectFriendRequest( int from, int to );

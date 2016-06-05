@@ -1,11 +1,13 @@
 package de.cookyapp.web.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.IFriendshipService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.friends.Friendship;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,17 +37,33 @@ public class FriendshipController {
 
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView getCookys() {
-        ModelAndView model = new ModelAndView( "test" );
+        ModelAndView model = new ModelAndView( "FriendsTile" );
 
         User currentUser = this.userService.getCurrentUser();
-        if ( currentUser != null ) {
+        if ( currentUser == null ) {
             throw new UserNotAuthorized();
         }
 
         List<User> friends = this.friendshipService.getFriends( currentUser.getId() );
-        model.addObject( "friends", friends );
+        List<Friendship> friendships = friends.stream()
+                .map( friend -> new Friendship( friend, currentUser.getId() ) )
+                .collect( Collectors.toList() );
+
+        List<User> pendingFriends = this.friendshipService.getOutgoingFriendRequests( currentUser.getId() );
+        List<Friendship> pendingRequests = pendingFriends.stream()
+                .map( friend -> new Friendship( friend, currentUser.getId() ) )
+                .collect( Collectors.toList() );
+
+        model.addObject( "friendships", friendships );
+        model.addObject( "pendingRequests", pendingRequests );
 
         return model;
+    }
+
+    @RequestMapping( value = "/remove", method = RequestMethod.POST )
+    public String removeCookyFriend( @RequestParam( "friend" ) int friend, @RequestParam( "me" ) int user ) {
+        this.friendshipService.removeFriend( user, friend );
+        return "redirect:/cookys";
     }
 
     @RequestMapping( value = "/add", method = RequestMethod.POST )

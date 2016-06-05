@@ -86,3 +86,20 @@ html, body {
 .friend-request-reject {
     color: red;
 }
+
+.friends-table {
+    width: initial;
+}
+
+.friends-table td:first-child {
+    vertical-align: middle;
+}
+
+.pending-table td:last-child {
+    vertical-align: middle;
+}
+
+.cooky-description-text {
+    font-size: medium;
+    color: #aaa;
+}

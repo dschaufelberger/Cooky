@@ -97,6 +97,18 @@ public class FriendshipService implements IFriendshipService {
     }
 
     @Override
+    public void removeFriend( int user, int friend ) {
+        FriendshipEntity friendship = this.friendshipRepository.findByInquiringUserAndRequestedUserAndRequestState( user, friend, FriendRequestState.ACCEPTED );
+        if ( friendship == null ) {
+            friendship = this.friendshipRepository.findByInquiringUserAndRequestedUserAndRequestState( friend, user, FriendRequestState.ACCEPTED );
+        }
+
+        if ( friendship != null ) {
+            this.friendshipRepository.delete( friendship );
+        }
+    }
+
+    @Override
     public void acceptFriendRequest( int from, int to ) {
         FriendshipEntity request = this.friendshipRepository.findByInquiringUserAndRequestedUserAndRequestState( from, to, FriendRequestState.PENDING );
         if ( request != null ) {
