@@ -72,7 +72,7 @@ public class CookingMatchController {
                 preferences.add(preference);
             }
             preferenceCrudService.savePreferences(preferences);
-            view = "redirect:/cookingMatches";
+            view = "redirect:/matchCenter";
         }
         return view;
     }
@@ -94,5 +94,23 @@ public class CookingMatchController {
         preferenceCrudService.deletePreference(id);
         view = "redirect :/userPreferences";
         return view;
+    }
+
+    @RequestMapping ("/matches")
+    public ModelAndView matchOverview () {
+        ModelAndView modelAndView = new ModelAndView("MatchTile");
+        User user = userService.getCurrentUser();
+        List<UserPreference> userPreferences = preferenceCrudService.getPreferencesByUserId(user.getId());
+        List<String> categories = new ArrayList<>();
+        for (UserPreference current : userPreferences) {
+            categories.add(current.getCategoryName());
+        }
+        List<UserPreference> matches = preferenceCrudService.getMatches(categories);
+        List<User> users = new ArrayList<>();
+        for (UserPreference current : matches) {
+            users.add(userService.getUserByID(current.getUserId()));
+        }
+        modelAndView.addObject("usersList", users);
+        return modelAndView;
     }
 }

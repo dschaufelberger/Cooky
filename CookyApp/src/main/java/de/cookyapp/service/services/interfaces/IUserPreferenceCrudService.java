@@ -14,6 +14,8 @@ public interface IUserPreferenceCrudService {
 
     void savePreferences(List<UserPreference> preferences);
 
+    List<UserPreference> getMatches (List<String> categories);
+
     void deletePreference(UserPreference preference);
 
     void deletePreference(int id);

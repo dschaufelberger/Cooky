@@ -42,3 +42,7 @@ html, body {
 #cookbookDetail .list-group {
     margin-top: 15px;
 }
+
+.cooky-table > ul li {
+    list-style-type: none;
+}

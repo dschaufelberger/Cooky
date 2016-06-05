@@ -25,7 +25,7 @@
             </form>
         </li>
         <li class="list-group-item">
-            <form action="/matchCenter/match" method="post">
+            <form action="/matchCenter/matches" method="post">
                 <button type="submit" class="btn btn-default">Get Cooking matches!</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>

@@ -70,6 +70,15 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
         }
     }
 
+    @Override
+    public List<UserPreference> getMatches (List<String> categories) {
+        List<UserPreference> preferences = new ArrayList<>();
+        if (categories != null) {
+            preferences = mapToUserPreference(preferenceCrudRepository.findByCategoryNameIn(categories));
+        }
+        return preferences;
+    }
+
     private UserPreferenceEntity mapToEntity (UserPreference preference) {
         UserPreferenceEntity preferenceEntity = new UserPreferenceEntity();
         preferenceEntity.setUserId(preference.getUserId());
