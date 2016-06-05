@@ -36,7 +36,7 @@ public class FriendshipService implements IFriendshipService {
 
     @Override
     public List<User> getFriends( int forUser ) {
-        List<FriendshipEntity> requests = this.friendshipRepository.findByInquiringUserOrRequestedUserAndRequestState( forUser, forUser, FriendRequestState.ACCEPTED );
+        List<FriendshipEntity> requests = this.friendshipRepository.findByRequestStateAndInquiringUserOrRequestedUser( FriendRequestState.ACCEPTED, forUser, forUser );
         List<User> friends = new ArrayList<>( requests.size() );
 
         for ( FriendshipEntity request : requests ) {
