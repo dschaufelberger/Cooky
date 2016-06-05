@@ -25,6 +25,9 @@
                     <li>
                         <a href="/cookbooks/manage">Cookbooks</a>
                     </li>
+                    <li>
+                        <a href="/cookys">Cookys</a>
+                    </li>
                 </sec:authorize>
             </ul>
 
