@@ -17,7 +17,7 @@ public interface IFriendshipRepository extends IBaseCrudRepository<FriendshipEnt
 
     List<FriendshipEntity> findByRequestedUserAndRequestState( int requestedUser, FriendRequestState requestState );
 
-    List<FriendshipEntity> findByRequestedUserOrInquiringUserAndRequestState( int requestedUser, int requiringUser, FriendRequestState requestState );
+    List<FriendshipEntity> findByInquiringUserOrRequestedUserAndRequestState( int inquiringUser, int requestedUser, FriendRequestState requestState );
 
-    FriendshipEntity findByRequestedUserAndInquiringUserAndRequestState( int requestedUser, int requiringUser, FriendRequestState requestState );
+    FriendshipEntity findByInquiringUserAndRequestedUserAndRequestState( int inquiringUser, int requestedUser, FriendRequestState requestState );
 }

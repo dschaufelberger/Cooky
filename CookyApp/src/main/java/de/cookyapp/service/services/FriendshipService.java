@@ -36,7 +36,7 @@ public class FriendshipService implements IFriendshipService {
 
     @Override
     public List<User> getFriends( int forUser ) {
-        List<FriendshipEntity> requests = this.friendshipRepository.findByRequestedUserOrInquiringUserAndRequestState( forUser, forUser, FriendRequestState.ACCEPTED );
+        List<FriendshipEntity> requests = this.friendshipRepository.findByInquiringUserOrRequestedUserAndRequestState( forUser, forUser, FriendRequestState.ACCEPTED );
         List<User> friends = new ArrayList<>( requests.size() );
 
         for ( FriendshipEntity request : requests ) {
@@ -98,7 +98,7 @@ public class FriendshipService implements IFriendshipService {
 
     @Override
     public void acceptFriendRequest( int from, int to ) {
-        FriendshipEntity request = this.friendshipRepository.findByRequestedUserAndInquiringUserAndRequestState( from, to, FriendRequestState.PENDING );
+        FriendshipEntity request = this.friendshipRepository.findByInquiringUserAndRequestedUserAndRequestState( from, to, FriendRequestState.PENDING );
         if ( request != null ) {
             request.setRequestState( FriendRequestState.ACCEPTED );
             request.setDate( LocalDateTime.now() );
@@ -108,7 +108,7 @@ public class FriendshipService implements IFriendshipService {
 
     @Override
     public void rejectFriendRequest( int from, int to ) {
-        FriendshipEntity request = this.friendshipRepository.findByRequestedUserAndInquiringUserAndRequestState( from, to, FriendRequestState.PENDING );
+        FriendshipEntity request = this.friendshipRepository.findByInquiringUserAndRequestedUserAndRequestState( from, to, FriendRequestState.PENDING );
         if ( request != null ) {
             request.setRequestState( FriendRequestState.REJECTED );
             request.setDate( LocalDateTime.now() );
