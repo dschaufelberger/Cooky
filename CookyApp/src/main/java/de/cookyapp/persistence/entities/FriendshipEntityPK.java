@@ -11,7 +11,7 @@ public class FriendshipEntityPK implements Serializable {
     private int inquiringUser;
     private int requestedUser;
 
-    @Column( name = "InquiringUser", nullable = false )
+    @Column( name = "InquiringUser", nullable = false, insertable = false, updatable = false )
     @Id
     public int getInquiringUser() {
         return inquiringUser;
@@ -21,7 +21,7 @@ public class FriendshipEntityPK implements Serializable {
         this.inquiringUser = inquiringUser;
     }
 
-    @Column( name = "RequestedUser", nullable = false )
+    @Column( name = "RequestedUser", nullable = false, insertable = false, updatable = false )
     @Id
     public int getRequestedUser() {
         return requestedUser;

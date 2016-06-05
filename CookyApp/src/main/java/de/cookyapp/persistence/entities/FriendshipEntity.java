@@ -22,32 +22,32 @@ import de.cookyapp.enums.FriendRequestState;
 @Table( name = "Friendship", schema = "Cooky_Dev" )
 @IdClass( FriendshipEntityPK.class )
 public class FriendshipEntity {
-    private int userIdOne;
-    private int userIdTwo;
+    private int inquiringUser;
+    private int requestedUser;
     private LocalDateTime date;
     private FriendRequestState requestState;
 
-    private UserEntity inquiringUser;
-    private UserEntity requestedUser;
+    private UserEntity inquirer;
+    private UserEntity requester;
 
     @Id
-    @Column( name = "InquiringUser", nullable = false )
-    public int getUserIdOne() {
-        return userIdOne;
+    @Column( name = "InquiringUser", nullable = false, insertable = false, updatable = false )
+    public int getInquiringUser() {
+        return inquiringUser;
     }
 
-    public void setUserIdOne( int userIdOne ) {
-        this.userIdOne = userIdOne;
+    public void setInquiringUser( int userIdOne ) {
+        this.inquiringUser = userIdOne;
     }
 
     @Id
-    @Column( name = "RequestedUser", nullable = false )
-    public int getUserIdTwo() {
-        return userIdTwo;
+    @Column( name = "RequestedUser", nullable = false, insertable = false, updatable = false )
+    public int getRequestedUser() {
+        return requestedUser;
     }
 
-    public void setUserIdTwo( int userIdTwo ) {
-        this.userIdTwo = userIdTwo;
+    public void setRequestedUser( int userIdTwo ) {
+        this.requestedUser = userIdTwo;
     }
 
     @Basic
@@ -72,23 +72,23 @@ public class FriendshipEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    @JoinColumn( name = "InquiringUser" )
-    public UserEntity getInquiringUser() {
-        return inquiringUser;
+    @JoinColumn( name = "InquiringUser")
+    public UserEntity getInquirer() {
+        return inquirer;
     }
 
-    public void setInquiringUser( UserEntity askingFriend ) {
-        this.inquiringUser = askingFriend;
+    public void setInquirer( UserEntity askingFriend ) {
+        this.inquirer = askingFriend;
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    @JoinColumn( name = "RequestedUser" )
-    public UserEntity getRequestedUser() {
-        return requestedUser;
+    @JoinColumn( name = "RequestedUser")    //, insertable = false, updatable = false
+    public UserEntity getRequester() {
+        return requester;
     }
 
-    public void setRequestedUser( UserEntity acceptingFriend ) {
-        this.requestedUser = acceptingFriend;
+    public void setRequester( UserEntity acceptingFriend ) {
+        this.requester = acceptingFriend;
     }
 
     @Override
@@ -100,16 +100,16 @@ public class FriendshipEntity {
 
         FriendshipEntity that = (FriendshipEntity) o;
 
-        if ( userIdOne != that.userIdOne )
+        if ( inquiringUser != that.inquiringUser )
             return false;
-        return userIdTwo == that.userIdTwo;
+        return requestedUser == that.requestedUser;
 
     }
 
     @Override
     public int hashCode() {
-        int result = userIdOne;
-        result = 31 * result + userIdTwo;
+        int result = inquiringUser;
+        result = 31 * result + requestedUser;
         return result;
     }
 }
