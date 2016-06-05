@@ -12,7 +12,7 @@
 
 <form:form method="POST" action="/matchCenter/addPreferences" commandName="categories">
     <div class="cooky-table">
-        <ul class="col-md-6">
+        <ul class="col-md-6 row-eq-height">
             <h2>Local Cuisine</h2>
             <li><form:checkbox path="userCategories" value="European"/> European</li>
             <ul>
@@ -34,7 +34,7 @@
             </ul>
         </ul>
 
-        <ul class="col-md-6">
+        <ul class="col-md-6 row-eq-height">
             <h2>Seasonal</h2>
             <ul>
                 <c:forEach var="category"
@@ -45,7 +45,7 @@
                 </c:forEach>
             </ul>
         </ul>
-        <ul class="col-md-6">
+        <ul class="col-md-6 row-eq-height">
             <h2>Dishes</h2>
             <ul>
                 <c:forEach var="category"

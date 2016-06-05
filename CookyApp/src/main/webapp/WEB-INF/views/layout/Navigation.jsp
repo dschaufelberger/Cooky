@@ -24,6 +24,9 @@
                     <li>
                         <a href="/cookbooks/manage">Cookbooks</a>
                     </li>
+                    <li>
+                        <a href="/matchCenter">Match Center</a>
+                    </li>
                 </sec:authorize>
             </ul>
 
