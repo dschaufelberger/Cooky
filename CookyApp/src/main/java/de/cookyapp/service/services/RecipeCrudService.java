@@ -1,17 +1,10 @@
 package de.cookyapp.service.services;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
@@ -25,7 +18,7 @@ import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
-import de.cookyapp.service.services.interfaces.IImageScaling;
+import de.cookyapp.service.services.interfaces.IImageService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.apache.log4j.Logger;
@@ -44,23 +37,20 @@ public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
-    private ServletContext servletContext;
     private ICookbookManagementService cookbookManagementService;
     private ICookbookContentService cookbookContentService;
     private IIngredientCrudService ingredientService;
 
     @Autowired
-    private IImageScaling imageScaling;
+    private IImageService imageService;
 
     @Autowired
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
-                              IUserCrudRepository userCrudRepository, ServletContext servletContext,
-                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService,
-                              IIngredientCrudService ingredientService ) {
+                              IUserCrudRepository userCrudRepository, ICookbookManagementService cookbookManagementService,
+                              ICookbookContentService cookbookContentService, IIngredientCrudService ingredientService ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
-        this.servletContext = servletContext;
         this.cookbookManagementService = cookbookManagementService;
         this.cookbookContentService = cookbookContentService;
         this.ingredientService = ingredientService;
@@ -146,19 +136,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         Recipe recipe;
         if ( recipeEntity != null ) {
             recipe = new Recipe( recipeEntity );
-            String imageUrl;
-
-            if ( recipeEntity.getImageFile() == null || this.imageScaling == null ) {
-                imageUrl = "http://placehold.it/320x200";
-            } else {
-                try {
-                    imageUrl = writeImageThumbnail( recipeEntity.getImageFile() );
-                } catch ( IOException e ) {
-                    logger.error( "Image file could not be created. Recipe id: " + recipeEntity.getId() );
-                    imageUrl = "http://placehold.it/320x200";
-                }
-            }
-
+            String imageUrl = getImageUrl( recipeEntity );
             recipe.setImageLink( imageUrl );
         } else {
             throw new InvalidRecipeId( recipeID );
@@ -192,20 +170,7 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
-
-                String imageLink;
-
-                if ( entity.getImageFile() == null || this.imageScaling == null ) {
-                    imageLink = "http://placehold.it/320x200";
-                } else {
-                    try {
-                        imageLink = writeImageThumbnail( entity.getImageFile() );
-                    } catch ( IOException e ) {
-                        logger.error( "Image file could not be created. Recipe id: " + current.getId() );
-                        imageLink = "http://placehold.it/320x200";
-                    }
-                }
-
+                String imageLink = getImageUrl( entity );
                 current.setImageLink( imageLink );
                 recipes.add( current );
             }
@@ -213,29 +178,18 @@ public class RecipeCrudService implements IRecipeCrudService {
         return recipes;
     }
 
-    private String writeImageThumbnail( byte[] imageData ) throws IOException {
-        String directoryPath = Paths.get( "resources", "images", "recipes" ).toString();
-        String absoluteDirectoryPath = this.servletContext.getRealPath( directoryPath );
-        createDirectoryIfNonexistant( absoluteDirectoryPath );
-
-        String imageUUID = java.util.UUID.randomUUID().toString();
-        String filename = imageUUID + ".jpg";
-        String absoluteFilePath = absoluteDirectoryPath + File.separator + filename;
-
-        InputStream inputStream = new ByteArrayInputStream( imageData );
-        BufferedImage original = ImageIO.read( inputStream );
-        BufferedImage scaled = imageScaling.scaleImageToBoundary( original, new Dimension( 320, 200 ) );
-
-        ImageIO.write( scaled, "jpg", new File( absoluteFilePath ) );
-
-        String imageUrl = "/" + (directoryPath + "/" + filename).replace( File.separator, "/" );
-        return imageUrl;
-    }
-
-    private void createDirectoryIfNonexistant( String absoluteDirectoryPath ) {
-        File file = new File( absoluteDirectoryPath );
-        if ( !file.exists() ) {
-            file.mkdirs();
+    private String getImageUrl( RecipeEntity recipeEntity ) {
+        String imageUrl;
+        if ( recipeEntity.getImageFile() == null || this.imageService == null ) {
+            imageUrl = "http://placehold.it/320x200";
+        } else {
+            try {
+                imageUrl = this.imageService.writeImageThumbnail( recipeEntity.getImageFile(), new Dimension( 320, 200 ) );
+            } catch ( IOException e ) {
+                logger.error( "Image file could not be created. Recipe id: " + recipeEntity.getId() );
+                imageUrl = "http://placehold.it/320x200";
+            }
         }
+        return imageUrl;
     }
 }
