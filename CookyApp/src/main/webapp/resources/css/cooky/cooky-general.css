@@ -66,4 +66,23 @@ html, body {
 
 .cooky-friend-request {
     color: black;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.friend-request-dropdown {
+    width: 240px;
+}
+
+.friend-request-dropdown .friend-request-label {
+    color: black;
+    padding: 20px;
+}
+
+.friend-request-accept {
+    color: green;
+}
+
+.friend-request-reject {
+    color: red;
 }

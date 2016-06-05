@@ -7,22 +7,12 @@
     <%-- <a href="#">${request.inquirerUsername}</a> --%>
 
     <span>${request.inquirerUsername}</span>
-
-    <form action="<spring:url value="/cookys/accept"/>" method="post">
-        <input type="hidden" name="from" value="${request.inquirerId}">
-        <input type="hidden" name="to" value="${request.requestedId}">
-        <sec:csrfInput />
-        <button type="submit">
-            <span class="glyphicon glyphicon-ok friend-request-accept"></span>
-        </button>
-    </form>
-
-    <form action="<spring:url value="/cookys/reject"/>" method="post">
-        <input type="hidden" name="from" value="${request.inquirerId}">
-        <input type="hidden" name="to" value="${request.requestedId}">
-        <sec:csrfInput />
-        <button type="submit">
-            <span class="glyphicon glyphicon-remove friend-request-reject"></span>
-        </button>
-    </form>
+    <input type="hidden" class="request-inquirer" value="${request.inquirerId}">
+    <input type="hidden" class="request-requested" value="${request.requestedId}">
+    <span class="btn">
+        <a class="glyphicon glyphicon-ok friend-request-accept"></a>
+    </span>
+    <span class="btn">
+        <a class="glyphicon glyphicon-remove friend-request-reject"></a>
+    </span>
 </div>

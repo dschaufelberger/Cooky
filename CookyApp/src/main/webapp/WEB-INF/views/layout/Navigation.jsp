@@ -40,7 +40,12 @@
                                 <span class="badge">${friendRequests.size()}</span>
                             </span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu friend-request-dropdown">
+                            <li class="friend-request-label">
+                                <c:if test="${friendRequests.size() > 0}"
+                                      var="hasFriendRequests">New friend requests:</c:if>
+                                <c:if test="${not hasFriendRequests}">No pending friend requests.</c:if>
+                            </li>
                             <c:forEach var="friendRequest" items="${friendRequests}">
                                 <li>
                                     <cooky:friends request="${friendRequest}" />

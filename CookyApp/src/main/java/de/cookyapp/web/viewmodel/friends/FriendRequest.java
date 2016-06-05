@@ -13,6 +13,7 @@ public class FriendRequest {
 
     public FriendRequest( User user ) {
         this.inquirerUsername = user.getUsername();
+        this.inquirerId = user.getId();
     }
 
     public int getInquirerId() {
