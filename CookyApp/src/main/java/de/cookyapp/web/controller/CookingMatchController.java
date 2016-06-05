@@ -20,6 +20,8 @@ import org.springframework.web.servlet.View;
 import javax.jws.WebParam;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +94,7 @@ public class CookingMatchController {
     public String removePreference (@PathVariable int id) {
         String view = "";
         preferenceCrudService.deletePreference(id);
-        view = "redirect :/userPreferences";
+        view = "redirect:/userPreferences";
         return view;
     }
 
@@ -110,7 +112,8 @@ public class CookingMatchController {
         for (UserPreference current : matches) {
             users.add(userService.getUserByID(current.getUserId()));
         }
-        modelAndView.addObject("usersList", users);
+        HashSet<User> userHashSet = new HashSet<>(users);
+        modelAndView.addObject("usersList", userHashSet);
         return modelAndView;
     }
 }

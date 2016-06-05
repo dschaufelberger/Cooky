@@ -69,26 +69,4 @@ public class UserPreferenceEntity {
         result = 31 * result + (categoryName != null ? categoryName.hashCode() : 0);
         return result;
     }
-
-    private UserEntity user;
-
-    @ManyToOne( cascade = {CascadeType.ALL, CascadeType.REFRESH}, optional = false )
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser( UserEntity user ) {
-        this.user = user;
-    }
-
-    private CategoryEntity category;
-
-    @OneToOne( cascade = {CascadeType.ALL, CascadeType.REFRESH}, optional = false )
-    public CategoryEntity getCategory() {
-        return category;
-    }
-
-    public void setCategory( CategoryEntity category ) {
-        this.category = category;
-    }
 }

@@ -12,7 +12,10 @@
 
 <form:form method="POST" action="cookingMatches/userPreferences" commandName="preferences">
     <c:forEach var="preferences" items="${userPreferences}">
-        <span id="${preferences.id}" onclick="removePreference(this.id)">${preferences.categoryName} </span><span class="glyphicon glyphicon-remove"></span>
+        <div>
+            <span>${preferences.categoryName}</span>
+            <span id="${preferences.id}" class="glyphicon glyphicon-remove" onclick="removePreference(this.id)"> </span>
+        </div>
     </c:forEach>
 </form:form>
 
@@ -20,7 +23,10 @@
     function removePreference(id) {
         var settings = {
             method: 'POST',
-            url: '/matchCenter/delete/' + id,
+            url: '/matchCenter/remove/' + id,
+            data: {
+                id: id,
+            },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
             }

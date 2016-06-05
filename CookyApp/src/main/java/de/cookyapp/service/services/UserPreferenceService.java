@@ -28,7 +28,7 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
     private IAuthenticationFacade authentication;
 
     @Autowired
-    public UserPreferenceService (IUserPreferenceCrudRepository preferenceCrudRepository, IUserCrudRepository userCrudRepository, IAuthenticationFacade authentication, ICategoryCrudRepository categoryCrudRepository) {
+    public UserPreferenceService(IUserPreferenceCrudRepository preferenceCrudRepository, IUserCrudRepository userCrudRepository, IAuthenticationFacade authentication, ICategoryCrudRepository categoryCrudRepository) {
         this.preferenceCrudRepository = preferenceCrudRepository;
         this.categoryCrudRepository = categoryCrudRepository;
         this.userCrudRepository = userCrudRepository;
@@ -37,19 +37,20 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
 
     @Override
     public List<UserPreference> getPreferencesByUserId(int id) {
-         return mapToUserPreference(preferenceCrudRepository.findByUserId(id));
+        return mapToUserPreference(preferenceCrudRepository.findByUserId(id));
     }
 
     @Override
     public void savePreferences(List<UserPreference> preferences) {
-        if (preferences != null) {
+        if (preferences != null && preferences.size() > 0) {
             List<UserPreferenceEntity> result = new ArrayList<>();
             for (UserPreference preference : preferences) {
-                UserPreferenceEntity entity = mapToEntity(preference);
-                result.add(entity);
+                if (preferenceCrudRepository.findByCategoryNameAndUserId(preference.getCategoryName(), preference.getUserId()).size() == 0) {
+                    UserPreferenceEntity entity = mapToEntity(preference);
+                    result.add(entity);
+                }
             }
             preferenceCrudRepository.save(result);
-
         }
     }
 
@@ -63,7 +64,7 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
     }
 
     @Override
-    public void deletePreference (int id) {
+    public void deletePreference(int id) {
         UserPreferenceEntity preference = preferenceCrudRepository.findOne(id);
         if (preference != null) {
             preferenceCrudRepository.delete(preference);
@@ -71,24 +72,34 @@ public class UserPreferenceService implements IUserPreferenceCrudService {
     }
 
     @Override
-    public List<UserPreference> getMatches (List<String> categories) {
+    public List<UserPreference> getMatches(List<String> categories) {
         List<UserPreference> preferences = new ArrayList<>();
         if (categories != null) {
-            preferences = mapToUserPreference(preferenceCrudRepository.findByCategoryNameIn(categories));
+            preferences = mapToUserPreferenceFilter(preferenceCrudRepository.findByCategoryNameIn(categories));
         }
         return preferences;
     }
 
-    private UserPreferenceEntity mapToEntity (UserPreference preference) {
+    private UserPreferenceEntity mapToEntity(UserPreference preference) {
         UserPreferenceEntity preferenceEntity = new UserPreferenceEntity();
         preferenceEntity.setUserId(preference.getUserId());
         preferenceEntity.setCategoryName(preference.getCategoryName());
         return preferenceEntity;
     }
 
-    private List<UserPreference> mapToUserPreference (List<UserPreferenceEntity> entities) {
+    private List<UserPreference> mapToUserPreferenceFilter(List<UserPreferenceEntity> entities) {
+        List<UserPreference> userPreferences = entities.stream()
+                .filter(entity -> entity.getUserId() != userCrudRepository.findByUsername(authentication.getAuthentication().getName()).getId())
+                .map(entity -> new UserPreference(entity))
+                .distinct()
+                .collect(Collectors.toList());
+        return userPreferences;
+    }
+
+    private List<UserPreference> mapToUserPreference(List<UserPreferenceEntity> entities) {
         List<UserPreference> userPreferences = entities.stream()
                 .map(entity -> new UserPreference(entity))
+                .distinct()
                 .collect(Collectors.toList());
         return userPreferences;
     }

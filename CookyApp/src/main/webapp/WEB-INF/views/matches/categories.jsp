@@ -12,7 +12,7 @@
 
 <form:form method="POST" action="/matchCenter/addPreferences" commandName="categories">
     <div class="cooky-table">
-        <ul class="col-md-6 row-eq-height">
+        <ul class="col-md-6">
             <h2>Local Cuisine</h2>
             <li><form:checkbox path="userCategories" value="European"/> European</li>
             <ul>
@@ -33,8 +33,7 @@
                 </c:forEach>
             </ul>
         </ul>
-
-        <ul class="col-md-6 row-eq-height">
+        <ul class="col-md-6">
             <h2>Seasonal</h2>
             <ul>
                 <c:forEach var="category"
@@ -45,12 +44,36 @@
                 </c:forEach>
             </ul>
         </ul>
-        <ul class="col-md-6 row-eq-height">
+        <ul class="col-md-12"></ul>
+        <ul class="col-md-6">
             <h2>Dishes</h2>
             <ul>
                 <c:forEach var="category"
                            items="${categories.categories}">
                     <c:if test="${category.superCategory.equals('Dishes')}">
+                        <li><form:checkbox path="userCategories" value="${category.name}"/> ${category.name} </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </ul>
+        <ul class="col-md-6">
+            <h2>Bake</h2>
+            <ul>
+                <c:forEach var="category"
+                           items="${categories.categories}">
+                    <c:if test="${category.superCategory.equals('Bake')}">
+                        <li><form:checkbox path="userCategories" value="${category.name}"/> ${category.name} </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </ul>
+        <ul class="col-md-12"></ul>
+        <ul class="col-md-6">
+            <h2>Drinks</h2>
+            <ul>
+                <c:forEach var="category"
+                           items="${categories.categories}">
+                    <c:if test="${category.superCategory.equals('Drinks')}">
                         <li><form:checkbox path="userCategories" value="${category.name}"/> ${category.name} </li>
                     </c:if>
                 </c:forEach>

@@ -41,7 +41,6 @@ public class UserEntity {
     private AddressEntity address;
     private Collection<CookbookEntity> cookbooks;
     /*private Collection<CommentEntity> comments;*/
-    private Collection<UserPreferenceEntity> preferences;
     private Collection<MessageEntity> sentMessages;
     private Collection<MessageEntity> receivedMessages;
     private Collection<ShoppingListEntity> shoppingListEntries;
@@ -181,15 +180,6 @@ public class UserEntity {
     public void setComments( Collection<CommentEntity> comments ) {
         this.comments = comments;
     }*/
-
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "user" )
-    public Collection<UserPreferenceEntity> getPreferences() {
-        return preferences;
-    }
-
-    public void setPreferences( Collection<UserPreferenceEntity> preferences ) {
-        this.preferences = preferences;
-    }
 
     @OneToOne( cascade = CascadeType.ALL )
     @JoinColumn(name = "AddressID")
