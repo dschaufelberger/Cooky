@@ -1,8 +1,7 @@
 package de.cookyapp.web.controller;
 
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.cookyapp.enums.SearchType;
 import de.cookyapp.service.dto.User;
@@ -36,13 +35,15 @@ public class GlobalCookyController {
     @ModelAttribute
     public void getIncomingFriendRequests( Model model ) {
         User user = this.userService.getCurrentUser();
-        List<FriendRequest> requests;
+        List<FriendRequest> requests = new LinkedList<>();
 
         if ( user != null ) {
             List<User> requestingUsers = this.friendshipService.getIncomingFriendRequests( user.getId() );
-            requests = requestingUsers.stream().map( requester -> new FriendRequest( requester ) ).collect( Collectors.toList() );
-        } else {
-            requests = Collections.EMPTY_LIST;
+            for ( User requestingUser : requestingUsers ) {
+                FriendRequest request = new FriendRequest( requestingUser );
+                request.setRequestedId( user.getId() );
+                requests.add( request );
+            }
         }
 
         model.addAttribute( "friendRequests", requests );

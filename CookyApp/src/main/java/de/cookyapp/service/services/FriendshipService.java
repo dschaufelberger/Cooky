@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import de.cookyapp.enums.FriendRequestState;
 import de.cookyapp.persistence.entities.FriendshipEntity;
+import de.cookyapp.persistence.entities.FriendshipEntityPK;
 import de.cookyapp.persistence.entities.UserEntity;
 import de.cookyapp.persistence.repositories.app.IFriendshipRepository;
 import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
@@ -39,10 +40,10 @@ public class FriendshipService implements IFriendshipService {
         List<User> friends = new ArrayList<>( requests.size() );
 
         for ( FriendshipEntity request : requests ) {
-            if ( request.getInquiringUser().getId() == forUser ) {
-                friends.add( new User( request.getRequestedUser() ) );
-            } else if ( request.getRequestedUser().getId() == forUser ) {
-                friends.add( new User( request.getInquiringUser() ) );
+            if ( request.getInquirer().getId() == forUser ) {
+                friends.add( new User( request.getRequester() ) );
+            } else if ( request.getRequester().getId() == forUser ) {
+                friends.add( new User( request.getInquirer() ) );
             }
         }
 
@@ -54,7 +55,7 @@ public class FriendshipService implements IFriendshipService {
         List<FriendshipEntity> requests = this.friendshipRepository.findByRequestedUserAndRequestState( requestedUser, FriendRequestState.PENDING );
 
         return requests.stream()
-                .map( request -> new User( request.getInquiringUser() ) )
+                .map( request -> new User( request.getInquirer() ) )
                 .collect( Collectors.toList() );
     }
 
@@ -74,7 +75,7 @@ public class FriendshipService implements IFriendshipService {
 
         this.friendshipRepository.delete( rejected );
 
-        return pending.stream().map( request -> new User( request.getRequestedUser() ) ).collect( Collectors.toList() );
+        return pending.stream().map( request -> new User( request.getRequester() ) ).collect( Collectors.toList() );
     }
 
     @Override
@@ -82,11 +83,17 @@ public class FriendshipService implements IFriendshipService {
         UserEntity inquiring = getUser( from );
         UserEntity requested = getUser( to );
 
-        FriendshipEntity friendship = new FriendshipEntity();
-        friendship.setInquiringUser( inquiring );
-        friendship.setRequestedUser( requested );
-        friendship.setDate( LocalDateTime.now() );
-        friendship.setRequestState( FriendRequestState.PENDING );
+        FriendshipEntityPK id = new FriendshipEntityPK();
+        id.setInquiringUser( inquiring.getId() );
+        id.setRequestedUser( requested.getId() );
+
+        if ( this.friendshipRepository.findOne( id ) == null ) {
+            FriendshipEntity friendship = new FriendshipEntity();
+            friendship.setInquirer( inquiring );
+            friendship.setRequester( requested );
+            friendship.setDate( LocalDateTime.now() );
+            friendship.setRequestState( FriendRequestState.PENDING );
+        }
     }
 
     @Override

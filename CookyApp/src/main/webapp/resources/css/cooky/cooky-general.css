@@ -50,3 +50,20 @@ html, body {
 #cookbookDetail .list-group {
     margin-top: 15px;
 }
+
+#friendRequests .fa.fa-users {
+    font-size: large;
+}
+
+#friendRequests .badge {
+    font-size: small;
+    background-color: red;
+    border: solid 1px black;
+    position: relative;
+    right: 36px;
+    top: 10px;
+}
+
+.cooky-friend-request {
+    color: black;
+}

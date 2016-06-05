@@ -23,4 +23,8 @@
         <name>search</name>
         <path>/WEB-INF/tags/search/search.tag</path>
     </tag-file>
+    <tag-file>
+        <name>friends</name>
+        <path>/WEB-INF/tags/friends/FriendRequest.tag</path>
+    </tag-file>
 </taglib>
