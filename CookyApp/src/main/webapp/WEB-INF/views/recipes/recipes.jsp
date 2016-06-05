@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    <c:if test="${loop.index % 3 == 2}">
+    <c:if test="${(loop.index % 3 == 2) || loop.last}">
         </div>
     </c:if>
 </c:forEach>
