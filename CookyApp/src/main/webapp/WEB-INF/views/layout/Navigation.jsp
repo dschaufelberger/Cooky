@@ -37,13 +37,13 @@
                     <li id="friendRequests" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-users" aria-hidden="true">
-                                <span class="badge">${friendRequests.size()}</span>
+                                <span class="badge"><c:if test="${friendRequests.size() > 0}"
+                                                          var="hasFriendRequests">${friendRequests.size()}</c:if></span>
                             </span>
                         </a>
                         <ul class="dropdown-menu friend-request-dropdown">
                             <li class="friend-request-label">
-                                <c:if test="${friendRequests.size() > 0}"
-                                      var="hasFriendRequests">New friend requests:</c:if>
+                                <c:if test="${hasFriendRequests}">New friend requests:</c:if>
                                 <c:if test="${not hasFriendRequests}">No pending friend requests.</c:if>
                             </li>
                             <c:forEach var="friendRequest" items="${friendRequests}">
