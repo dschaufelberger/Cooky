@@ -43,7 +43,7 @@
 
 <p>Your pending friend requests:</p>
 <c:if test="${pendingRequests.size() > 0}" var="hasPendingRequests">
-    <table class="table friends-table pending-table">
+    <table class="table friends-table">
         <tbody>
 
         <c:forEach var="request" items="${pendingRequests}">
@@ -55,7 +55,12 @@
                     <span class="btn btn-default">View Profile</span>
                 </td>
                 <td>
-                    ...request pending
+                    <form action="/cookys/cancel" method="post">
+                        <input type="hidden" name="requested" value="${request.friendId}">
+                        <input type="hidden" name="inquirer" value="${request.myId}">
+                        <sec:csrfInput />
+                        <button type="submit" class="btn btn-default">Cancel Request</button>
+                    </form>
                 </td>
             </tr>
         </c:forEach>

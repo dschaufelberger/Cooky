@@ -95,10 +95,6 @@ html, body {
     vertical-align: middle;
 }
 
-.pending-table td:last-child {
-    vertical-align: middle;
-}
-
 .cooky-description-text {
     font-size: medium;
     color: #aaa;

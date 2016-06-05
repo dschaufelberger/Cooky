@@ -82,4 +82,10 @@ public class FriendshipController {
     public void rejectFriendRequest( @RequestParam( "inquirer" ) int inquirer, @RequestParam( "requested" ) int requested ) {
         this.friendshipService.rejectFriendRequest( inquirer, requested );
     }
+
+    @RequestMapping( value = "/cancel", method = RequestMethod.POST )
+    public String cancelFriendRequest( @RequestParam( "inquirer" ) int inquirer, @RequestParam( "requested" ) int requested ) {
+        this.friendshipService.cancelFriendRequest( inquirer, requested );
+        return "redirect:/cookys";
+    }
 }
