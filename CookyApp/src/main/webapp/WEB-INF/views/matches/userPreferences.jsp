@@ -10,6 +10,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<h3>Your Preferences</h3>
+
 <form:form method="POST" action="cookingMatches/userPreferences" commandName="preferences">
     <c:forEach var="preferences" items="${userPreferences}">
         <div>
