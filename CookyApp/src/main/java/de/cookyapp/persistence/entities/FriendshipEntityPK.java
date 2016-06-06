@@ -42,10 +42,8 @@ public class FriendshipEntityPK implements Serializable {
 
         if ( inquiringUser != that.inquiringUser )
             return false;
-        if ( requestedUser != that.requestedUser )
-            return false;
+        return requestedUser == that.requestedUser;
 
-        return true;
     }
 
     @Override

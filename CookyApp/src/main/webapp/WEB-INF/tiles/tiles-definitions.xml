@@ -171,7 +171,7 @@
 
     <definition name="FriendsTile" extends="page.definition">
         <put-attribute name="title" value="Your Cookys" />
-        <put-attribute name="pagecontent" value="/WEB-INF/views/friends/Friends.jsp" cascade="true" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/friends/Friends.jsp" cascade="true" />
     </definition>
 
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->

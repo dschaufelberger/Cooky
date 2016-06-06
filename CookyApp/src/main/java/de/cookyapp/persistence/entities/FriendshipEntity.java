@@ -72,7 +72,7 @@ public class FriendshipEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    @JoinColumn( name = "InquiringUser")
+    @JoinColumn( name = "InquiringUser" )
     public UserEntity getInquirer() {
         return inquirer;
     }
@@ -82,7 +82,7 @@ public class FriendshipEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    @JoinColumn( name = "RequestedUser")    //, insertable = false, updatable = false
+    @JoinColumn( name = "RequestedUser" )    //, insertable = false, updatable = false
     public UserEntity getRequester() {
         return requester;
     }

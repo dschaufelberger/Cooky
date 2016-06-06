@@ -235,10 +235,8 @@ public class UserEntity {
 
         UserEntity that = (UserEntity) o;
 
-        if ( id != that.id )
-            return false;
+        return id.equals( that.id );
 
-        return true;
     }
 
     @Override

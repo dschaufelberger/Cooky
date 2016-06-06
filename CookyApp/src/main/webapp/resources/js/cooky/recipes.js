@@ -30,8 +30,8 @@ function rate(id) {
     var currentRating = id;
     var recipeId = $(".recipeId").val();
 
-    var csrf_token = $("meta[name='_csrf_token']").attr("content");
-    var csrf_header = $("meta[name='_csrf_header']").attr("content");
+    var csrf_token = $('meta[name="_csrf_token"]').attr("content");
+    var csrf_header = $('meta[name="_csrf_header"]').attr("content");
     var settings = {
         method: 'POST',
         url: '/recipes/rate/',
