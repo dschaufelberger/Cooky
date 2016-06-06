@@ -13,7 +13,7 @@
 <script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
 
 <p>
-    <h3>Insert your Ingredients and look what you can cook!</h3>
+    <h3>Insert your Ingredients and see what you can cook!</h3>
 </p>
 
 <form:form method="POST" action="/recipes/recipeSuggestions" commandName="ingredientSuggestion">
