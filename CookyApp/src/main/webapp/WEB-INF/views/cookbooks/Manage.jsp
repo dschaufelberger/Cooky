@@ -12,6 +12,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<%--<c:if test="${overview.privateCookbooks.size() > 0}">--%>
+<%--<c:set var="privateCollapsed" value=""--%>
+<%--</c:if>--%>
+
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -20,7 +24,7 @@
                 <span class="glyphicon glyphicon-user"></span>
             </h4>
         </div>
-        <div id="collapsePrivate" class="panel-collapse collapse">
+        <div id="collapsePrivate" class="panel-collapse collapse ${overview.privateCookbooks.size() > 0 ? 'in' : ''}">
             <ul class="list-group cooky-cookbooks">
                 <c:forEach var="currentCookbook" items="${overview.privateCookbooks}">
                     <li class="list-group-item">
@@ -40,7 +44,7 @@
                 <span class="glyphicon glyphicon-share-alt"></span>
             </h4>
         </div>
-        <div id="collapseShared" class="panel-collapse collapse">
+        <div id="collapseShared" class="panel-collapse collapse ${overview.sharedCookbooks.size() > 0 ? 'in' : ''}">
             <ul class="list-group cooky-cookbooks">
                 <c:forEach var="currentCookbook" items="${overview.sharedCookbooks}">
                     <li class="list-group-item">
@@ -60,7 +64,7 @@
                 <span class="glyphicon glyphicon-eye-open"></span>
             </h4>
         </div>
-        <div id="collapsePublic" class="panel-collapse collapse">
+        <div id="collapsePublic" class="panel-collapse collapse ${overview.publicCookbooks.size() > 0 ? 'in' : ''}">
             <ul class="list-group cooky-cookbooks">
                 <c:forEach var="currentCookbook" items="${overview.publicCookbooks}">
                     <li class="list-group-item">
@@ -91,7 +95,8 @@
                     </div>
                     <div class="form-group">
                         <form:label path="visibility">Visibility</form:label>
-                        <form:select path="visibility" items="${newCookbook.visibilities}" cssClass="form-control" />
+                        <form:select path="visibility" items="${newCookbook.visibilities}" cssClass="form-control"
+                                     itemLabel="displayName" />
                         <form:errors path="visibility" cssClass="cooky-formError" element="div class=\"col-sm-10\"" />
                     </div>
                     <div class="form-group">
@@ -106,18 +111,6 @@
 </div>
 
 <script>
-    function deleteRecipe(id) {
-        var settings = {
-            method: 'POST',
-            url: '/cookbooks/manage/delete/' + id,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
-            }
-        }
-
-        $.ajax(settings);
-    }
-
     $(function () {
         $('.cooky-cookbook input').hide();
         $('.cooky-cookbook textarea').hide();

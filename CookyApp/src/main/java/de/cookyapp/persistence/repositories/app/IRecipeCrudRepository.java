@@ -10,8 +10,6 @@ import de.cookyapp.persistence.entities.RecipeEntity;
 public interface IRecipeCrudRepository extends IBaseCrudRepository<RecipeEntity, Integer> {
     List<RecipeEntity> findByName( String name );
 
-    List<RecipeEntity> findByNameLike( String name );
-
     List<RecipeEntity> findByNameContaining( String name );
 
 }

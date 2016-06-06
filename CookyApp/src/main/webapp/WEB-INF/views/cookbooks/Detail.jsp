@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="cooky" uri="http://cookyapp.de/tags" %>
 
 <spring:eval expression="cookbook.visibility == T(de.cookyapp.enums.CookbookVisibility).PUBLIC" var="isPublic" />
 <spring:eval expression="cookbook.visibility == T(de.cookyapp.enums.CookbookVisibility).PRIVATE" var="isPrivate" />
@@ -45,14 +46,7 @@
                         <a href="${recipeUrl}">
                             <h3 class="list-group-item-heading">${recipeVar.name}</h3>
                         </a>
-                        <span>
-                            <c:forEach begin="1" end="${recipeVar.rating}">
-                                <span class="glyphicon glyphicon-star cooky-recipeRating"></span>
-                            </c:forEach>
-                            <c:forEach begin="${recipeVar.rating + 1}" end="${recipeVar.maxRating}">
-                                <span class="glyphicon glyphicon-star-empty cooky-recipeRating"></span>
-                            </c:forEach>
-                        </span>
+                        <cooky:rating rating="${recipeVar.rating}" maxRating="${recipeVar.maxRating}" />
                         <p>${recipeVar.description}</p>
                     </div>
                     <div class="col-md-3">

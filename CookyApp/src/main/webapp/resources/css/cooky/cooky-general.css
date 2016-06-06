@@ -43,10 +43,63 @@ html, body {
 }
 
 .cooky-recipeRating {
-    font-size: 1.4em;
+    font-size: 2.0em;
     color: gold;
 }
 
 #cookbookDetail .list-group {
     margin-top: 15px;
+}
+
+.recipe-description {
+    font-size: medium;
+    color: #aaaaaa;
+}
+
+.recipe-detail-rightside {
+    padding: 15px;
+    width: 320px;
+}
+
+.recipe-detail-rightside.recipe-thumbnail {
+    padding: 15px 0;
+}
+
+.recipe-detail-rightside #removeRecipe {
+    margin-top: 1em;
+}
+
+.recipe-author-action {
+    background-color: lightgrey;
+}
+
+.recipe-author-action a.btn {
+    display: block;
+    margin-top: 10px;
+}
+
+.recipe-information {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.recipe-information .glyphicon {
+    margin-right: 5px;
+}
+
+#imageFileUpload {
+    display: none;
+}
+
+table.table .amount {
+    text-align: right;
+}
+
+#recipe-form-ingredients {
+    margin-top: 35px;
+}
+
+#recipe-form-ingredientsLabel {
+    text-align: right;
 }

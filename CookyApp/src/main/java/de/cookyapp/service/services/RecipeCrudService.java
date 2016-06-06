@@ -1,15 +1,10 @@
 package de.cookyapp.service.services;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.persistence.entities.RecipeEntity;
@@ -19,8 +14,12 @@ import de.cookyapp.persistence.repositories.app.IUserCrudRepository;
 import de.cookyapp.service.dto.Cookbook;
 import de.cookyapp.service.dto.Recipe;
 import de.cookyapp.service.dto.User;
+import de.cookyapp.service.exceptions.InvalidRecipeId;
+import de.cookyapp.service.exceptions.UserNotAuthorized;
 import de.cookyapp.service.services.interfaces.ICookbookContentService;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
+import de.cookyapp.service.services.interfaces.IImageService;
+import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,30 +37,35 @@ public class RecipeCrudService implements IRecipeCrudService {
     private IRecipeCrudRepository recipeCrudRepository;
     private IAuthenticationFacade authentication;
     private IUserCrudRepository userCrudRepository;
-    private ServletContext servletContext;
     private ICookbookManagementService cookbookManagementService;
     private ICookbookContentService cookbookContentService;
+    private IIngredientCrudService ingredientService;
+
+    @Autowired
+    private IImageService imageService;
 
     @Autowired
     public RecipeCrudService( IRecipeCrudRepository recipeCrudRepository, IAuthenticationFacade authentication,
-                              IUserCrudRepository userCrudRepository, ServletContext servletContext,
-                              ICookbookManagementService cookbookManagementService, ICookbookContentService cookbookContentService ) {
+                              IUserCrudRepository userCrudRepository, ICookbookManagementService cookbookManagementService,
+                              ICookbookContentService cookbookContentService, IIngredientCrudService ingredientService ) {
         this.recipeCrudRepository = recipeCrudRepository;
         this.authentication = authentication;
         this.userCrudRepository = userCrudRepository;
-        this.servletContext = servletContext;
         this.cookbookManagementService = cookbookManagementService;
         this.cookbookContentService = cookbookContentService;
+        this.ingredientService = ingredientService;
     }
 
     @Override
     public void deleteRecipe( int recipeID ) {
         RecipeEntity deleteRecipe = recipeCrudRepository.findOne( recipeID );
         if ( deleteRecipe != null ) {
-            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() ); //Check current User Authentication
-            //TODO if (!isAuthorized) --> Check if Admin delete Recipe
+            boolean isAuthorized = this.authentication.getAuthentication().getName().equals( deleteRecipe.getAuthor().getUsername() );
+
             if ( isAuthorized ) {
                 recipeCrudRepository.delete( deleteRecipe );
+            } else {
+                throw new UserNotAuthorized();
             }
         }
     }
@@ -86,15 +90,15 @@ public class RecipeCrudService implements IRecipeCrudService {
             recipeEntity.setRating( (byte) 0 );
             recipeEntity.setVoteCount( 0 );
             recipeEntity.setAuthor( user );
-
+            recipeEntity.setImageFile( recipe.getImageData() );
             recipeEntity = recipeCrudRepository.save( recipeEntity );
 
-            Cookbook defaultCookbook = this.cookbookManagementService.getDefaultCookbookForUser( user.getId() );
+            this.ingredientService.saveRecipeIngredient( recipeEntity.getId(), recipe.getIngredients() );
 
+            Cookbook defaultCookbook = this.cookbookManagementService.getDefaultCookbookForUser( user.getId() );
             if ( defaultCookbook == null ) {
                 defaultCookbook = this.cookbookManagementService.createDefaultCookbookForUser( new User( user ) );
             }
-
             this.cookbookContentService.addRecipeToDefaultCookbook( defaultCookbook.getId(), recipeEntity.getId() );
 
             return new Recipe( recipeEntity );
@@ -118,7 +122,10 @@ public class RecipeCrudService implements IRecipeCrudService {
                 recipeEntity.setCookingTime( recipe.getCookingTime() );
                 recipeEntity.setPreparation( recipe.getPreparation() );
                 recipeEntity.setServing( recipe.getServing() );
+                recipeEntity.setImageFile( recipe.getImageData() );
                 recipeCrudRepository.save( recipeEntity );
+
+                this.ingredientService.saveRecipeIngredient( recipeEntity.getId(), recipe.getIngredients() );
             }
         }
     }
@@ -126,9 +133,13 @@ public class RecipeCrudService implements IRecipeCrudService {
     @Override
     public Recipe getRecipe( int recipeID ) {
         RecipeEntity recipeEntity = recipeCrudRepository.findOne( recipeID );
-        Recipe recipe = null;
+        Recipe recipe;
         if ( recipeEntity != null ) {
             recipe = new Recipe( recipeEntity );
+            String imageUrl = getImageUrl( recipeEntity );
+            recipe.setImageLink( imageUrl );
+        } else {
+            throw new InvalidRecipeId( recipeID );
         }
         return recipe;
     }
@@ -159,41 +170,26 @@ public class RecipeCrudService implements IRecipeCrudService {
         if ( entities != null ) {
             for ( RecipeEntity entity : entities ) {
                 Recipe current = new Recipe( entity );
-                if ( entity.getImageFile() == null ) {
-                    current.setImageLink( "http://placehold.it/320x200" );
-                } else {
-                    current.setImageLink( byteArrayToFileLink( entity.getImageFile() ) );
-                }
+                String imageLink = getImageUrl( entity );
+                current.setImageLink( imageLink );
                 recipes.add( current );
             }
         }
         return recipes;
     }
 
-    private String byteArrayToFileLink( byte[] bytes ) {
-        String imageGUID = java.util.UUID.randomUUID().toString() + ".jpg";
-        String path = generatePath();
-        String completePath = path + imageGUID;
-        String imagePath = "/resources/images/recipes/" + imageGUID;
-        InputStream inputStream = new ByteArrayInputStream( bytes );
-        try {
-            BufferedImage bufferedImage = ImageIO.read( inputStream );
-            ImageIO.write( bufferedImage, "jpg", new File( completePath ) );
-        } catch ( IOException ex ) {
-            logger.error( ex.getMessage(), ex );
+    private String getImageUrl( RecipeEntity recipeEntity ) {
+        String imageUrl;
+        if ( recipeEntity.getImageFile() == null || this.imageService == null ) {
+            imageUrl = "http://placehold.it/320x200";
+        } else {
+            try {
+                imageUrl = this.imageService.writeImageThumbnail( recipeEntity.getImageFile(), new Dimension( 320, 200 ) );
+            } catch ( IOException e ) {
+                logger.error( "Image file could not be created. Recipe id: " + recipeEntity.getId() );
+                imageUrl = "http://placehold.it/320x200";
+            }
         }
-
-        return imagePath;
-    }
-
-    private String generatePath() {
-        String path;
-        String imagePath = "resources/images/recipes/";
-        path = this.servletContext.getRealPath( "/" ) + imagePath;
-        if ( !new File( path ).exists() ) {
-            File file = new File( path );
-            file.mkdirs();
-        }
-        return path;
+        return imageUrl;
     }
 }

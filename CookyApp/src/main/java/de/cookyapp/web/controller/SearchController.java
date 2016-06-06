@@ -3,12 +3,11 @@ package de.cookyapp.web.controller;
 import java.util.List;
 import javax.validation.Valid;
 
-import de.cookyapp.authentication.IAuthenticationFacade;
 import de.cookyapp.enums.SearchType;
 import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
-import de.cookyapp.web.viewmodel.Search;
+import de.cookyapp.web.viewmodel.recipes.Search;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,13 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class SearchController {
     private IRecipeCrudService recipeCrudService;
     private IUserCrudService userCrudService;
-    private IAuthenticationFacade authentication;
     private Logger logger = Logger.getLogger( SearchController.class );
 
     @Autowired
-    public SearchController(IRecipeCrudService recipeCrudService, IUserCrudService userCrudService, IAuthenticationFacade authenticationFacade) {
+    public SearchController( IRecipeCrudService recipeCrudService, IUserCrudService userCrudService ) {
         this.recipeCrudService = recipeCrudService;
-        this.authentication = authenticationFacade;
         this.userCrudService = userCrudService;
     }
 

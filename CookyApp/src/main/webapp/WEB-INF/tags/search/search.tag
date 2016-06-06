@@ -8,9 +8,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
-<jsp:useBean id="search" class="de.cookyapp.web.viewmodel.Search" scope="request" />
+
+<jsp:useBean id="search" class="de.cookyapp.web.viewmodel.recipes.Search" scope="request" />
 
 <sec:authorize access="isAuthenticated()" var="userIsAuthenticated" />
 <c:if test="${userIsAuthenticated}">

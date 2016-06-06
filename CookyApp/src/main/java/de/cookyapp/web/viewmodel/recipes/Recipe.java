@@ -1,12 +1,12 @@
-package de.cookyapp.web.viewmodel;
+package de.cookyapp.web.viewmodel.recipes;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import de.cookyapp.enums.RecipeDifficulty;
@@ -27,14 +27,15 @@ public class Recipe {
     private String shortDescription;
 
     @Max( 255 )
-    private Short serving;
+    private short serving;
 
     @NotBlank( message = "Bitte geben Sie die Zubereitungs Hinweise ein" )
     private String preparation;
 
     @Max( value = 65535, message = "Werte nur bis 65535" )
-    private Integer calories;
+    private int calories;
 
+    // TODO write custom validator for enum values
     @NotNull( message = "Bitte wählen Sie einen der vorgegebenen Werte." )
     private RecipeDifficulty difficulty;
 
@@ -47,20 +48,27 @@ public class Recipe {
     @Max( 16777215 )
     private int restTime;
 
-    @Pattern( regexp = "([^\\\\s]+(\\\\.(?i)(jpg|jpeg))$)", message = "Es dürfen nur JPG oder JPEG Dateien hochgeladen werden." )
     private String imageLink;
 
     @Min( 0 )
     @Max( 5 )
     private byte rating;
 
-    private Collection<Ingredient> ingredients;
+    private byte maxRating = 5;
+
+    private Author author;
+
+    private List<Ingredient> ingredients;
 
     public Recipe() {
         ingredients = new ArrayList<>();
     }
 
-    public Recipe( de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredientList ) {
+    public Recipe( de.cookyapp.service.dto.Recipe recipe ) {
+        this( recipe, new LinkedList<>() );
+    }
+
+    public Recipe( de.cookyapp.service.dto.Recipe recipe, List<de.cookyapp.service.dto.Ingredient> ingredients ) {
         this.id = recipe.getId();
         this.ingredients = new ArrayList<>();
         this.name = recipe.getName();
@@ -73,10 +81,17 @@ public class Recipe {
         this.cookingTime = recipe.getCookingTime() == null ? 0 : recipe.getCookingTime();
         this.restTime = recipe.getRestTime() == null ? 0 : recipe.getRestTime();
         this.rating = recipe.getRating();
-        for ( de.cookyapp.service.dto.Ingredient entity : ingredientList ) {
-            Ingredient current = ingredientToViewmodelIngredient( entity );
-            this.ingredients.add( current );
-        }
+        this.imageLink = recipe.getImageLink();
+        this.ingredients = mapIngredientsToViewModel( ingredients );
+        this.author = new Author( recipe.getAuthor() );
+    }
+
+    public byte getMaxRating() {
+        return maxRating;
+    }
+
+    public Author getAuthor() {
+        return author;
     }
 
     public int getId() {
@@ -103,7 +118,7 @@ public class Recipe {
         this.shortDescription = shortDescription;
     }
 
-    public Short getServing() {
+    public short getServing() {
         return serving;
     }
 
@@ -119,7 +134,7 @@ public class Recipe {
         this.preparation = preparation;
     }
 
-    public Integer getCalories() {
+    public int getCalories() {
         return calories;
     }
 
@@ -151,15 +166,11 @@ public class Recipe {
         this.cookingTime = cookingTime;
     }
 
-    public RecipeDifficulty[] getAvailableDifficulty() {
-        return RecipeDifficulty.values();
-    }
-
-    public Collection<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients( Collection<Ingredient> ingredients ) {
+    public void setIngredients( List<Ingredient> ingredients ) {
         this.ingredients = ingredients;
     }
 
@@ -187,18 +198,7 @@ public class Recipe {
         this.imageLink = imageLink;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        return sb.toString();
-    }
-
-    private Ingredient ingredientToViewmodelIngredient( de.cookyapp.service.dto.Ingredient ingredient ) {
-        Ingredient ingredientViewmodel = new Ingredient();
-        ingredientViewmodel.setAmount( ingredient.getAmount() );
-        ingredientViewmodel.setUnit( ingredient.getUnit() );
-        ingredientViewmodel.setId( ingredient.getId() );
-        ingredientViewmodel.setName( ingredient.getName() );
-        return ingredientViewmodel;
+    private List<Ingredient> mapIngredientsToViewModel( List<de.cookyapp.service.dto.Ingredient> ingredients ) {
+        return ingredients.stream().map( ingredient -> new Ingredient( ingredient ) ).collect( Collectors.toList() );
     }
 }

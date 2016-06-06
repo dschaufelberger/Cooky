@@ -5,5 +5,5 @@ package de.cookyapp.service.services.interfaces;
  */
 public interface IRecipeRatingService {
 
-    public void rateRecipe( int recipeId, byte rating );
+    void rateRecipe( int recipeId, byte rating );
 }

@@ -1,4 +1,4 @@
-package de.cookyapp.web.viewmodel;
+package de.cookyapp.web.viewmodel.recipes;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
 package de.cookyapp.service.dto;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.persistence.entities.RecipeEntity;
@@ -14,7 +16,6 @@ public class Recipe {
     private int id;
     private String name;
     private String shortDescription;
-    private String imageFileName;
     private String preparation;
     private RecipeDifficulty difficulty;
     private LocalDateTime creationDate;
@@ -26,13 +27,17 @@ public class Recipe {
     private Byte rating;
     private Integer voteCount;
     private String imageLink;
-
+    private byte[] imageData;
     private User author;
+    private List<Ingredient> ingredients;
 
     public Recipe() {
+        this.ingredients = new LinkedList<>();
     }
 
     public Recipe( RecipeEntity recipeEntity ) {
+        this();
+
         setId( recipeEntity.getId() );
         setName( recipeEntity.getName() );
         setShortDescription( recipeEntity.getShortDescription() );
@@ -46,6 +51,7 @@ public class Recipe {
         setRestTime( recipeEntity.getRestTime() );
         setWorkingTime( recipeEntity.getWorkingTime() );
         setAuthor( userEntityToUser( recipeEntity.getAuthor() ) );
+        setImageData( recipeEntity.getImageFile() );
         setVoteCount( recipeEntity.getVoteCount() );
     }
 
@@ -167,6 +173,22 @@ public class Recipe {
 
     public void setRestTime( Integer restTime ) {
         this.restTime = restTime;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData( byte[] imageData ) {
+        this.imageData = imageData;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients( List<Ingredient> ingredients ) {
+        this.ingredients = ingredients;
     }
 
     private User userEntityToUser( UserEntity userEntity ) {

@@ -52,7 +52,8 @@
                     </button>
                 </div>
                 <div class="form-group cooky-cookbook-visibility">
-                    <form:select path="visibility" cssClass="form-control" items="${item.visibilities}" />
+                    <form:select path="visibility" cssClass="form-control" items="${item.visibilities}"
+                                 itemLabel="displayName" />
                 </div>
             </div>
         </div>

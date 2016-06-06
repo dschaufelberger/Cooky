@@ -1,34 +1,34 @@
 package de.cookyapp.web.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import de.cookyapp.authentication.IAuthenticationFacade;
-import de.cookyapp.service.dto.Ingredient;
+import de.cookyapp.enums.RecipeDifficulty;
 import de.cookyapp.service.dto.User;
-import de.cookyapp.service.exceptions.InvalidContentFileFormat;
+import de.cookyapp.service.exceptions.ImageUploadFailed;
+import de.cookyapp.service.exceptions.InvalidRecipeId;
 import de.cookyapp.service.services.interfaces.ICookbookManagementService;
-import de.cookyapp.service.services.interfaces.IImageUploadService;
 import de.cookyapp.service.services.interfaces.IIngredientCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
+import de.cookyapp.service.services.interfaces.IRecipeUtilityService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
-import de.cookyapp.web.viewmodel.Recipe;
-import de.cookyapp.web.viewmodel.RecipeCookbook;
-import de.cookyapp.web.viewmodel.Search;
 import de.cookyapp.web.viewmodel.cookbook.Cookbook;
 import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
+import de.cookyapp.web.viewmodel.recipes.Ingredient;
+import de.cookyapp.web.viewmodel.recipes.Recipe;
+import de.cookyapp.web.viewmodel.recipes.RecipeCookbook;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,22 +46,23 @@ import org.springframework.web.servlet.ModelAndView;
 public class RecipeController {
     private Logger logger = Logger.getLogger( RecipeController.class );
 
+    @Autowired
+    private IRecipeUtilityService recipeUtilityService;
+
     private IUserCrudService userCrudService;
     private IRecipeCrudService recipeCrudService;
     private IIngredientCrudService ingredientCrudService;
-    private IImageUploadService imageService;
     private IRecipeRatingService ratingService;
     private IAuthenticationFacade authentication;
     private ICookbookManagementService cookbookManagementService;
 
     @Autowired
     public RecipeController( IUserCrudService userCrudService, IRecipeCrudService recipeCrudService, IIngredientCrudService ingredientCrudService,
-                             IAuthenticationFacade authenticationFacade, IImageUploadService imageService, IRecipeRatingService ratingService,
+                             IAuthenticationFacade authenticationFacade, IRecipeRatingService ratingService,
                              ICookbookManagementService cookbookManagementService ) {
         this.userCrudService = userCrudService;
         this.recipeCrudService = recipeCrudService;
         this.ingredientCrudService = ingredientCrudService;
-        this.imageService = imageService;
         this.authentication = authenticationFacade;
         this.ratingService = ratingService;
         this.cookbookManagementService = cookbookManagementService;
@@ -70,76 +71,83 @@ public class RecipeController {
     @RequestMapping( method = RequestMethod.GET )
     public ModelAndView handleRecipes() {
         ModelAndView model = new ModelAndView( "RecipeOverviewTile" );
-        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes() );
+        model.addObject( "recipesList", this.recipeCrudService.getAllRecipes().stream().map( recipe -> new Recipe( recipe ) ).collect( Collectors.toList() ) );
         return model;
     }
 
-    @RequestMapping( "/removeRecipe" )
+    @RequestMapping( value = "/remove", method = RequestMethod.POST )
     public String handleRemoveRecipe( @RequestParam( "id" ) int id ) {
         this.recipeCrudService.deleteRecipe( id );
         return "redirect:/recipes";
     }
 
 
-    @RequestMapping( "/editRecipe" )
-    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, @RequestParam( "recipeImage" ) MultipartFile image, BindingResult bindingResult ) {
+    @RequestMapping( value = "/save", method = RequestMethod.POST )
+    public String handleEditRecipeFinish( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {
         String view;
-        boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeCrudService.getRecipe( recipe.getId() ).getAuthor().getUsername() );
         if ( bindingResult.hasErrors() ) {
             view = "RecipeEditTile";
         } else {
-            if ( isAuthorized ) {
-                de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipe.getId() );
-                ArrayList<de.cookyapp.web.viewmodel.Ingredient> newIngredients = new ArrayList<>( recipe.getIngredients() );
-                List<Ingredient> ingredients = new ArrayList<>();
-                for ( de.cookyapp.web.viewmodel.Ingredient current : newIngredients ) {
-                    if ( current != null ) {
-                        Ingredient ingredient = new Ingredient();
-                        ingredient.setAmount( current.getAmount() );
-                        ingredient.setName( current.getName() );
-                        ingredient.setUnit( current.getUnit() );
-                        ingredient.setId( current.getId() );
-                        ingredients.add( ingredient );
-                    }
-                }
+            ArrayList<String> contentTypes = new ArrayList<>( 2 );
+            contentTypes.add( "image/jpeg" );
+            contentTypes.add( "image/jpg" );
 
-                recipeDTO.setName( recipe.getName() );
-                recipeDTO.setShortDescription( recipe.getShortDescription() );
-                recipeDTO.setCalories( recipe.getCalories() );
-                recipeDTO.setCookingTime( recipe.getCookingTime() );
-                recipeDTO.setWorkingTime( recipe.getWorkingTime() );
-                recipeDTO.setDifficulty( recipe.getDifficulty() );
-                recipeDTO.setServing( recipe.getServing() );
-                recipeDTO.setPreparation( recipe.getPreparation() );
-                recipeDTO.setRestTime( recipe.getRestTime() );
-                recipeCrudService.updateRecipe( recipeDTO );
+            if ( !validateImage( image, contentTypes ) ) {
+                bindingResult.addError( new FieldError( "recipeImage", "imageLink", "Only JPEG images are allowed." ) );
 
-                uploadImage( image, recipeDTO.getId() );
-
-                ingredientCrudService.saveRecipeIngredient( recipeDTO.getId(), ingredients );
+                return "RecipeCreationTile";
             }
-            view = "redirect:/recipes";
+
+            de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipe.getId() );
+            if ( recipeDTO == null ) {
+                throw new InvalidRecipeId( recipe.getId() );
+            } else {
+                boolean isAuthorized = this.authentication.getAuthentication().getName().equals( recipeDTO.getAuthor().getUsername() );
+                if ( isAuthorized ) {
+                    recipeDTO.setName( recipe.getName() );
+                    recipeDTO.setShortDescription( recipe.getShortDescription() );
+                    recipeDTO.setPreparation( recipe.getPreparation() );
+                    recipeDTO.setWorkingTime( recipe.getWorkingTime() );
+                    recipeDTO.setCookingTime( recipe.getCookingTime() );
+                    recipeDTO.setRestTime( recipe.getRestTime() );
+                    recipeDTO.setCalories( recipe.getCalories() );
+                    recipeDTO.setDifficulty( recipe.getDifficulty() );
+                    recipeDTO.setServing( recipe.getServing() );
+                    if ( !image.isEmpty() ) {
+                        recipeDTO.setImageData( getImageBytes( image ) );
+                    }
+
+                    ArrayList<Ingredient> ingredientViewmodels = new ArrayList<>( recipe.getIngredients() );
+                    ArrayList<de.cookyapp.service.dto.Ingredient> ingredients = new ArrayList<>( ingredientViewmodels.size() );
+                    for ( Ingredient current : ingredientViewmodels ) {
+                        if ( current != null ) {
+                            de.cookyapp.service.dto.Ingredient ingredient = new de.cookyapp.service.dto.Ingredient();
+                            ingredient.setId( current.getId() );
+                            ingredient.setName( current.getName() );
+                            ingredient.setAmount( current.getAmount() );
+                            ingredient.setUnit( current.getUnit() );
+                            ingredients.add( ingredient );
+                        }
+                    }
+                    recipeDTO.setIngredients( ingredients );
+
+                    recipeCrudService.updateRecipe( recipeDTO );
+                }
+                view = "redirect:/recipes";
+            }
         }
 
         return view;
     }
 
-    @RequestMapping( "/view/{id}" )
+    @RequestMapping( value = "/view/{id}", method = RequestMethod.GET )
     public ModelAndView showDetail( @PathVariable int id ) {
-        Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
-        Collection<de.cookyapp.web.viewmodel.Ingredient> ingredientCollection = new ArrayList<>();
-        List<Ingredient> ingredients = ingredientCrudService.loadRecipeIngredients( id );
-        for ( Ingredient current : ingredients ) {
-            de.cookyapp.web.viewmodel.Ingredient ingredientViewmodel = new de.cookyapp.web.viewmodel.Ingredient();
-            ingredientViewmodel.setAmount( current.getAmount() );
-            ingredientViewmodel.setName( current.getName() );
-            ingredientViewmodel.setUnit( current.getUnit() );
-            ingredientViewmodel.setId( current.getId() );
-            ingredientCollection.add( ingredientViewmodel );
-        }
-        recipe.setIngredients( ingredientCollection );
+        ModelAndView modelAndView = new ModelAndView( "RecipeDetailTile" );
 
-        ModelAndView modelAndView = new ModelAndView( "RecipeEditTile" );
+        Recipe recipe = new Recipe( this.recipeCrudService.getRecipe( id ), ingredientCrudService.loadRecipeIngredients( id ) );
+        recipe.setShortDescription( htmlEscapeNewLines( recipe.getShortDescription() ) );
+        recipe.setPreparation( htmlEscapeNewLines( recipe.getPreparation() ) );
+
         User user = this.userCrudService.getCurrentUser();
 
         if ( user != null ) {
@@ -160,85 +168,124 @@ public class RecipeController {
         return modelAndView;
     }
 
-    @RequestMapping( "/goToAddRecipe" )
+    @RequestMapping( value = "/add", method = RequestMethod.GET )
     public ModelAndView handleGoToRecipe() {
-        ModelAndView model = new ModelAndView( "RecipeCreationTile", "recipe", new Recipe() );
+        ModelAndView model = new ModelAndView( "RecipeCreationTile" );
+
+        List<RecipeDifficulty> difficulties = this.recipeUtilityService != null ?
+                this.recipeUtilityService.getAvailableDifficulties() :
+                new LinkedList<>();
+        model.addObject( "recipe", new Recipe() );
+        model.addObject( "availableDifficulties", difficulties );
         return model;
     }
 
-    @RequestMapping( value = "/addRecipe" )
+    @RequestMapping( value = "/edit/{id}", method = RequestMethod.GET )
+    public ModelAndView editRecipe( @PathVariable( "id" ) int recipeId ) {
+        ModelAndView model = new ModelAndView( "RecipeEditTile" );
+
+        de.cookyapp.service.dto.Recipe recipeDTO = this.recipeCrudService.getRecipe( recipeId );
+        List<de.cookyapp.service.dto.Ingredient> ingredients = this.ingredientCrudService.loadRecipeIngredients( recipeDTO.getId() );
+
+        Recipe recipe = new Recipe( recipeDTO, ingredients );
+        List<RecipeDifficulty> difficulties = this.recipeUtilityService != null ?
+                this.recipeUtilityService.getAvailableDifficulties() :
+                new LinkedList<>();
+
+        model.addObject( "recipe", recipe );
+        model.addObject( "availableDifficulties", difficulties );
+
+        return model;
+    }
+
+    @RequestMapping( value = "/create", method = RequestMethod.POST )
     public String handleAddRecipe( @ModelAttribute( "recipe" ) @Valid Recipe recipe, BindingResult bindingResult, @RequestParam( "recipeImage" ) MultipartFile image ) {
         String view;
         if ( bindingResult.hasErrors() ) {
             view = "RecipeCreationTile";
         } else {
-            de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
-            newRecipe.setName( recipe.getName() );
-            newRecipe.setWorkingTime( recipe.getWorkingTime() );
-            newRecipe.setRestTime( recipe.getRestTime() );
-            newRecipe.setPreparation( recipe.getPreparation() );
-            newRecipe.setCalories( recipe.getCalories() );
-            newRecipe.setCookingTime( recipe.getCookingTime() );
-            newRecipe.setDifficulty( recipe.getDifficulty() );
-            newRecipe.setServing( recipe.getServing() );
-            newRecipe.setShortDescription( recipe.getShortDescription() );
-            newRecipe.setCreationDate( LocalDateTime.now() );
+            ArrayList<String> contentTypes = new ArrayList<>( 2 );
+            contentTypes.add( "image/jpeg" );
+            contentTypes.add( "image/jpg" );
 
-            List<de.cookyapp.web.viewmodel.Ingredient> ingredientList = new ArrayList<>( recipe.getIngredients() );
-            List<Ingredient> ingredients = new ArrayList<>();
-            for ( de.cookyapp.web.viewmodel.Ingredient current : ingredientList ) {
-                Ingredient ingredient = new Ingredient();
-                ingredient.setName( current.getName() );
-                ingredient.setAmount( current.getAmount() );
-                ingredient.setUnit( current.getUnit() );
-                ingredients.add( ingredient );
+            if ( !validateImage( image, contentTypes ) ) {
+                bindingResult.addError( new FieldError( "recipeImage", "imageLink", "Only JPEG images are allowed." ) );
+
+                return "RecipeCreationTile";
             }
 
-            ingredientCrudService.save( ingredients );
+            de.cookyapp.service.dto.Recipe newRecipe = new de.cookyapp.service.dto.Recipe();
+            newRecipe.setName( recipe.getName() );
+            newRecipe.setShortDescription( recipe.getShortDescription() );
+            newRecipe.setPreparation( recipe.getPreparation() );
+            newRecipe.setWorkingTime( recipe.getWorkingTime() );
+            newRecipe.setCookingTime( recipe.getCookingTime() );
+            newRecipe.setRestTime( recipe.getRestTime() );
+            newRecipe.setCalories( recipe.getCalories() );
+            newRecipe.setDifficulty( recipe.getDifficulty() );
+            newRecipe.setServing( recipe.getServing() );
+            newRecipe.setCreationDate( LocalDateTime.now() );
+            newRecipe.setImageData( getImageBytes( image ) );
+
+            ArrayList<Ingredient> ingredientViewmodels = new ArrayList<>( recipe.getIngredients() );
+            ArrayList<de.cookyapp.service.dto.Ingredient> ingredients = new ArrayList<>( ingredientViewmodels.size() );
+            for ( Ingredient current : ingredientViewmodels ) {
+                if ( current != null ) {
+                    de.cookyapp.service.dto.Ingredient ingredient = new de.cookyapp.service.dto.Ingredient();
+                    ingredient.setName( current.getName() );
+                    ingredient.setAmount( current.getAmount() );
+                    ingredient.setUnit( current.getUnit() );
+                    ingredients.add( ingredient );
+                }
+            }
+            newRecipe.setIngredients( ingredients );
+
             de.cookyapp.service.dto.Recipe current = recipeCrudService.createRecipe( newRecipe );
 
-            uploadImage( image, current.getId() );
-
-            ingredientCrudService.saveRecipeIngredient( current.getId(), ingredients );
-            view = "redirect:/recipes";
+            view = "redirect:/recipes/view/" + current.getId();
         }
         return view;
     }
 
-    @RequestMapping( "/rateRecipe" )
+    @RequestMapping( value = "/rate", method = RequestMethod.POST )
     public String rateRecipe( @RequestParam( "id" ) int id, @RequestParam( "rating" ) byte rating ) {
         ratingService.rateRecipe( id, rating );
         String view = "redirect:/recipes/view/" + id;
         return view;
     }
 
-    private void validateImage( MultipartFile image ) {
-        if ( !image.getContentType().equals( "image/jpeg" ) && !image.getContentType().equals( "image/jpg" ) ) {
-            throw new InvalidContentFileFormat( image.getName(), image.getContentType(), "Only JPG images are accepted" );
+    private String htmlEscapeNewLines( String text ) {
+        return text.replaceAll( "\\r?\\n", "<br>" );
+    }
+
+    private byte[] getImageBytes( MultipartFile image ) {
+        if ( image.isEmpty() ) {
+            return null;
+        }
+
+        try {
+            return image.getBytes();
+        } catch ( IOException e ) {
+            logger.error( "Error on uploading image. " +
+                            "Image name: " + image.getName() +
+                            ", File size: " + image.getSize() +
+                            ", Content type: " + image.getContentType(),
+                    e );
+            throw new ImageUploadFailed( image.getName(), image.getContentType(), e );
         }
     }
 
-    private void uploadImage( MultipartFile image, int recipeId ) {
-        if ( !image.isEmpty() ) {
-            validateImage( image );
-            InputStream inputStream = null;
-            BufferedImage bufferedImage = null;
-            try {
-                try {
-                    inputStream = image.getInputStream();
-                    bufferedImage = ImageIO.read( inputStream );
-                } catch ( Exception i ) {
-                    logger.error( "Upload Image ist fehlgeschlagen" );
-                    throw i;
-                } finally {
-                    if ( inputStream != null ) {
-                        inputStream.close();
-                    }
-                }
-                imageService.saveImage( recipeId, bufferedImage );
-            } catch ( Exception ex ) {
-                logger.error( ex.getMessage(), ex );
-            }
+    private boolean validateImage( MultipartFile image, List<String> validImageContentTypes ) {
+        boolean isValid = false;
+
+        if ( image.isEmpty() ) {
+            return true;
         }
+
+        for ( String contentType : validImageContentTypes ) {
+            isValid |= image.getContentType().equals( contentType );
+        }
+
+        return isValid;
     }
 }

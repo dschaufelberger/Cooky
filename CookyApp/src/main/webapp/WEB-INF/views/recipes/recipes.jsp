@@ -10,42 +10,59 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<div class="row">
-    <div class="col-md-12">
-        <form id="addRecipe" action="/recipes/goToAddRecipe" method="post">
-            <button type="submit" name="addBtn" class="btn btn-primary btn-block">Add Recipe</button>
-            <sec:csrfInput />
-        </form>
+<sec:authorize access="isAuthenticated()" var="userIsAuthenticated">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/recipes/add" class="btn btn-primary btn-block">Add Recipe</a>
+        </div>
     </div>
-</div>
+</sec:authorize>
 
-<c:forEach var="recipes" items="${recipesList}" varStatus="loop">
+<c:if test="${userIsAuthenticated}">
+    <c:set var="username">
+        <sec:authentication property="principal.username" />
+    </c:set>
+</c:if>
+
+<c:forEach var="recipe" items="${recipesList}" varStatus="loop">
+    <c:if test="${userIsAuthenticated && (recipe.author.name eq username)}" var="isOwner" />
+
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">
     </c:if>
 
     <div class="col-md-4">
-        <div class="thumbnail size">
-            <img class="imageSize" src="${recipes.imageLink}" alt="image">
+        <div class="thumbnail">
+            <img src="${recipe.imageLink}" alt="image">
             <div class="caption">
-                <h3>${recipes.name}</h3>
+                <h3>${recipe.name}</h3>
 
-                <p align="center">
-                    <a href="/recipes/view/${recipes.id}" class="btn btn-primary btn-block">Open</a>
-                </p>
+                <div class="row">
+                    <div class="${isOwner ? 'col-md-4' : 'col-md-12'}">
+                        <a href="/recipes/view/${recipe.id}" class="btn btn-primary btn-block">View</a>
+                    </div>
 
-                <form id="removeRecipe" action="/recipes/removeRecipe" method="post">
-                    <p align="center">
-                        <button type="submit" class="btn btn-primary btn-block">Remove</button>
-                    </p>
-                    <input type="hidden" name="id" value="${recipes.id}">
-                    <sec:csrfInput />
-                </form>
+                    <c:if test="${isOwner}">
+
+                        <div class="col-md-4">
+                            <a href="/recipes/edit/${recipe.id}" class="btn btn-primary btn-block">Edit</a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <form id="removeRecipe" action="/recipes/remove" method="post">
+                                <button type="submit" class="btn btn-primary btn-block">Remove</button>
+                                <input type="hidden" name="id" value="${recipe.id}">
+                                <sec:csrfInput />
+                            </form>
+                        </div>
+                    </c:if>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <c:if test="${loop.index % 3 == 2}">
+    <c:if test="${(loop.index % 3 == 2) || loop.last}">
         </div>
     </c:if>
 </c:forEach>

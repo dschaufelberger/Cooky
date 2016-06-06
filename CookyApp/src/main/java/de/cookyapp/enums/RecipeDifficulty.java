@@ -4,15 +4,15 @@ package de.cookyapp.enums;
  * Created by Dominik Schaufelberger on 27.11.2015.
  */
 public enum RecipeDifficulty {
-    EASY( "Easy" ), MEDIUM( "Medium" ), ADVANCED( "Advanced" ), EXPERT( "Expert" );
+    NONE( "None" ), EASY( "Easy" ), MEDIUM( "Medium" ), ADVANCED( "Advanced" ), EXPERT( "Expert" );
 
-    private String recipeDifficulty;
+    private String displayName;
 
-    RecipeDifficulty( String recipeDifficulty ) {
-        this.recipeDifficulty = recipeDifficulty;
+    RecipeDifficulty( String displayName ) {
+        this.displayName = displayName;
     }
 
-    public String getRecipeDifficulty() {
-        return recipeDifficulty;
+    public String getDisplayName() {
+        return displayName;
     }
 }
