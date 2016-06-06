@@ -160,11 +160,14 @@ public class UserCrudService implements IUserCrudService {
     public List<User> searchUsersContaining( String searchTerm ) {
         List<User> users = new ArrayList<>();
         if(searchTerm!= null) {
+            User current = this.getCurrentUser();
+
             List<UserEntity> userEntities = this.userCrudRepository.findByUsernameContaining( searchTerm );
             users = userEntities
                     .stream()
                     .map( userEntity -> getUserIfExistant( userEntity ) )
-                    .filter( userEntity -> userEntity != null )
+                    .filter( user -> user != null )
+                    .filter( user -> !user.equals( current ) )
                     .collect( Collectors.<User>toList() );
         }
         return users;

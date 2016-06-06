@@ -138,89 +138,6 @@ public class User {
         this.accountState = accountState;
     }
 
-    
-   /* public Collection<CookbookEntity> getCookbooks() {
-        return cookbooks;
-    }
-
-    public void setCookbooks( Collection<CookbookEntity> cookbooks ) {
-        this.cookbooks = cookbooks;
-    }
-
-    *//*
-    
-    public Collection<CommentEntity> getComments() {
-        return comments;
-    }
-
-    public void setComments( Collection<CommentEntity> comments ) {
-        this.comments = comments;
-    }*//*
-
-    
-    public Collection<UserPreferenceEntity> getPreferences() {
-        return preferences;
-    }
-
-    public void setPreferences( Collection<UserPreferenceEntity> preferences ) {
-        this.preferences = preferences;
-    }
-
-    
-    
-    public AddressEntity getAddress() {
-        return address;
-    }
-
-    public void setAddress( AddressEntity address ) {
-        this.address = address;
-    }
-
-    
-    public Collection<MessageEntity> getSentMessages() {
-        return sentMessages;
-    }
-
-    public void setSentMessages( Collection<MessageEntity> sentMessages ) {
-        this.sentMessages = sentMessages;
-    }
-
-    
-    public Collection<MessageEntity> getReceivedMessages() {
-        return receivedMessages;
-    }
-
-    public void setReceivedMessages( Collection<MessageEntity> receivedMessages ) {
-        this.receivedMessages = receivedMessages;
-    }
-
-    
-    public Collection<ShoppingListEntity> getShoppingListEntries() {
-        return shoppingListEntries;
-    }
-
-    public void setShoppingListEntries( Collection<ShoppingListEntity> shoppingListEntries ) {
-        this.shoppingListEntries = shoppingListEntries;
-    }
-
-    
-    public Collection<FriendshipEntity> getOutgoingFriendships() {
-        return outgoingFriendships;
-    }
-
-    public void setOutgoingFriendships( Collection<FriendshipEntity> outgoingFriendships ) {
-        this.outgoingFriendships = outgoingFriendships;
-    }
-
-    
-    public Collection<FriendshipEntity> getIncomingFriendships() {
-        return incomingFriendships;
-    }
-
-    public void setIncomingFriendships( Collection<FriendshipEntity> incomingFriendships ) {
-        this.incomingFriendships = incomingFriendships;
-    }*/
-
     @Override
     public boolean equals( Object o ) {
         if ( this == o )
@@ -228,47 +145,14 @@ public class User {
         if ( o == null || getClass() != o.getClass() )
             return false;
 
-        User that = (User) o;
+        User user = (User) o;
 
-        if ( id != that.id )
-            return false;
-        if ( username != null ? !username.equals( that.username ) : that.username != null )
-            return false;
-        if ( password != null ? !password.equals( that.password ) : that.password != null )
-            return false;
-        if ( forename != null ? !forename.equals( that.forename ) : that.forename != null )
-            return false;
-        if ( surname != null ? !surname.equals( that.surname ) : that.surname != null )
-            return false;
-        if ( email != null ? !email.equals( that.email ) : that.email != null )
-            return false;
-        if ( gender != null ? !gender.equals( that.gender ) : that.gender != null )
-            return false;
-        if ( birthdate != null ? !birthdate.equals( that.birthdate ) : that.birthdate != null )
-            return false;
-        if ( registrationDate != null ? !registrationDate.equals( that.registrationDate ) : that.registrationDate != null )
-            return false;
-        if ( lastLoginDate != null ? !lastLoginDate.equals( that.lastLoginDate ) : that.lastLoginDate != null )
-            return false;
-        if ( accountState != null ? !accountState.equals( that.accountState ) : that.accountState != null )
-            return false;
+        return id == user.id;
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (forename != null ? forename.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
-        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
-        result = 31 * result + (lastLoginDate != null ? lastLoginDate.hashCode() : 0);
-        result = 31 * result + (accountState != null ? accountState.hashCode() : 0);
-        return result;
+        return id;
     }
 }

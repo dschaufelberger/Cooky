@@ -28,10 +28,10 @@ public class FriendshipEntity {
     private FriendRequestState requestState;
 
     private UserEntity inquirer;
-    private UserEntity requester;
+    private UserEntity requested;
 
     @Id
-    @Column( name = "InquiringUser", nullable = false, insertable = false, updatable = false )
+    @Column( name = "InquiringUser", nullable = false )
     public int getInquiringUser() {
         return inquiringUser;
     }
@@ -41,7 +41,7 @@ public class FriendshipEntity {
     }
 
     @Id
-    @Column( name = "RequestedUser", nullable = false, insertable = false, updatable = false )
+    @Column( name = "RequestedUser", nullable = false )
     public int getRequestedUser() {
         return requestedUser;
     }
@@ -72,7 +72,7 @@ public class FriendshipEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    @JoinColumn( name = "InquiringUser" )
+    @JoinColumn( name = "InquiringUser", insertable = false, updatable = false )
     public UserEntity getInquirer() {
         return inquirer;
     }
@@ -82,13 +82,14 @@ public class FriendshipEntity {
     }
 
     @ManyToOne( cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false )
-    @JoinColumn( name = "RequestedUser" )    //, insertable = false, updatable = false
-    public UserEntity getRequester() {
-        return requester;
+    @JoinColumn( name = "RequestedUser", insertable = false, updatable = false )
+    //, insertable = false, updatable = false
+    public UserEntity getRequested() {
+        return requested;
     }
 
-    public void setRequester( UserEntity acceptingFriend ) {
-        this.requester = acceptingFriend;
+    public void setRequested( UserEntity acceptingFriend ) {
+        this.requested = acceptingFriend;
     }
 
     @Override

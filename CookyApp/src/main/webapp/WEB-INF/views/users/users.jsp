@@ -25,7 +25,7 @@
                 <!-- TODO: add link to user profile -->
                 <a><h3>${user.username}</h3></a>
                 <form action="/cookys/add" method="post">
-                    <input type="hidden" name="requested">
+                    <input type="hidden" name="requested" value="${user.id}">
                     <sec:csrfInput/>
                     <button type="submit" class="btn btn-default">
                         Send Friend Request

@@ -41,8 +41,8 @@ public class FriendshipService implements IFriendshipService {
 
         for ( FriendshipEntity request : requests ) {
             if ( request.getInquirer().getId() == forUser ) {
-                friends.add( new User( request.getRequester() ) );
-            } else if ( request.getRequester().getId() == forUser ) {
+                friends.add( new User( request.getRequested() ) );
+            } else if ( request.getRequested().getId() == forUser ) {
                 friends.add( new User( request.getInquirer() ) );
             }
         }
@@ -75,31 +75,34 @@ public class FriendshipService implements IFriendshipService {
 
         this.friendshipRepository.delete( rejected );
 
-        return pending.stream().map( request -> new User( request.getRequester() ) ).collect( Collectors.toList() );
+        return pending.stream().map( request -> new User( request.getRequested() ) ).collect( Collectors.toList() );
     }
 
     @Override
     public void sendFriendRequest( int from, int to ) {
-        UserEntity inquiring = getUser( from );
-        UserEntity requested = getUser( to );
+        if ( from != to ) {
+            UserEntity inquiring = getUser( from );
+            UserEntity requested = getUser( to );
 
-        FriendshipEntityPK id = new FriendshipEntityPK();
-        id.setInquiringUser( inquiring.getId() );
-        id.setRequestedUser( requested.getId() );
-        FriendshipEntity friendship = this.friendshipRepository.findOne( id );
+            FriendshipEntityPK id = new FriendshipEntityPK();
+            id.setInquiringUser( inquiring.getId() );
+            id.setRequestedUser( requested.getId() );
+            FriendshipEntity friendship = this.friendshipRepository.findOne( id );
 
-        if (friendship == null) {
-            id.setInquiringUser( requested.getId() );
-            id.setRequestedUser( inquiring.getId() );
-            friendship = this.friendshipRepository.findOne( id );
-        }
+            if ( friendship == null ) {
+                id.setInquiringUser( requested.getId() );
+                id.setRequestedUser( inquiring.getId() );
+                friendship = this.friendshipRepository.findOne( id );
+            }
 
-        if ( friendship == null ) {
-            friendship = new FriendshipEntity();
-            friendship.setInquirer( inquiring );
-            friendship.setRequester( requested );
-            friendship.setDate( LocalDateTime.now() );
-            friendship.setRequestState( FriendRequestState.PENDING );
+            if ( friendship == null ) {
+                friendship = new FriendshipEntity();
+                friendship.setInquiringUser( inquiring.getId() );
+                friendship.setRequestedUser( requested.getId() );
+                friendship.setDate( LocalDateTime.now() );
+                friendship.setRequestState( FriendRequestState.PENDING );
+                this.friendshipRepository.save( friendship );
+            }
         }
     }
 

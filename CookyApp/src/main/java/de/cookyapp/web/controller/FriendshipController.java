@@ -67,7 +67,7 @@ public class FriendshipController {
     }
 
     @RequestMapping( value = "/add", method = RequestMethod.POST )
-    public void sendFriendRequest(@RequestParam("requested")int requested) {
+    public String sendFriendRequest( @RequestParam( "requested" ) int requested ) {
         User current = this.userService.getCurrentUser();
 
         if (current == null) {
@@ -75,6 +75,8 @@ public class FriendshipController {
         } else {
             this.friendshipService.sendFriendRequest( current.getId(), requested );
         }
+
+        return "redirect:/cookys";
     }
 
     @RequestMapping( value = "/accept", method = RequestMethod.POST )
