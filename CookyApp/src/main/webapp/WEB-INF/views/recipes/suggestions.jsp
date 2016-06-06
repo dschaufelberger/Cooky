@@ -18,11 +18,9 @@
 
 <form:form method="POST" action="/recipes/recipeSuggestions" commandName="ingredientSuggestion">
     <div class="form-group ingredientSuggestions">
-        <form:input path="ingredients[0]" cssClass="form-control ingredients" onchange="addIngredientRow()"/>
+        <form:input path="ingredients[0]" cssClass="form-control ingredients" placeholder="Your Ingredient" onchange="addIngredientRow()"/>
     </div>
         <span class="input-group-btn">
-        <button type="submit" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-arrow-right"></span>
-        </button>
+        <button type="submit" class="btn btn-default btn-sm">Get recipe suggestions!</button>
     </span>
 </form:form>
