@@ -27,4 +27,8 @@
         <name>rating</name>
         <path>/WEB-INF/tags/recipes/Rating.tag</path>
     </tag-file>
+    <tag-file>
+        <name>friends</name>
+        <path>/WEB-INF/tags/friends/FriendRequest.tag</path>
+    </tag-file>
 </taglib>

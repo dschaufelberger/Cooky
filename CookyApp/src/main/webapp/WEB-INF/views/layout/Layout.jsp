@@ -14,6 +14,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf_token" content="${_csrf.token}">
+    <meta name="_csrf_header" content="${_csrf.headerName}">
     <link href="<spring:url value="/resources/css/jQueryUI/jquery-ui.min.css" />" rel="stylesheet">
     <link href="<spring:url value="/resources/css/jQueryUI/jquery-ui.structure.min.css" />" rel="stylesheet">
     <link href="<spring:url value="/resources/css/jQueryUI/jquery-ui.theme.min.css" />" rel="stylesheet">
@@ -35,6 +37,7 @@
     <script src="<spring:url value="/resources/js/jquery/jquery.easing.min.js" />"></script>
     <!-- Grayscale Them JavaScript -->
     <script src="<spring:url value="/resources/js/grayscale/grayscale.js" />"></script>
+    <script src="<spring:url value="/resources/js/cooky/friendship.js" />"></script>
 
     <title><tiles:insertAttribute name="title" ignore="true" defaultValue="Cooky" /></title>
 </head>

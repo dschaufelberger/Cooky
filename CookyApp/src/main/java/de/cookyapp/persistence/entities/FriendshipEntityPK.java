@@ -8,27 +8,27 @@ import javax.persistence.Id;
  * Created by Dominik on 23.11.2015.
  */
 public class FriendshipEntityPK implements Serializable {
-    private int userIdOne;
-    private int userIdTwo;
+    private int inquiringUser;
+    private int requestedUser;
 
-    @Column( name = "UserIDOne", nullable = false )
+    @Column( name = "InquiringUser", nullable = false, insertable = false, updatable = false )
     @Id
-    public int getUserIdOne() {
-        return userIdOne;
+    public int getInquiringUser() {
+        return inquiringUser;
     }
 
-    public void setUserIdOne( int userIdOne ) {
-        this.userIdOne = userIdOne;
+    public void setInquiringUser( int inquiringUser ) {
+        this.inquiringUser = inquiringUser;
     }
 
-    @Column( name = "UserIDTwo", nullable = false )
+    @Column( name = "RequestedUser", nullable = false, insertable = false, updatable = false )
     @Id
-    public int getUserIdTwo() {
-        return userIdTwo;
+    public int getRequestedUser() {
+        return requestedUser;
     }
 
-    public void setUserIdTwo( int userIdTwo ) {
-        this.userIdTwo = userIdTwo;
+    public void setRequestedUser( int requestedUser ) {
+        this.requestedUser = requestedUser;
     }
 
     @Override
@@ -40,9 +40,9 @@ public class FriendshipEntityPK implements Serializable {
 
         FriendshipEntityPK that = (FriendshipEntityPK) o;
 
-        if ( userIdOne != that.userIdOne )
+        if ( inquiringUser != that.inquiringUser )
             return false;
-        if ( userIdTwo != that.userIdTwo )
+        if ( requestedUser != that.requestedUser )
             return false;
 
         return true;
@@ -50,8 +50,8 @@ public class FriendshipEntityPK implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = userIdOne;
-        result = 31 * result + userIdTwo;
+        int result = inquiringUser;
+        result = 31 * result + requestedUser;
         return result;
     }
 }
