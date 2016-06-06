@@ -51,6 +51,10 @@ html, body {
     margin-top: 15px;
 }
 
+.cooky-table * {
+    list-style-type: none;
+}
+
 .recipe-description {
     font-size: medium;
     color: #aaaaaa;

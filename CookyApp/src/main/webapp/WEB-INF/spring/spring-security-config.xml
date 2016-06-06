@@ -15,6 +15,7 @@
         <sec:intercept-url pattern="/recipes" access="permitAll()" />
         <sec:intercept-url pattern="/recipes/**" access="hasAuthority('COOKY_USER')" />
         <sec:intercept-url pattern="/cookys/**" access="hasAuthority('COOKY_USER')" />
+        <sec:intercept-url pattern="/matchCenter/**" access="hasAuthority('COOKY_USER')" />
 
         <sec:form-login login-page="/signin"
                         default-target-url="/"

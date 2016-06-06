@@ -180,6 +180,26 @@
         <put-attribute name="pageContent" value="/WEB-INF/views/friends/Friends.jsp" cascade="true" />
     </definition>
 
+    <definition name="MatchCenterTile" extends="page.definition">
+        <put-attribute name="title" value="Match-Center" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/matches/matchCenter.jsp" cascade="true" />
+    </definition>
+
+    <definition name="CategoryTile" extends="page.definition">
+        <put-attribute name="title" value="Add your preferences and get matches" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/matches/categories.jsp" cascade="true" />
+    </definition>
+
+    <definition name="UserPreferencesOverviewTile" extends="page.definition">
+        <put-attribute name="title" value="Match-Center" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/matches/userPreferences.jsp" cascade="true" />
+    </definition>
+
+    <definition name="MatchTile" extends="page.definition">
+        <put-attribute name="title" value="Match-Center" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/matches/matches.jsp" cascade="true" />
+    </definition>
+
     <!-- Empty definition template. You can copy this and set the name and value attributes. -->
     <!--
     <definition name="" extends="base.definition">
