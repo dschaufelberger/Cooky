@@ -29,7 +29,7 @@
 </c:if>
 
 <c:forEach var="recipe" items="${recipesList}" varStatus="loop">
-    <c:if test="${userIsAuthenticated && (recipe.author.username eq username)}" var="isOwner" />
+    <c:if test="${userIsAuthenticated && (recipe.author.name eq username)}" var="isOwner" />
 
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">

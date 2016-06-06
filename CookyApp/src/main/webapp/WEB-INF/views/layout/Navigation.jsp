@@ -23,6 +23,9 @@
                 </li>
                 <sec:authorize access="isAuthenticated()" var="userIsAuthenticated">
                     <li>
+                        <a href=/recipes/suggestions>Suggestions</a>
+                    </li>
+                    <li>
                         <a href="/cookbooks/manage">Cookbooks</a>
                     </li>
                     <li>

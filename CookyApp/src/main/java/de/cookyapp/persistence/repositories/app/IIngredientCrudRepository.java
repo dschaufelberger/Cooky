@@ -1,5 +1,7 @@
 package de.cookyapp.persistence.repositories.app;
 
+import java.util.List;
+
 import de.cookyapp.persistence.entities.IngredientEntity;
 
 
@@ -8,4 +10,8 @@ import de.cookyapp.persistence.entities.IngredientEntity;
  */
 public interface IIngredientCrudRepository extends IBaseCrudRepository<IngredientEntity, Integer> {
     IngredientEntity findFirstByName( String ingredient );
+
+    List<IngredientEntity> findByNameContaining( String ingredient );
+
+    List<IngredientEntity> findByNameIn( List<String> ingredientNames );
 }

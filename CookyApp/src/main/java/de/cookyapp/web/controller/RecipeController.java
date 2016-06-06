@@ -19,6 +19,7 @@ import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IRecipeRatingService;
 import de.cookyapp.service.services.interfaces.IRecipeUtilityService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.IngredientSuggestions;
 import de.cookyapp.web.viewmodel.cookbook.Cookbook;
 import de.cookyapp.web.viewmodel.cookbook.CookbookOverview;
 import de.cookyapp.web.viewmodel.recipes.Ingredient;
@@ -245,6 +246,26 @@ public class RecipeController {
             view = "redirect:/recipes/view/" + current.getId();
         }
         return view;
+    }
+
+    @RequestMapping( "/suggestions" )
+    public ModelAndView suggestions() {
+        ModelAndView model = new ModelAndView( "RecipeSuggestionsTile", "ingredientSuggestion", new IngredientSuggestions() );
+        return model;
+    }
+
+    @RequestMapping( "/recipeSuggestions" )
+    public ModelAndView recipeSuggestions( @ModelAttribute( "suggestions" ) @Valid IngredientSuggestions suggestions ) {
+        ModelAndView modelAndView;
+        modelAndView = new ModelAndView( "RecipeOverviewTile" );
+
+        List<de.cookyapp.service.dto.Recipe> recipes = recipeCrudService.recipeSuggestions( suggestions.getIngredients() );
+        List<Recipe> recipeList = recipes.stream()
+                .map( recipe -> new Recipe( recipe ) )
+                .collect( Collectors.toList() );
+
+        modelAndView.addObject( "recipesList", recipeList );
+        return modelAndView;
     }
 
     @RequestMapping( value = "/rate", method = RequestMethod.POST )

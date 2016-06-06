@@ -1,6 +1,7 @@
 package de.cookyapp.service.mocks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,6 +48,11 @@ public class RecipeRepositoryMock implements IRecipeCrudRepository {
                 .stream()
                 .filter( entity -> entity.getName().contains( name ) )
                 .collect( Collectors.toList() );
+    }
+
+    @Override
+    public List<RecipeEntity> findByIngredientsIngredientName_In( List<String> ingredientName ) {
+        return Collections.EMPTY_LIST;
     }
 
     @Override

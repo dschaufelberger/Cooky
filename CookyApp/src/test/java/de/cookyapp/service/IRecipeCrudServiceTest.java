@@ -47,7 +47,7 @@ public class IRecipeCrudServiceTest {
         this.cookbookManagementServiceMock = new CookbookManagementServiceMock();
         this.ingredientServiceMock = new IngredientServiceMock();
         this.service = new RecipeCrudService( recipeRepositoryMock, authenticationMock, userRepositoryMock,
-                this.cookbookManagementServiceMock, this.cookbookContentServiceMock, this.ingredientServiceMock );
+                this.cookbookManagementServiceMock, this.cookbookContentServiceMock, this.ingredientServiceMock, null, null );
     }
 
     @Test

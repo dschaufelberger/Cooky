@@ -129,10 +129,16 @@
         <put-attribute name="pageContent" value="/WEB-INF/views/recipes/recipes.jsp" cascade="true" />
     </definition>
 
-    <!-- Recipe edit page, mapped to "/recipes/edit -->
+    <!-- Recipe detail page, mapped to "/recipes/view -->
     <definition name="RecipeDetailTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Recipe" />
         <put-attribute name="pageContent" value="/WEB-INF/views/recipes/RecipeDetail.jsp" cascade="true" />
+    </definition>
+
+    <!-- Recipe edit page, mapped to "/recipes/edit -->
+    <definition name="RecipeSuggestionsTile" extends="page.definition">
+        <put-attribute name="title" value="Recipe Suggestions" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/recipes/suggestions.jsp" cascade="true" />
     </definition>
 
     <!-- Recipe edit page, mapped to "/recipes/edit -->

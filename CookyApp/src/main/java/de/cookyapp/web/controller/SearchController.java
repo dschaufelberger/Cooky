@@ -1,13 +1,15 @@
 package de.cookyapp.web.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import de.cookyapp.enums.SearchType;
-import de.cookyapp.service.dto.User;
 import de.cookyapp.service.services.interfaces.IRecipeCrudService;
 import de.cookyapp.service.services.interfaces.IUserCrudService;
+import de.cookyapp.web.viewmodel.recipes.Recipe;
 import de.cookyapp.web.viewmodel.recipes.Search;
+import de.cookyapp.web.viewmodel.search.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,18 +35,28 @@ public class SearchController {
     }
 
     @RequestMapping( method = RequestMethod.POST )
-        public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
-            ModelAndView modelAndView;
-            List<User> userList;
-            SearchType searchType = search.getSearchType();
-            if(searchType == SearchType.USERS) {
-                modelAndView = new ModelAndView( "UserOverviewTile" );
-                userList= userCrudService.searchUsersContaining( search.getSearchQuery());
-                modelAndView.addObject( "usersList", userList );
-            }else {
-                modelAndView = new ModelAndView( "RecipeOverviewTile" );
-                modelAndView.addObject( "recipesList", recipeCrudService.searchRecipesContaining( search.getSearchQuery() ) );
-            }
-        return modelAndView;
+    public ModelAndView search( @ModelAttribute( "search" ) @Valid Search search ) {
+        ModelAndView modelAndView;
+        SearchType searchType = search.getSearchType();
+        if ( searchType == SearchType.USERS ) {
+            modelAndView = new ModelAndView( "UserOverviewTile" );
+
+            List<de.cookyapp.service.dto.User> users = userCrudService.searchUsersContaining( search.getSearchQuery() );
+            List<User> userList = users.stream()
+                    .map( user -> new User( user ) )
+                    .collect( Collectors.toList() );
+
+            modelAndView.addObject( "usersList", userList );
+        } else {
+            modelAndView = new ModelAndView( "RecipeOverviewTile" );
+
+            List<de.cookyapp.service.dto.Recipe> recipes = recipeCrudService.searchRecipesContaining( search.getSearchQuery() );
+            List<Recipe> recipeList = recipes.stream()
+                    .map( recipe -> new Recipe( recipe ) )
+                    .collect( Collectors.toList() );
+
+            modelAndView.addObject( "recipesList", recipeList );
         }
+        return modelAndView;
+    }
 }

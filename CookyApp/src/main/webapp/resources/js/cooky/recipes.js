@@ -1,6 +1,8 @@
 /**
  * Created by Jasper on 29.11.2015.
  */
+var countForSuggestions = 1;
+
 $(document).ready(function () {
     $('.ratings_stars').hover(
         function () {
@@ -46,6 +48,24 @@ function rate(id) {
 
     $.ajax(settings);
 }
+
+
+function addIngredientRow() {
+    var fieldsFilled = true;
+    $(".ingredients").each(function () {
+        if ($(this).val() == "") {
+            fieldsFilled = false;
+            return false;
+        }
+    });
+
+    if (fieldsFilled) {
+        $("</br><input id='ingredients" + countForSuggestions + "' name='ingredients[" + countForSuggestions + "]' " +
+            "onchange='addIngredientRow()' class='form-control ingredients' placeholder='Your Ingredient' type='text' value=''>")
+            .appendTo(".ingredientSuggestions");
+        countForSuggestions = countForSuggestions + 1;
+    }
+};
 
 
 
