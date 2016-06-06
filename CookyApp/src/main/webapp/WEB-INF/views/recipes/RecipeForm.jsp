@@ -11,7 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-<script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
+<script src="<spring:url value="/resources/js/cooky/recipes.js" />"></script>
 
 <c:set var="formUrl">
     <tiles:getAsString name="formUrl" />

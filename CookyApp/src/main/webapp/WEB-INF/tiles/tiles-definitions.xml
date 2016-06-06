@@ -41,7 +41,7 @@
     <!-- and probably soon the upcoming footer-->
     <definition name="exception.definition" extends="page.definition">
         <put-attribute name="title" value="Opps. Cooky encountered an error." />
-        <put-attribute name="pagecontent" value="/WEB-INF/views/layout/Exception.jsp" cascade="true" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/layout/Exception.jsp" cascade="true" />
         <put-attribute name="errorContent" value="" />
     </definition>
 
@@ -114,7 +114,7 @@
     <!-- The user overview page, which is only used (in the moment) to display search results-->
     <definition name="UserOverviewTile" extends="page.definition">
         <put-attribute name="title" value="Cooky Users" />
-        <put-attribute name="pagecontent" value="/WEB-INF/views/users/users.jsp" cascade="true" />
+        <put-attribute name="pageContent" value="/WEB-INF/views/users/users.jsp" cascade="true" />
     </definition>
 
     <!-- A users personal password management page, mapped to "/account/changePassword" -->

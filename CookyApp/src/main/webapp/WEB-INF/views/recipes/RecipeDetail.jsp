@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<script src="<spring:url value="/resources/js/recipeJS/recipes.js" />"></script>
+<script src="<spring:url value="/resources/js/cooky/recipes.js" />"></script>
 <%--
   Created by IntelliJ IDEA.
   User: Dominik Schaufelberger

@@ -67,8 +67,14 @@ public class FriendshipController {
     }
 
     @RequestMapping( value = "/add", method = RequestMethod.POST )
-    @ResponseStatus( HttpStatus.OK )
-    public void sendFriendRequest() {
+    public void sendFriendRequest(@RequestParam("requested")int requested) {
+        User current = this.userService.getCurrentUser();
+
+        if (current == null) {
+            throw new UserNotAuthorized();
+        } else {
+            this.friendshipService.sendFriendRequest( current.getId(), requested );
+        }
     }
 
     @RequestMapping( value = "/accept", method = RequestMethod.POST )

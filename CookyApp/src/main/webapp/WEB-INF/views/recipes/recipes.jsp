@@ -24,8 +24,12 @@
     </c:set>
 </c:if>
 
+<c:if test="${recipesList.size() == 0}">
+    <span class="alert alert-info search-no-result">No Recipes were found, that matched the entered search term.</span>
+</c:if>
+
 <c:forEach var="recipe" items="${recipesList}" varStatus="loop">
-    <c:if test="${userIsAuthenticated && (recipe.author.name eq username)}" var="isOwner" />
+    <c:if test="${userIsAuthenticated && (recipe.author.username eq username)}" var="isOwner" />
 
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">

@@ -86,9 +86,16 @@ public class FriendshipService implements IFriendshipService {
         FriendshipEntityPK id = new FriendshipEntityPK();
         id.setInquiringUser( inquiring.getId() );
         id.setRequestedUser( requested.getId() );
+        FriendshipEntity friendship = this.friendshipRepository.findOne( id );
 
-        if ( this.friendshipRepository.findOne( id ) == null ) {
-            FriendshipEntity friendship = new FriendshipEntity();
+        if (friendship == null) {
+            id.setInquiringUser( requested.getId() );
+            id.setRequestedUser( inquiring.getId() );
+            friendship = this.friendshipRepository.findOne( id );
+        }
+
+        if ( friendship == null ) {
+            friendship = new FriendshipEntity();
             friendship.setInquirer( inquiring );
             friendship.setRequester( requested );
             friendship.setDate( LocalDateTime.now() );
