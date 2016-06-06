@@ -61,9 +61,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-test {
-    ignoreFailures true
-}
+
 
 // jacoco code coverage
 jacoco {
