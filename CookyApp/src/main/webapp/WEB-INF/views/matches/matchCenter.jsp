@@ -10,25 +10,31 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<table>
-    <ul class="list-group">
-        <li class="list-group-item">
+<table class="table">
+    <tbody>
+    <tr>
+        <td>
             <form action="/matchCenter/categoriesOverview" method="post">
-                <button type="submit" class="btn btn-default">Add preferences to get more matches!</button>
+                <button type="submit" class="btn btn-default btn-block">Add preferences to get more matches!</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
-        </li>
-        <li class="list-group-item">
+        </td>
+    </tr>
+    <tr>
+        <td>
             <form action="/matchCenter/userPreferences" method="post">
-                <button type="submit" class="btn btn-default">My Preferences</button>
+                <button type="submit" class="btn btn-default btn-block">My Preferences</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
-        </li>
-        <li class="list-group-item">
+        </td>
+    </tr>
+    <tr>
+        <td>
             <form action="/matchCenter/matches" method="post">
-                <button type="submit" class="btn btn-default">Get Cooking matches!</button>
+                <button type="submit" class="btn btn-default btn-block">Get Cooking matches!</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
-        </li>
-    </ul>
+        </td>
+    </tr>
+    </tbody>
 </table>

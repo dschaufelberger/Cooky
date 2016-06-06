@@ -80,5 +80,7 @@
             </ul>
         </ul>
     </div>
-    <input type="submit" value="Send" class="btn btn-default">
+    <div class="col-md-12">
+        <input type="submit" value="Add Preferences" class="btn btn-default">
+    </div>
 </form:form>

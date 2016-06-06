@@ -10,10 +10,7 @@ import de.cookyapp.web.viewmodel.Matches.CategoryList;
 import de.cookyapp.web.viewmodel.Matches.UserPreferences;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
@@ -90,11 +87,11 @@ public class CookingMatchController {
         return modelAndView;
     }
 
-    @RequestMapping ("/remove/{id}")
-    public String removePreference (@PathVariable int id) {
+    @RequestMapping ("/remove")
+    public String removePreference (@RequestParam ("id") int id) {
         String view = "";
         preferenceCrudService.deletePreference(id);
-        view = "redirect:/userPreferences";
+        view = "redirect:/matchCenter/userPreferences";
         return view;
     }
 

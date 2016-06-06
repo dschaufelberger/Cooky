@@ -11,28 +11,16 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <h3>Your Preferences</h3>
-
-<form:form method="POST" action="cookingMatches/userPreferences" commandName="preferences">
-    <c:forEach var="preferences" items="${userPreferences}">
-        <div>
-            <span>${preferences.categoryName}</span>
-            <span id="${preferences.id}" class="glyphicon glyphicon-remove" onclick="removePreference(this.id)"> </span>
-        </div>
-    </c:forEach>
-</form:form>
-
-<script>
-    function removePreference(id) {
-        var settings = {
-            method: 'POST',
-            url: '/matchCenter/remove/' + id,
-            data: {
-                id: id,
-            },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
-            }
-        }
-        $.ajax(settings);
-    }
-</script>
+ <ul class="col-md-6 list-group">
+        <c:forEach var="preferences" items="${userPreferences}">
+            <form:form method="POST" action="/matchCenter/remove" commandName="preferences">
+            <li class="list-group-item">
+                <span>${preferences.categoryName}</span>
+                <button type="submit" class="btn btn-xs btn-default pull-right">
+                    <span class="glyphicon glyphicon-remove pull-right"> </span>
+                </button>
+                <input type="hidden" value="${preferences.id}" name="id">
+            </li>
+            </form:form>
+        </c:forEach>
+    </ul>
