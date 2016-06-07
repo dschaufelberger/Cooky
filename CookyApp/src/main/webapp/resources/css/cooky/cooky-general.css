@@ -15,8 +15,7 @@ html, body {
 }
 
 .cooky-seamless-background {
-    background: url("../../images/cooky-seamless-food.png") repeat;
-    background-size: 250px;
+    background-color: white;
     color: #000;
 }
 
@@ -155,4 +154,8 @@ table.table .amount {
 .cooky-description-text {
     font-size: medium;
     color: #aaa;
+}
+
+.recipe-image {
+    width: 100%;
 }

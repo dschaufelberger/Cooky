@@ -49,7 +49,7 @@
     </div>
     <div class="col-md-4">
         <div class="recipe-detail-rightside recipe-thumbnail">
-            <img src="${recipe.imageLink}" alt="recipe-image">
+            <img src="${recipe.imageLink}" alt="recipe-image" class="recipe-image">
         </div>
 
         <div class="recipe-detail-rightside">

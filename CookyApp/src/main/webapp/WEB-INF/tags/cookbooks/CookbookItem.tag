@@ -23,7 +23,7 @@
 </spring:url>
 
 <form:form action="/cookbooks/manage/save" method="post" commandName="cookbook">
-    <div class="container cooky-cookbook">
+    <div class="cooky-cookbook">
         <form:hidden path="id" />
         <div class="row">
             <div class="col-md-8">
