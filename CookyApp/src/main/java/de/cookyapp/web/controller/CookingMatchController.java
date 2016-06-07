@@ -97,7 +97,7 @@ public class CookingMatchController {
 
     @RequestMapping( "/matches" )
     public ModelAndView matchOverview() {
-        ModelAndView modelAndView = new ModelAndView( "MatchTile" );
+        ModelAndView modelAndView = new ModelAndView( "UserOverviewTile" );
         User user = userService.getCurrentUser();
         List<UserPreference> userPreferences = preferenceCrudService.getPreferencesByUserId( user.getId() );
         List<String> categories = new ArrayList<>();
