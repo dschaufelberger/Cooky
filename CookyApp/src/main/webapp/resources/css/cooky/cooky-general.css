@@ -113,7 +113,7 @@ table.table .amount {
 
 #friendRequests .badge {
     font-size: small;
-    background-color: red;
+    background-color: green;
     border: solid 1px black;
     position: relative;
     right: 36px;
