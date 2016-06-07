@@ -83,7 +83,7 @@
 
         <div class="recipe-detail-rightside recipe-author-action">
             <!-- TODO provide link to user profile, when profiles are implemented -->
-            <span>Author: <a href="#"><c:out value="${recipe.author.name}" /></a></span>
+            <span>Author: <a href="#" class="recipe-author-name"><c:out value="${recipe.author.name}" /></a></span>
 
             <sec:authorize access="${userIsAuthenticated}">
                 <c:set var="username">

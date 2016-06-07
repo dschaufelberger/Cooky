@@ -159,3 +159,7 @@ table.table .amount {
 .recipe-image {
     width: 100%;
 }
+
+.recipe-author-name {
+    color: #337ab7;
+}
